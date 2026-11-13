@@ -7,6 +7,9 @@ from pipeline import normalize
 from schemas.gold import GoldCase
 
 NEGATED = {"absent", "denied"}
+# Item types whose tooth is part of the clinical fact (findings, perio, radiographs, diagnoses, treatment items).
+TOOTH_BEARING = ["finding", "perio_measurement", "radiograph", "diagnosis", "option_discussed", "treatment_today",
+                 "next_visit"]
 TEXT_KEYS = {"complaint_text", "complaint_location", "value", "description", "observation", "result_description",
              "finding", "diagnosis", "option", "procedure", "timing", "text", "content", "reason", "test", "reaction",
              "to", "purpose", "intensity", "risks", "benefits"}
@@ -201,7 +204,7 @@ def critical_bucket(dim: str) -> str | None:
 def match_flags(gold: GoldCase, flags, tolerated: list[str], mode: str):
     produced = [f for f in flags if f.origin != "E3"]
     out = {"caught": [], "missed": [], "duplicates": [], "false_alarms": [], "tolerated": [], "questions":
-           [f.rule_id for f in flags if f.origin == "E3"]}
+           [f.rule_id for f in flags if f.origin == "E3"], "unmatched_detail": []}
     used = set()
     for gf in gold.expected_flags:
         gev = {e.utterance_id or e.quick_note_id for e in gf.evidence}
@@ -219,6 +222,9 @@ def match_flags(gold: GoldCase, flags, tolerated: list[str], mode: str):
     for f in produced:
         if f.id in used:
             continue
+        out["unmatched_detail"].append({"rule_id": f.rule_id, "severity": f.severity, "message": f.message,
+                                        "technical": f.rule_id in TECHNICAL_SAFEGUARDS,
+                                        "evidence": sorted({s.source_id for s in f.evidence})})
         if f.rule_id in tolerated or f"{f.rule_id}:{mode}" in tolerated:
             out["tolerated"].append(f.rule_id)
         else:
@@ -314,3 +320,15 @@ def apply_grades(score: CaseScore, grades: dict[str, str]) -> None:
         for dim, _, _ in m.pending:
             v = grades.get(f"{m.gold['gid']}|{dim}")
             m.dims[dim] = (v == "equivalent") if v is not None else None
+
+
+def tooth_by_type(score) -> dict[str, list[int]]:
+    """Tooth accuracy per gold item type, over matched tooth-bearing items whose gold names a tooth."""
+    out: dict[str, list[int]] = {t: [0, 0] for t in TOOTH_BEARING}
+    for m in score.matches:
+        t = m.gold.get("type")
+        if m.produced is None or t not in out or m.gold.get("target") is None or "tooth" not in m.dims:
+            continue
+        out[t][0] += bool(m.dims["tooth"])
+        out[t][1] += 1
+    return out

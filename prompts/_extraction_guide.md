@@ -56,7 +56,7 @@ Each item has a `type`, a `problem_key` (null for encounter items), a `target` (
 - `decision`: link the option it decides with `option_key` (the option's key). If no option was discussed, leave `option_key` null — never invent an option. A dentist's own wait-and-see plan is `monitor`. Accepting an option does not imply any consent element.
 - `consent_element`: one per element actually discussed (risks, benefits, alternatives, consequences of refusal or delay, questions answered), linked with `option_key` or `decision_key`.
 - `prescription_status`: prescribed_today, discussed_not_prescribed, continuing.
-- `medication_status`: current, discontinued, historical, unknown. `allergy_status`: reported_active, denied, uncertain, disputed, reported_resolved. A blanket "no allergies" is one allergy item with substance null, allergy_status denied, assertion denied.
+- `medication_status`: current, discontinued, historical, unknown. `allergy_status`: reported_active, denied, uncertain, disputed, reported_resolved. A blanket "no allergies" is one allergy item with substance null, allergy_status denied, assertion denied. An allergy the patient says they had in the past but outgrew, or a drug from that class they have taken since without a reaction ("allergic as a kid, but I've had amoxicillin since with no problem"), is `reported_resolved`, even if hedged ("I think"); put the hedge in `reaction` or leave it in the quote.
 - A blanket "no changes to health or medications" is one `history_change` item with assertion absent.
 - Every BP reading is its own `vital_reading`, in order (`sequence` 1, 2, …; `label` initial or recheck if stated).
 - Self-corrections ("eight — sorry, nine"): record the corrected value and cite the line.

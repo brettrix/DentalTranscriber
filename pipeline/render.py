@@ -50,6 +50,22 @@ def _join(*parts) -> str:
     return "; ".join(str(p) for p in parts if p is not None and p is not False and p not in ("", []))
 
 
+def _dose_unless_strength(a):
+    """A dose equal to the strength (e.g. both '600 mg') is shown once."""
+    dose = a.get("dose")
+    return None if dose and a.get("strength") and dose.strip().lower() == a["strength"].strip().lower() else dose
+
+
+def _symptom_score(a) -> str:
+    """Only a severity score is out of 10; other numbers (e.g. lingering seconds) aren't."""
+    n = a.get("score")
+    if n is None:
+        return ""
+    if a.get("aspect") == "severity":
+        return f" ({n:g}/10)"
+    return "" if f"{n:g}" in (a.get("value") or "") else f" ({n:g})"
+
+
 def _assert_prefix(e) -> str:
     first = " ".join(str(v) for v in e.attributes.values() if isinstance(v, str))[:12].lower()
     if e.assertion in ("absent", "denied") and first.startswith(("no ", "denies", "not ", "none")):
@@ -87,8 +103,8 @@ def entity_text(e, graph) -> tuple[str, dict]:
     elif t == "medication":
         show(drug=a["drug"] or a["original_wording"], strength=a["strength"], dose=a["dose"], route=a["route"],
              frequency=a["frequency"], medication_status=a["medication_status"])
-        text = pre + _join(f"{shown.get('drug', '?')} {a['strength'] or ''}".strip(), a["dose"], a["route"],
-                           a["frequency"], (a["medication_status"] or "").replace("_", " "))
+        text = pre + _join(f"{shown.get('drug', '?')} {a['strength'] or ''}".strip(), _dose_unless_strength(a),
+                           a["route"], a["frequency"], (a["medication_status"] or "").replace("_", " "))
     elif t == "allergy":
         show(substance=a["substance"] or a["original_wording"], reaction=a["reaction"], allergy_status=a["allergy_status"])
         if a["allergy_status"] == "denied" and not a["substance"]:
@@ -101,8 +117,7 @@ def entity_text(e, graph) -> tuple[str, dict]:
         text = f"BP {a['systolic']}/{a['diastolic']} mmHg" + (f" ({a['label']})" if a["label"] else "")
     elif t == "symptom":
         show(aspect=a["aspect"], value=a["value"], score=a["score"])
-        score = f" ({a['score']:g}/10)" if a["score"] is not None else ""
-        text = f"{pre}{(a['aspect'] or 'symptom').replace('_', ' ')}: {a['value'] or ''}{score}".strip()
+        text = f"{pre}{(a['aspect'] or 'symptom').replace('_', ' ')}: {a['value'] or ''}{_symptom_score(a)}".strip()
     elif t == "finding":
         show(tooth=tooth, surface=surface, test=a["test"], observation=a["observation"], response=a["response"],
              result_description=a["result_description"], intensity=a["intensity"], lingering=a["lingering"],
@@ -152,7 +167,8 @@ def entity_text(e, graph) -> tuple[str, dict]:
         show(drug=a["drug"] or a["original_wording"], strength=a["strength"], dose=a["dose"], route=a["route"],
              frequency_code=a["frequency_code"], duration_days=a["duration_days"], as_needed=a["as_needed"],
              prescription_status=a["prescription_status"])
-        text = _join(f"{shown.get('drug', '?')} {a['strength'] or ''}".strip(), a["dose"], a["route"], a["frequency_code"],
+        text = _join(f"{shown.get('drug', '?')} {a['strength'] or ''}".strip(), _dose_unless_strength(a), a["route"],
+                     a["frequency_code"],
                      a["duration_days"] is not None and f"{a['duration_days']} days",
                      (a["prescription_status"] or "").replace("_", " "))
     elif t == "referral":

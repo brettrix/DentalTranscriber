@@ -113,7 +113,7 @@ def _err(exc: Exception) -> str:
 
 def run_pipeline(session: Session, *, mode: str | None = None, rule_mode: str | None = None, client=None,
                  agents: dict | None = None) -> dict:
-    mode = mode or session.meta().get("pipeline_mode") or os.environ.get("PIPELINE_MODE", "team")
+    mode = mode or session.meta().get("pipeline_mode") or os.environ.get("PIPELINE_MODE", "baseline")
     rule_mode = rule_mode or session.meta().get("rule_mode") or os.environ.get("RULE_MODE", "synthetic_demo")
     assert mode in ("baseline", "team") and rule_mode in ("synthetic_demo", "office")
     with session.lock():
@@ -361,11 +361,24 @@ def repair_round(run: Run, issues: list[Issue]):
         registry_owner = "B0" if run.mode == "baseline" else "Br"
         rev_entities, rev_staged = convert_outputs([(owner, _Items(revised_out))], run.sources, g, None,
                                                    registry_owner, run.run_id)
-        for rec in rev_staged:
-            run.staging.add(rec)
         from pipeline.validate import validate_entity
         ok = [e for e in rev_entities if not validate_entity(e)]
-        changed += apply_revisions(g, ok, run.sources)
+        applied = apply_revisions(g, ok, run.sources)
+        changed += applied
+        applied_ids = {e.id for e in applied}
+        ok_ids = {e.id for e in ok}
+        for rec in rev_staged:
+            rid = rec.raw.get("id")
+            if rec.entity is not None and rid in ok_ids:
+                # Applied as a new version, or identical to the current one: either way nothing is left staged.
+                rec.status = "committed" if rid in applied_ids else "unchanged"
+            elif rec.task_id is None and rec.status == "staged":
+                rec.errors = rec.errors or ["revision failed entity-level validation"]
+                task = make_task("staged_record", f"{owner} revision of {rid} not applied: {'; '.join(rec.errors)[:300]}",
+                                 created_by_stage="C", staging_ids=[rec.id])
+                rec.task_id = task.id
+                add_task(g, task, run.previous)
+            run.staging.add(rec)
         new_entities, new_staged = convert_outputs([(owner, _Items(new_out))], run.sources, g, run.previous,
                                                    registry_owner, run.run_id)
         committed, uncommitted = commit_batch(g, new_entities, new_staged, run.sources, run.previous)

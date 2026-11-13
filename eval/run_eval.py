@@ -188,7 +188,8 @@ def summarize_score(score, graph) -> dict:
             "extras": [f"{getattr(e, 'type', e.kind)}:{e.id}" for e in score.unmatched_produced],
             "problem_map": score.problem_map, "merged": score.merged, "split": score.split,
             "target_accuracy": list(score.target_accuracy), "flags": score.flags,
-            "forbidden_hits": score.forbidden_hits, "expectations": score.expectations}
+            "forbidden_hits": score.forbidden_hits, "expectations": score.expectations,
+            "tooth_by_type": scoring.tooth_by_type(score)}
 
 
 def grade_pairs(scores, client=None) -> dict[str, str]:
@@ -328,6 +329,12 @@ def write_report(rows, out_dir: Path, prov: dict, title: str):
     w("| Field | " + " | ".join(pipelines) + " |\n|---|" + "---|" * len(pipelines))
     for k in crit_keys:
         rowfmt(k, lambda a, k=k: frac(*a["critical"].get(k, [0, 0])))
+    w("\n### Tooth accuracy on tooth-bearing items (gold names a tooth)\n")
+    w("| Type | " + " | ".join(pipelines) + " |\n|---|" + "---|" * len(pipelines))
+    tb = {p: tooth_bearing(rows, p) for p in pipelines}
+    from eval.scoring import TOOTH_BEARING
+    for t in TOOTH_BEARING + ["all tooth-bearing"]:
+        w(f"| {t} | " + " | ".join(frac(*tb[p].get(t, [0, 0])) for p in pipelines) + " |")
     w("\n### Per-dimension accuracy (matched entities)\n")
     keys = sorted({k for p in pipelines for k in A[p]["dims"]})
     w("| Dimension | " + " | ".join(pipelines) + " |\n|---|" + "---|" * len(pipelines))
@@ -353,6 +360,12 @@ def write_report(rows, out_dir: Path, prov: dict, title: str):
     missed = [f"{r['case']}/{r['pipeline']}: {', '.join(r['final']['flags']['missed'])}" for r in rows
               if r.get("scored") and r["final"]["flags"]["missed"]]
     w("\nMissed expected flags: " + ("; ".join(missed) or "none") + "\n")
+    w("\n### Raised flags not matched to gold\n")
+    w("| Case | Pipeline | Rule | Severity | Kind | Message |\n|---|---|---|---|---|---|")
+    for r in sorted(rows, key=lambda r: (r["case"], r["pipeline"])):
+        for f in ((r.get("final") or {}).get("flags") or {}).get("unmatched_detail", []):
+            w(f"| {r['case']} | {r['pipeline']} | {f['rule_id']} | {f['severity']} | "
+              f"{'technical' if f['technical'] else 'clinical/target'} | {f['message'][:120].replace('|', '/')} |")
     w("\n`tolerated` = produced flags the draft matrix annotation lists as acceptable (not counted as false alarms); "
       "`false alarms` marked *(technical)* are safeguard flags (failed checks, open tasks), not clinical rules.\n")
     w("## Claim support (Grader, rendered attributes)\n")
@@ -394,6 +407,19 @@ def write_report(rows, out_dir: Path, prov: dict, title: str):
       "by Claude); a person must check the gold, every critical-field grade, and every baseline/team disagreement "
       "(see grader_review.csv).\n- Audio/ASR quality and human review time are not measured yet.\n")
     (out_dir / "report.md").write_text("\n".join(L) + "\n", "utf-8")
+
+
+def tooth_bearing(rows, pipeline) -> dict[str, list[int]]:
+    tot: dict[str, list[int]] = defaultdict(lambda: [0, 0])
+    for r in rows:
+        if r["pipeline"] != pipeline or not r.get("scored"):
+            continue
+        for t, (a, b) in (r["final"].get("tooth_by_type") or {}).items():
+            tot[t][0] += a
+            tot[t][1] += b
+            tot["all tooth-bearing"][0] += a
+            tot["all tooth-bearing"][1] += b
+    return dict(tot)
 
 
 def write_csv(rows, out_dir: Path):

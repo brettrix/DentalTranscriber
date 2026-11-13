@@ -98,3 +98,16 @@ def test_freeze_detects_changes_and_guards_heldout(tmp_path, monkeypatch):
     monkeypatch.setattr(sys, "argv", ["run_eval", "--cases", "eval/heldout", "--out", str(tmp_path / "r")])
     with pytest.raises(SystemExit, match="frozen evaluation configuration"):
         run_eval.main()
+
+
+def test_scoring_reports_tooth_bearing_breakdown_and_unmatched_flags(eval_env):
+    case, out = eval_env
+    row = run_eval.run_one(case, "baseline", 0, out, False, "synthetic_demo", client=FakeLLM())
+    tb = row["final"]["tooth_by_type"]
+    assert tb["finding"] == [1, 1], tb
+    unmatched = row["final"]["flags"]["unmatched_detail"]
+    assert len(unmatched) == len(row["final"]["flags"]["false_alarms"]) + len(row["final"]["flags"]["tolerated"])
+    run_eval.finish([row], out, {"git_hash": "t", "git_dirty": False, "eval_config_hash": "x", "schema_version": "y",
+                                 "models": {"defaults": "f", "Grader": "f"}, "transcriber": "text"}, "t")
+    report = (out / "report.md").read_text()
+    assert "Tooth accuracy on tooth-bearing items" in report and "Raised flags not matched to gold" in report

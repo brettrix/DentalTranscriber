@@ -74,7 +74,8 @@ with tab_start:
     date = c1.text_input("Date", "2026-11-12")
     provider = c2.text_input("Provider", "Dr. Hale")
     assistant = c3.text_input("Assistant", "")
-    mode = st.radio("Pipeline mode", ["team", "baseline"], horizontal=True)
+    mode = st.radio("Pipeline mode", ["baseline", "team"], horizontal=True,
+                    help="baseline: one extractor, span-checked. team: split extractors plus meaning checks.")
     rule_mode = st.radio("Rule mode", ["synthetic_demo", "office"], horizontal=True)
     source = st.radio("Input", ["Paste transcript", "Upload audio", "Test case"], horizontal=True)
     quick = st.text_area("Quick notes (one per line)", height=100)
