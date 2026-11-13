@@ -98,3 +98,43 @@ def test_extraction_guide_covers_outgrown_allergy():
     from agents.base import read_prompt
     guide = read_prompt("_extraction_guide.md")
     assert "outgrew" in guide and "reported_resolved" in guide
+
+
+def test_bp_alert_names_only_readings_over_threshold():
+    from pipeline.plain import bp_title
+    from pipeline.rules import RuleContext, run_rules
+    from tests.helpers import ROLES, sources as mk_sources
+    qn = Item(id="it_q", type="vital_reading", scope="encounter", owner="B0", assertion_source="assistant_record",
+              attributes={"systolic": 162, "diastolic": 98, "sequence": 1},
+              evidence=[Span(source_type="quick_note", source_id="q1", start=0, end=10, text="BP 162/98")],
+              checks={"span_valid": "fail", "normalization_valid": "pass", "semantic_support": "not_applicable"})
+    said = item("vital_reading", problem_id=None, systolic=128, diastolic=84, sequence=2)
+    g = graph(problem(), qn, said)
+    flags, _ = run_rules(RuleContext(graph=g, mode="baseline", rule_mode="synthetic_demo", sources=mk_sources()))
+    bp = next(f for f in flags if f.rule_id == "bp_reading")
+    assert bp_title(bp, g) == "162/98 (from the quick note, not confirmed) is elevated"
+
+
+def test_legacy_applied_revisions_are_not_open(tmp_path):
+    from pipeline.linker import StagedRecord, Staging
+    st = Staging(tmp_path / "staging.json")
+    legacy = StagedRecord(id="st_1", owner="B0", kind="item", raw={"id": "it_003", "key": "F1"}, entity={"id": "it_003"})
+    failed = StagedRecord(id="st_2", owner="B0", kind="item", raw={"key": "BAD"}, errors=["tooth 40 outside 1-32"])
+    st.add(legacy)
+    st.add(failed)
+    assert [r.id for r in st.open_records()] == ["st_2"]
+
+
+def test_second_read_wording_says_what_differs():
+    from pipeline.plain import why
+
+    class Log:
+        def __init__(self, details):
+            self.details = details
+
+        def latest(self, e, check):
+            return {"result": "fail", "details": self.details} if check == "semantic_support" else None
+
+    text = why(None, Log(["free-text details: different (producer 'large filling' vs checker 'bite test; big filling')"]))
+    assert "described it differently" not in text and "“bite test; big filling”" in text
+    assert "the patient" in why(None, Log(["assertion_source: producer 'clinician_assessment' vs checker 'patient_report'"]))

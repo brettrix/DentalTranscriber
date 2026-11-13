@@ -57,10 +57,18 @@ def session_label(sid: str) -> str:
         return "(new visit)"
     s = Session(sid)
     m = s.meta()
-    visit = (read_json(s.path("sources", "visit_meta.json"), {}) or {}).get("date") or "no date"
     created = m.get("created")
-    when = datetime.fromisoformat(created).astimezone().strftime("%b %d, %H:%M") if created else "?"
-    return f"{m.get('case') or 'Visit'} · visit {visit} · processed {when} · {m.get('pipeline_mode', '?')}"
+    when = datetime.fromisoformat(created).astimezone().strftime("%b %d %H:%M") if created else "?"
+    return f"{m.get('case') or 'Visit'} · {when} · {m.get('pipeline_mode', '?')}"
+
+
+def session_caption(s) -> str:
+    m = s.meta()
+    vm = read_json(s.path("sources", "visit_meta.json"), {}) or {}
+    created = m.get("created")
+    when = datetime.fromisoformat(created).astimezone().strftime("%Y-%m-%d %H:%M") if created else "?"
+    return (f"{m.get('case') or 'Visit'} · processed {when} · {m.get('pipeline_mode', '?')} mode · "
+            f"visit date {vm.get('date') or '—'} · {vm.get('provider') or ''}")
 
 
 # ---------------------------------------------------------------- sidebar: role and session
@@ -73,6 +81,8 @@ if st.session_state.get("sid") not in ids:
 sid = st.sidebar.selectbox("Visit", ids, key="sid", format_func=session_label)
 session = Session(sid) if sid != NEW else None
 meta = session.meta() if session else {}
+if session is not None:
+    st.sidebar.caption(session_caption(session))
 st.error(f"{BANNER}  ·  Mode: {meta.get('pipeline_mode', '—')}  ·  Rules: {meta.get('rule_mode', '—')}")
 page = st.radio("Page", PAGES, key="page", horizontal=True, label_visibility="collapsed")
 
@@ -284,8 +294,8 @@ def review_page():
                                 placeholder="e.g. checked against the recording")
     reason = note_reason.strip() or f"Reviewed by the {role.lower()} against the transcript"
 
-    checklist(graph, flag_by_id, log, reason)
-    alerts(graph, flags, reason)
+    covered = checklist(graph, flag_by_id, log, reason)
+    alerts(graph, flags, reason, covered)
 
     left, right = st.columns([3, 2])
     highlight: set = set()
@@ -359,14 +369,42 @@ def checklist(graph, flag_by_id, log, reason):
     title = "Before you mark your review complete" if target == "assistant" else "Before you approve the note"
     st.subheader(f"{title} ({len(groups)} to do)" if groups else f"{title}: nothing left to do ✓")
     staging = session_staging(session)
+    covered = {"flags": set(), "entities": set(), "tasks": set(), "conflicts": set(), "titles": []}
     for i, group in enumerate(groups.values()):
         primary = next((b for b in group if b["kind"] == "check"), group[0])
         primary = {**primary, "_flag_ids": [b["flag_id"] for b in group if b.get("flag_id")],
                    "_task_ids": [b["task_id"] for b in group if b.get("task_id")]}
+        text = plain.blocker_text(primary, graph, log, staging)
+        covered["flags"].update(primary["_flag_ids"])
+        covered["tasks"].update(primary["_task_ids"])
+        covered["conflicts"].update(b["conflict_id"] for b in group if b.get("conflict_id"))
+        ent = _entity_of(primary, graph)
+        if ent:
+            covered["entities"].add(ent)
+        if primary["kind"] == "staged":
+            rec = staging.get(primary["staged_id"])
+            if rec is not None and rec.task_id:
+                covered["tasks"].add(rec.task_id)
+        covered["titles"].append(text)
         c1, c2 = st.columns([5, 4])
-        c1.markdown(f"☐ {esc(plain.blocker_text(primary, graph, log, staging))}")
+        c1.markdown(f"☐ {esc(text)}")
         with c2:
             item_actions(primary, graph, flag_by_id, reason, f"b{i}")
+    return covered
+
+
+# Safeguard flags that only restate a checklist item (a failed check, an open task, a conflict).
+RESTATING = {"unsupported_content", "open_review_task", "open_conflict", "stage_failure", "incomplete_section",
+             "unknown_option_link"}
+
+
+def _covered(f, title, covered) -> bool:
+    if f.id in covered["flags"]:
+        return True
+    if f.rule_id in RESTATING and (set(f.entity_ids) & covered["entities"] or set(f.task_ids) & covered["tasks"]
+                                   or set(f.conflict_ids) & covered["conflicts"]):
+        return True
+    return any(t == title or t.startswith(title + " \u2014") for t in covered["titles"])
 
 
 def _send_all(flag_ids, reason):
@@ -445,37 +483,51 @@ def item_actions(b, graph, flag_by_id, reason, key):
                 _act("Send to dentist", f"{key}_fd", human.flag_action, session, f.id, "for_dentist", role, reason)
 
 
-def alerts(graph, flags, reason):
-    st.subheader("Alerts")
-    if not flags:
-        st.write("No alerts.")
-    for title, fs in (("Needs attention", [f for f in flags if f.severity == "high"]),
-                      ("Please check", [f for f in flags if f.severity == "medium"]),
-                      ("For your information", [f for f in flags if f.severity == "low"])):
-        if not fs:
+def alerts(graph, flags, reason, covered):
+    """Alerts not already on the checklist, each issue once (same wording = one line, under its highest severity)."""
+    rank = {"high": 0, "medium": 1, "low": 2}
+    merged: dict = {}
+    for f in sorted(flags, key=lambda f: rank[f.severity]):
+        title = plain.flag_title(f, graph)
+        if _covered(f, title, covered):
             continue
-        st.markdown(f"**{title}**")
-        for f in fs:
+        merged.setdefault(title, []).append(f)
+    st.subheader("Other alerts" if covered["titles"] else "Alerts")
+    if not merged:
+        st.write("Nothing else." if covered["titles"] else "No alerts.")
+    for heading, sev in (("Needs attention", "high"), ("Please check", "medium"), ("For your information", "low")):
+        rows = [(t, fs) for t, fs in merged.items() if fs[0].severity == sev]
+        if not rows:
+            continue
+        st.markdown(f"**{heading}**")
+        for title, fs in rows:
+            f = fs[0]
             stt = flag_state(f)
             done = {"for_dentist": " — sent to the dentist", "dismissed_by_assistant": " — dismissed",
                     "dismissed_by_dentist": " — dismissed by the dentist", "resolved": " — resolved"}.get(stt, "")
-            icon = "🛑" if f.safety_critical else ("❓" if f.question else "•")
-            st.markdown(f"{icon} {esc(plain.flag_title(f, graph))}{esc(done)}")
+            icon = "🛑" if any(x.safety_critical for x in fs) else ("❓" if f.question else "•")
+            st.markdown(f"{icon} {esc(title)}{esc(done)}")
             with st.expander("Details"):
-                st.caption(f"rule {f.rule_id} v{f.rule_version} ({f.rule_status}) · severity {f.severity} · "
-                           f"origin {f.origin} · items {', '.join(f.entity_ids) or '—'} · tasks "
-                           f"{', '.join(f.task_ids) or '—'} · conflicts {', '.join(f.conflict_ids) or '—'}")
-                st.caption(esc(f.message))
-                for h in f.history:
-                    st.caption(f"{h.timestamp[:16]} {h.by_role} {h.action}: {esc(h.reason)}")
+                for x in fs:
+                    st.caption(f"rule {x.rule_id} v{x.rule_version} ({x.rule_status}) · severity {x.severity} · "
+                               f"origin {x.origin} · items {', '.join(x.entity_ids) or '—'} · tasks "
+                               f"{', '.join(x.task_ids) or '—'} · conflicts {', '.join(x.conflict_ids) or '—'}")
+                    st.caption(esc(x.message))
+                    for h in x.history:
+                        st.caption(f"{h.timestamp[:16]} {h.by_role} {h.action}: {esc(h.reason)}")
+                ids = [x.id for x in fs]
                 c1, c2 = st.columns(2)
                 if role == "Assistant" and stt == "open":
                     with c1:
-                        _act("Send to dentist", f"al_fd_{f.id}", human.flag_action, session, f.id, "for_dentist",
-                             role, reason)
-                if stt in ("open", "for_dentist") and (role == "Dentist" or not f.safety_critical):
+                        _act("Send to dentist", f"al_fd_{f.id}", _flag_all, ids, "for_dentist", reason)
+                if stt in ("open", "for_dentist") and (role == "Dentist" or not any(x.safety_critical for x in fs)):
                     with c2:
-                        _act("Dismiss", f"al_dm_{f.id}", human.flag_action, session, f.id, "dismiss", role, reason)
+                        _act("Dismiss", f"al_dm_{f.id}", _flag_all, ids, "dismiss", reason)
+
+
+def _flag_all(flag_ids, action, reason):
+    for fid in flag_ids:
+        human.flag_action(session, fid, action, role, reason)
 
 
 def entity_editor(e, graph, log, reason):
@@ -526,22 +578,41 @@ def add_item(graph, reason):
 
 
 def approval_buttons(graph):
+    """Only the sign-off step that applies now is offered."""
     st.subheader("Sign-off")
+    state = approval.load_state(session)
     c1, c2, c3 = st.columns(3)
+    if state.state in ("dentist_approved", "exported"):
+        last = state.records[-1]
+        st.caption(f"{STATE_LABEL[state.state]} ({last.approver_role}, "
+                   f"{datetime.fromisoformat(last.timestamp).astimezone().strftime('%b %d %H:%M')}).")
     if role == "Assistant":
-        with c1:
-            _act("Mark my review complete", "appr_asst", approval.approve_assistant, session)
+        if state.state == "draft":
+            with c1:
+                _act("Mark my review complete", "appr_asst", approval.approve_assistant, session)
+        elif state.state == "assistant_review_complete":
+            st.caption("Your review is complete; waiting for the dentist.")
         return
-    with c1:
-        _act("Approve the note", "appr_dent", approval.approve_dentist, session)
-    with c2:
-        if st.button("Export", key="export"):
-            path = guarded(approval.export, session)
-            if path and path is not True:
-                st.download_button("Download the exported note", Path(path).read_bytes(), file_name=Path(path).name)
-    with c3:
-        _act("Refresh clinical review questions", "retry_e3", derive, session, graph, load_sources(session),
-             graph.pipeline_mode, session.meta().get("rule_mode"), retry_e3=True)
+    if state.state == "draft":
+        st.caption("Waiting for the assistant's review.")
+    elif state.state == "assistant_review_complete":
+        with c1:
+            _act("Approve the note", "appr_dent", approval.approve_dentist, session)
+    elif state.state == "dentist_approved":
+        with c2:
+            if st.button("Export", key="export"):
+                path = guarded(approval.export, session)
+                if path and path is not True:
+                    st.download_button("Download the exported note", Path(path).read_bytes(),
+                                       file_name=Path(path).name)
+    elif state.state == "exported" and state.export_path and Path(state.export_path).exists():
+        with c2:
+            st.download_button("Download the exported note", Path(state.export_path).read_bytes(),
+                               file_name=Path(state.export_path).name, key="dl_export")
+    if state.state in ("draft", "assistant_review_complete"):
+        with c3:
+            _act("Refresh clinical review questions", "retry_e3", derive, session, graph, load_sources(session),
+                 graph.pipeline_mode, session.meta().get("rule_mode"), retry_e3=True)
 
 
 def technical_details(graph, latest):

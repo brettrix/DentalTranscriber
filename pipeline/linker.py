@@ -50,7 +50,14 @@ class Staging:
         self.records.append(rec)
 
     def open_records(self) -> list[StagedRecord]:
-        return [r for r in self.records if r.status == "staged"]
+        return [r for r in self.records if r.status == "staged" and not self.legacy_applied_revision(r)]
+
+    @staticmethod
+    def legacy_applied_revision(r: StagedRecord) -> bool:
+        """Sessions created before the staging fix left applied repair revisions marked "staged" (a revision has
+        the existing entity's id, a converted entity, and no errors). They were committed or identical, so they
+        are not open; current code marks them committed/unchanged when it applies them."""
+        return r.status == "staged" and bool(r.raw.get("id")) and r.entity is not None and not r.errors
 
     def get(self, sid: str) -> StagedRecord | None:
         return next((r for r in self.records if r.id == sid), None)

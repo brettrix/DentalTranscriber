@@ -103,17 +103,7 @@ def why(e, check_log) -> str:
                 reasons.append("a number or name couldn't be traced to the words it cites")
         else:
             for d in details:
-                for part in d.split("; "):
-                    m = re.match(r"(\S+): producer (.+?) vs checker (.+)$", part)
-                    if m:
-                        field = FIELD_LABEL.get(m.group(1), m.group(1).split(".")[-1].replace("_", " "))
-                        if m.group(1) == "problem":
-                            reasons.append("a second read linked it to a different complaint")
-                        else:
-                            reasons.append(f"a second read says {field}: {_unq(m.group(3))} (the note says "
-                                           f"{_unq(m.group(2))})")
-                    elif "different" in part or "uncertain" in part:
-                        reasons.append("a second read described it differently")
+                reasons += _semantic_reasons(d)
             if not reasons:
                 reasons.append("a second read disagreed")
     seen, out = set(), []
@@ -124,8 +114,50 @@ def why(e, check_log) -> str:
     return "; ".join(out[:3]) or "it needs a person to confirm it"
 
 
+_V = r"('(?:[^'\\]|\\.)*'|\"(?:[^\"\\]|\\.)*\"|[^\s;)]+)"
+_DIFF = re.compile(rf"([\w. -]+?): (?:different|uncertain) \(producer {_V} vs checker {_V}\)")
+_MISMATCH = re.compile(rf"([\w.]+): producer {_V} vs checker {_V}")
+_NONE = re.compile(rf"free-text details: producer {_V}, checker found none")
+
+
+def _field(path: str) -> str:
+    return FIELD_LABEL.get(path, path.split(".")[-1].replace("_", " "))
+
+
+def _semantic_reasons(detail: str) -> list[str]:
+    """Plain reasons from one semantic-check detail string (values may themselves contain '; ')."""
+    out, taken = [], []
+    for m in _DIFF.finditer(detail):
+        taken.append(m.span())
+        what = "" if m.group(1).strip() == "free-text details" else f" the {_field(m.group(1).strip())} as"
+        out.append(f"a second read described{what} \u201c{_unq(m.group(3))}\u201d "
+                   f"(the note says \u201c{_unq(m.group(2))}\u201d)")
+    for m in _NONE.finditer(detail):
+        taken.append(m.span())
+        out.append(f"a second read found nothing to support \u201c{_unq(m.group(1))}\u201d")
+    for m in _MISMATCH.finditer(detail):
+        if any(a <= m.start() < b for a, b in taken):
+            continue
+        if m.group(1) == "problem":
+            out.append("a second read linked it to a different complaint")
+        else:
+            out.append(f"a second read says {_field(m.group(1))}: {_unq(m.group(3))} (the note says {_unq(m.group(2))})")
+    if "no equivalence verdict" in detail:
+        out.append("the wording comparison didn't finish")
+    return out
+
+
+VALUE_LABEL = {"patient_report": "the patient", "clinician_assessment": "the dentist's assessment",
+               "clinician_observation": "the dentist's exam", "test_response": "a test result",
+               "clinician_instruction": "the dentist's instruction", "assistant_record": "the assistant's note",
+               "historical": "in the past", "current": "now", "planned": "planned", "present": "yes",
+               "absent": "not there", "denied": "patient said no", "possible": "possible"}
+
+
 def _unq(v: str) -> str:
     v = v.strip()
+    if v.strip("'\"") in VALUE_LABEL:
+        return VALUE_LABEL[v.strip("'\"")]
     if v in ("None", "'None'"):
         return "nothing"
     v = v.strip("'\"")
@@ -198,7 +230,7 @@ def flag_title(f, graph) -> str:
     if rid in ("treatment_target_mismatch", "treatment_target_disagreement"):
         return "Tooth check: " + clean_message(f.message).replace("clinical target", "problem tooth")
     if rid == "bp_reading":
-        return clean_message(f.message).replace("at level A", "is elevated").replace("at level B", "is very high")
+        return bp_title(f, graph)
     return clean_message(f.message)
 
 
@@ -253,3 +285,30 @@ def _pending_add_label(p) -> str:
     attrs = c.get("attributes") or {}
     main = ", ".join(str(v) for v in attrs.values() if v not in (None, "", False))[:80]
     return f"{TYPE_LABEL.get(t, t or 'item')}: {main}" if t else "a new item"
+
+
+def bp_title(f, graph) -> str:
+    """Only the readings over the threshold, where each came from, and whether it is confirmed."""
+    from pipeline.dispositions import accepted
+    from pipeline.rules import rule_config
+    cfg = rule_config()["rules"]["bp_reading"]
+    readings = [graph.get(i) for i in f.entity_ids]
+    readings = [r for r in readings if r is not None and r.kind == "item" and r.type == "vital_reading"]
+    if not readings:
+        return "No blood pressure reading was recorded"
+    parts, worst = [], 0
+    for r in readings:
+        sbp, dbp = r.attributes.get("systolic") or 0, r.attributes.get("diastolic") or 0
+        level = 2 if (sbp >= cfg["level_b"]["systolic"] or dbp >= cfg["level_b"]["diastolic"]) else \
+            1 if (sbp >= cfg["level_a"]["systolic"] or dbp >= cfg["level_a"]["diastolic"]) else 0
+        if not level:
+            continue
+        worst = max(worst, level)
+        src = "from the quick note" if all(s.source_type == "quick_note" for s in r.evidence) else "said in the visit"
+        conf = "" if accepted(graph, r, graph.pipeline_mode) else ", not confirmed"
+        label = f" {r.attributes['label']}" if r.attributes.get("label") else ""
+        parts.append(f"{sbp}/{dbp}{label} ({src}{conf})")
+    if not parts:
+        return clean_message(f.message)
+    verb = "are" if len(parts) > 1 else "is"
+    return f"{' and '.join(parts)} {verb} {'very high' if worst == 2 else 'elevated'}"

@@ -76,6 +76,11 @@ def test_checklist_is_plain_and_one_click(monkeypatch, tmp_path):
     assert not JARGON.search(text), f"jargon shown: {JARGON.findall(text)}"
     assert any("Blood pressure doesn't match the quick note (150/95 said vs 124/80 written)" in l for l in lines)
     assert any(l.startswith("☐ Confirm: Exam finding") for l in lines)
+    alert_lines = [m.value[2:] for m in at.markdown if m.value.startswith(("🛑 ", "❓ ", "• "))]
+    for a in alert_lines:
+        assert not any(l[2:] == a or l[2:].startswith(a + " \u2014") for l in lines), f"shown twice: {a}"
+    assert not any("Blood pressure doesn't match" in a for a in alert_lines)
+    assert len(alert_lines) == len(set(alert_lines)), "each alert once"
     before = len(lines)
     next(b for b in at.button if b.label.startswith("Keep: BP 150/95")).click().run()
     assert not at.exception, at.exception
@@ -112,4 +117,26 @@ def test_process_selects_new_visit_and_opens_review(monkeypatch, tmp_path):
     sessions = storage.list_sessions(tmp_path)
     assert at.session_state["sid"] == sessions[0].id != old.id, "the new visit is selected"
     labels = at.sidebar.selectbox[1].options
-    assert labels[1].startswith("case1 · visit") and "processed" in labels[1], labels[:3]
+    assert re.match(r"case1 · \w{3} \d{2} \d{2}:\d{2} · baseline$", labels[1]), labels[:3]
+    assert any("processed" in c.value and "baseline mode" in c.value for c in at.sidebar.caption)
+
+
+def test_signoff_buttons_only_while_they_apply(monkeypatch, tmp_path):
+    s = mini_session(tmp_path, "baseline")
+    run_pipeline(s, mode="baseline", client=FakeLLM())
+    at = _app(monkeypatch, tmp_path, "Dentist")
+    assert not any(b.label in ("Approve the note", "Export") for b in at.button), "nothing to sign before the assistant"
+    at = _app(monkeypatch, tmp_path, "Assistant")
+    _button(at, "Mark my review complete").click().run()
+    at = _app(monkeypatch, tmp_path, "Assistant")
+    assert not any(b.label == "Mark my review complete" for b in at.button)
+    at = _app(monkeypatch, tmp_path, "Dentist")
+    _button(at, "Approve the note").click().run()
+    at = _app(monkeypatch, tmp_path, "Assistant")
+    assert not any(b.label == "Mark my review complete" for b in at.button), "hidden once approved"
+    at = _app(monkeypatch, tmp_path, "Dentist")
+    assert not any(b.label == "Approve the note" for b in at.button)
+    _button(at, "Export").click().run()
+    at = _app(monkeypatch, tmp_path, "Dentist")
+    assert not any(b.label == "Export" for b in at.button)
+    assert any("Approved and exported (Dentist" in c.value for c in at.caption)
