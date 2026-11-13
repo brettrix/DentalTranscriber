@@ -12,3 +12,6 @@ __pycache__/
 
 # macOS
 .DS_Store
+
+# Real-call ledger (spend record, local only)
+data/api_ledger.jsonl

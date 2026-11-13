@@ -22,6 +22,12 @@ import yaml
 from pipeline.storage import ROOT, hash_obj, sha256_text
 
 EVAL_DIR = ROOT / "eval"
+GRADER_TRACE: list = [None]   # set by main(): grader calls are traced to <out>/grader_traces.jsonl
+
+
+def grader_tracer():
+    from pipeline.trace import Tracer
+    return Tracer(path=GRADER_TRACE[0])
 FROZEN_PATHS = ["prompts", "schemas", "rules", "glossary.py", "pipeline/normalize.py", "pipeline/compare.py",
                 "eval/scoring.py", "eval/run_eval.py", "eval/fault_injection.py", "agents/grader.py",
                 "config/eval.yaml", "config/agents.yaml", "templates"]
@@ -198,7 +204,7 @@ def grade_pairs(scores) -> dict[str, str]:
                 pairs.append({"pair_id": pid, "attribute": dim, "gold": g, "produced": p})
     if not pairs:
         return {}
-    out = GraderEquivalence().grade(pairs)
+    out = GraderEquivalence(tracer=grader_tracer()).grade(pairs)
     return {g.pair_id: g.verdict for g in out.grades}
 
 
@@ -217,7 +223,7 @@ def grade_claims(session, sources, note, graph):
     if not claims:
         return Counter(), []
     humans = "\n".join(f"{e.id}: {e.evidence[0].text}" for e in graph.active() if e.owner == "human")
-    out = GraderClaims().grade(sources, claims, humans)
+    out = GraderClaims(tracer=grader_tracer()).grade(sources, claims, humans)
     return Counter(g.label for g in out.grades), [g.model_dump() for g in out.grades]
 
 
@@ -471,6 +477,7 @@ def main():
     pipelines = ["baseline", "team"] if args.pipeline == "both" else [args.pipeline]
     out_dir = ROOT / (args.out or f"eval/results/{datetime.now().strftime('%Y%m%d-%H%M%S')}")
     out_dir.mkdir(parents=True, exist_ok=True)
+    GRADER_TRACE[0] = out_dir / "grader_traces.jsonl"
     prov = provenance()
     (out_dir / "provenance.json").write_text(json.dumps(prov, indent=1))
     jobs = [(d, p, r) for d in case_dirs for p in pipelines for r in range(args.repeats)]

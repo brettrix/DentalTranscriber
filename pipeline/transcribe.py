@@ -138,6 +138,9 @@ def normalize_deepgram(response: dict) -> list[Utterance]:
 
 def transcribe_audio(session: Session, audio_path: Path, *, api_key: str | None = None, post=requests.post) -> UtterancesSource:
     content_type = check_audio(audio_path)
+    if post is requests.post:
+        from pipeline.ledger import require_real
+        require_real("Deepgram")
     key = api_key or os.environ.get("DEEPGRAM_API_KEY")
     if not key:
         raise RuntimeError("DEEPGRAM_API_KEY is not set")
@@ -150,6 +153,10 @@ def transcribe_audio(session: Session, audio_path: Path, *, api_key: str | None 
     raw = resp.content
     atomic_write_bytes(session.path("sources", "provider_response.json"), raw)
     response = json.loads(raw)
+    if post is requests.post:
+        from pipeline.ledger import record
+        record("deepgram", agent="T0", model="nova-3-medical", result="ok",
+               extra={"audio_seconds": (response.get("metadata") or {}).get("duration")})
     duration = float((response.get("metadata") or {}).get("duration") or 0.0)
     if duration > MAX_AUDIO_SECONDS:
         raise ValueError("audio is over 30 minutes")

@@ -31,6 +31,7 @@ from schemas.graph import Graph
 from schemas.sources import QuickNote, QuickNotesSource, RolesOverlay, UtterancesSource
 
 EVAL = ROOT / "eval"
+FAULT_TRACE: list = [None]   # set by main(): Cs/Ce calls are traced to <out>/fault_traces.jsonl
 QUALIFIERS = re.compile(r"\b(a little|a bit|slightly|mild|mildly|about|maybe|around|small|early|quickly|pretty fast|"
                         r"not|no|possible|probably)\b\s*", re.I)
 
@@ -364,7 +365,7 @@ class _Run:
         self.graph, self.sources, self.client = graph, sources, client
         self.agents = default_agents()
         self.mode, self.run_id, self.issues = "team", "fault", []
-        self.tracer = Tracer()
+        self.tracer = Tracer(path=FAULT_TRACE[0])
         self.stage_log = StageRunLog()
         self.check_log = CheckLog()
 
@@ -484,6 +485,7 @@ def main():
     args = ap.parse_args()
     out = ROOT / args.out
     out.mkdir(parents=True, exist_ok=True)
+    FAULT_TRACE[0] = out / "fault_traces.jsonl"
     rows = []
     for c in args.cases:
         rows.append(run_case(c))

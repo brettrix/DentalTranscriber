@@ -51,6 +51,11 @@ _client: anthropic.Anthropic | None = None
 def default_client() -> anthropic.Anthropic:
     global _client
     if _client is None:
+        from pipeline.ledger import RealCallsDisabled, require_real
+        try:
+            require_real("Anthropic")
+        except RealCallsDisabled as exc:
+            raise AgentError(str(exc)) from exc
         if not os.environ.get("ANTHROPIC_API_KEY"):
             raise AgentError("ANTHROPIC_API_KEY is not set (see .env.example)")
         _client = anthropic.Anthropic(max_retries=0)  # transport retries are ours (section 10)
@@ -137,6 +142,7 @@ class Agent:
             except (anthropic.APITimeoutError, anthropic.APIConnectionError, anthropic.RateLimitError,
                     anthropic.InternalServerError) as exc:
                 last_exc = exc
+                self._ledger("transport_error", label=label, error=type(exc).__name__)
                 self.tracer.log(kind="model_call", agent=self.name, label=label, attempt=attempt,
                                 transport_try=transport_try, schema_retry=schema_retry, result="transport_error",
                                 error=type(exc).__name__, seconds=round(time.monotonic() - started, 2),
@@ -144,6 +150,7 @@ class Agent:
                 if transport_try < TRANSPORT_RETRIES:
                     time.sleep(min(2 ** transport_try, 8) * (0 if os.environ.get("SCRIBE_NO_SLEEP") else 1))
             except anthropic.APIStatusError as exc:
+                self._ledger("api_error", label=label, error=f"{exc.status_code}")
                 self.tracer.log(kind="model_call", agent=self.name, label=label, attempt=attempt, result="api_error",
                                 error=f"{exc.status_code}: {str(exc)[:200]}", model=cfg["model"],
                                 prompt_hash=self.prompt_hash())
@@ -166,8 +173,20 @@ class Agent:
             errs = "; ".join(f"{'.'.join(str(p) for p in e['loc'])}: {e['msg']}" for e in exc.errors()[:8])
             return None, errs, block.id
 
+    @property
+    def is_real(self) -> bool:
+        return isinstance(self._client, anthropic.Anthropic)
+
+    def _ledger(self, result, *, label, model=None, usage=None, error=None):
+        if self.is_real:
+            from pipeline.ledger import record
+            record("anthropic", agent=self.name, label=label, model=model or self.config["model"], result=result,
+                   input_tokens=getattr(usage, "input_tokens", None), output_tokens=getattr(usage, "output_tokens", None),
+                   error=error)
+
     def _trace(self, response, seconds, label, attempt, result, *, schema_retry, error=None):
         usage = getattr(response, "usage", None)
+        self._ledger(result, label=label, model=getattr(response, "model", None), usage=usage, error=error)
         self.tracer.log(kind="model_call", agent=self.name, label=label, attempt=attempt, schema_retry=schema_retry,
                         result=result, error=error, seconds=seconds,
                         input_tokens=getattr(usage, "input_tokens", None),

@@ -11,14 +11,16 @@ Scope: adult permanent dentition only (Universal numbering 1–32; anything else
 ```bash
 python3.12 -m venv .venv && .venv/bin/pip install -r requirements.txt
 cp .env.example .env            # add ANTHROPIC_API_KEY and DEEPGRAM_API_KEY (never committed)
-.venv/bin/python -m pytest -q   # offline tests (fake model client)
-.venv/bin/streamlit run app.py  # UI
+.venv/bin/python -m pytest -q   # offline tests: fake model client, network blocked
+SCRIBE_ALLOW_REAL=1 .venv/bin/streamlit run app.py  # UI (processing a visit makes real model calls)
 ```
 
 Run one case from the command line: `python -m eval.run_case eval/cases/case1 --mode team`.
 Run the evaluation: `python -m eval.run_eval --cases eval/cases eval/matrix --pipeline both`.
 Fault injection: `python -m eval.fault_injection --cases case1 case2 case3`.
 Purge old sessions: `python manage.py purge --older-than 7d`.
+
+**Cost controls.** No real Anthropic or Deepgram call is made unless `SCRIBE_ALLOW_REAL=1` is set. Every real call is logged with model, tokens and estimated cost in `data/api_ledger.jsonl` (`python -c "from pipeline.ledger import totals; print(totals())"`).
 
 Models are set in `config/agents.yaml`: `claude-sonnet-5-5` for every producer and checker, and `claude-opus-5-5` for the eval-only Grader.
 
