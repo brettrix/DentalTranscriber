@@ -149,3 +149,5 @@ def test_displayed_text_says_in_the_past_and_hints_dentist_only():
     assert dentist_only_hint(item("allergy", problem_id=None, substance="penicillin")) == \
         "Only the dentist can confirm allergies."
     assert dentist_only_hint(problem()) == "Only the dentist can confirm the chief complaint."
+    from pipeline.plain import strip_ids
+    assert strip_ids("amoxicillin; historical (historical)") == "amoxicillin; in the past"

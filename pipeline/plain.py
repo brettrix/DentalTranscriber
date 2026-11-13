@@ -40,7 +40,8 @@ FIELD_LABEL = {
 
 
 def strip_ids(text: str) -> str:
-    text = _ID.sub("", text or "").replace("(historical)", "(in the past)")
+    text = re.sub(r"\bhistorical\b", "in the past", _ID.sub("", text or ""))
+    text = text.replace("in the past (in the past)", "in the past")
     text = re.sub(r"\bQuick note q\d+\b", "The quick note", text)
     return re.sub(r"\s{2,}", " ", text).strip()
 
