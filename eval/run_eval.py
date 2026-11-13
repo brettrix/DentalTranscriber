@@ -453,12 +453,14 @@ def load_rows(results_dir: Path) -> list[dict]:
     return [json.loads(p.read_text()) for p in sorted((results_dir / "runs").glob("*.json"))]
 
 
-def rescore(results_dir: Path, out_dir: Path, only=None, client=None) -> list[dict]:
+def rescore(results_dir: Path, out_dir: Path, only=None, client=None, missing_grades=False) -> list[dict]:
     """Re-score existing sessions (no pipeline re-run): e.g. to add Grader scores a run is missing."""
     from pipeline.storage import Session
     rows = []
     for row in load_rows(results_dir):
         if only and row["case"] not in only:
+            continue
+        if missing_grades and not (row.get("scored") and row.get("grader_error")):
             continue
         s = Session(row["session"])
         new = {**row, **score_session(s, row["pipeline"], grade=True, client=client)}
@@ -499,6 +501,7 @@ def main():
     ap.add_argument("--only", nargs="*", default=None, help="case folder names to include")
     ap.add_argument("--rescore", default=None, help="re-score the sessions of an existing results dir (no pipeline run)")
     ap.add_argument("--merge", nargs="+", default=None, help="BASE PATCH...: combine results dirs, no model calls")
+    ap.add_argument("--missing-grades", action="store_true", help="with --rescore: only rows whose Grader failed")
     args = ap.parse_args()
     if args.merge:
         out_dir = ROOT / (args.out or f"eval/results/merged-{datetime.now().strftime('%Y%m%d-%H%M%S')}")
@@ -529,7 +532,7 @@ def main():
     prov = provenance()
     (out_dir / "provenance.json").write_text(json.dumps(prov, indent=1))
     if args.rescore:
-        rows = rescore(ROOT / args.rescore, out_dir, args.only)
+        rows = rescore(ROOT / args.rescore, out_dir, args.only, missing_grades=args.missing_grades)
         finish(rows, out_dir, prov, args.title)
         print(f"report: {out_dir / 'report.md'}")
         return

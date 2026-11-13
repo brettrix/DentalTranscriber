@@ -1,0 +1,21 @@
+DENTIST: Hi, how are you doing?
+PATIENT: Oh, you know, hanging in there. We just got back from Moab, did the Delicate Arch hike, it was amazing, but my mouth started hurting halfway through the trip, which kind of ruined it.
+DENTIST: Sorry to hear that. Where does it hurt?
+PATIENT: Way in the back on the lower left. The gum is swollen and it hurts to open wide. My wife thinks it's my wisdom tooth.
+DENTIST: How long?
+PATIENT: About five days. We were camping, so I just kept taking Advil. My brother-in-law had his wisdom teeth out and said it was the worst week of his life, so I've been avoiding it.
+DENTIST: Pain level?
+PATIENT: Like a six.
+DENTIST: Okay. Any health changes or medications? I see your blood pressure was 172 over 104 today.
+PATIENT: Huh. I haven't been to the doctor in a while. Maybe it's the stress from the trip.
+DENTIST: Let's recheck it in a few minutes. Let me take a look. Number seventeen is partly through the gum, and the gum flap over it is red and swollen. A little tender when I press. You can open about two fingers wide.
+ASSISTANT: Rechecked the blood pressure, 168 over 102.
+DENTIST: Thanks. Still high. Let's get a pano so I can see how the wisdom tooth is sitting.
+ASSISTANT: Pano is up.
+DENTIST: Seventeen is impacted and tilted forward, pushing toward eighteen. There's no decay on eighteen. This is an infection of the gum around a partially erupted wisdom tooth. It's called pericoronitis.
+PATIENT: So it has to come out?
+DENTIST: Yes, I'd recommend having seventeen removed. Because of how it's angled, I'd like an oral surgeon to do it, so I'll refer you. For now: warm salt water rinses several times a day, and ibuprofen 600 milligrams every six hours as needed. Since your blood pressure is high today, please see your primary care doctor before the surgery. The surgeon will want that checked.
+PATIENT: Okay, that's fair. Do you know any good surgeons?
+DENTIST: The front desk will send the referral over today.
+PATIENT: Great. Have you ever been to Moab?
+DENTIST: A long time ago. Go see your doctor, okay?

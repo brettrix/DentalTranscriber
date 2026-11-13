@@ -1,0 +1,28 @@
+DENTIST: Hi, what's going on today?
+PATIENT: I've got a toothache on the lower right. It's been bugging me for about a week.
+DENTIST: Okay. Does anything set it off?
+PATIENT: Cold stuff, and sometimes it just starts hurting by itself at night. Wait, actually, sorry. It's the left side. Lower left. I always mix those up.
+DENTIST: No problem. Lower left. Point to it for me?
+PATIENT: Mm-hmm. Right there.
+DENTIST: Okay, that's number nineteen. When cold hits it, how long does the pain last?
+PATIENT: A while. Maybe twenty seconds, it kind of throbs after.
+DENTIST: Scale of zero to ten?
+PATIENT: When it wakes me up, an eight.
+DENTIST: Any changes to your health or medications?
+PATIENT: I used to be on warfarin, the blood thinner, but my doctor took me off it last year. Nothing now.
+DENTIST: Good to know, thanks. Let's look. There's a big cavity on the back side of nineteen. Honestly, this might just need a filling. Let me test it. Cold on nineteen.
+PATIENT: Ow. Yeah. That's still going.
+DENTIST: Still lingering?
+PATIENT: Mm-hmm.
+DENTIST: Okay. Tapping?
+PATIENT: A little tender.
+DENTIST: Let's get a PA of nineteen.
+ASSISTANT: PA of nineteen is up.
+DENTIST: Okay, I'm changing my mind on the filling. The decay goes right down to the nerve. With the pain lasting that long and waking you up at night, the nerve is inflamed and isn't going to recover. That's irreversible pulpitis. A filling won't fix it.
+PATIENT: So what do I do?
+DENTIST: The best option is a root canal, and then a crown to protect the tooth afterward. The other option is taking the tooth out. That's quicker, but then you'd have a gap, and the teeth around it can shift over time.
+PATIENT: Are there risks with the root canal?
+DENTIST: It's a very common procedure. Sometimes the tooth needs retreatment down the road, and without a crown it can crack. But it lets you keep your tooth.
+PATIENT: Okay. Let's do the root canal.
+DENTIST: Great. We'll get you in this week for the root canal on nineteen, then the crown a few weeks after. For pain until then, ibuprofen, six hundred milligrams every six hours as needed.
+PATIENT: Thank you.

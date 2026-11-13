@@ -1,0 +1,22 @@
+DENTIST: Oh no, what happened?
+PATIENT: I fell off my bike yesterday and hit my mouth on the handlebar. Chipped my right front tooth.
+OTHER: He was going way too fast.
+DENTIST: Ha. Did you hit your head, or pass out at all?
+PATIENT: No, just my mouth.
+DENTIST: Any pain?
+PATIENT: It's a little sensitive to air and cold, but not bad. Maybe a three.
+DENTIST: Any health changes or medications?
+PATIENT: No.
+DENTIST: Okay, let's take a look. Number eight has a fracture of the biting edge. It's through the enamel and into some dentin, but I don't see any pink or bleeding, so the nerve isn't exposed. Lips and gums look fine, just a small cut on the inside of the upper lip.
+DENTIST: Tapping on eight. Okay? And cold.
+PATIENT: Cold's a little sensitive but goes away.
+DENTIST: Good. The tooth isn't loose. Let's get a PA of the front teeth to check the roots.
+ASSISTANT: Taking it now.
+DENTIST: The roots of eight and nine look good, no root fracture.
+OTHER: So can it be fixed? Is it going to need a crown?
+DENTIST: It's very fixable. We can bond tooth-colored filling material onto it to rebuild the edge. That's called composite bonding. No crown needed right now.
+PATIENT: Can we do that soon? I've got a wedding in two weeks.
+DENTIST: We'll get you in next week to bond number nine. Until then, avoid biting into hard things with your front teeth. Sometimes after an injury the nerve can get irritated later, so if it turns gray or starts to hurt on its own, call us.
+OTHER: How much will that be?
+DENTIST: The front desk can go over cost with you on the way out.
+PATIENT: Okay, thanks.

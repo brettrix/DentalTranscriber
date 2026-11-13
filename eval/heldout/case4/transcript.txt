@@ -1,0 +1,20 @@
+DENTIST: Hi, what brings you in?
+PATIENT: My gums in the upper right are sore, and they bleed every time I brush. It's been like that for a couple months.
+DENTIST: Any pain in the tooth itself, like with cold or biting?
+PATIENT: Not really, it's more the gums. Sometimes there's a bad taste.
+DENTIST: When was your last cleaning?
+PATIENT: Honestly, it's been maybe three years.
+DENTIST: No judgment. Any health changes or new meds?
+PATIENT: No.
+DENTIST: Okay, let's look. Around number three the gums are red and puffy. I'm going to measure the pockets. Distal buccal six, buccal four, mesial buccal seven. Bleeding on probing. Lingual, five, four, six. Lots of bleeding.
+ASSISTANT: Got it.
+DENTIST: Plaque is moderate today. Can we get a bitewing on the right side?
+ASSISTANT: Bitewing taken.
+DENTIST: The bitewing shows calculus on the roots of three and some bone loss around it. No decay that I can see.
+PATIENT: What does that mean?
+DENTIST: You've got gum disease, periodontitis, in that area. The tartar has gone under the gumline, and the gums have pulled away from the tooth, making these deeper pockets. A regular cleaning won't reach that. You need a deep cleaning, scaling and root planing, in that upper right quadrant.
+PATIENT: Does that hurt?
+DENTIST: We numb you, so it's comfortable. Afterward you might be a little sore for a day or two. If we don't treat it, the bone keeps going away and eventually the tooth can get loose.
+PATIENT: Okay, let's do it.
+DENTIST: Great. We'll schedule scaling and root planing, upper right quadrant. I'll also send in a chlorhexidine rinse, use it twice a day for two weeks. And floss daily, even if it bleeds at first.
+PATIENT: Okay.

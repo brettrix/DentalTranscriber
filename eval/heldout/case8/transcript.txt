@@ -1,0 +1,20 @@
+DENTIST: Hi there, what brings you in?
+PATIENT: A piece of my filling broke off on the top left. Y me duele cuando como dulces. Sorry, it hurts when I eat sweets.
+DENTIST: No worries. When did it break?
+PATIENT: Like four days ago, eating a granola bar.
+DENTIST: Does it hurt with cold, or when you bite?
+PATIENT: Not really cold. Mostly sweets, and a little when I bite on it.
+DENTIST: Okay. Your blood pressure was one twenty-eight over eighty-four today, that looks good. Any allergies?
+PATIENT: I was allergic to penicillin as a kid, I think. But I've taken amoxicillin since then with no problem.
+DENTIST: Okay, we'll note that. Any changes to your health?
+PATIENT: Nope.
+DENTIST: Let's take a look. Number twelve, the old filling has a big piece missing on the side, and there's a crack running through what's left of the tooth. Bite on this for me.
+PATIENT: Ooh, a little sharp.
+DENTIST: Okay. We don't need a new x-ray. The bitewings from your cleaning last month show this area, and there's no decay near the nerve.
+PATIENT: Okay, good.
+DENTIST: Because so much of the tooth is gone and it's cracked, I'd recommend a crown on twelve. A filling probably won't hold.
+PATIENT: How much is a crown?
+DENTIST: The front desk can give you an exact estimate.
+PATIENT: Honestly, money's tight right now. I don't think I'm going to do it.
+DENTIST: Okay, that's fine. Just let us know if you change your mind.
+PATIENT: Will do. Gracias.
