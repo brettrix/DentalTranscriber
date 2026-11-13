@@ -27,13 +27,13 @@ from pipeline.transcribe import transcribe_audio, transcribe_text, write_quick_n
 from pipeline.validate import StructuralError
 from pipeline.verify import session_check_log
 from pipeline.visits import (clock, filter_visits, is_test_visit, visit_heading, visit_meta, visit_name, visit_when,
-                             waiting_text)
+                             waiting_text, worklists)
 from schemas.entities import ATTRIBUTE_MODELS, ITEM_SCOPES, Item, is_critical
 from schemas.flags import Flag
 
 BANNER = "Prototype — test data only. Do not use with real patient information."
 MAX_LISTED = 60
-TABS = ["New visit", "Review", "Admin"]
+TABS = ["New visit", "Review", "Waiting for dentist", "Cleared by dentist", "Admin"]
 st.set_page_config(page_title="Dental Scribe (prototype)", layout="wide")
 
 # Navigation requested by an action in the previous run (a widget's value can't change after it is drawn).
@@ -828,9 +828,66 @@ def technical_details(graph, latest):
             st.caption(f"{p.id} {p.operation} {p.status} by {p.by_role}: {p.reason}")
 
 
+# ---------------------------------------------------------------- worklists
+
+def _worklist_header(*titles, widths):
+    for col, title in zip(st.columns(widths), titles):
+        col.caption(title)
+
+
+def waiting_page():
+    rows = worklists(sessions, st.session_state.get("show_tests", False))["waiting"]
+    st.subheader("Waiting for dentist")
+    if not rows:
+        st.info("Nothing is waiting for the dentist. Notes appear here after you send them.")
+        return
+    st.caption(f"{_items(len(rows)).replace('item', 'note')} reviewed and sent, not approved yet. Longest wait first.")
+    widths = [4, 2, 3, 2, 2]
+    _worklist_header("Patient", "Visit date", "Dentist", "Waiting", "", widths=widths)
+    for r in rows:
+        c = st.columns(widths, vertical_alignment="center")
+        c[0].markdown(f"**{esc(r['patient'])}**")
+        c[1].write(r["date"])
+        c[2].write(r["dentist"])
+        c[3].write(waiting_text(r["since"]))
+        if c[4].button("Open" if role == "Assistant" else "Review and approve", key=f"open_w_{r['session'].id}",
+                       width="stretch", type="secondary" if role == "Assistant" else "primary"):
+            go("Review", r["session"].id)
+
+
+def cleared_page():
+    rows = worklists(sessions, st.session_state.get("show_tests", False))["cleared"]
+    st.subheader("Cleared by dentist")
+    if not rows:
+        st.info("No approved notes yet. Notes appear here once the dentist approves them.")
+        return
+    st.caption("Approved notes, newest first.")
+    widths = [4, 2, 3, 2, 2, 2, 2]
+    _worklist_header("Patient", "Visit date", "Dentist", "Approved", "", "", "", widths=widths)
+    for r in rows[:MAX_LISTED]:
+        s = r["session"]
+        stem = exports.file_stem(s)
+        c = st.columns(widths, vertical_alignment="center")
+        c[0].markdown(f"**{esc(r['patient'])}**")
+        c[1].write(r["date"])
+        c[2].write(r["dentist"])
+        c[3].write(clock(r["since"]))
+        c[4].download_button("PDF", lambda s=s: exports.note_pdf(s), file_name=f"{stem} note.pdf",
+                             mime=exports.PDF_MIME, type="primary", key=f"pdf_{s.id}", on_click="ignore",
+                             width="stretch", help="Download the note as a PDF")
+        c[5].download_button("Word", lambda s=s: exports.note_docx(s), file_name=f"{stem} note.docx",
+                             mime=exports.DOCX_MIME, key=f"docx_{s.id}", on_click="ignore", width="stretch",
+                             help="Download the note as a Word document")
+        if c[6].button("Open", key=f"open_c_{s.id}", width="stretch"):
+            go("Review", s.id)
+    if len(rows) > MAX_LISTED:
+        st.caption(f"Showing the newest {MAX_LISTED} of {len(rows)}. Use the search on the left for older visits.")
+
+
 # ---------------------------------------------------------------- pages
 
-PAGES = {"New visit": new_visit_page, "Review": review_page, "Admin": admin_page}
+PAGES = {"New visit": new_visit_page, "Review": review_page, "Waiting for dentist": waiting_page,
+         "Cleared by dentist": cleared_page, "Admin": admin_page}
 for _name, _tab in zip(TABS, st.tabs(TABS, key="page", on_change="rerun")):
     if _tab.open:
         with _tab:

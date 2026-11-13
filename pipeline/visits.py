@@ -74,3 +74,28 @@ def clock(iso: str | None) -> str:
     if when is None:
         return "?"
     return when.strftime("%H:%M") if when.date() == datetime.now().astimezone().date() else when.strftime("%b %d %H:%M")
+
+
+def worklists(sessions: list, show_tests: bool = False) -> dict[str, list[dict]]:
+    """The assistant's two queues. 'waiting': her review is done and the dentist hasn't approved yet, longest wait
+    first. 'cleared': approved by the dentist, newest approval first."""
+    from pipeline import approval
+    waiting, cleared = [], []
+    for s in sessions:
+        meta = s.meta()
+        if not show_tests and is_test_visit(meta):
+            continue
+        state = approval.load_state(s)
+        if state.state == "assistant_review_complete":
+            kind, queue = "assistant_review_complete", waiting
+        elif state.state in ("dentist_approved", "exported"):
+            kind, queue = "dentist_approved", cleared
+        else:
+            continue
+        since = next((r.timestamp for r in reversed(state.records) if r.kind == kind), None)
+        vm = visit_meta(s)
+        queue.append({"session": s, "patient": visit_name(meta), "date": vm.get("date") or "—",
+                      "dentist": vm.get("provider") or "—", "since": since})
+    waiting.sort(key=lambda r: r["since"] or "")
+    cleared.sort(key=lambda r: r["since"] or "", reverse=True)
+    return {"waiting": waiting, "cleared": cleared}

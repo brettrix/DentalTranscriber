@@ -348,3 +348,34 @@ def test_approved_note_offers_pdf_word_and_copy_never_markdown(monkeypatch, tmp_
     assert list(buttons)[:2] == ["Download PDF", "Word (.docx)"], "PDF first"
     assert not any("md" in label.lower() or "markdown" in label.lower() for label in buttons)
     assert not any(b.label == "Export" for b in at.button)
+
+
+def test_waiting_and_cleared_tabs_follow_the_note(monkeypatch, tmp_path):
+    a = _visit(tmp_path, "Ana Ruiz", "2026-11-12", "2026-11-12T19:00:00.000+00:00")
+    b = _visit(tmp_path, "Ben Cho", "2026-11-13", "2026-11-13T19:00:00.000+00:00")
+    draft = _visit(tmp_path, "Still Draft", "2026-11-13", "2026-11-13T20:00:00.000+00:00")
+    at = _app(monkeypatch, tmp_path, "Assistant", page="Waiting for dentist")
+    assert any("Nothing is waiting for the dentist" in i.value for i in at.info)
+    approval.approve_assistant(a)
+    approval.approve_assistant(b)
+    at = _app(monkeypatch, tmp_path, "Assistant", page="Waiting for dentist")
+    names = [m.value for m in at.markdown if m.value in ("**Ana Ruiz**", "**Ben Cho**", "**Still Draft**")]
+    assert names == ["**Ana Ruiz**", "**Ben Cho**"], "sent notes only, longest wait first"
+    shown = " ".join(str(w.value) for w in at.markdown)
+    assert "2026-11-12" in shown and "Dr. Test" in shown and ("just now" in shown or " min" in shown)
+    next(x for x in at.button if x.key == f"open_w_{b.id}").click().run()
+    assert at.session_state["page"] == "Review" and at.session_state["sid"] == b.id
+    assert any(m.value.startswith("### Ben Cho") for m in at.markdown)
+
+    approval.approve_dentist(a)
+    at = _app(monkeypatch, tmp_path, "Assistant", page="Waiting for dentist")
+    assert [m.value for m in at.markdown if m.value in ("**Ana Ruiz**", "**Ben Cho**")] == ["**Ben Cho**"]
+    at = _app(monkeypatch, tmp_path, "Assistant", page="Cleared by dentist")
+    assert not at.exception, at.exception
+    assert [m.value for m in at.markdown if m.value.startswith("**")] == ["**Ana Ruiz**"]
+    assert sorted(d.key for d in at.get("download_button")) == [f"docx_{a.id}", f"pdf_{a.id}"], \
+        "each cleared note has its download buttons"
+    approval.approve_dentist(b)
+    at = _app(monkeypatch, tmp_path, "Assistant", page="Cleared by dentist")
+    assert [m.value for m in at.markdown if m.value.startswith("**")] == ["**Ben Cho**", "**Ana Ruiz**"], "newest first"
+    assert draft.id not in " ".join(d.key for d in at.get("download_button"))
