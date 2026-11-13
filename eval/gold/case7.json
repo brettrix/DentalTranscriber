@@ -1,686 +1,758 @@
 {
- "case_id": "case7",
- "annotated_by": "grader (claude-sonnet-5-5)",
- "checked_by": null,
- "entities": [
-  {
-   "gid": "p1",
-   "kind": "problem",
-   "type": null,
-   "problem_key": "P1",
-   "scope": null,
-   "target": 19,
-   "target_relation": null,
-   "key_attributes": {
-    "role": "chief",
-    "complaint_text": "toothache on the lower right ... It's the left side. Lower left.",
-    "complaint_location": "lower left"
-   },
-   "assertion": "present",
-   "time_context": "current",
-   "assertion_source": "patient_report",
-   "action": null,
-   "status_fields": {},
-   "evidence": [
+  "case_id": "case7",
+  "annotated_by": "grader (claude-sonnet-5-5)",
+  "checked_by": "claude (chat assistant; wrote the answer keys) — reviewed against the scripts; not checked by an independent person",
+  "entities": [
     {
-     "utterance_id": "u2",
-     "quick_note_id": null,
-     "time_range": null
+      "gid": "p1",
+      "kind": "problem",
+      "type": null,
+      "problem_key": "P1",
+      "scope": null,
+      "target": 19,
+      "target_relation": null,
+      "key_attributes": {
+        "role": "chief",
+        "complaint_text": "toothache on the lower right ... It's the left side. Lower left.",
+        "complaint_location": "lower left"
+      },
+      "assertion": "present",
+      "time_context": "current",
+      "assertion_source": "patient_report",
+      "action": null,
+      "status_fields": {},
+      "evidence": [
+        {
+          "utterance_id": "u2",
+          "quick_note_id": null,
+          "time_range": null
+        },
+        {
+          "utterance_id": "u4",
+          "quick_note_id": null,
+          "time_range": null
+        },
+        {
+          "utterance_id": "u5",
+          "quick_note_id": null,
+          "time_range": null
+        },
+        {
+          "utterance_id": "u6",
+          "quick_note_id": null,
+          "time_range": null
+        },
+        {
+          "utterance_id": "u7",
+          "quick_note_id": null,
+          "time_range": null
+        }
+      ],
+      "note": "Patient first said lower right, then self-corrected to lower left; duration about a week."
     },
     {
-     "utterance_id": "u4",
-     "quick_note_id": null,
-     "time_range": null
+      "gid": "s1",
+      "kind": "item",
+      "type": "symptom",
+      "problem_key": "P1",
+      "scope": "problem",
+      "target": 19,
+      "target_relation": "matches_target",
+      "key_attributes": {
+        "aspect": "trigger",
+        "value": "cold"
+      },
+      "assertion": "present",
+      "time_context": "current",
+      "assertion_source": "patient_report",
+      "action": null,
+      "status_fields": {},
+      "evidence": [
+        {
+          "utterance_id": "u3",
+          "quick_note_id": null,
+          "time_range": null
+        },
+        {
+          "utterance_id": "u4",
+          "quick_note_id": null,
+          "time_range": null
+        }
+      ],
+      "note": null
     },
     {
-     "utterance_id": "u5",
-     "quick_note_id": null,
-     "time_range": null
+      "gid": "s2",
+      "kind": "item",
+      "type": "symptom",
+      "problem_key": "P1",
+      "scope": "problem",
+      "target": 19,
+      "target_relation": "matches_target",
+      "key_attributes": {
+        "aspect": "spontaneous night pain",
+        "value": "starts hurting by itself at night"
+      },
+      "assertion": "present",
+      "time_context": "current",
+      "assertion_source": "patient_report",
+      "action": null,
+      "status_fields": {},
+      "evidence": [
+        {
+          "utterance_id": "u4",
+          "quick_note_id": null,
+          "time_range": null
+        }
+      ],
+      "note": null
     },
     {
-     "utterance_id": "u6",
-     "quick_note_id": null,
-     "time_range": null
+      "gid": "s3",
+      "kind": "item",
+      "type": "symptom",
+      "problem_key": "P1",
+      "scope": "problem",
+      "target": 19,
+      "target_relation": "matches_target",
+      "key_attributes": {
+        "aspect": "duration",
+        "value": "about a week"
+      },
+      "assertion": "present",
+      "time_context": "current",
+      "assertion_source": "patient_report",
+      "action": null,
+      "status_fields": {},
+      "evidence": [
+        {
+          "utterance_id": "u2",
+          "quick_note_id": null,
+          "time_range": null
+        }
+      ],
+      "note": null
     },
     {
-     "utterance_id": "u7",
-     "quick_note_id": null,
-     "time_range": null
+      "gid": "s4",
+      "kind": "item",
+      "type": "symptom",
+      "problem_key": "P1",
+      "scope": "problem",
+      "target": 19,
+      "target_relation": "matches_target",
+      "key_attributes": {
+        "aspect": "lingering after cold",
+        "value": "maybe twenty seconds, throbs after"
+      },
+      "assertion": "present",
+      "time_context": "current",
+      "assertion_source": "patient_report",
+      "action": null,
+      "status_fields": {},
+      "evidence": [
+        {
+          "utterance_id": "u7",
+          "quick_note_id": null,
+          "time_range": null
+        },
+        {
+          "utterance_id": "u8",
+          "quick_note_id": null,
+          "time_range": null
+        }
+      ],
+      "note": null
+    },
+    {
+      "gid": "s5",
+      "kind": "item",
+      "type": "symptom",
+      "problem_key": "P1",
+      "scope": "problem",
+      "target": 19,
+      "target_relation": "matches_target",
+      "key_attributes": {
+        "aspect": "severity when it wakes her",
+        "value": "eight",
+        "score": 8
+      },
+      "assertion": "present",
+      "time_context": "current",
+      "assertion_source": "patient_report",
+      "action": null,
+      "status_fields": {},
+      "evidence": [
+        {
+          "utterance_id": "u9",
+          "quick_note_id": null,
+          "time_range": null
+        },
+        {
+          "utterance_id": "u10",
+          "quick_note_id": null,
+          "time_range": null
+        }
+      ],
+      "note": null
+    },
+    {
+      "gid": "m1",
+      "kind": "item",
+      "type": "medication",
+      "problem_key": null,
+      "scope": "encounter",
+      "target": null,
+      "target_relation": null,
+      "key_attributes": {
+        "drug": "warfarin",
+        "medication_status": "discontinued",
+        "original_wording": "I used to be on warfarin, the blood thinner, but my doctor took me off it last year. Nothing now."
+      },
+      "assertion": "present",
+      "time_context": "historical",
+      "assertion_source": "patient_report",
+      "action": null,
+      "status_fields": {
+        "medication_status": "discontinued"
+      },
+      "evidence": [
+        {
+          "utterance_id": "u11",
+          "quick_note_id": null,
+          "time_range": null
+        },
+        {
+          "utterance_id": "u12",
+          "quick_note_id": null,
+          "time_range": null
+        },
+        {
+          "utterance_id": null,
+          "quick_note_id": "q4",
+          "time_range": null
+        }
+      ],
+      "note": "Not a current medication; no current medications."
+    },
+    {
+      "gid": "v1",
+      "kind": "item",
+      "type": "vital_reading",
+      "problem_key": null,
+      "scope": "encounter",
+      "target": null,
+      "target_relation": null,
+      "key_attributes": {
+        "systolic": 126,
+        "diastolic": 82,
+        "unit": "mmHg"
+      },
+      "assertion": "present",
+      "time_context": "current",
+      "assertion_source": "assistant_record",
+      "action": null,
+      "status_fields": {},
+      "evidence": [
+        {
+          "utterance_id": null,
+          "quick_note_id": "q1",
+          "time_range": null
+        }
+      ],
+      "note": null
+    },
+    {
+      "gid": "f1",
+      "kind": "item",
+      "type": "finding",
+      "problem_key": "P1",
+      "scope": "problem",
+      "target": 19,
+      "target_relation": "matches_target",
+      "key_attributes": {
+        "test": "visual",
+        "observation": "big cavity on the back side (distal)",
+        "surface": "D"
+      },
+      "assertion": "present",
+      "time_context": "current",
+      "assertion_source": "clinician_observation",
+      "action": null,
+      "status_fields": {},
+      "evidence": [
+        {
+          "utterance_id": "u13",
+          "quick_note_id": null,
+          "time_range": null
+        }
+      ],
+      "note": null
+    },
+    {
+      "gid": "f2",
+      "kind": "item",
+      "type": "finding",
+      "problem_key": "P1",
+      "scope": "problem",
+      "target": 19,
+      "target_relation": "matches_target",
+      "key_attributes": {
+        "test": "cold",
+        "response": "present",
+        "lingering": true,
+        "observation": "Ow. Yeah. That's still going.",
+        "result_description": "positive"
+      },
+      "assertion": "present",
+      "time_context": "current",
+      "assertion_source": "test_response",
+      "action": null,
+      "status_fields": {},
+      "evidence": [
+        {
+          "utterance_id": "u13",
+          "quick_note_id": null,
+          "time_range": null
+        },
+        {
+          "utterance_id": "u14",
+          "quick_note_id": null,
+          "time_range": null
+        },
+        {
+          "utterance_id": "u15",
+          "quick_note_id": null,
+          "time_range": null
+        },
+        {
+          "utterance_id": "u16",
+          "quick_note_id": null,
+          "time_range": null
+        }
+      ],
+      "note": null
+    },
+    {
+      "gid": "f3",
+      "kind": "item",
+      "type": "finding",
+      "problem_key": "P1",
+      "scope": "problem",
+      "target": 19,
+      "target_relation": "matches_target",
+      "key_attributes": {
+        "test": "percussion",
+        "response": "present",
+        "observation": "A little tender",
+        "result_description": "mildly tender"
+      },
+      "assertion": "present",
+      "time_context": "current",
+      "assertion_source": "test_response",
+      "action": null,
+      "status_fields": {},
+      "evidence": [
+        {
+          "utterance_id": "u17",
+          "quick_note_id": null,
+          "time_range": null
+        },
+        {
+          "utterance_id": "u18",
+          "quick_note_id": null,
+          "time_range": null
+        }
+      ],
+      "note": null
+    },
+    {
+      "gid": "x1",
+      "kind": "item",
+      "type": "radiograph",
+      "problem_key": "P1",
+      "scope": "problem",
+      "target": 19,
+      "target_relation": "matches_target",
+      "key_attributes": {
+        "type": "PA",
+        "target": 19,
+        "finding": "decay goes right down to the nerve (extends to the pulp)"
+      },
+      "assertion": "present",
+      "time_context": "current",
+      "assertion_source": "clinician_assessment",
+      "action": "performed",
+      "status_fields": {},
+      "evidence": [
+        {
+          "utterance_id": "u19",
+          "quick_note_id": null,
+          "time_range": null
+        },
+        {
+          "utterance_id": "u20",
+          "quick_note_id": null,
+          "time_range": null
+        },
+        {
+          "utterance_id": "u21",
+          "quick_note_id": null,
+          "time_range": null
+        }
+      ],
+      "note": null
+    },
+    {
+      "gid": "d1",
+      "kind": "item",
+      "type": "diagnosis",
+      "problem_key": "P1",
+      "scope": "problem",
+      "target": 19,
+      "target_relation": "matches_target",
+      "key_attributes": {
+        "diagnosis": "irreversible pulpitis",
+        "certainty": "definite"
+      },
+      "assertion": "present",
+      "time_context": "current",
+      "assertion_source": "clinician_assessment",
+      "action": null,
+      "status_fields": {},
+      "evidence": [
+        {
+          "utterance_id": "u13",
+          "quick_note_id": null,
+          "time_range": null
+        },
+        {
+          "utterance_id": "u21",
+          "quick_note_id": null,
+          "time_range": null
+        }
+      ],
+      "note": "Initial filling impression (u13) was changed after the PA; the filling is not the plan."
+    },
+    {
+      "gid": "o1",
+      "kind": "item",
+      "type": "option_discussed",
+      "problem_key": "P1",
+      "scope": "problem",
+      "target": 19,
+      "target_relation": "matches_target",
+      "key_attributes": {
+        "option": "root canal then crown",
+        "risks": "possible retreatment; can crack without a crown",
+        "benefits": "keep your tooth",
+        "recommended_by_clinician": true
+      },
+      "assertion": "present",
+      "time_context": "current",
+      "assertion_source": "clinician_assessment",
+      "action": null,
+      "status_fields": {},
+      "evidence": [
+        {
+          "utterance_id": "u23",
+          "quick_note_id": null,
+          "time_range": null
+        },
+        {
+          "utterance_id": "u24",
+          "quick_note_id": null,
+          "time_range": null
+        },
+        {
+          "utterance_id": "u25",
+          "quick_note_id": null,
+          "time_range": null
+        }
+      ],
+      "note": null
+    },
+    {
+      "gid": "o2",
+      "kind": "item",
+      "type": "option_discussed",
+      "problem_key": "P1",
+      "scope": "problem",
+      "target": 19,
+      "target_relation": "matches_target",
+      "key_attributes": {
+        "option": "extraction",
+        "risks": "gap; teeth around it can shift over time",
+        "benefits": "quicker",
+        "recommended_by_clinician": false
+      },
+      "assertion": "present",
+      "time_context": "current",
+      "assertion_source": "clinician_assessment",
+      "action": null,
+      "status_fields": {},
+      "evidence": [
+        {
+          "utterance_id": "u23",
+          "quick_note_id": null,
+          "time_range": null
+        }
+      ],
+      "note": null
+    },
+    {
+      "gid": "dc1",
+      "kind": "item",
+      "type": "decision",
+      "problem_key": "P1",
+      "scope": "problem",
+      "target": 19,
+      "target_relation": "matches_target",
+      "key_attributes": {
+        "option": "root canal then crown",
+        "decision": "accepted"
+      },
+      "assertion": "present",
+      "time_context": "current",
+      "assertion_source": "patient_report",
+      "action": null,
+      "status_fields": {},
+      "evidence": [
+        {
+          "utterance_id": "u26",
+          "quick_note_id": null,
+          "time_range": null
+        }
+      ],
+      "note": null
+    },
+    {
+      "gid": "n1",
+      "kind": "item",
+      "type": "next_visit",
+      "problem_key": "P1",
+      "scope": "problem",
+      "target": 19,
+      "target_relation": "matches_target",
+      "key_attributes": {
+        "procedure": "root canal on 19",
+        "timing": "this week"
+      },
+      "assertion": "present",
+      "time_context": "planned",
+      "assertion_source": "clinician_instruction",
+      "action": null,
+      "status_fields": {},
+      "evidence": [
+        {
+          "utterance_id": "u27",
+          "quick_note_id": null,
+          "time_range": null
+        }
+      ],
+      "note": null
+    },
+    {
+      "gid": "n2",
+      "kind": "item",
+      "type": "next_visit",
+      "problem_key": "P1",
+      "scope": "problem",
+      "target": 19,
+      "target_relation": "matches_target",
+      "key_attributes": {
+        "procedure": "crown on 19",
+        "timing": "a few weeks after the root canal"
+      },
+      "assertion": "present",
+      "time_context": "planned",
+      "assertion_source": "clinician_instruction",
+      "action": null,
+      "status_fields": {},
+      "evidence": [
+        {
+          "utterance_id": "u27",
+          "quick_note_id": null,
+          "time_range": null
+        }
+      ],
+      "note": null
+    },
+    {
+      "gid": "rx1",
+      "kind": "item",
+      "type": "prescription",
+      "problem_key": "P1",
+      "scope": "problem",
+      "target": 19,
+      "target_relation": "matches_target",
+      "key_attributes": {
+        "drug": "ibuprofen",
+        "strength": "600 mg",
+        "frequency_code": "q6h PRN",
+        "as_needed": true,
+        "original_wording": "ibuprofen, six hundred milligrams every six hours as needed"
+      },
+      "assertion": "present",
+      "time_context": "planned",
+      "assertion_source": "clinician_instruction",
+      "action": null,
+      "status_fields": {
+        "prescription_status": "prescribed_today"
+      },
+      "evidence": [
+        {
+          "utterance_id": "u27",
+          "quick_note_id": null,
+          "time_range": null
+        }
+      ],
+      "note": null
+    },
+    {
+      "gid": "ce1",
+      "kind": "item",
+      "type": "consent_element",
+      "problem_key": "P1",
+      "scope": "problem",
+      "target": null,
+      "target_relation": null,
+      "key_attributes": {
+        "element": "risks_discussed",
+        "content": "may need retreatment later; can crack without a crown"
+      },
+      "assertion": "present",
+      "time_context": "current",
+      "assertion_source": "clinician_instruction",
+      "action": null,
+      "status_fields": {},
+      "evidence": [
+        {
+          "utterance_id": "u23",
+          "quick_note_id": null,
+          "time_range": null
+        },
+        {
+          "utterance_id": "u24",
+          "quick_note_id": null,
+          "time_range": null
+        },
+        {
+          "utterance_id": "u25",
+          "quick_note_id": null,
+          "time_range": null
+        }
+      ],
+      "note": null
+    },
+    {
+      "gid": "ce2",
+      "kind": "item",
+      "type": "consent_element",
+      "problem_key": "P1",
+      "scope": "problem",
+      "target": null,
+      "target_relation": null,
+      "key_attributes": {
+        "element": "alternatives_discussed",
+        "content": "extraction (quicker, but leaves a gap and teeth can shift)"
+      },
+      "assertion": "present",
+      "time_context": "current",
+      "assertion_source": "clinician_instruction",
+      "action": null,
+      "status_fields": {},
+      "evidence": [
+        {
+          "utterance_id": "u23",
+          "quick_note_id": null,
+          "time_range": null
+        },
+        {
+          "utterance_id": "u24",
+          "quick_note_id": null,
+          "time_range": null
+        },
+        {
+          "utterance_id": "u25",
+          "quick_note_id": null,
+          "time_range": null
+        }
+      ],
+      "note": null
     }
-   ],
-   "note": "Patient first said lower right, then self-corrected to lower left; duration about a week."
-  },
-  {
-   "gid": "s1",
-   "kind": "item",
-   "type": "symptom",
-   "problem_key": "P1",
-   "scope": "problem",
-   "target": 19,
-   "target_relation": "matches_target",
-   "key_attributes": {
-    "aspect": "trigger",
-    "value": "cold"
-   },
-   "assertion": "present",
-   "time_context": "current",
-   "assertion_source": "patient_report",
-   "action": null,
-   "status_fields": {},
-   "evidence": [
+  ],
+  "expected_flags": [
     {
-     "utterance_id": "u3",
-     "quick_note_id": null,
-     "time_range": null
+      "rule_id": "open_conflict",
+      "problem_key": "P1",
+      "target": 19,
+      "meaning": "Patient said lower right then corrected to lower left; the later statement (left) is the operative one.",
+      "evidence": [
+        {
+          "utterance_id": "u2",
+          "quick_note_id": null,
+          "time_range": null
+        },
+        {
+          "utterance_id": "u4",
+          "quick_note_id": null,
+          "time_range": null
+        },
+        {
+          "utterance_id": "u5",
+          "quick_note_id": null,
+          "time_range": null
+        },
+        {
+          "utterance_id": "u6",
+          "quick_note_id": null,
+          "time_range": null
+        }
+      ]
     },
     {
-     "utterance_id": "u4",
-     "quick_note_id": null,
-     "time_range": null
-    }
-   ],
-   "note": null
-  },
-  {
-   "gid": "s2",
-   "kind": "item",
-   "type": "symptom",
-   "problem_key": "P1",
-   "scope": "problem",
-   "target": 19,
-   "target_relation": "matches_target",
-   "key_attributes": {
-    "aspect": "spontaneous night pain",
-    "value": "starts hurting by itself at night"
-   },
-   "assertion": "present",
-   "time_context": "current",
-   "assertion_source": "patient_report",
-   "action": null,
-   "status_fields": {},
-   "evidence": [
-    {
-     "utterance_id": "u4",
-     "quick_note_id": null,
-     "time_range": null
-    }
-   ],
-   "note": null
-  },
-  {
-   "gid": "s3",
-   "kind": "item",
-   "type": "symptom",
-   "problem_key": "P1",
-   "scope": "problem",
-   "target": 19,
-   "target_relation": "matches_target",
-   "key_attributes": {
-    "aspect": "duration",
-    "value": "about a week"
-   },
-   "assertion": "present",
-   "time_context": "current",
-   "assertion_source": "patient_report",
-   "action": null,
-   "status_fields": {},
-   "evidence": [
-    {
-     "utterance_id": "u2",
-     "quick_note_id": null,
-     "time_range": null
-    }
-   ],
-   "note": null
-  },
-  {
-   "gid": "s4",
-   "kind": "item",
-   "type": "symptom",
-   "problem_key": "P1",
-   "scope": "problem",
-   "target": 19,
-   "target_relation": "matches_target",
-   "key_attributes": {
-    "aspect": "lingering after cold",
-    "value": "maybe twenty seconds, throbs after"
-   },
-   "assertion": "present",
-   "time_context": "current",
-   "assertion_source": "patient_report",
-   "action": null,
-   "status_fields": {},
-   "evidence": [
-    {
-     "utterance_id": "u7",
-     "quick_note_id": null,
-     "time_range": null
+      "rule_id": "quick_note_complaint_mismatch",
+      "problem_key": "P1",
+      "target": 19,
+      "meaning": "Quick note says 'CC: lower right pain' but the corrected complaint is lower left.",
+      "evidence": [
+        {
+          "utterance_id": null,
+          "quick_note_id": "q2",
+          "time_range": null
+        },
+        {
+          "utterance_id": "u4",
+          "quick_note_id": null,
+          "time_range": null
+        }
+      ]
     },
     {
-     "utterance_id": "u8",
-     "quick_note_id": null,
-     "time_range": null
+      "rule_id": "quick_note_tooth_unclear",
+      "problem_key": "P1",
+      "target": null,
+      "meaning": "Quick note '#30' matches neither the complaint location nor the clinical target #19.",
+      "evidence": [
+        {
+          "utterance_id": null,
+          "quick_note_id": "q3",
+          "time_range": null
+        },
+        {
+          "utterance_id": "u7",
+          "quick_note_id": null,
+          "time_range": null
+        }
+      ]
     }
-   ],
-   "note": null
-  },
-  {
-   "gid": "s5",
-   "kind": "item",
-   "type": "symptom",
-   "problem_key": "P1",
-   "scope": "problem",
-   "target": 19,
-   "target_relation": "matches_target",
-   "key_attributes": {
-    "aspect": "severity when it wakes her",
-    "value": "eight",
-    "score": 8
-   },
-   "assertion": "present",
-   "time_context": "current",
-   "assertion_source": "patient_report",
-   "action": null,
-   "status_fields": {},
-   "evidence": [
-    {
-     "utterance_id": "u9",
-     "quick_note_id": null,
-     "time_range": null
-    },
-    {
-     "utterance_id": "u10",
-     "quick_note_id": null,
-     "time_range": null
-    }
-   ],
-   "note": null
-  },
-  {
-   "gid": "m1",
-   "kind": "item",
-   "type": "medication",
-   "problem_key": null,
-   "scope": "encounter",
-   "target": null,
-   "target_relation": null,
-   "key_attributes": {
-    "drug": "warfarin",
-    "medication_status": "discontinued",
-    "original_wording": "I used to be on warfarin, the blood thinner, but my doctor took me off it last year. Nothing now."
-   },
-   "assertion": "present",
-   "time_context": "historical",
-   "assertion_source": "patient_report",
-   "action": null,
-   "status_fields": {
-    "medication_status": "discontinued"
-   },
-   "evidence": [
-    {
-     "utterance_id": "u11",
-     "quick_note_id": null,
-     "time_range": null
-    },
-    {
-     "utterance_id": "u12",
-     "quick_note_id": null,
-     "time_range": null
-    },
-    {
-     "utterance_id": null,
-     "quick_note_id": "q4",
-     "time_range": null
-    }
-   ],
-   "note": "Not a current medication; no current medications."
-  },
-  {
-   "gid": "v1",
-   "kind": "item",
-   "type": "vital_reading",
-   "problem_key": null,
-   "scope": "encounter",
-   "target": null,
-   "target_relation": null,
-   "key_attributes": {
-    "systolic": 126,
-    "diastolic": 82,
-    "unit": "mmHg"
-   },
-   "assertion": "present",
-   "time_context": "current",
-   "assertion_source": "assistant_record",
-   "action": null,
-   "status_fields": {},
-   "evidence": [
-    {
-     "utterance_id": null,
-     "quick_note_id": "q1",
-     "time_range": null
-    }
-   ],
-   "note": null
-  },
-  {
-   "gid": "f1",
-   "kind": "item",
-   "type": "finding",
-   "problem_key": "P1",
-   "scope": "problem",
-   "target": 19,
-   "target_relation": "matches_target",
-   "key_attributes": {
-    "test": "visual",
-    "observation": "big cavity on the back side (distal)",
-    "surface": "D"
-   },
-   "assertion": "present",
-   "time_context": "current",
-   "assertion_source": "clinician_observation",
-   "action": null,
-   "status_fields": {},
-   "evidence": [
-    {
-     "utterance_id": "u13",
-     "quick_note_id": null,
-     "time_range": null
-    }
-   ],
-   "note": null
-  },
-  {
-   "gid": "f2",
-   "kind": "item",
-   "type": "finding",
-   "problem_key": "P1",
-   "scope": "problem",
-   "target": 19,
-   "target_relation": "matches_target",
-   "key_attributes": {
-    "test": "cold",
-    "response": "positive",
-    "lingering": true,
-    "observation": "Ow. Yeah. That's still going."
-   },
-   "assertion": "present",
-   "time_context": "current",
-   "assertion_source": "test_response",
-   "action": null,
-   "status_fields": {},
-   "evidence": [
-    {
-     "utterance_id": "u13",
-     "quick_note_id": null,
-     "time_range": null
-    },
-    {
-     "utterance_id": "u14",
-     "quick_note_id": null,
-     "time_range": null
-    },
-    {
-     "utterance_id": "u15",
-     "quick_note_id": null,
-     "time_range": null
-    },
-    {
-     "utterance_id": "u16",
-     "quick_note_id": null,
-     "time_range": null
-    }
-   ],
-   "note": null
-  },
-  {
-   "gid": "f3",
-   "kind": "item",
-   "type": "finding",
-   "problem_key": "P1",
-   "scope": "problem",
-   "target": 19,
-   "target_relation": "matches_target",
-   "key_attributes": {
-    "test": "percussion",
-    "response": "mildly tender",
-    "observation": "A little tender"
-   },
-   "assertion": "present",
-   "time_context": "current",
-   "assertion_source": "test_response",
-   "action": null,
-   "status_fields": {},
-   "evidence": [
-    {
-     "utterance_id": "u17",
-     "quick_note_id": null,
-     "time_range": null
-    },
-    {
-     "utterance_id": "u18",
-     "quick_note_id": null,
-     "time_range": null
-    }
-   ],
-   "note": null
-  },
-  {
-   "gid": "x1",
-   "kind": "item",
-   "type": "radiograph",
-   "problem_key": "P1",
-   "scope": "problem",
-   "target": 19,
-   "target_relation": "matches_target",
-   "key_attributes": {
-    "type": "PA",
-    "target": 19,
-    "finding": "decay goes right down to the nerve (extends to the pulp)"
-   },
-   "assertion": "present",
-   "time_context": "current",
-   "assertion_source": "clinician_assessment",
-   "action": "taken",
-   "status_fields": {},
-   "evidence": [
-    {
-     "utterance_id": "u19",
-     "quick_note_id": null,
-     "time_range": null
-    },
-    {
-     "utterance_id": "u20",
-     "quick_note_id": null,
-     "time_range": null
-    },
-    {
-     "utterance_id": "u21",
-     "quick_note_id": null,
-     "time_range": null
-    }
-   ],
-   "note": null
-  },
-  {
-   "gid": "d1",
-   "kind": "item",
-   "type": "diagnosis",
-   "problem_key": "P1",
-   "scope": "problem",
-   "target": 19,
-   "target_relation": "matches_target",
-   "key_attributes": {
-    "diagnosis": "irreversible pulpitis",
-    "certainty": "definitive"
-   },
-   "assertion": "present",
-   "time_context": "current",
-   "assertion_source": "clinician_assessment",
-   "action": null,
-   "status_fields": {},
-   "evidence": [
-    {
-     "utterance_id": "u13",
-     "quick_note_id": null,
-     "time_range": null
-    },
-    {
-     "utterance_id": "u21",
-     "quick_note_id": null,
-     "time_range": null
-    }
-   ],
-   "note": "Initial filling impression (u13) was changed after the PA; the filling is not the plan."
-  },
-  {
-   "gid": "o1",
-   "kind": "item",
-   "type": "option_discussed",
-   "problem_key": "P1",
-   "scope": "problem",
-   "target": 19,
-   "target_relation": "matches_target",
-   "key_attributes": {
-    "option": "root canal then crown",
-    "risks": "possible retreatment; can crack without a crown",
-    "benefits": "keep your tooth",
-    "recommended_by_clinician": true
-   },
-   "assertion": "present",
-   "time_context": "current",
-   "assertion_source": "clinician_assessment",
-   "action": null,
-   "status_fields": {},
-   "evidence": [
-    {
-     "utterance_id": "u23",
-     "quick_note_id": null,
-     "time_range": null
-    },
-    {
-     "utterance_id": "u24",
-     "quick_note_id": null,
-     "time_range": null
-    },
-    {
-     "utterance_id": "u25",
-     "quick_note_id": null,
-     "time_range": null
-    }
-   ],
-   "note": null
-  },
-  {
-   "gid": "o2",
-   "kind": "item",
-   "type": "option_discussed",
-   "problem_key": "P1",
-   "scope": "problem",
-   "target": 19,
-   "target_relation": "matches_target",
-   "key_attributes": {
-    "option": "extraction",
-    "risks": "gap; teeth around it can shift over time",
-    "benefits": "quicker",
-    "recommended_by_clinician": false
-   },
-   "assertion": "present",
-   "time_context": "current",
-   "assertion_source": "clinician_assessment",
-   "action": null,
-   "status_fields": {},
-   "evidence": [
-    {
-     "utterance_id": "u23",
-     "quick_note_id": null,
-     "time_range": null
-    }
-   ],
-   "note": null
-  },
-  {
-   "gid": "dc1",
-   "kind": "item",
-   "type": "decision",
-   "problem_key": "P1",
-   "scope": "problem",
-   "target": 19,
-   "target_relation": "matches_target",
-   "key_attributes": {
-    "option": "root canal then crown",
-    "decision": "accepted"
-   },
-   "assertion": "present",
-   "time_context": "current",
-   "assertion_source": "patient_report",
-   "action": null,
-   "status_fields": {},
-   "evidence": [
-    {
-     "utterance_id": "u26",
-     "quick_note_id": null,
-     "time_range": null
-    }
-   ],
-   "note": null
-  },
-  {
-   "gid": "n1",
-   "kind": "item",
-   "type": "next_visit",
-   "problem_key": "P1",
-   "scope": "problem",
-   "target": 19,
-   "target_relation": "matches_target",
-   "key_attributes": {
-    "procedure": "root canal on 19",
-    "timing": "this week"
-   },
-   "assertion": "present",
-   "time_context": "planned",
-   "assertion_source": "clinician_instruction",
-   "action": null,
-   "status_fields": {},
-   "evidence": [
-    {
-     "utterance_id": "u27",
-     "quick_note_id": null,
-     "time_range": null
-    }
-   ],
-   "note": null
-  },
-  {
-   "gid": "n2",
-   "kind": "item",
-   "type": "next_visit",
-   "problem_key": "P1",
-   "scope": "problem",
-   "target": 19,
-   "target_relation": "matches_target",
-   "key_attributes": {
-    "procedure": "crown on 19",
-    "timing": "a few weeks after the root canal"
-   },
-   "assertion": "present",
-   "time_context": "planned",
-   "assertion_source": "clinician_instruction",
-   "action": null,
-   "status_fields": {},
-   "evidence": [
-    {
-     "utterance_id": "u27",
-     "quick_note_id": null,
-     "time_range": null
-    }
-   ],
-   "note": null
-  },
-  {
-   "gid": "rx1",
-   "kind": "item",
-   "type": "prescription",
-   "problem_key": "P1",
-   "scope": "problem",
-   "target": 19,
-   "target_relation": "matches_target",
-   "key_attributes": {
-    "drug": "ibuprofen",
-    "strength": "600 mg",
-    "dose": "600 mg",
-    "frequency_code": "q6h PRN",
-    "as_needed": true,
-    "prescription_status": "prescribed",
-    "original_wording": "ibuprofen, six hundred milligrams every six hours as needed"
-   },
-   "assertion": "present",
-   "time_context": "planned",
-   "assertion_source": "clinician_instruction",
-   "action": null,
-   "status_fields": {
-    "prescription_status": "prescribed"
-   },
-   "evidence": [
-    {
-     "utterance_id": "u27",
-     "quick_note_id": null,
-     "time_range": null
-    }
-   ],
-   "note": null
-  }
- ],
- "expected_flags": [
-  {
-   "rule_id": "open_conflict",
-   "problem_key": "P1",
-   "target": 19,
-   "meaning": "Patient said lower right then corrected to lower left; the later statement (left) is the operative one.",
-   "evidence": [
-    {
-     "utterance_id": "u2",
-     "quick_note_id": null,
-     "time_range": null
-    },
-    {
-     "utterance_id": "u4",
-     "quick_note_id": null,
-     "time_range": null
-    },
-    {
-     "utterance_id": "u5",
-     "quick_note_id": null,
-     "time_range": null
-    },
-    {
-     "utterance_id": "u6",
-     "quick_note_id": null,
-     "time_range": null
-    }
-   ]
-  },
-  {
-   "rule_id": "quick_note_complaint_mismatch",
-   "problem_key": "P1",
-   "target": 19,
-   "meaning": "Quick note says 'CC: lower right pain' but the corrected complaint is lower left.",
-   "evidence": [
-    {
-     "utterance_id": null,
-     "quick_note_id": "q2",
-     "time_range": null
-    },
-    {
-     "utterance_id": "u4",
-     "quick_note_id": null,
-     "time_range": null
-    }
-   ]
-  },
-  {
-   "rule_id": "quick_note_tooth_unclear",
-   "problem_key": "P1",
-   "target": null,
-   "meaning": "Quick note '#30' matches neither the complaint location nor the clinical target #19.",
-   "evidence": [
-    {
-     "utterance_id": null,
-     "quick_note_id": "q3",
-     "time_range": null
-    },
-    {
-     "utterance_id": "u7",
-     "quick_note_id": null,
-     "time_range": null
-    }
-   ]
-  }
- ],
- "forbidden_facts": [
-  "warfarin listed as a current medication",
-  "a filling listed as the treatment plan",
-  "any treatment on #30 or the lower right"
- ],
- "expected_decision": "accepted",
- "notes": "Drafted by the gold drafter from the transcript and answer key. Must be checked by a person (fill checked_by) before held-out scoring."
+  ],
+  "forbidden_facts": [
+    "warfarin listed as a current medication",
+    "a filling listed as the treatment plan",
+    "any treatment on #30 or the lower right"
+  ],
+  "expected_decision": "accepted",
+  "notes": "Drafted by the gold drafter from the transcript and answer key. Must be checked by a person (fill checked_by) before held-out scoring."
 }

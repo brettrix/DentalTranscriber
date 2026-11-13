@@ -1,569 +1,606 @@
 {
- "case_id": "case5",
- "annotated_by": "grader (claude-sonnet-5-5)",
- "checked_by": null,
- "entities": [
-  {
-   "gid": "p1",
-   "kind": "problem",
-   "type": null,
-   "problem_key": "P1",
-   "scope": null,
-   "target": 8,
-   "target_relation": null,
-   "key_attributes": {
-    "role": "chief",
-    "complaint_text": "Chipped my right front tooth.",
-    "complaint_location": "right front tooth"
-   },
-   "assertion": "present",
-   "time_context": "current",
-   "assertion_source": "patient_report",
-   "action": null,
-   "status_fields": {},
-   "evidence": [
+  "case_id": "case5",
+  "annotated_by": "grader (claude-sonnet-5-5)",
+  "checked_by": "claude (chat assistant; wrote the answer keys) — reviewed against the scripts; not checked by an independent person",
+  "entities": [
     {
-     "utterance_id": "u2",
-     "quick_note_id": null,
-     "time_range": null
+      "gid": "p1",
+      "kind": "problem",
+      "type": null,
+      "problem_key": "P1",
+      "scope": null,
+      "target": 8,
+      "target_relation": null,
+      "key_attributes": {
+        "role": "chief",
+        "complaint_text": "Chipped my right front tooth.",
+        "complaint_location": "right front tooth"
+      },
+      "assertion": "present",
+      "time_context": "current",
+      "assertion_source": "patient_report",
+      "action": null,
+      "status_fields": {},
+      "evidence": [
+        {
+          "utterance_id": "u2",
+          "quick_note_id": null,
+          "time_range": null
+        },
+        {
+          "utterance_id": null,
+          "quick_note_id": "q2",
+          "time_range": null
+        }
+      ],
+      "note": null
     },
     {
-     "utterance_id": null,
-     "quick_note_id": "q2",
-     "time_range": null
-    }
-   ],
-   "note": null
-  },
-  {
-   "gid": "h1",
-   "kind": "item",
-   "type": "history_change",
-   "problem_key": null,
-   "scope": "encounter",
-   "target": null,
-   "target_relation": null,
-   "key_attributes": {
-    "description": "fell off bike yesterday, hit mouth on handlebar; no head hit or loss of consciousness"
-   },
-   "assertion": "denied",
-   "time_context": "historical",
-   "assertion_source": "patient_report",
-   "action": null,
-   "status_fields": {},
-   "evidence": [
-    {
-     "utterance_id": "u2",
-     "quick_note_id": null,
-     "time_range": null
+      "gid": "h1",
+      "kind": "item",
+      "type": "history_change",
+      "problem_key": null,
+      "scope": "encounter",
+      "target": null,
+      "target_relation": null,
+      "key_attributes": {
+        "description": "fell off bike yesterday, hit mouth on handlebar"
+      },
+      "assertion": "present",
+      "time_context": "historical",
+      "assertion_source": "patient_report",
+      "action": null,
+      "status_fields": {},
+      "evidence": [
+        {
+          "utterance_id": "u2",
+          "quick_note_id": null,
+          "time_range": null
+        }
+      ],
+      "note": null
     },
     {
-     "utterance_id": "u4",
-     "quick_note_id": null,
-     "time_range": null
+      "gid": "h2",
+      "kind": "item",
+      "type": "history_change",
+      "problem_key": null,
+      "scope": "encounter",
+      "target": null,
+      "target_relation": null,
+      "key_attributes": {
+        "description": "no health changes or medications"
+      },
+      "assertion": "denied",
+      "time_context": "current",
+      "assertion_source": "patient_report",
+      "action": null,
+      "status_fields": {},
+      "evidence": [
+        {
+          "utterance_id": "u8",
+          "quick_note_id": null,
+          "time_range": null
+        },
+        {
+          "utterance_id": "u9",
+          "quick_note_id": null,
+          "time_range": null
+        }
+      ],
+      "note": null
     },
     {
-     "utterance_id": "u5",
-     "quick_note_id": null,
-     "time_range": null
-    }
-   ],
-   "note": "Denial of head injury/LOC."
-  },
-  {
-   "gid": "h2",
-   "kind": "item",
-   "type": "history_change",
-   "problem_key": null,
-   "scope": "encounter",
-   "target": null,
-   "target_relation": null,
-   "key_attributes": {
-    "description": "no health changes or medications"
-   },
-   "assertion": "denied",
-   "time_context": "current",
-   "assertion_source": "patient_report",
-   "action": null,
-   "status_fields": {},
-   "evidence": [
-    {
-     "utterance_id": "u8",
-     "quick_note_id": null,
-     "time_range": null
+      "gid": "v1",
+      "kind": "item",
+      "type": "vital_reading",
+      "problem_key": null,
+      "scope": "encounter",
+      "target": null,
+      "target_relation": null,
+      "key_attributes": {
+        "systolic": 118,
+        "diastolic": 76,
+        "unit": "mmHg",
+        "sequence": 1
+      },
+      "assertion": "present",
+      "time_context": "current",
+      "assertion_source": "assistant_record",
+      "action": null,
+      "status_fields": {},
+      "evidence": [
+        {
+          "utterance_id": null,
+          "quick_note_id": "q1",
+          "time_range": null
+        }
+      ],
+      "note": null
     },
     {
-     "utterance_id": "u9",
-     "quick_note_id": null,
-     "time_range": null
-    }
-   ],
-   "note": null
-  },
-  {
-   "gid": "v1",
-   "kind": "item",
-   "type": "vital_reading",
-   "problem_key": null,
-   "scope": "encounter",
-   "target": null,
-   "target_relation": null,
-   "key_attributes": {
-    "systolic": 118,
-    "diastolic": 76,
-    "unit": "mmHg",
-    "sequence": 1
-   },
-   "assertion": "present",
-   "time_context": "current",
-   "assertion_source": "assistant_record",
-   "action": null,
-   "status_fields": {},
-   "evidence": [
-    {
-     "utterance_id": null,
-     "quick_note_id": "q1",
-     "time_range": null
-    }
-   ],
-   "note": null
-  },
-  {
-   "gid": "s1",
-   "kind": "item",
-   "type": "symptom",
-   "problem_key": "P1",
-   "scope": "problem",
-   "target": 8,
-   "target_relation": "matches_target",
-   "key_attributes": {
-    "aspect": "sensitivity to air and cold",
-    "value": "mild",
-    "score": 3
-   },
-   "assertion": "present",
-   "time_context": "current",
-   "assertion_source": "patient_report",
-   "action": null,
-   "status_fields": {},
-   "evidence": [
-    {
-     "utterance_id": "u6",
-     "quick_note_id": null,
-     "time_range": null
+      "gid": "s1",
+      "kind": "item",
+      "type": "symptom",
+      "problem_key": "P1",
+      "scope": "problem",
+      "target": 8,
+      "target_relation": "matches_target",
+      "key_attributes": {
+        "aspect": "sensitivity to air and cold",
+        "value": "mild",
+        "score": 3
+      },
+      "assertion": "present",
+      "time_context": "current",
+      "assertion_source": "patient_report",
+      "action": null,
+      "status_fields": {},
+      "evidence": [
+        {
+          "utterance_id": "u6",
+          "quick_note_id": null,
+          "time_range": null
+        },
+        {
+          "utterance_id": "u7",
+          "quick_note_id": null,
+          "time_range": null
+        }
+      ],
+      "note": null
     },
     {
-     "utterance_id": "u7",
-     "quick_note_id": null,
-     "time_range": null
-    }
-   ],
-   "note": null
-  },
-  {
-   "gid": "f1",
-   "kind": "item",
-   "type": "finding",
-   "problem_key": "P1",
-   "scope": "problem",
-   "target": 8,
-   "target_relation": "matches_target",
-   "key_attributes": {
-    "test": "visual",
-    "observation": "fracture of incisal edge through enamel into dentin, no pulp exposure"
-   },
-   "assertion": "present",
-   "time_context": "current",
-   "assertion_source": "clinician_observation",
-   "action": null,
-   "status_fields": {},
-   "evidence": [
-    {
-     "utterance_id": "u10",
-     "quick_note_id": null,
-     "time_range": null
-    }
-   ],
-   "note": null
-  },
-  {
-   "gid": "f2",
-   "kind": "item",
-   "type": "finding",
-   "problem_key": "P1",
-   "scope": "problem",
-   "target": null,
-   "target_relation": "unknown",
-   "key_attributes": {
-    "test": "soft tissue exam",
-    "observation": "small cut inside upper lip; lips and gums fine"
-   },
-   "assertion": "present",
-   "time_context": "current",
-   "assertion_source": "clinician_observation",
-   "action": null,
-   "status_fields": {},
-   "evidence": [
-    {
-     "utterance_id": "u10",
-     "quick_note_id": null,
-     "time_range": null
-    }
-   ],
-   "note": null
-  },
-  {
-   "gid": "f3",
-   "kind": "item",
-   "type": "finding",
-   "problem_key": "P1",
-   "scope": "problem",
-   "target": 8,
-   "target_relation": "matches_target",
-   "key_attributes": {
-    "test": "percussion",
-    "response": "negative"
-   },
-   "assertion": "absent",
-   "time_context": "current",
-   "assertion_source": "test_response",
-   "action": null,
-   "status_fields": {},
-   "evidence": [
-    {
-     "utterance_id": "u11",
-     "quick_note_id": null,
-     "time_range": null
-    }
-   ],
-   "note": "Patient did not voice a response to tapping; negative per answer key."
-  },
-  {
-   "gid": "f4",
-   "kind": "item",
-   "type": "finding",
-   "problem_key": "P1",
-   "scope": "problem",
-   "target": 8,
-   "target_relation": "matches_target",
-   "key_attributes": {
-    "test": "cold",
-    "response": "sensitive",
-    "lingering": false
-   },
-   "assertion": "present",
-   "time_context": "current",
-   "assertion_source": "test_response",
-   "action": null,
-   "status_fields": {},
-   "evidence": [
-    {
-     "utterance_id": "u11",
-     "quick_note_id": null,
-     "time_range": null
+      "gid": "f1",
+      "kind": "item",
+      "type": "finding",
+      "problem_key": "P1",
+      "scope": "problem",
+      "target": 8,
+      "target_relation": "matches_target",
+      "key_attributes": {
+        "test": "visual",
+        "observation": "fracture of incisal edge through enamel into dentin, no pulp exposure"
+      },
+      "assertion": "present",
+      "time_context": "current",
+      "assertion_source": "clinician_observation",
+      "action": null,
+      "status_fields": {},
+      "evidence": [
+        {
+          "utterance_id": "u10",
+          "quick_note_id": null,
+          "time_range": null
+        }
+      ],
+      "note": null
     },
     {
-     "utterance_id": "u12",
-     "quick_note_id": null,
-     "time_range": null
-    }
-   ],
-   "note": null
-  },
-  {
-   "gid": "f5",
-   "kind": "item",
-   "type": "finding",
-   "problem_key": "P1",
-   "scope": "problem",
-   "target": 8,
-   "target_relation": "matches_target",
-   "key_attributes": {
-    "test": "mobility",
-    "observation": "not loose"
-   },
-   "assertion": "absent",
-   "time_context": "current",
-   "assertion_source": "clinician_observation",
-   "action": null,
-   "status_fields": {},
-   "evidence": [
-    {
-     "utterance_id": "u13",
-     "quick_note_id": null,
-     "time_range": null
-    }
-   ],
-   "note": null
-  },
-  {
-   "gid": "r1",
-   "kind": "item",
-   "type": "radiograph",
-   "problem_key": "P1",
-   "scope": "problem",
-   "target": 8,
-   "target_relation": "matches_target",
-   "key_attributes": {
-    "type": "PA",
-    "target": 8,
-    "finding": "roots of eight and nine look good, no root fracture"
-   },
-   "assertion": "present",
-   "time_context": "current",
-   "assertion_source": "clinician_observation",
-   "action": "taken",
-   "status_fields": {},
-   "evidence": [
-    {
-     "utterance_id": "u13",
-     "quick_note_id": null,
-     "time_range": null
+      "gid": "f2",
+      "kind": "item",
+      "type": "finding",
+      "problem_key": "P1",
+      "scope": "problem",
+      "target": null,
+      "target_relation": "unknown",
+      "key_attributes": {
+        "test": "soft tissue exam",
+        "observation": "small cut inside upper lip; lips and gums fine"
+      },
+      "assertion": "present",
+      "time_context": "current",
+      "assertion_source": "clinician_observation",
+      "action": null,
+      "status_fields": {},
+      "evidence": [
+        {
+          "utterance_id": "u10",
+          "quick_note_id": null,
+          "time_range": null
+        }
+      ],
+      "note": null
     },
     {
-     "utterance_id": "u14",
-     "quick_note_id": null,
-     "time_range": null
+      "gid": "f4",
+      "kind": "item",
+      "type": "finding",
+      "problem_key": "P1",
+      "scope": "problem",
+      "target": 8,
+      "target_relation": "matches_target",
+      "key_attributes": {
+        "test": "cold",
+        "response": "present",
+        "lingering": false,
+        "result_description": "sensitive"
+      },
+      "assertion": "present",
+      "time_context": "current",
+      "assertion_source": "test_response",
+      "action": null,
+      "status_fields": {},
+      "evidence": [
+        {
+          "utterance_id": "u11",
+          "quick_note_id": null,
+          "time_range": null
+        },
+        {
+          "utterance_id": "u12",
+          "quick_note_id": null,
+          "time_range": null
+        }
+      ],
+      "note": null
     },
     {
-     "utterance_id": "u15",
-     "quick_note_id": null,
-     "time_range": null
-    }
-   ],
-   "note": null
-  },
-  {
-   "gid": "rel1",
-   "kind": "relationship",
-   "type": null,
-   "problem_key": null,
-   "scope": null,
-   "target": 9,
-   "target_relation": null,
-   "key_attributes": {
-    "relation_kind": "adjacent_examined"
-   },
-   "assertion": "present",
-   "time_context": "current",
-   "assertion_source": "clinician_observation",
-   "action": null,
-   "status_fields": {},
-   "evidence": [
-    {
-     "utterance_id": "u15",
-     "quick_note_id": null,
-     "time_range": null
-    }
-   ],
-   "note": null
-  },
-  {
-   "gid": "d1",
-   "kind": "item",
-   "type": "diagnosis",
-   "problem_key": "P1",
-   "scope": "problem",
-   "target": 8,
-   "target_relation": "matches_target",
-   "key_attributes": {
-    "diagnosis": "enamel-dentin fracture (uncomplicated crown fracture)",
-    "certainty": "definitive"
-   },
-   "assertion": "present",
-   "time_context": "current",
-   "assertion_source": "clinician_assessment",
-   "action": null,
-   "status_fields": {},
-   "evidence": [
-    {
-     "utterance_id": "u10",
-     "quick_note_id": null,
-     "time_range": null
-    }
-   ],
-   "note": "Label is implied by the findings statement; answer key names it."
-  },
-  {
-   "gid": "o1",
-   "kind": "item",
-   "type": "option_discussed",
-   "problem_key": "P1",
-   "scope": "problem",
-   "target": 8,
-   "target_relation": "matches_target",
-   "key_attributes": {
-    "option": "composite bonding",
-    "recommended_by_clinician": true
-   },
-   "assertion": "present",
-   "time_context": "current",
-   "assertion_source": "clinician_assessment",
-   "action": null,
-   "status_fields": {},
-   "evidence": [
-    {
-     "utterance_id": "u17",
-     "quick_note_id": null,
-     "time_range": null
-    }
-   ],
-   "note": null
-  },
-  {
-   "gid": "dc1",
-   "kind": "item",
-   "type": "decision",
-   "problem_key": "P1",
-   "scope": "problem",
-   "target": 8,
-   "target_relation": "matches_target",
-   "key_attributes": {
-    "option": "composite bonding",
-    "decision": "accepted"
-   },
-   "assertion": "present",
-   "time_context": "current",
-   "assertion_source": "patient_report",
-   "action": null,
-   "status_fields": {},
-   "evidence": [
-    {
-     "utterance_id": "u17",
-     "quick_note_id": null,
-     "time_range": null
+      "gid": "f5",
+      "kind": "item",
+      "type": "finding",
+      "problem_key": "P1",
+      "scope": "problem",
+      "target": 8,
+      "target_relation": "matches_target",
+      "key_attributes": {
+        "test": "mobility",
+        "observation": "not loose"
+      },
+      "assertion": "absent",
+      "time_context": "current",
+      "assertion_source": "clinician_observation",
+      "action": null,
+      "status_fields": {},
+      "evidence": [
+        {
+          "utterance_id": "u13",
+          "quick_note_id": null,
+          "time_range": null
+        }
+      ],
+      "note": null
     },
     {
-     "utterance_id": "u18",
-     "quick_note_id": null,
-     "time_range": null
+      "gid": "r1",
+      "kind": "item",
+      "type": "radiograph",
+      "problem_key": "P1",
+      "scope": "problem",
+      "target": 8,
+      "target_relation": "matches_target",
+      "key_attributes": {
+        "type": "PA",
+        "target": 8,
+        "finding": "roots of eight and nine look good, no root fracture"
+      },
+      "assertion": "present",
+      "time_context": "current",
+      "assertion_source": "clinician_observation",
+      "action": "performed",
+      "status_fields": {},
+      "evidence": [
+        {
+          "utterance_id": "u13",
+          "quick_note_id": null,
+          "time_range": null
+        },
+        {
+          "utterance_id": "u14",
+          "quick_note_id": null,
+          "time_range": null
+        },
+        {
+          "utterance_id": "u15",
+          "quick_note_id": null,
+          "time_range": null
+        }
+      ],
+      "note": null
     },
     {
-     "utterance_id": "u19",
-     "quick_note_id": null,
-     "time_range": null
-    }
-   ],
-   "note": "Acceptance implied by patient asking to do it soon."
-  },
-  {
-   "gid": "n1",
-   "kind": "item",
-   "type": "next_visit",
-   "problem_key": "P1",
-   "scope": "problem",
-   "target": 9,
-   "target_relation": "adjacent_examined",
-   "key_attributes": {
-    "procedure": "composite bonding",
-    "timing": "next week"
-   },
-   "assertion": "present",
-   "time_context": "planned",
-   "assertion_source": "clinician_instruction",
-   "action": null,
-   "status_fields": {},
-   "evidence": [
-    {
-     "utterance_id": "u19",
-     "quick_note_id": null,
-     "time_range": null
-    }
-   ],
-   "note": "Dentist said 'bond number nine' while findings are on #8."
-  },
-  {
-   "gid": "i1",
-   "kind": "item",
-   "type": "instruction",
-   "problem_key": "P1",
-   "scope": "problem",
-   "target": null,
-   "target_relation": null,
-   "key_attributes": {
-    "text": "avoid biting into hard things with front teeth"
-   },
-   "assertion": "present",
-   "time_context": "planned",
-   "assertion_source": "clinician_instruction",
-   "action": null,
-   "status_fields": {},
-   "evidence": [
-    {
-     "utterance_id": "u19",
-     "quick_note_id": null,
-     "time_range": null
-    }
-   ],
-   "note": null
-  },
-  {
-   "gid": "i2",
-   "kind": "item",
-   "type": "instruction",
-   "problem_key": "P1",
-   "scope": "problem",
-   "target": null,
-   "target_relation": null,
-   "key_attributes": {
-    "text": "if the tooth turns gray or starts to hurt on its own, call us"
-   },
-   "assertion": "present",
-   "time_context": "planned",
-   "assertion_source": "clinician_instruction",
-   "action": null,
-   "status_fields": {},
-   "evidence": [
-    {
-     "utterance_id": "u19",
-     "quick_note_id": null,
-     "time_range": null
-    }
-   ],
-   "note": null
-  }
- ],
- "expected_flags": [
-  {
-   "rule_id": "treatment_target_disagreement",
-   "problem_key": "P1",
-   "target": 8,
-   "meaning": "Findings and diagnosis are on #8 but the next-visit treatment is 'bond number nine'.",
-   "evidence": [
-    {
-     "utterance_id": "u10",
-     "quick_note_id": null,
-     "time_range": null
+      "gid": "d1",
+      "kind": "item",
+      "type": "diagnosis",
+      "problem_key": "P1",
+      "scope": "problem",
+      "target": 8,
+      "target_relation": "matches_target",
+      "key_attributes": {
+        "diagnosis": "enamel-dentin fracture (uncomplicated crown fracture)",
+        "certainty": "definite"
+      },
+      "assertion": "present",
+      "time_context": "current",
+      "assertion_source": "clinician_assessment",
+      "action": null,
+      "status_fields": {},
+      "evidence": [
+        {
+          "utterance_id": "u10",
+          "quick_note_id": null,
+          "time_range": null
+        }
+      ],
+      "note": "Label is implied by the findings statement; answer key names it."
     },
     {
-     "utterance_id": "u19",
-     "quick_note_id": null,
-     "time_range": null
-    }
-   ]
-  },
-  {
-   "rule_id": "quick_note_tooth_unclear",
-   "problem_key": "P1",
-   "target": 8,
-   "meaning": "Quick note has an unlabeled '#9' that does not match the clinical target #8.",
-   "evidence": [
-    {
-     "utterance_id": null,
-     "quick_note_id": "q3",
-     "time_range": null
+      "gid": "o1",
+      "kind": "item",
+      "type": "option_discussed",
+      "problem_key": "P1",
+      "scope": "problem",
+      "target": 8,
+      "target_relation": "matches_target",
+      "key_attributes": {
+        "option": "composite bonding",
+        "recommended_by_clinician": true
+      },
+      "assertion": "present",
+      "time_context": "current",
+      "assertion_source": "clinician_assessment",
+      "action": null,
+      "status_fields": {},
+      "evidence": [
+        {
+          "utterance_id": "u17",
+          "quick_note_id": null,
+          "time_range": null
+        }
+      ],
+      "note": null
     },
     {
-     "utterance_id": "u10",
-     "quick_note_id": null,
-     "time_range": null
+      "gid": "dc1",
+      "kind": "item",
+      "type": "decision",
+      "problem_key": "P1",
+      "scope": "problem",
+      "target": 8,
+      "target_relation": "matches_target",
+      "key_attributes": {
+        "option": "composite bonding",
+        "decision": "accepted"
+      },
+      "assertion": "present",
+      "time_context": "current",
+      "assertion_source": "patient_report",
+      "action": null,
+      "status_fields": {},
+      "evidence": [
+        {
+          "utterance_id": "u17",
+          "quick_note_id": null,
+          "time_range": null
+        },
+        {
+          "utterance_id": "u18",
+          "quick_note_id": null,
+          "time_range": null
+        },
+        {
+          "utterance_id": "u19",
+          "quick_note_id": null,
+          "time_range": null
+        }
+      ],
+      "note": "Acceptance implied by patient asking to do it soon."
+    },
+    {
+      "gid": "n1",
+      "kind": "item",
+      "type": "next_visit",
+      "problem_key": "P1",
+      "scope": "problem",
+      "target": 9,
+      "target_relation": "unknown",
+      "key_attributes": {
+        "procedure": "composite bonding",
+        "timing": "next week"
+      },
+      "assertion": "present",
+      "time_context": "planned",
+      "assertion_source": "clinician_instruction",
+      "action": null,
+      "status_fields": {},
+      "evidence": [
+        {
+          "utterance_id": "u19",
+          "quick_note_id": null,
+          "time_range": null
+        }
+      ],
+      "note": "Dentist said 'bond number nine' while the injured tooth is #8; unexplained (this is the error case)."
+    },
+    {
+      "gid": "i1",
+      "kind": "item",
+      "type": "instruction",
+      "problem_key": "P1",
+      "scope": "problem",
+      "target": null,
+      "target_relation": null,
+      "key_attributes": {
+        "text": "avoid biting into hard things with front teeth"
+      },
+      "assertion": "present",
+      "time_context": "planned",
+      "assertion_source": "clinician_instruction",
+      "action": null,
+      "status_fields": {},
+      "evidence": [
+        {
+          "utterance_id": "u19",
+          "quick_note_id": null,
+          "time_range": null
+        }
+      ],
+      "note": null
+    },
+    {
+      "gid": "i2",
+      "kind": "item",
+      "type": "instruction",
+      "problem_key": "P1",
+      "scope": "problem",
+      "target": null,
+      "target_relation": null,
+      "key_attributes": {
+        "text": "if the tooth turns gray or starts to hurt on its own, call us"
+      },
+      "assertion": "present",
+      "time_context": "planned",
+      "assertion_source": "clinician_instruction",
+      "action": null,
+      "status_fields": {},
+      "evidence": [
+        {
+          "utterance_id": "u19",
+          "quick_note_id": null,
+          "time_range": null
+        }
+      ],
+      "note": null
+    },
+    {
+      "gid": "h3",
+      "kind": "item",
+      "type": "history_change",
+      "problem_key": null,
+      "scope": "encounter",
+      "target": null,
+      "target_relation": null,
+      "key_attributes": {
+        "description": "no head injury or loss of consciousness"
+      },
+      "assertion": "denied",
+      "time_context": "current",
+      "assertion_source": "patient_report",
+      "action": null,
+      "status_fields": {},
+      "evidence": [
+        {
+          "utterance_id": "u4",
+          "quick_note_id": null,
+          "time_range": null
+        },
+        {
+          "utterance_id": "u5",
+          "quick_note_id": null,
+          "time_range": null
+        }
+      ],
+      "note": null
+    },
+    {
+      "gid": "o2",
+      "kind": "item",
+      "type": "option_discussed",
+      "problem_key": "P1",
+      "scope": "problem",
+      "target": 8,
+      "target_relation": "matches_target",
+      "key_attributes": {
+        "option": "crown",
+        "recommended_by_clinician": false
+      },
+      "assertion": "present",
+      "time_context": "current",
+      "assertion_source": "clinician_assessment",
+      "action": null,
+      "status_fields": {},
+      "evidence": [
+        {
+          "utterance_id": "u16",
+          "quick_note_id": null,
+          "time_range": null
+        },
+        {
+          "utterance_id": "u17",
+          "quick_note_id": null,
+          "time_range": null
+        }
+      ],
+      "note": "Spouse asked; dentist said no crown needed right now."
     }
-   ]
-  }
- ],
- "forbidden_facts": [
-  "The wedding should not appear as a clinical fact."
- ],
- "expected_decision": "accepted",
- "notes": "Drafted by the gold drafter from the transcript and answer key. Must be checked by a person (fill checked_by) before held-out scoring."
+  ],
+  "expected_flags": [
+    {
+      "rule_id": "treatment_target_disagreement",
+      "problem_key": "P1",
+      "target": 8,
+      "meaning": "Findings and diagnosis are on #8 but the next-visit treatment is 'bond number nine'.",
+      "evidence": [
+        {
+          "utterance_id": "u10",
+          "quick_note_id": null,
+          "time_range": null
+        },
+        {
+          "utterance_id": "u19",
+          "quick_note_id": null,
+          "time_range": null
+        }
+      ]
+    },
+    {
+      "rule_id": "quick_note_tooth_unclear",
+      "problem_key": "P1",
+      "target": 8,
+      "meaning": "Quick note has an unlabeled '#9' that does not match the clinical target #8.",
+      "evidence": [
+        {
+          "utterance_id": null,
+          "quick_note_id": "q3",
+          "time_range": null
+        },
+        {
+          "utterance_id": "u10",
+          "quick_note_id": null,
+          "time_range": null
+        }
+      ]
+    },
+    {
+      "rule_id": "treatment_target_mismatch",
+      "problem_key": "P1",
+      "target": 8,
+      "meaning": "Next-visit bonding names #9 but the problem's clinical target is #8.",
+      "evidence": [
+        {
+          "utterance_id": "u10",
+          "quick_note_id": null,
+          "time_range": null
+        },
+        {
+          "utterance_id": "u19",
+          "quick_note_id": null,
+          "time_range": null
+        }
+      ]
+    },
+    {
+      "rule_id": "open_conflict",
+      "problem_key": "P1",
+      "target": 8,
+      "meaning": "Dentist refers to the injured tooth as #8 in the exam and as #9 when scheduling.",
+      "evidence": [
+        {
+          "utterance_id": "u10",
+          "quick_note_id": null,
+          "time_range": null
+        },
+        {
+          "utterance_id": "u19",
+          "quick_note_id": null,
+          "time_range": null
+        }
+      ]
+    }
+  ],
+  "forbidden_facts": [
+    "The wedding should not appear as a clinical fact."
+  ],
+  "expected_decision": "accepted",
+  "notes": "Drafted by the gold drafter from the transcript and answer key. Must be checked by a person (fill checked_by) before held-out scoring."
 }

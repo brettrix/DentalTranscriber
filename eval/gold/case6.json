@@ -1,588 +1,588 @@
 {
- "case_id": "case6",
- "annotated_by": "grader (claude-sonnet-5-5)",
- "checked_by": null,
- "entities": [
-  {
-   "gid": "p1",
-   "kind": "problem",
-   "type": null,
-   "problem_key": "P1",
-   "scope": null,
-   "target": 17,
-   "target_relation": null,
-   "key_attributes": {
-    "role": "chief",
-    "complaint_text": "Way in the back on the lower left. The gum is swollen and it hurts to open wide.",
-    "complaint_location": "way in the back on the lower left"
-   },
-   "assertion": null,
-   "time_context": null,
-   "assertion_source": null,
-   "action": null,
-   "status_fields": {},
-   "evidence": [
+  "case_id": "case6",
+  "annotated_by": "grader (claude-sonnet-5-5)",
+  "checked_by": "claude (chat assistant; wrote the answer keys) — reviewed against the scripts; not checked by an independent person",
+  "entities": [
     {
-     "utterance_id": "u3",
-     "quick_note_id": null,
-     "time_range": null
+      "gid": "p1",
+      "kind": "problem",
+      "type": null,
+      "problem_key": "P1",
+      "scope": null,
+      "target": 17,
+      "target_relation": null,
+      "key_attributes": {
+        "role": "chief",
+        "complaint_text": "Way in the back on the lower left. The gum is swollen and it hurts to open wide.",
+        "complaint_location": "way in the back on the lower left"
+      },
+      "assertion": null,
+      "time_context": null,
+      "assertion_source": null,
+      "action": null,
+      "status_fields": {},
+      "evidence": [
+        {
+          "utterance_id": "u3",
+          "quick_note_id": null,
+          "time_range": null
+        },
+        {
+          "utterance_id": "u4",
+          "quick_note_id": null,
+          "time_range": null
+        },
+        {
+          "utterance_id": null,
+          "quick_note_id": "q2",
+          "time_range": null
+        },
+        {
+          "utterance_id": null,
+          "quick_note_id": "q3",
+          "time_range": null
+        }
+      ],
+      "note": null
     },
     {
-     "utterance_id": "u4",
-     "quick_note_id": null,
-     "time_range": null
+      "gid": "s1",
+      "kind": "item",
+      "type": "symptom",
+      "problem_key": "P1",
+      "scope": "problem",
+      "target": 17,
+      "target_relation": "matches_target",
+      "key_attributes": {
+        "aspect": "duration",
+        "value": "about five days"
+      },
+      "assertion": "present",
+      "time_context": "current",
+      "assertion_source": "patient_report",
+      "action": null,
+      "status_fields": {},
+      "evidence": [
+        {
+          "utterance_id": "u5",
+          "quick_note_id": null,
+          "time_range": null
+        },
+        {
+          "utterance_id": "u6",
+          "quick_note_id": null,
+          "time_range": null
+        }
+      ],
+      "note": null
     },
     {
-     "utterance_id": null,
-     "quick_note_id": "q2",
-     "time_range": null
+      "gid": "s2",
+      "kind": "item",
+      "type": "symptom",
+      "problem_key": "P1",
+      "scope": "problem",
+      "target": 17,
+      "target_relation": "matches_target",
+      "key_attributes": {
+        "aspect": "severity",
+        "value": "six",
+        "score": 6
+      },
+      "assertion": "present",
+      "time_context": "current",
+      "assertion_source": "patient_report",
+      "action": null,
+      "status_fields": {},
+      "evidence": [
+        {
+          "utterance_id": "u7",
+          "quick_note_id": null,
+          "time_range": null
+        },
+        {
+          "utterance_id": "u8",
+          "quick_note_id": null,
+          "time_range": null
+        }
+      ],
+      "note": null
     },
     {
-     "utterance_id": null,
-     "quick_note_id": "q3",
-     "time_range": null
-    }
-   ],
-   "note": null
-  },
-  {
-   "gid": "s1",
-   "kind": "item",
-   "type": "symptom",
-   "problem_key": "P1",
-   "scope": "problem",
-   "target": 17,
-   "target_relation": "matches_target",
-   "key_attributes": {
-    "aspect": "duration",
-    "value": "about five days"
-   },
-   "assertion": "present",
-   "time_context": "current",
-   "assertion_source": "patient_report",
-   "action": null,
-   "status_fields": {},
-   "evidence": [
-    {
-     "utterance_id": "u5",
-     "quick_note_id": null,
-     "time_range": null
+      "gid": "s3",
+      "kind": "item",
+      "type": "symptom",
+      "problem_key": "P1",
+      "scope": "problem",
+      "target": 17,
+      "target_relation": "matches_target",
+      "key_attributes": {
+        "aspect": "swelling",
+        "value": "gum swollen"
+      },
+      "assertion": "present",
+      "time_context": "current",
+      "assertion_source": "patient_report",
+      "action": null,
+      "status_fields": {},
+      "evidence": [
+        {
+          "utterance_id": "u4",
+          "quick_note_id": null,
+          "time_range": null
+        }
+      ],
+      "note": null
     },
     {
-     "utterance_id": "u6",
-     "quick_note_id": null,
-     "time_range": null
-    }
-   ],
-   "note": null
-  },
-  {
-   "gid": "s2",
-   "kind": "item",
-   "type": "symptom",
-   "problem_key": "P1",
-   "scope": "problem",
-   "target": 17,
-   "target_relation": "matches_target",
-   "key_attributes": {
-    "aspect": "severity",
-    "value": "six",
-    "score": 6
-   },
-   "assertion": "present",
-   "time_context": "current",
-   "assertion_source": "patient_report",
-   "action": null,
-   "status_fields": {},
-   "evidence": [
-    {
-     "utterance_id": "u7",
-     "quick_note_id": null,
-     "time_range": null
+      "gid": "m1",
+      "kind": "item",
+      "type": "medication",
+      "problem_key": null,
+      "scope": "encounter",
+      "target": null,
+      "target_relation": "unknown",
+      "key_attributes": {
+        "drug": "ibuprofen",
+        "original_wording": "Advil"
+      },
+      "assertion": "present",
+      "time_context": "current",
+      "assertion_source": "patient_report",
+      "action": null,
+      "status_fields": {
+        "medication_status": "current"
+      },
+      "evidence": [
+        {
+          "utterance_id": "u6",
+          "quick_note_id": null,
+          "time_range": null
+        }
+      ],
+      "note": "Self-taken Advil; strength and dose not stated."
     },
     {
-     "utterance_id": "u8",
-     "quick_note_id": null,
-     "time_range": null
-    }
-   ],
-   "note": null
-  },
-  {
-   "gid": "s3",
-   "kind": "item",
-   "type": "symptom",
-   "problem_key": "P1",
-   "scope": "problem",
-   "target": 17,
-   "target_relation": "matches_target",
-   "key_attributes": {
-    "aspect": "swelling",
-    "value": "gum swollen"
-   },
-   "assertion": "present",
-   "time_context": "current",
-   "assertion_source": "patient_report",
-   "action": null,
-   "status_fields": {},
-   "evidence": [
-    {
-     "utterance_id": "u4",
-     "quick_note_id": null,
-     "time_range": null
-    }
-   ],
-   "note": null
-  },
-  {
-   "gid": "m1",
-   "kind": "item",
-   "type": "medication",
-   "problem_key": null,
-   "scope": "encounter",
-   "target": null,
-   "target_relation": "unknown",
-   "key_attributes": {
-    "drug": "ibuprofen",
-    "original_wording": "Advil"
-   },
-   "assertion": "present",
-   "time_context": "current",
-   "assertion_source": "patient_report",
-   "action": null,
-   "status_fields": {
-    "medication_status": "taking"
-   },
-   "evidence": [
-    {
-     "utterance_id": "u6",
-     "quick_note_id": null,
-     "time_range": null
-    }
-   ],
-   "note": "Self-taken Advil; strength and dose not stated."
-  },
-  {
-   "gid": "v1",
-   "kind": "item",
-   "type": "vital_reading",
-   "problem_key": null,
-   "scope": "encounter",
-   "target": null,
-   "target_relation": "unknown",
-   "key_attributes": {
-    "systolic": 172,
-    "diastolic": 104,
-    "unit": "mmHg",
-    "sequence": 1,
-    "label": "initial"
-   },
-   "assertion": "present",
-   "time_context": "current",
-   "assertion_source": "clinician_assessment",
-   "action": null,
-   "status_fields": {},
-   "evidence": [
-    {
-     "utterance_id": "u9",
-     "quick_note_id": null,
-     "time_range": null
+      "gid": "v1",
+      "kind": "item",
+      "type": "vital_reading",
+      "problem_key": null,
+      "scope": "encounter",
+      "target": null,
+      "target_relation": "unknown",
+      "key_attributes": {
+        "systolic": 172,
+        "diastolic": 104,
+        "unit": "mmHg",
+        "sequence": 1,
+        "label": "initial"
+      },
+      "assertion": "present",
+      "time_context": "current",
+      "assertion_source": "clinician_assessment",
+      "action": null,
+      "status_fields": {},
+      "evidence": [
+        {
+          "utterance_id": "u9",
+          "quick_note_id": null,
+          "time_range": null
+        },
+        {
+          "utterance_id": null,
+          "quick_note_id": "q1",
+          "time_range": null
+        }
+      ],
+      "note": null
     },
     {
-     "utterance_id": null,
-     "quick_note_id": "q1",
-     "time_range": null
-    }
-   ],
-   "note": null
-  },
-  {
-   "gid": "v2",
-   "kind": "item",
-   "type": "vital_reading",
-   "problem_key": null,
-   "scope": "encounter",
-   "target": null,
-   "target_relation": "unknown",
-   "key_attributes": {
-    "systolic": 168,
-    "diastolic": 102,
-    "unit": "mmHg",
-    "sequence": 2,
-    "label": "recheck"
-   },
-   "assertion": "present",
-   "time_context": "current",
-   "assertion_source": "assistant_record",
-   "action": null,
-   "status_fields": {},
-   "evidence": [
-    {
-     "utterance_id": "u12",
-     "quick_note_id": null,
-     "time_range": null
-    }
-   ],
-   "note": null
-  },
-  {
-   "gid": "h1",
-   "kind": "item",
-   "type": "history_change",
-   "problem_key": null,
-   "scope": "encounter",
-   "target": null,
-   "target_relation": "unknown",
-   "key_attributes": {
-    "description": "Hasn't been to the doctor in a while"
-   },
-   "assertion": "present",
-   "time_context": "current",
-   "assertion_source": "patient_report",
-   "action": null,
-   "status_fields": {},
-   "evidence": [
-    {
-     "utterance_id": "u10",
-     "quick_note_id": null,
-     "time_range": null
-    }
-   ],
-   "note": null
-  },
-  {
-   "gid": "f1",
-   "kind": "item",
-   "type": "finding",
-   "problem_key": "P1",
-   "scope": "problem",
-   "target": 17,
-   "target_relation": "matches_target",
-   "key_attributes": {
-    "test": "clinical exam",
-    "observation": "partly through the gum; gum flap red, swollen, tender to pressure",
-    "result_description": "opening about two fingers wide"
-   },
-   "assertion": "present",
-   "time_context": "current",
-   "assertion_source": "clinician_observation",
-   "action": null,
-   "status_fields": {},
-   "evidence": [
-    {
-     "utterance_id": "u11",
-     "quick_note_id": null,
-     "time_range": null
-    }
-   ],
-   "note": null
-  },
-  {
-   "gid": "r1",
-   "kind": "item",
-   "type": "radiograph",
-   "problem_key": "P1",
-   "scope": "problem",
-   "target": 17,
-   "target_relation": "matches_target",
-   "key_attributes": {
-    "type": "pano",
-    "target": 17,
-    "finding": "impacted and tilted forward, pushing toward eighteen"
-   },
-   "assertion": "present",
-   "time_context": "current",
-   "assertion_source": "clinician_observation",
-   "action": "taken",
-   "status_fields": {},
-   "evidence": [
-    {
-     "utterance_id": "u13",
-     "quick_note_id": null,
-     "time_range": null
+      "gid": "v2",
+      "kind": "item",
+      "type": "vital_reading",
+      "problem_key": null,
+      "scope": "encounter",
+      "target": null,
+      "target_relation": "unknown",
+      "key_attributes": {
+        "systolic": 168,
+        "diastolic": 102,
+        "unit": "mmHg",
+        "sequence": 2,
+        "label": "recheck"
+      },
+      "assertion": "present",
+      "time_context": "current",
+      "assertion_source": "assistant_record",
+      "action": null,
+      "status_fields": {},
+      "evidence": [
+        {
+          "utterance_id": "u12",
+          "quick_note_id": null,
+          "time_range": null
+        }
+      ],
+      "note": null
     },
     {
-     "utterance_id": "u14",
-     "quick_note_id": null,
-     "time_range": null
+      "gid": "h1",
+      "kind": "item",
+      "type": "history_change",
+      "problem_key": null,
+      "scope": "encounter",
+      "target": null,
+      "target_relation": "unknown",
+      "key_attributes": {
+        "description": "Hasn't been to the doctor in a while"
+      },
+      "assertion": "present",
+      "time_context": "current",
+      "assertion_source": "patient_report",
+      "action": null,
+      "status_fields": {},
+      "evidence": [
+        {
+          "utterance_id": "u10",
+          "quick_note_id": null,
+          "time_range": null
+        }
+      ],
+      "note": null
     },
     {
-     "utterance_id": "u15",
-     "quick_note_id": null,
-     "time_range": null
-    }
-   ],
-   "note": null
-  },
-  {
-   "gid": "f2",
-   "kind": "item",
-   "type": "finding",
-   "problem_key": "P1",
-   "scope": "problem",
-   "target": 18,
-   "target_relation": "adjacent_examined",
-   "key_attributes": {
-    "test": "pano",
-    "observation": "no decay on eighteen"
-   },
-   "assertion": "absent",
-   "time_context": "current",
-   "assertion_source": "clinician_observation",
-   "action": null,
-   "status_fields": {},
-   "evidence": [
-    {
-     "utterance_id": "u15",
-     "quick_note_id": null,
-     "time_range": null
-    }
-   ],
-   "note": null
-  },
-  {
-   "gid": "d1",
-   "kind": "item",
-   "type": "diagnosis",
-   "problem_key": "P1",
-   "scope": "problem",
-   "target": 17,
-   "target_relation": "matches_target",
-   "key_attributes": {
-    "diagnosis": "pericoronitis",
-    "certainty": "definitive"
-   },
-   "assertion": "present",
-   "time_context": "current",
-   "assertion_source": "clinician_assessment",
-   "action": null,
-   "status_fields": {},
-   "evidence": [
-    {
-     "utterance_id": "u15",
-     "quick_note_id": null,
-     "time_range": null
-    }
-   ],
-   "note": null
-  },
-  {
-   "gid": "o1",
-   "kind": "item",
-   "type": "option_discussed",
-   "problem_key": "P1",
-   "scope": "problem",
-   "target": 17,
-   "target_relation": "matches_target",
-   "key_attributes": {
-    "option": "extraction of seventeen by oral surgeon",
-    "recommended_by_clinician": true
-   },
-   "assertion": "present",
-   "time_context": "planned",
-   "assertion_source": "clinician_assessment",
-   "action": null,
-   "status_fields": {},
-   "evidence": [
-    {
-     "utterance_id": "u16",
-     "quick_note_id": null,
-     "time_range": null
+      "gid": "f1",
+      "kind": "item",
+      "type": "finding",
+      "problem_key": "P1",
+      "scope": "problem",
+      "target": 17,
+      "target_relation": "matches_target",
+      "key_attributes": {
+        "test": "clinical exam",
+        "observation": "partly through the gum; gum flap red, swollen, tender to pressure",
+        "result_description": "opening about two fingers wide"
+      },
+      "assertion": "present",
+      "time_context": "current",
+      "assertion_source": "clinician_observation",
+      "action": null,
+      "status_fields": {},
+      "evidence": [
+        {
+          "utterance_id": "u11",
+          "quick_note_id": null,
+          "time_range": null
+        }
+      ],
+      "note": null
     },
     {
-     "utterance_id": "u17",
-     "quick_note_id": null,
-     "time_range": null
-    }
-   ],
-   "note": null
-  },
-  {
-   "gid": "dc1",
-   "kind": "item",
-   "type": "decision",
-   "problem_key": "P1",
-   "scope": "problem",
-   "target": 17,
-   "target_relation": "matches_target",
-   "key_attributes": {
-    "option": "referral to oral surgeon for extraction",
-    "decision": "accepted"
-   },
-   "assertion": "present",
-   "time_context": "planned",
-   "assertion_source": "patient_report",
-   "action": null,
-   "status_fields": {},
-   "evidence": [
-    {
-     "utterance_id": "u17",
-     "quick_note_id": null,
-     "time_range": null
+      "gid": "r1",
+      "kind": "item",
+      "type": "radiograph",
+      "problem_key": "P1",
+      "scope": "problem",
+      "target": 17,
+      "target_relation": "matches_target",
+      "key_attributes": {
+        "type": "pano",
+        "target": 17,
+        "finding": "impacted and tilted forward, pushing toward eighteen"
+      },
+      "assertion": "present",
+      "time_context": "current",
+      "assertion_source": "clinician_observation",
+      "action": "performed",
+      "status_fields": {},
+      "evidence": [
+        {
+          "utterance_id": "u13",
+          "quick_note_id": null,
+          "time_range": null
+        },
+        {
+          "utterance_id": "u14",
+          "quick_note_id": null,
+          "time_range": null
+        },
+        {
+          "utterance_id": "u15",
+          "quick_note_id": null,
+          "time_range": null
+        }
+      ],
+      "note": null
     },
     {
-     "utterance_id": "u18",
-     "quick_note_id": null,
-     "time_range": null
-    }
-   ],
-   "note": null
-  },
-  {
-   "gid": "rf1",
-   "kind": "item",
-   "type": "referral",
-   "problem_key": "P1",
-   "scope": "problem",
-   "target": 17,
-   "target_relation": "matches_target",
-   "key_attributes": {
-    "to": "oral surgeon",
-    "purpose": "extraction of #17"
-   },
-   "assertion": "present",
-   "time_context": "planned",
-   "assertion_source": "clinician_instruction",
-   "action": null,
-   "status_fields": {},
-   "evidence": [
-    {
-     "utterance_id": "u17",
-     "quick_note_id": null,
-     "time_range": null
+      "gid": "f2",
+      "kind": "item",
+      "type": "finding",
+      "problem_key": "P1",
+      "scope": "problem",
+      "target": 18,
+      "target_relation": "adjacent_examined",
+      "key_attributes": {
+        "test": "pano",
+        "observation": "no decay on eighteen"
+      },
+      "assertion": "absent",
+      "time_context": "current",
+      "assertion_source": "clinician_observation",
+      "action": null,
+      "status_fields": {},
+      "evidence": [
+        {
+          "utterance_id": "u15",
+          "quick_note_id": null,
+          "time_range": null
+        }
+      ],
+      "note": null
     },
     {
-     "utterance_id": "u19",
-     "quick_note_id": null,
-     "time_range": null
-    }
-   ],
-   "note": null
-  },
-  {
-   "gid": "rx1",
-   "kind": "item",
-   "type": "prescription",
-   "problem_key": "P1",
-   "scope": "problem",
-   "target": null,
-   "target_relation": "unknown",
-   "key_attributes": {
-    "drug": "ibuprofen",
-    "strength": "600 mg",
-    "frequency_code": "q6h PRN",
-    "as_needed": true,
-    "original_wording": "ibuprofen 600 milligrams every six hours as needed"
-   },
-   "assertion": "present",
-   "time_context": "planned",
-   "assertion_source": "clinician_instruction",
-   "action": null,
-   "status_fields": {
-    "prescription_status": "recommended"
-   },
-   "evidence": [
-    {
-     "utterance_id": "u17",
-     "quick_note_id": null,
-     "time_range": null
-    }
-   ],
-   "note": "Status wording (recommended vs prescribed) not explicit."
-  },
-  {
-   "gid": "i1",
-   "kind": "item",
-   "type": "instruction",
-   "problem_key": "P1",
-   "scope": "problem",
-   "target": null,
-   "target_relation": "unknown",
-   "key_attributes": {
-    "text": "warm salt water rinses several times a day"
-   },
-   "assertion": "present",
-   "time_context": "planned",
-   "assertion_source": "clinician_instruction",
-   "action": null,
-   "status_fields": {},
-   "evidence": [
-    {
-     "utterance_id": "u17",
-     "quick_note_id": null,
-     "time_range": null
-    }
-   ],
-   "note": null
-  },
-  {
-   "gid": "i2",
-   "kind": "item",
-   "type": "instruction",
-   "problem_key": "P1",
-   "scope": "problem",
-   "target": null,
-   "target_relation": "unknown",
-   "key_attributes": {
-    "text": "see primary care doctor about blood pressure before the surgery"
-   },
-   "assertion": "present",
-   "time_context": "planned",
-   "assertion_source": "clinician_instruction",
-   "action": null,
-   "status_fields": {},
-   "evidence": [
-    {
-     "utterance_id": "u17",
-     "quick_note_id": null,
-     "time_range": null
+      "gid": "d1",
+      "kind": "item",
+      "type": "diagnosis",
+      "problem_key": "P1",
+      "scope": "problem",
+      "target": 17,
+      "target_relation": "matches_target",
+      "key_attributes": {
+        "diagnosis": "pericoronitis",
+        "certainty": "definite"
+      },
+      "assertion": "present",
+      "time_context": "current",
+      "assertion_source": "clinician_assessment",
+      "action": null,
+      "status_fields": {},
+      "evidence": [
+        {
+          "utterance_id": "u15",
+          "quick_note_id": null,
+          "time_range": null
+        }
+      ],
+      "note": null
     },
     {
-     "utterance_id": "u21",
-     "quick_note_id": null,
-     "time_range": null
+      "gid": "o1",
+      "kind": "item",
+      "type": "option_discussed",
+      "problem_key": "P1",
+      "scope": "problem",
+      "target": 17,
+      "target_relation": "matches_target",
+      "key_attributes": {
+        "option": "extraction of seventeen by oral surgeon",
+        "recommended_by_clinician": true
+      },
+      "assertion": "present",
+      "time_context": "planned",
+      "assertion_source": "clinician_assessment",
+      "action": null,
+      "status_fields": {},
+      "evidence": [
+        {
+          "utterance_id": "u16",
+          "quick_note_id": null,
+          "time_range": null
+        },
+        {
+          "utterance_id": "u17",
+          "quick_note_id": null,
+          "time_range": null
+        }
+      ],
+      "note": null
+    },
+    {
+      "gid": "dc1",
+      "kind": "item",
+      "type": "decision",
+      "problem_key": "P1",
+      "scope": "problem",
+      "target": 17,
+      "target_relation": "matches_target",
+      "key_attributes": {
+        "option": "referral to oral surgeon for extraction",
+        "decision": "accepted"
+      },
+      "assertion": "present",
+      "time_context": "planned",
+      "assertion_source": "patient_report",
+      "action": null,
+      "status_fields": {},
+      "evidence": [
+        {
+          "utterance_id": "u17",
+          "quick_note_id": null,
+          "time_range": null
+        },
+        {
+          "utterance_id": "u18",
+          "quick_note_id": null,
+          "time_range": null
+        }
+      ],
+      "note": null
+    },
+    {
+      "gid": "rf1",
+      "kind": "item",
+      "type": "referral",
+      "problem_key": "P1",
+      "scope": "problem",
+      "target": 17,
+      "target_relation": "matches_target",
+      "key_attributes": {
+        "to": "oral surgeon",
+        "purpose": "extraction of #17"
+      },
+      "assertion": "present",
+      "time_context": "planned",
+      "assertion_source": "clinician_instruction",
+      "action": null,
+      "status_fields": {},
+      "evidence": [
+        {
+          "utterance_id": "u17",
+          "quick_note_id": null,
+          "time_range": null
+        },
+        {
+          "utterance_id": "u19",
+          "quick_note_id": null,
+          "time_range": null
+        }
+      ],
+      "note": null
+    },
+    {
+      "gid": "rx1",
+      "kind": "item",
+      "type": "prescription",
+      "problem_key": "P1",
+      "scope": "problem",
+      "target": null,
+      "target_relation": "unknown",
+      "key_attributes": {
+        "drug": "ibuprofen",
+        "strength": "600 mg",
+        "frequency_code": "q6h PRN",
+        "as_needed": true,
+        "original_wording": "ibuprofen 600 milligrams every six hours as needed"
+      },
+      "assertion": "present",
+      "time_context": "planned",
+      "assertion_source": "clinician_instruction",
+      "action": null,
+      "status_fields": {
+        "prescription_status": "prescribed_today"
+      },
+      "evidence": [
+        {
+          "utterance_id": "u17",
+          "quick_note_id": null,
+          "time_range": null
+        }
+      ],
+      "note": null
+    },
+    {
+      "gid": "i1",
+      "kind": "item",
+      "type": "instruction",
+      "problem_key": "P1",
+      "scope": "problem",
+      "target": null,
+      "target_relation": "unknown",
+      "key_attributes": {
+        "text": "warm salt water rinses several times a day"
+      },
+      "assertion": "present",
+      "time_context": "planned",
+      "assertion_source": "clinician_instruction",
+      "action": null,
+      "status_fields": {},
+      "evidence": [
+        {
+          "utterance_id": "u17",
+          "quick_note_id": null,
+          "time_range": null
+        }
+      ],
+      "note": null
+    },
+    {
+      "gid": "i2",
+      "kind": "item",
+      "type": "instruction",
+      "problem_key": "P1",
+      "scope": "problem",
+      "target": null,
+      "target_relation": "unknown",
+      "key_attributes": {
+        "text": "see primary care doctor about blood pressure before the surgery"
+      },
+      "assertion": "present",
+      "time_context": "planned",
+      "assertion_source": "clinician_instruction",
+      "action": null,
+      "status_fields": {},
+      "evidence": [
+        {
+          "utterance_id": "u17",
+          "quick_note_id": null,
+          "time_range": null
+        },
+        {
+          "utterance_id": "u21",
+          "quick_note_id": null,
+          "time_range": null
+        }
+      ],
+      "note": null
     }
-   ],
-   "note": null
-  }
- ],
- "expected_flags": [
-  {
-   "rule_id": "bp_reading",
-   "problem_key": null,
-   "target": null,
-   "meaning": "Elevated BP 172/104, rechecked 168/102; recheck and primary care referral documented, so informational.",
-   "evidence": [
+  ],
+  "expected_flags": [
     {
-     "utterance_id": "u9",
-     "quick_note_id": null,
-     "time_range": null
-    },
-    {
-     "utterance_id": "u12",
-     "quick_note_id": null,
-     "time_range": null
-    },
-    {
-     "utterance_id": "u17",
-     "quick_note_id": null,
-     "time_range": null
-    },
-    {
-     "utterance_id": null,
-     "quick_note_id": "q1",
-     "time_range": null
+      "rule_id": "bp_reading",
+      "problem_key": null,
+      "target": null,
+      "meaning": "Elevated BP 172/104, rechecked 168/102; recheck and primary care referral documented, so informational.",
+      "evidence": [
+        {
+          "utterance_id": "u9",
+          "quick_note_id": null,
+          "time_range": null
+        },
+        {
+          "utterance_id": "u12",
+          "quick_note_id": null,
+          "time_range": null
+        },
+        {
+          "utterance_id": "u17",
+          "quick_note_id": null,
+          "time_range": null
+        },
+        {
+          "utterance_id": null,
+          "quick_note_id": "q1",
+          "time_range": null
+        }
+      ]
     }
-   ]
-  }
- ],
- "forbidden_facts": [
-  "Moab",
-  "Delicate Arch",
-  "camping",
-  "the brother-in-law's story",
-  "the wife's opinion"
- ],
- "expected_decision": "accepted (referral)",
- "notes": "Drafted by the gold drafter from the transcript and answer key. Must be checked by a person (fill checked_by) before held-out scoring."
+  ],
+  "forbidden_facts": [
+    "Moab",
+    "Delicate Arch",
+    "camping",
+    "the brother-in-law's story",
+    "the wife's opinion"
+  ],
+  "expected_decision": "accepted",
+  "notes": "Drafted by the gold drafter from the transcript and answer key. Must be checked by a person (fill checked_by) before held-out scoring."
 }
