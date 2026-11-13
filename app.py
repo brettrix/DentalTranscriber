@@ -11,8 +11,9 @@ from pathlib import Path
 
 import streamlit as st
 
-from pipeline import approval, human, plain
-from pipeline.chart import chart_sections, chart_text
+from components import copy_button
+from pipeline import approval, exports, human, plain
+from pipeline.chart import chart_sections
 from pipeline.dispositions import accepted
 from pipeline.flags import flag_state, session_flag_actions
 from pipeline.graph import load_graph
@@ -458,7 +459,7 @@ def status_line(state, cards):
     """Where the note stands and what happens next, at the top of the page."""
     if state.state in APPROVED:
         at = _stamp(state, "dentist_approved")
-        st.success(f"**Approved by the dentist at {clock(at)}** · Download the note below.")
+        st.success(f"**Approved by the dentist at {clock(at)}** · Download note:")
         downloads()
         return
     if state.revoked:
@@ -481,11 +482,18 @@ def status_line(state, cards):
 
 
 def downloads():
-    """Group 5 replaces this with PDF, Word and copy-as-text."""
-    text = chart_text((load_latest(session) or {}).get("note") or {}, load_graph(session),
-                      header=[visit_heading(session)])
-    st.download_button("Download note", text, file_name=f"{visit_name(meta)} note.txt", type="primary",
-                       key="dl_note", on_click="ignore")
+    """The approved note: PDF first, then Word and one-click copy. Never Markdown."""
+    if exports.approved_record(session) is None:
+        st.warning("This note changed after it was approved, so the dentist needs to approve it again.")
+        return
+    stem = exports.file_stem(session)
+    c1, c2, c3, _ = st.columns([2, 2, 2, 4])
+    c1.download_button("Download PDF", lambda: exports.note_pdf(session), file_name=f"{stem} note.pdf",
+                       mime=exports.PDF_MIME, type="primary", key="dl_pdf", on_click="ignore", width="stretch")
+    c2.download_button("Word (.docx)", lambda: exports.note_docx(session), file_name=f"{stem} note.docx",
+                       mime=exports.DOCX_MIME, key="dl_docx", on_click="ignore", width="stretch")
+    with c3:
+        copy_button(exports.note_text(session), key="copy_note")
 
 
 def no_graph():

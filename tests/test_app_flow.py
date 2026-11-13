@@ -333,3 +333,18 @@ def test_sign_off_is_not_offered_while_items_are_unanswered(monkeypatch, tmp_pat
     at = _app(monkeypatch, tmp_path, "Assistant")
     assert _cards(at) and not any(b.label == "Send to the dentist" for b in at.button)
     assert any(h.value == "To answer" for h in at.subheader)
+
+
+def test_approved_note_offers_pdf_word_and_copy_never_markdown(monkeypatch, tmp_path):
+    s = mini_session(tmp_path, "baseline")
+    s.update_meta(patient="Maria Lopez 4417")
+    run_pipeline(s, mode="baseline", client=FakeLLM())
+    at = _app(monkeypatch, tmp_path, "Assistant")
+    assert not at.get("download_button"), "nothing to download before the dentist approves"
+    approval.force_approve_for_test(s)
+    at = _app(monkeypatch, tmp_path, "Assistant")
+    assert not at.exception, at.exception
+    buttons = {d.label: d for d in at.get("download_button")}
+    assert list(buttons)[:2] == ["Download PDF", "Word (.docx)"], "PDF first"
+    assert not any("md" in label.lower() or "markdown" in label.lower() for label in buttons)
+    assert not any(b.label == "Export" for b in at.button)
