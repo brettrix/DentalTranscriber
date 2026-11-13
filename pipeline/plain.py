@@ -476,7 +476,8 @@ def build_cards(items, graph, check_log, staging, sources, role: str, flag_by_id
                                   or x.get("pending_id") or x.get("staged_id") or x.get("flag_id") or x["kind"])
                               for x in group))
         card = {"key": key, "kind": b["kind"], "hidden": False, "default": None, "options": [], "details": [],
-                "comments": _comments([flag_by_id.get(f) for f in flag_ids])}
+                "comments": comments([flag_by_id.get(f) for f in flag_ids]),
+                "asked": asked([flag_by_id.get(f) for f in flag_ids])}
         k = b["kind"]
         if k == "check" or (k == "task" and graph.task(b["task_id"]).kind in ("check_failure", "registry_issue",
                                                                             "human_override_check")):
@@ -591,22 +592,29 @@ def build_cards(items, graph, check_log, staging, sources, role: str, flag_by_id
             continue
         if card["options"]:
             cards.append(card)
+    if role == "Dentist":  # what the assistant asked about comes first
+        cards.sort(key=lambda c: not c["asked"])
     return cards
 
 
 DEFAULT_REASON = "Reviewed by the {role} against the transcript"
 
 
-def _comments(flags) -> list[str]:
-    """Comments a reviewer typed when sending an item on (e.g. the assistant's note to the dentist)."""
+def comments(flags) -> list[str]:
+    """What a reviewer typed when passing an item on (the assistant's note to the dentist), without the role."""
     out = []
     for f in flags:
         for h in (f.history if f is not None else []):
-            if h.reason and not h.reason.startswith("Reviewed by the ") and h.action in ("for_dentist", "comment"):
-                line = f"{h.by_role}: {h.reason}"
-                if line not in out:
-                    out.append(line)
+            if h.reason and not h.reason.startswith("Reviewed by the ") and h.action in ("for_dentist", "comment") \
+                    and h.reason not in out:
+                out.append(h.reason)
     return out
+
+
+def asked(flags) -> bool:
+    """True when the assistant passed any of these to the dentist ("Ask dentist")."""
+    return any(h.action == "for_dentist" and h.by_role == "Assistant"
+               for f in flags if f is not None for h in f.history)
 
 
 # ---------------------------------------------------------------- errors in plain words

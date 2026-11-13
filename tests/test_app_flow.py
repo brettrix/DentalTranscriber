@@ -147,9 +147,8 @@ def test_choices_are_held_then_saved_together(monkeypatch, tmp_path):
     at = _app(monkeypatch, tmp_path, "Dentist")
     groups = at.button_group
     assert _answered(at) == "**0 of 2 answered**"
-    next(b for b in at.button if b.key == "save_review").click().run()
-    assert [e.value for e in at.error if "Answer" in e.value] == ["Answer the 2 items above first."], \
-        "a plain message, shown by the button"
+    bar = next(b for b in at.button if b.key == "handoff")
+    assert bar.disabled and bar.label == "Save my answers", "one button in the bar, off until everything is answered"
     assert load_graph(s).version == v0
     assert "you can already answer the 2 items below" in _status(at)
     groups = at.button_group
@@ -166,7 +165,7 @@ def test_choices_are_held_then_saved_together(monkeypatch, tmp_path):
     other = next(g for g in at.button_group if g.key != bp.key)
     other.set_value("ok").run()
     assert _answered(at) == "**2 of 2 answered**"
-    next(b for b in at.button if b.key == "save_review").click().run()
+    next(b for b in at.button if b.key == "handoff").click().run()
     assert not at.exception, at.exception
     g = load_graph(s)
     assert g.version == v0 + 1, "one rebuild for the whole review"
@@ -177,7 +176,7 @@ def test_choices_are_held_then_saved_together(monkeypatch, tmp_path):
 
 
 def test_ask_dentist_is_part_of_the_choice(monkeypatch, tmp_path):
-    _bad_session(tmp_path, with_bp=False)
+    s_ = _bad_session(tmp_path, with_bp=False)
     at = _app(monkeypatch, tmp_path, "Assistant")
     grp = at.button_group[0]
     assert "Ask dentist" in grp.options and "Looks right" not in grp.options, \
@@ -185,14 +184,15 @@ def test_ask_dentist_is_part_of_the_choice(monkeypatch, tmp_path):
     assert any(c.value == "Only the dentist can confirm tooth numbers." for c in at.caption)
     grp.set_value("ask").run()
     next(t for t in at.text_input if t.key == f"{grp.key}_note").set_value("I heard fifteen, not fourteen").run()
-    next(b for b in at.button if b.key == "save_review").click().run()
+    next(b for b in at.button if b.key == "handoff").click().run()
     at = _app(monkeypatch, tmp_path, "Assistant")
     assert _cards(at) == [], "cleared for the assistant"
     assert not any(t.label == "Note for your actions (optional)" for t in at.text_input)
     at = _app(monkeypatch, tmp_path, "Dentist")
     assert len(_cards(at)) == 1, "now the dentist's to answer"
-    assert any("Assistant: I heard fifteen, not fourteen" in m.value for m in at.markdown), \
-        "the assistant's comment travels with the card"
+    assert any("The assistant asked about this" in m.value and "I heard fifteen, not fourteen" in m.value
+               for m in at.markdown), "the dentist sees what the assistant asked, with her comment"
+    assert approval.load_state(s_).state == "assistant_review_complete", "answering and sending was one click"
 
 
 def test_wording_only_disagreements_are_folded(monkeypatch, tmp_path):
@@ -331,7 +331,7 @@ def test_signoff_buttons_only_while_they_apply(monkeypatch, tmp_path):
 def test_sign_off_is_not_offered_while_items_are_unanswered(monkeypatch, tmp_path):
     _bad_session(tmp_path)
     at = _app(monkeypatch, tmp_path, "Assistant")
-    assert _cards(at) and not any(b.label == "Send to the dentist" for b in at.button)
+    assert _cards(at) and _button(at, "Send to the dentist").disabled, "off until every item is answered"
     assert any(h.value == "To answer" for h in at.subheader)
 
 

@@ -390,6 +390,11 @@ REVIEW_CSS = """<style>
 [data-testid="stButtonGroup"] button[data-selected] { background: #1f8a3b !important; border-color: #1f8a3b !important;
   color: #fff !important; }
 [data-testid="stButtonGroup"] button[data-selected] p { color: #fff !important; }
+/* The hand-off bar stays at the bottom of the window (above the recording player when there is one). */
+.st-key-handoff_bar { position: sticky; bottom: 0; z-index: 90; padding: .7rem 1rem; margin: 0 -1rem;
+  border-top: 1px solid rgba(128, 128, 128, .35); background: rgba(128, 128, 128, .14);
+  -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); border-radius: .6rem .6rem 0 0; }
+html.scribe-player-on .st-key-handoff_bar { bottom: 3.3rem; }
 /* Edit appears only on the line being pointed at (or focused, or already open); always on touch screens. */
 [class*="st-key-noteline_"] [class*="st-key-edit_"] { opacity: 0; transition: opacity .12s; }
 [class*="st-key-noteline_"]:hover [class*="st-key-edit_"],
@@ -449,7 +454,6 @@ def review_page():
     status_line(state, cards)
     if not approved:
         checklist(cards, _quote_times(src) if timed else ())
-        sign_off(state, cards, items)
         alerts(graph, flags, _covered_by(items, graph, log, staging))
 
     left, right = st.columns([3, 2])
@@ -480,6 +484,8 @@ def review_page():
         st.caption("Download")
         source_downloads(session, "review")
     technical_details(graph, latest)
+    if not approved:
+        handoff_bar(state, cards)
     if timed:
         audio = exports.recording_path(session)
         audio_player(audio, exports.AUDIO_MIME[audio.suffix.lower()])
@@ -497,7 +503,8 @@ def status_line(state, cards):
     n = len(cards)
     if state.state == "draft":
         if role == "Assistant":
-            st.info(f"**Waiting for your review** · Answer the {_items(n)} below, then send the note to the dentist."
+            st.info(f"**Waiting for your review** · Answer the {_items(n)} below, then press "
+                    f"\u201cSend to the dentist\u201d at the bottom."
                     if n else "**Waiting for your review** · Nothing left to answer. Send the note to the dentist.")
         else:
             st.info("**Waiting for the assistant's review** · It can't be approved yet"
@@ -587,8 +594,13 @@ def _render_card(card, times=()):
         st.markdown(f"**{esc(card['title'])}** &nbsp; :{color}-badge[{esc(card['tag'])}]")
         if card.get("hint"):
             st.caption(card["hint"])
-        for comment in card.get("comments", []):
-            st.markdown(f"💬 *{esc(comment)}*")
+        if card.get("asked") and role == "Dentist":
+            who = esc(visit_meta(session).get("assistant") or "The assistant")
+            st.markdown(f":blue-badge[{who} asked about this]" +
+                        "".join(f"  \n💬 *\u201c{esc(c)}\u201d*" for c in card.get("comments", [])))
+        else:
+            for comment in card.get("comments", []):
+                st.markdown(f"💬 *\u201c{esc(comment)}\u201d*")
         c1, c2 = st.columns(2)
         with c1.container(border=True):
             st.caption(card["left"][0])
@@ -610,7 +622,7 @@ def _render_card(card, times=()):
 
 
 def checklist(cards, times=()):
-    """Review cards: choose on each card (with an optional comment), then save everything at once."""
+    """Review cards: choose on each card (with an optional comment). The bar at the bottom saves them all."""
     shown = [c for c in cards if not c["hidden"]]
     hidden = [c for c in cards if c["hidden"]]
     if cards:
@@ -619,54 +631,72 @@ def checklist(cards, times=()):
         _render_card(card, times)
     if hidden:
         n = len(hidden)
-        with st.expander(f"{n} more {'item looks' if n == 1 else 'items look'} right · show"):
+        with st.expander(f"{n} more {'item looks' if n == 1 else 'items look'} right \u00b7 show"):
             for card in hidden:
                 _render_card(card, times)
-    if cards:
-        answered = sum(1 for c in cards if st.session_state.get(_card_key(c)) is not None)
-        c1, c2 = st.columns([2, 6])
-        save = c1.button("Save my answers", type="primary", key="save_review")
-        c2.markdown(f"**{answered} of {len(cards)} answered**")
-        if save and answered < len(cards):
-            st.error(f"Answer the {_items(len(cards) - answered)} above first.")
-        elif save:
-            choices = []
-            for c in cards:
-                v = st.session_state.get(_card_key(c))
-                comment = (st.session_state.get(f"{_card_key(c)}_note") or "").strip()
-                ops = next(ops for val, _, ops in c["options"] if val == v)
-                choices += [{**op, "reason": comment} for op in ops] if comment else ops
-            out = guarded("save_review", human.apply_review, session, choices, role, _default_reason(),
-                          doing="save your answers", done="Saved your answers.")
-            if isinstance(out, dict) and out.get("errors"):
-                notify("save_review", "error", f"{_items(len(out['errors']))} couldn't be saved. "
-                                               "Check what is still listed here and answer again.")
-            for c in cards:
-                st.session_state.pop(_card_key(c), None)
-                st.session_state.pop(f"{_card_key(c)}_note", None)
-            st.rerun()
-    show_notice("save_review")
 
 
-def sign_off(state, cards, items):
-    """The one sign-off step that applies now, offered once nothing is left to answer."""
-    if cards:
+def _collect(cards) -> tuple[list[dict], str | None]:
+    """The actions for every card's choice, or a plain message saying what is still missing."""
+    choices = []
+    for c in cards:
+        key = _card_key(c)
+        v = st.session_state.get(key)
+        comment = (st.session_state.get(f"{key}_note") or "").strip()
+        label, ops = next((lbl, ops) for val, lbl, ops in c["options"] if val == v)
+        if v in c.get("needs_reason", ()) and not comment:
+            return [], f"Add a reason in the comment box for \u201c{label}\u201d ({c['title']}) first."
+        choices += [{**op, "reason": comment} for op in ops] if comment else ops
+    return choices, None
+
+
+def handoff_bar(state, cards):
+    """Pinned to the bottom of the page: how many cards are answered, and one button that saves the answers and
+    hands the note on (assistant: to the dentist; dentist: approves it)."""
+    sends = role == "Assistant" and state.state == "draft"
+    approves = role == "Dentist" and state.state == "assistant_review_complete"
+    if not (cards or sends or approves):
+        show_notice("handoff")  # e.g. "Saved your answers." after the last card was answered
         return
-    mine = (role == "Assistant" and state.state == "draft") or \
-           (role == "Dentist" and state.state == "assistant_review_complete")
-    if not mine:
+    label = "Send to the dentist" if sends else "Approve the note" if approves else "Save my answers"
+    answered = sum(1 for c in cards if st.session_state.get(_card_key(c)) is not None)
+    with st.container(key="handoff_bar"):
+        with st.container(horizontal=True, vertical_alignment="center", gap="medium"):
+            st.markdown(f"**{answered} of {len(cards)} answered**" if cards else "**Nothing left to answer**",
+                        width="content")
+            clicked = st.button(label, key="handoff", type="primary", disabled=answered < len(cards),
+                                help=None if answered == len(cards) else "Answer every item first")
+        show_notice("handoff")
+    if not clicked:
         return
-    label, key, fn = ("Send to the dentist", "appr_asst", approval.approve_assistant) if role == "Assistant" else \
-        ("Approve the note", "appr_dent", approval.approve_dentist)
-    if st.button(label, key=key, type="primary"):
-        if items:  # something still blocks that this role has no way to answer
-            notify(key, "error", f"{_items(len(items))} still need{'s' if len(items) == 1 else ''} "
-                                 f"{'the dentist' if role == 'Assistant' else 'attention'} before this can be "
-                                 f"{'sent' if role == 'Assistant' else 'approved'}. See “Technical details” below.")
-        else:
-            guarded(key, fn, session, doing="sign off the note", done=None)
+    choices, missing = _collect(cards)
+    if missing:
+        notify("handoff", "error", missing)
         st.rerun()
-    show_notice(key)
+    if choices:
+        out = guarded("handoff", human.apply_review, session, choices, role, _default_reason(),
+                      doing="save your answers", done=None)
+        if out is None:
+            st.rerun()
+        for c in cards:
+            st.session_state.pop(_card_key(c), None)
+            st.session_state.pop(f"{_card_key(c)}_note", None)
+        if isinstance(out, dict) and out.get("errors"):
+            notify("handoff", "error", f"{_items(len(out['errors']))} couldn't be saved. "
+                                       "Check what is still listed above and answer again.")
+            st.rerun()
+    if not (sends or approves):
+        notify("handoff", "success", "Saved your answers.")
+        st.rerun()
+    left = approval.blockers(session, "assistant" if sends else "dentist")
+    if left:  # the saved answers changed the note and something new needs an answer
+        notify("handoff", "info", f"Saved. {_items(len(left))} still need{'s' if len(left) == 1 else ''} an answer "
+                                  f"before the note can be {'sent' if sends else 'approved'}.")
+    else:
+        guarded("review_top", approval.approve_assistant if sends else approval.approve_dentist, session,
+                doing="send the note" if sends else "approve the note",
+                done="Sent to the dentist." if sends else "Approved.")
+    st.rerun()
 
 
 def _covered_by(items, graph, log, staging) -> dict:
@@ -711,6 +741,16 @@ def alerts(graph, flags, covered):
         if _covered(f, title, covered):
             continue
         merged.setdefault(title, []).append(f)
+    sent = {}
+    if role == "Assistant":  # what she passed to the dentist is done for her: listed calmly, with nothing to press
+        sent = {t: fs for t, fs in merged.items() if any(flag_state(x) == "for_dentist" for x in fs)}
+        merged = {t: fs for t, fs in merged.items() if t not in sent}
+    if sent:
+        with st.expander(f"Sent to the dentist \u2713 \u00b7 {_items(len(sent))}"):
+            for title, fs in sent.items():
+                notes = plain.comments(fs)
+                st.markdown(f"\u2713 {esc(title)}" + "".join(f"  \n&nbsp;&nbsp;&nbsp;💬 *\u201c{esc(n)}\u201d*"
+                                                             for n in notes), unsafe_allow_html=True)
     if not merged:
         return
     st.subheader("Other alerts" if covered["titles"] else "Alerts")
