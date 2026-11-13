@@ -1,0 +1,46 @@
+{
+ "git_hash": "d844e5ca6ab8efac9a7a7bfd3623d79edba2e6db",
+ "git_dirty": false,
+ "models": {
+  "defaults": "claude-sonnet-5-5",
+  "B0": "claude-sonnet-5-5",
+  "Br": "claude-sonnet-5-5",
+  "B1": "claude-sonnet-5-5",
+  "B2": "claude-sonnet-5-5",
+  "B3": "claude-sonnet-5-5",
+  "B4": "claude-sonnet-5-5",
+  "Cs": "claude-sonnet-5-5",
+  "Ce": "claude-sonnet-5-5",
+  "Co": "claude-sonnet-5-5",
+  "R2": "claude-sonnet-5-5",
+  "E3": "claude-sonnet-5-5",
+  "Grader": "claude-opus-5-5"
+ },
+ "prompt_hashes": {
+  "_extraction_guide.md": "26722d1c3056",
+  "_repair.md": "e5855355b365",
+  "_shared_rules.md": "499e8684b378",
+  "b0_extract.md": "137cfd1ae74e",
+  "b1_history.md": "d14c6a4d6f58",
+  "b2_complaint.md": "e828a47a1ece",
+  "b3_findings.md": "4263f890eedd",
+  "b4_plan.md": "b6bd988b9385",
+  "br_registry.md": "761911e2a56a",
+  "ce_equivalence.md": "7986b3574062",
+  "co_omission.md": "d930357bdbc5",
+  "cs_support.md": "d62ad48dd411",
+  "e3_clinical_review.md": "4e095eb869cb",
+  "grader_claims.md": "409c8672a138",
+  "grader_equivalence.md": "f276ce8e9da3",
+  "r2_contradictions.md": "92ca72b396f9"
+ },
+ "schema_version": "9dbe1baa5d0fbe62",
+ "rule_file_hashes": {
+  "config.json": "eb3f1c316ea8431da5e03030a99c86d95fcbf0844ee1a6dd63d4b32767702ce5",
+  "drug_allergy.json": "3e5a7ed8f83b20ca89e2204425ffbf49a0a7e8045e2f75b381bac9aec198abab",
+  "clinical_review_rules.yaml": "dd55273666d5d92f19b23873df0422ed994883ea52de0561a7f5bd2dce8b707e"
+ },
+ "eval_config_hash": "0e83966b3288c14e",
+ "transcriber": "text mode",
+ "timestamp": "2026-11-12T22:16:21"
+}

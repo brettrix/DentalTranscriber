@@ -1,0 +1,1329 @@
+{
+ "case": "case7",
+ "pipeline": "team",
+ "repeat": 0,
+ "session": "d5f6a921-b1f2-4646-8044-4180ff5fda3a",
+ "error": null,
+ "wall_s": 63.6,
+ "candidate": true,
+ "ready_for_review": true,
+ "failed_stages": [],
+ "production_failure_stage": null,
+ "calls": 47,
+ "usd_pipeline": 0.6636,
+ "usd_shared": 0.0178,
+ "per_agent": {
+  "Br": {
+   "calls": 1,
+   "in": 6999,
+   "out": 375,
+   "seconds": 2.7,
+   "usd": 0.0177
+  },
+  "B1": {
+   "calls": 2,
+   "in": 15106,
+   "out": 1535,
+   "seconds": 10.0,
+   "usd": 0.0456
+  },
+  "B2": {
+   "calls": 2,
+   "in": 16173,
+   "out": 1783,
+   "seconds": 10.1,
+   "usd": 0.0502
+  },
+  "B3": {
+   "calls": 2,
+   "in": 15794,
+   "out": 1726,
+   "seconds": 10.0,
+   "usd": 0.0488
+  },
+  "B4": {
+   "calls": 2,
+   "in": 18759,
+   "out": 4371,
+   "seconds": 23.2,
+   "usd": 0.0812
+  },
+  "Cs": {
+   "calls": 19,
+   "in": 106757,
+   "out": 12403,
+   "seconds": 75.9,
+   "usd": 0.3375
+  },
+  "Ce": {
+   "calls": 15,
+   "in": 22881,
+   "out": 1766,
+   "seconds": 20.3,
+   "usd": 0.0634
+  },
+  "Co": {
+   "calls": 2,
+   "in": 8580,
+   "out": 196,
+   "seconds": 2.4,
+   "usd": 0.0191
+  },
+  "R2": {
+   "calls": 1,
+   "in": 3106,
+   "out": 536,
+   "seconds": 3.4,
+   "usd": 0.0116
+  },
+  "E3": {
+   "calls": 1,
+   "in": 1740,
+   "out": 271,
+   "seconds": 2.1,
+   "usd": 0.0062
+  }
+ },
+ "timings": [
+  2.7,
+  3.8,
+  5.3,
+  5.8,
+  9.8,
+  2.7,
+  3.4,
+  5.1,
+  1.3,
+  6.5,
+  3.2,
+  4.5,
+  2.2,
+  2.4,
+  2.8,
+  4.2,
+  1.0,
+  1.1,
+  1.2,
+  1.9,
+  1.5,
+  1.4,
+  1.4,
+  1.5,
+  1.4,
+  3.4,
+  4.2,
+  4.8,
+  6.2,
+  13.3,
+  3.6,
+  4.7,
+  5.0,
+  6.3,
+  4.7,
+  3.5,
+  4.2,
+  5.7,
+  1.1,
+  1.2,
+  1.6,
+  1.6,
+  1.0,
+  1.5,
+  1.2,
+  1.0,
+  2.1
+ ],
+ "scored": true,
+ "grader_error": null,
+ "final": {
+  "gold": 21,
+  "matched": 21,
+  "produced": 26,
+  "precision": [
+   21,
+   26
+  ],
+  "recall": [
+   21,
+   21
+  ],
+  "by_type": {
+   "problem": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "symptom": {
+    "gold": 5,
+    "matched": 5,
+    "produced": 6
+   },
+   "medication": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 2
+   },
+   "vital_reading": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "finding": {
+    "gold": 3,
+    "matched": 3,
+    "produced": 3
+   },
+   "radiograph": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "diagnosis": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "option_discussed": {
+    "gold": 2,
+    "matched": 2,
+    "produced": 3
+   },
+   "decision": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "next_visit": {
+    "gold": 2,
+    "matched": 2,
+    "produced": 2
+   },
+   "prescription": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "consent_element": {
+    "gold": 2,
+    "matched": 2,
+    "produced": 3
+   },
+   "history_change": {
+    "gold": 0,
+    "matched": 0,
+    "produced": 1
+   }
+  },
+  "dims": {
+   "tooth": [
+    9,
+    17
+   ],
+   "role": [
+    1,
+    1
+   ],
+   "attr:complaint_text": [
+    1,
+    1
+   ],
+   "attr:complaint_location": [
+    1,
+    1
+   ],
+   "assertion_source": [
+    19,
+    21
+   ],
+   "target_relation": [
+    8,
+    16
+   ],
+   "attr:aspect": [
+    2,
+    5
+   ],
+   "attr:value": [
+    5,
+    5
+   ],
+   "assertion": [
+    20,
+    20
+   ],
+   "time_context": [
+    19,
+    20
+   ],
+   "attr:score": [
+    1,
+    1
+   ],
+   "attr:drug": [
+    2,
+    2
+   ],
+   "attr:medication_status": [
+    1,
+    1
+   ],
+   "attr:original_wording": [
+    1,
+    2
+   ],
+   "status": [
+    2,
+    2
+   ],
+   "attr:systolic": [
+    1,
+    1
+   ],
+   "attr:diastolic": [
+    1,
+    1
+   ],
+   "attr:unit": [
+    1,
+    1
+   ],
+   "attr:test": [
+    2,
+    3
+   ],
+   "attr:observation": [
+    1,
+    3
+   ],
+   "attr:surface": [
+    0,
+    1
+   ],
+   "attr:response": [
+    2,
+    2
+   ],
+   "attr:lingering": [
+    1,
+    1
+   ],
+   "attr:result_description": [
+    1,
+    2
+   ],
+   "attr:type": [
+    1,
+    1
+   ],
+   "attr:target": [
+    0,
+    1
+   ],
+   "attr:finding": [
+    1,
+    1
+   ],
+   "action": [
+    1,
+    1
+   ],
+   "attr:diagnosis": [
+    1,
+    1
+   ],
+   "attr:certainty": [
+    1,
+    1
+   ],
+   "attr:option": [
+    3,
+    3
+   ],
+   "attr:risks": [
+    2,
+    2
+   ],
+   "attr:benefits": [
+    2,
+    2
+   ],
+   "attr:recommended_by_clinician": [
+    1,
+    2
+   ],
+   "attr:decision": [
+    1,
+    1
+   ],
+   "attr:procedure": [
+    1,
+    2
+   ],
+   "attr:timing": [
+    2,
+    2
+   ],
+   "attr:strength": [
+    1,
+    1
+   ],
+   "attr:frequency_code": [
+    1,
+    1
+   ],
+   "attr:as_needed": [
+    1,
+    1
+   ],
+   "attr:element": [
+    2,
+    2
+   ],
+   "attr:content": [
+    1,
+    2
+   ]
+  },
+  "critical": {
+   "tooth": [
+    9,
+    17
+   ],
+   "drug": [
+    2,
+    2
+   ],
+   "medication_status": [
+    2,
+    2
+   ],
+   "certainty": [
+    1,
+    1
+   ],
+   "decision": [
+    1,
+    1
+   ],
+   "dose": [
+    1,
+    1
+   ]
+  },
+  "errors": [
+   "s1:tooth",
+   "s1:target_relation",
+   "s2:tooth",
+   "s2:target_relation",
+   "s2:attr:aspect",
+   "s3:tooth",
+   "s3:target_relation",
+   "s4:attr:aspect",
+   "s5:tooth",
+   "s5:target_relation",
+   "s5:attr:aspect",
+   "m1:attr:original_wording",
+   "f1:attr:test",
+   "f1:attr:surface",
+   "f2:attr:observation",
+   "f2:attr:result_description",
+   "f3:attr:observation",
+   "x1:attr:target",
+   "o1:tooth",
+   "o1:target_relation",
+   "o2:tooth",
+   "o2:target_relation",
+   "o2:attr:recommended_by_clinician",
+   "dc1:tooth",
+   "dc1:target_relation",
+   "n2:attr:procedure",
+   "rx1:tooth",
+   "rx1:target_relation",
+   "rx1:time_context",
+   "ce1:assertion_source",
+   "ce2:attr:content",
+   "ce2:assertion_source"
+  ],
+  "omissions": [],
+  "extras": [
+   "consent_element:it_021",
+   "option_discussed:it_023",
+   "history_change:it_003",
+   "medication:it_025",
+   "symptom:it_009"
+  ],
+  "problem_map": {
+   "P1": "pb_1"
+  },
+  "merged": [],
+  "split": [],
+  "target_accuracy": [
+   1,
+   1
+  ],
+  "flags": {
+   "caught": [
+    "open_conflict",
+    "quick_note_complaint_mismatch",
+    "quick_note_tooth_unclear"
+   ],
+   "missed": [],
+   "duplicates": [
+    "open_conflict"
+   ],
+   "false_alarms": [
+    "open_conflict (technical)",
+    "unsupported_content (technical)",
+    "unsupported_content (technical)",
+    "open_conflict (technical)",
+    "open_review_task (technical)",
+    "open_review_task (technical)",
+    "open_review_task (technical)",
+    "open_review_task (technical)",
+    "open_review_task (technical)",
+    "open_review_task (technical)",
+    "open_review_task (technical)",
+    "open_review_task (technical)",
+    "radiograph_finding_missing",
+    "unsupported_content (technical)",
+    "unsupported_content (technical)",
+    "unsupported_content (technical)"
+   ],
+   "tolerated": [],
+   "questions": [
+    "endo_findings_review"
+   ]
+  },
+  "forbidden_hits": [],
+  "expectations": []
+ },
+ "raw": {
+  "gold": 21,
+  "matched": 20,
+  "produced": 23,
+  "precision": [
+   20,
+   23
+  ],
+  "recall": [
+   20,
+   21
+  ],
+  "by_type": {
+   "problem": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "symptom": {
+    "gold": 5,
+    "matched": 5,
+    "produced": 6
+   },
+   "medication": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "vital_reading": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "finding": {
+    "gold": 3,
+    "matched": 3,
+    "produced": 3
+   },
+   "radiograph": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "diagnosis": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "option_discussed": {
+    "gold": 2,
+    "matched": 2,
+    "produced": 2
+   },
+   "decision": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "next_visit": {
+    "gold": 2,
+    "matched": 1,
+    "produced": 1
+   },
+   "prescription": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "consent_element": {
+    "gold": 2,
+    "matched": 2,
+    "produced": 3
+   },
+   "history_change": {
+    "gold": 0,
+    "matched": 0,
+    "produced": 1
+   }
+  },
+  "dims": {
+   "tooth": [
+    10,
+    18
+   ],
+   "role": [
+    1,
+    1
+   ],
+   "attr:complaint_text": [
+    1,
+    1
+   ],
+   "attr:complaint_location": [
+    1,
+    1
+   ],
+   "assertion_source": [
+    17,
+    20
+   ],
+   "target_relation": [
+    0,
+    15
+   ],
+   "attr:aspect": [
+    2,
+    5
+   ],
+   "attr:value": [
+    5,
+    5
+   ],
+   "assertion": [
+    19,
+    19
+   ],
+   "time_context": [
+    18,
+    19
+   ],
+   "attr:score": [
+    1,
+    1
+   ],
+   "attr:drug": [
+    2,
+    2
+   ],
+   "attr:medication_status": [
+    1,
+    1
+   ],
+   "attr:original_wording": [
+    1,
+    2
+   ],
+   "status": [
+    2,
+    2
+   ],
+   "attr:systolic": [
+    1,
+    1
+   ],
+   "attr:diastolic": [
+    1,
+    1
+   ],
+   "attr:unit": [
+    1,
+    1
+   ],
+   "attr:test": [
+    2,
+    3
+   ],
+   "attr:observation": [
+    1,
+    3
+   ],
+   "attr:surface": [
+    0,
+    1
+   ],
+   "attr:response": [
+    2,
+    2
+   ],
+   "attr:lingering": [
+    1,
+    1
+   ],
+   "attr:result_description": [
+    1,
+    2
+   ],
+   "attr:type": [
+    1,
+    1
+   ],
+   "attr:target": [
+    0,
+    1
+   ],
+   "attr:finding": [
+    1,
+    1
+   ],
+   "action": [
+    1,
+    1
+   ],
+   "attr:diagnosis": [
+    1,
+    1
+   ],
+   "attr:certainty": [
+    1,
+    1
+   ],
+   "attr:option": [
+    3,
+    3
+   ],
+   "attr:risks": [
+    2,
+    2
+   ],
+   "attr:benefits": [
+    2,
+    2
+   ],
+   "attr:recommended_by_clinician": [
+    1,
+    2
+   ],
+   "attr:decision": [
+    1,
+    1
+   ],
+   "attr:procedure": [
+    1,
+    1
+   ],
+   "attr:timing": [
+    1,
+    1
+   ],
+   "attr:strength": [
+    1,
+    1
+   ],
+   "attr:frequency_code": [
+    1,
+    1
+   ],
+   "attr:as_needed": [
+    1,
+    1
+   ],
+   "attr:element": [
+    2,
+    2
+   ],
+   "attr:content": [
+    1,
+    2
+   ]
+  },
+  "critical": {
+   "tooth": [
+    10,
+    18
+   ],
+   "drug": [
+    2,
+    2
+   ],
+   "medication_status": [
+    2,
+    2
+   ],
+   "certainty": [
+    1,
+    1
+   ],
+   "decision": [
+    1,
+    1
+   ],
+   "dose": [
+    1,
+    1
+   ]
+  },
+  "errors": [
+   "s1:tooth",
+   "s1:target_relation",
+   "s2:tooth",
+   "s2:target_relation",
+   "s2:attr:aspect",
+   "s3:tooth",
+   "s3:target_relation",
+   "s4:tooth",
+   "s4:target_relation",
+   "s4:attr:aspect",
+   "s5:tooth",
+   "s5:target_relation",
+   "s5:attr:aspect",
+   "m1:attr:original_wording",
+   "f1:target_relation",
+   "f1:attr:test",
+   "f1:attr:surface",
+   "f2:target_relation",
+   "f2:attr:observation",
+   "f2:attr:result_description",
+   "f3:target_relation",
+   "f3:attr:observation",
+   "x1:target_relation",
+   "x1:attr:target",
+   "x1:assertion_source",
+   "d1:target_relation",
+   "o1:target_relation",
+   "o2:target_relation",
+   "o2:attr:recommended_by_clinician",
+   "dc1:target_relation",
+   "n1:target_relation",
+   "rx1:tooth",
+   "rx1:target_relation",
+   "rx1:time_context",
+   "ce1:tooth",
+   "ce1:assertion_source",
+   "ce2:tooth",
+   "ce2:attr:content",
+   "ce2:assertion_source"
+  ],
+  "omissions": [
+   "n2"
+  ],
+  "extras": [
+   "history_change:it_003",
+   "symptom:it_009",
+   "consent_element:it_021"
+  ],
+  "problem_map": {
+   "P1": "pb_1"
+  },
+  "merged": [],
+  "split": [],
+  "target_accuracy": [
+   1,
+   1
+  ],
+  "flags": {
+   "caught": [],
+   "missed": [
+    "open_conflict",
+    "quick_note_complaint_mismatch",
+    "quick_note_tooth_unclear"
+   ],
+   "duplicates": [],
+   "false_alarms": [],
+   "tolerated": [],
+   "questions": []
+  },
+  "forbidden_hits": [],
+  "expectations": []
+ },
+ "claims": {
+  "supported_by_transcript": 73,
+  "supported_by_quick_notes": 2
+ },
+ "claims_detail": [
+  {
+   "claim_id": "it_004|drug",
+   "label": "supported_by_transcript",
+   "quote": "I used to be on warfarin, the blood thinner, but my doctor took me off it last year. Nothing now.",
+   "confidence": 0.97
+  },
+  {
+   "claim_id": "it_004|medication_status",
+   "label": "supported_by_transcript",
+   "quote": "I used to be on warfarin, the blood thinner, but my doctor took me off it last year. Nothing now.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_004|time_context",
+   "label": "supported_by_transcript",
+   "quote": "I used to be on warfarin, the blood thinner, but my doctor took me off it last year. Nothing now.",
+   "confidence": 0.93
+  },
+  {
+   "claim_id": "it_005|systolic",
+   "label": "supported_by_quick_notes",
+   "quote": "BP 126/82",
+   "confidence": 0.97
+  },
+  {
+   "claim_id": "it_005|diastolic",
+   "label": "supported_by_quick_notes",
+   "quote": "BP 126/82",
+   "confidence": 0.97
+  },
+  {
+   "claim_id": "it_003|description",
+   "label": "supported_by_transcript",
+   "quote": "I used to be on warfarin, the blood thinner, but my doctor took me off it last year. Nothing now.",
+   "confidence": 0.8
+  },
+  {
+   "claim_id": "it_003|assertion",
+   "label": "supported_by_transcript",
+   "quote": "I used to be on warfarin, the blood thinner, but my doctor took me off it last year. Nothing now.",
+   "confidence": 0.65
+  },
+  {
+   "claim_id": "it_025|drug",
+   "label": "supported_by_transcript",
+   "quote": "I used to be on warfarin, the blood thinner, but my doctor took me off it last year. Nothing now.",
+   "confidence": 0.97
+  },
+  {
+   "claim_id": "it_025|medication_status",
+   "label": "supported_by_transcript",
+   "quote": "I used to be on warfarin, the blood thinner, but my doctor took me off it last year. Nothing now.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_025|time_context",
+   "label": "supported_by_transcript",
+   "quote": "I used to be on warfarin, the blood thinner, but my doctor took me off it last year. Nothing now.",
+   "confidence": 0.93
+  },
+  {
+   "claim_id": "pb_1|role",
+   "label": "supported_by_transcript",
+   "quote": "I've got a toothache on the lower right. It's been bugging me for about a week.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "pb_1|complaint_text",
+   "label": "supported_by_transcript",
+   "quote": "Cold stuff, and sometimes it just starts hurting by itself at night. Wait, actually, sorry. It's the left side. Lower left. I always mix those up.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "pb_1|complaint_location",
+   "label": "supported_by_transcript",
+   "quote": "Cold stuff, and sometimes it just starts hurting by itself at night. Wait, actually, sorry. It's the left side. Lower left. I always mix those up.",
+   "confidence": 0.93
+  },
+  {
+   "claim_id": "pb_1|clinical_target",
+   "label": "supported_by_transcript",
+   "quote": "Okay, that's number nineteen. When cold hits it, how long does the pain last?",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_007|aspect",
+   "label": "supported_by_transcript",
+   "quote": "Cold stuff, and sometimes it just starts hurting by itself at night. Wait, actually, sorry. It's the left side. Lower left. I always mix those up.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_007|value",
+   "label": "supported_by_transcript",
+   "quote": "Cold stuff, and sometimes it just starts hurting by itself at night. Wait, actually, sorry. It's the left side. Lower left. I always mix those up.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_008|aspect",
+   "label": "supported_by_transcript",
+   "quote": "Cold stuff, and sometimes it just starts hurting by itself at night. Wait, actually, sorry. It's the left side. Lower left. I always mix those up.",
+   "confidence": 0.93
+  },
+  {
+   "claim_id": "it_008|value",
+   "label": "supported_by_transcript",
+   "quote": "Cold stuff, and sometimes it just starts hurting by itself at night. Wait, actually, sorry. It's the left side. Lower left. I always mix those up.",
+   "confidence": 0.93
+  },
+  {
+   "claim_id": "it_009|aspect",
+   "label": "supported_by_transcript",
+   "quote": "Cold stuff, and sometimes it just starts hurting by itself at night. Wait, actually, sorry. It's the left side. Lower left. I always mix those up.",
+   "confidence": 0.93
+  },
+  {
+   "claim_id": "it_009|value",
+   "label": "supported_by_transcript",
+   "quote": "Cold stuff, and sometimes it just starts hurting by itself at night. Wait, actually, sorry. It's the left side. Lower left. I always mix those up.",
+   "confidence": 0.93
+  },
+  {
+   "claim_id": "it_006|aspect",
+   "label": "supported_by_transcript",
+   "quote": "I've got a toothache on the lower right. It's been bugging me for about a week.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_006|value",
+   "label": "supported_by_transcript",
+   "quote": "I've got a toothache on the lower right. It's been bugging me for about a week.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_010|aspect",
+   "label": "supported_by_transcript",
+   "quote": "A while. Maybe twenty seconds, it kind of throbs after.",
+   "confidence": 0.92
+  },
+  {
+   "claim_id": "it_010|value",
+   "label": "supported_by_transcript",
+   "quote": "A while. Maybe twenty seconds, it kind of throbs after.",
+   "confidence": 0.92
+  },
+  {
+   "claim_id": "it_011|aspect",
+   "label": "supported_by_transcript",
+   "quote": "When it wakes me up, an eight.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_011|value",
+   "label": "supported_by_transcript",
+   "quote": "When it wakes me up, an eight.",
+   "confidence": 0.93
+  },
+  {
+   "claim_id": "it_011|score",
+   "label": "supported_by_transcript",
+   "quote": "When it wakes me up, an eight.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_012|tooth",
+   "label": "supported_by_transcript",
+   "quote": "Good to know, thanks. Let's look. There's a big cavity on the back side of nineteen. Honestly, this might just need a filling. Let me test it. Cold on nineteen.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_012|observation",
+   "label": "supported_by_transcript",
+   "quote": "Good to know, thanks. Let's look. There's a big cavity on the back side of nineteen. Honestly, this might just need a filling. Let me test it. Cold on nineteen.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_013|tooth",
+   "label": "supported_by_transcript",
+   "quote": "Good to know, thanks. Let's look. There's a big cavity on the back side of nineteen. Honestly, this might just need a filling. Let me test it. Cold on nineteen.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_013|test",
+   "label": "supported_by_transcript",
+   "quote": "Good to know, thanks. Let's look. There's a big cavity on the back side of nineteen. Honestly, this might just need a filling. Let me test it. Cold on nineteen.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_013|response",
+   "label": "supported_by_transcript",
+   "quote": "Ow. Yeah. That's still going.",
+   "confidence": 0.93
+  },
+  {
+   "claim_id": "it_013|lingering",
+   "label": "supported_by_transcript",
+   "quote": "Still lingering?",
+   "confidence": 0.93
+  },
+  {
+   "claim_id": "it_014|tooth",
+   "label": "supported_by_transcript",
+   "quote": "Okay. Tapping?",
+   "confidence": 0.85
+  },
+  {
+   "claim_id": "it_014|test",
+   "label": "supported_by_transcript",
+   "quote": "Okay. Tapping?",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_014|response",
+   "label": "supported_by_transcript",
+   "quote": "A little tender.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_014|result_description",
+   "label": "supported_by_transcript",
+   "quote": "A little tender.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_015|type",
+   "label": "supported_by_transcript",
+   "quote": "Let's get a PA of nineteen.",
+   "confidence": 0.97
+  },
+  {
+   "claim_id": "it_015|tooth",
+   "label": "supported_by_transcript",
+   "quote": "Let's get a PA of nineteen.",
+   "confidence": 0.97
+  },
+  {
+   "claim_id": "it_015|target",
+   "label": "supported_by_transcript",
+   "quote": "Let's get a PA of nineteen.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_015|action",
+   "label": "supported_by_transcript",
+   "quote": "PA of nineteen is up.",
+   "confidence": 0.93
+  },
+  {
+   "claim_id": "it_015|finding",
+   "label": "supported_by_transcript",
+   "quote": "Okay, I'm changing my mind on the filling. The decay goes right down to the nerve. With the pain lasting that long and waking you up at night, the nerve is inflamed and isn't going to recover. That's irreversible pulpitis. A filling won't fix it.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_016|diagnosis",
+   "label": "supported_by_transcript",
+   "quote": "Okay, I'm changing my mind on the filling. The decay goes right down to the nerve. With the pain lasting that long and waking you up at night, the nerve is inflamed and isn't going to recover. That's irreversible pulpitis. A filling won't fix it.",
+   "confidence": 0.97
+  },
+  {
+   "claim_id": "it_016|tooth",
+   "label": "supported_by_transcript",
+   "quote": "Let's get a PA of nineteen.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_016|certainty",
+   "label": "supported_by_transcript",
+   "quote": "Okay, I'm changing my mind on the filling. The decay goes right down to the nerve. With the pain lasting that long and waking you up at night, the nerve is inflamed and isn't going to recover. That's irreversible pulpitis. A filling won't fix it.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_002|option",
+   "label": "supported_by_transcript",
+   "quote": "The best option is a root canal, and then a crown to protect the tooth afterward. The other option is taking the tooth out. That's quicker, but then you'd have a gap, and the teeth around it can shift over time.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_002|risks",
+   "label": "supported_by_transcript",
+   "quote": "The best option is a root canal, and then a crown to protect the tooth afterward. The other option is taking the tooth out. That's quicker, but then you'd have a gap, and the teeth around it can shift over time.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_002|benefits",
+   "label": "supported_by_transcript",
+   "quote": "The best option is a root canal, and then a crown to protect the tooth afterward. The other option is taking the tooth out. That's quicker, but then you'd have a gap, and the teeth around it can shift over time.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_001|option",
+   "label": "supported_by_transcript",
+   "quote": "The best option is a root canal, and then a crown to protect the tooth afterward. The other option is taking the tooth out. That's quicker, but then you'd have a gap, and the teeth around it can shift over time.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_001|risks",
+   "label": "supported_by_transcript",
+   "quote": "It's a very common procedure. Sometimes the tooth needs retreatment down the road, and without a crown it can crack. But it lets you keep your tooth.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_001|benefits",
+   "label": "supported_by_transcript",
+   "quote": "It's a very common procedure. Sometimes the tooth needs retreatment down the road, and without a crown it can crack. But it lets you keep your tooth.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_001|recommended_by_clinician",
+   "label": "supported_by_transcript",
+   "quote": "The best option is a root canal, and then a crown to protect the tooth afterward. The other option is taking the tooth out. That's quicker, but then you'd have a gap, and the teeth around it can shift over time.",
+   "confidence": 0.92
+  },
+  {
+   "claim_id": "it_023|option",
+   "label": "supported_by_transcript",
+   "quote": "Okay, I'm changing my mind on the filling. The decay goes right down to the nerve. With the pain lasting that long and waking you up at night, the nerve is inflamed and isn't going to recover. That's irreversible pulpitis. A filling won't fix it.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_023|risks",
+   "label": "supported_by_transcript",
+   "quote": "Okay, I'm changing my mind on the filling. The decay goes right down to the nerve. With the pain lasting that long and waking you up at night, the nerve is inflamed and isn't going to recover. That's irreversible pulpitis. A filling won't fix it.",
+   "confidence": 0.75
+  },
+  {
+   "claim_id": "it_023|recommended_by_clinician",
+   "label": "supported_by_transcript",
+   "quote": "Okay, I'm changing my mind on the filling. The decay goes right down to the nerve. With the pain lasting that long and waking you up at night, the nerve is inflamed and isn't going to recover. That's irreversible pulpitis. A filling won't fix it.",
+   "confidence": 0.88
+  },
+  {
+   "claim_id": "it_019|decision",
+   "label": "supported_by_transcript",
+   "quote": "Okay. Let's do the root canal.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_019|option",
+   "label": "supported_by_transcript",
+   "quote": "Okay. Let's do the root canal.",
+   "confidence": 0.8
+  },
+  {
+   "claim_id": "it_020|element",
+   "label": "supported_by_transcript",
+   "quote": "It's a very common procedure. Sometimes the tooth needs retreatment down the road, and without a crown it can crack. But it lets you keep your tooth.",
+   "confidence": 0.93
+  },
+  {
+   "claim_id": "it_020|content",
+   "label": "supported_by_transcript",
+   "quote": "It's a very common procedure. Sometimes the tooth needs retreatment down the road, and without a crown it can crack. But it lets you keep your tooth.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_021|element",
+   "label": "supported_by_transcript",
+   "quote": "It's a very common procedure. Sometimes the tooth needs retreatment down the road, and without a crown it can crack. But it lets you keep your tooth.",
+   "confidence": 0.93
+  },
+  {
+   "claim_id": "it_021|content",
+   "label": "supported_by_transcript",
+   "quote": "It's a very common procedure. Sometimes the tooth needs retreatment down the road, and without a crown it can crack. But it lets you keep your tooth.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_022|element",
+   "label": "supported_by_transcript",
+   "quote": "The best option is a root canal, and then a crown to protect the tooth afterward. The other option is taking the tooth out. That's quicker, but then you'd have a gap, and the teeth around it can shift over time.",
+   "confidence": 0.93
+  },
+  {
+   "claim_id": "it_022|content",
+   "label": "supported_by_transcript",
+   "quote": "The best option is a root canal, and then a crown to protect the tooth afterward. The other option is taking the tooth out. That's quicker, but then you'd have a gap, and the teeth around it can shift over time.",
+   "confidence": 0.93
+  },
+  {
+   "claim_id": "it_018|drug",
+   "label": "supported_by_transcript",
+   "quote": "Great. We'll get you in this week for the root canal on nineteen, then the crown a few weeks after. For pain until then, ibuprofen, six hundred milligrams every six hours as needed.",
+   "confidence": 0.97
+  },
+  {
+   "claim_id": "it_018|strength",
+   "label": "supported_by_transcript",
+   "quote": "Great. We'll get you in this week for the root canal on nineteen, then the crown a few weeks after. For pain until then, ibuprofen, six hundred milligrams every six hours as needed.",
+   "confidence": 0.7
+  },
+  {
+   "claim_id": "it_018|dose",
+   "label": "supported_by_transcript",
+   "quote": "Great. We'll get you in this week for the root canal on nineteen, then the crown a few weeks after. For pain until then, ibuprofen, six hundred milligrams every six hours as needed.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_018|frequency_code",
+   "label": "supported_by_transcript",
+   "quote": "Great. We'll get you in this week for the root canal on nineteen, then the crown a few weeks after. For pain until then, ibuprofen, six hundred milligrams every six hours as needed.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_018|as_needed",
+   "label": "supported_by_transcript",
+   "quote": "Great. We'll get you in this week for the root canal on nineteen, then the crown a few weeks after. For pain until then, ibuprofen, six hundred milligrams every six hours as needed.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_018|prescription_status",
+   "label": "supported_by_transcript",
+   "quote": "Great. We'll get you in this week for the root canal on nineteen, then the crown a few weeks after. For pain until then, ibuprofen, six hundred milligrams every six hours as needed.",
+   "confidence": 0.55
+  },
+  {
+   "claim_id": "it_017|procedure",
+   "label": "supported_by_transcript",
+   "quote": "Great. We'll get you in this week for the root canal on nineteen, then the crown a few weeks after. For pain until then, ibuprofen, six hundred milligrams every six hours as needed.",
+   "confidence": 0.97
+  },
+  {
+   "claim_id": "it_017|tooth",
+   "label": "supported_by_transcript",
+   "quote": "Great. We'll get you in this week for the root canal on nineteen, then the crown a few weeks after. For pain until then, ibuprofen, six hundred milligrams every six hours as needed.",
+   "confidence": 0.97
+  },
+  {
+   "claim_id": "it_017|timing",
+   "label": "supported_by_transcript",
+   "quote": "Great. We'll get you in this week for the root canal on nineteen, then the crown a few weeks after. For pain until then, ibuprofen, six hundred milligrams every six hours as needed.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_024|procedure",
+   "label": "supported_by_transcript",
+   "quote": "Great. We'll get you in this week for the root canal on nineteen, then the crown a few weeks after. For pain until then, ibuprofen, six hundred milligrams every six hours as needed.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_024|tooth",
+   "label": "supported_by_transcript",
+   "quote": "Great. We'll get you in this week for the root canal on nineteen, then the crown a few weeks after. For pain until then, ibuprofen, six hundred milligrams every six hours as needed.",
+   "confidence": 0.88
+  },
+  {
+   "claim_id": "it_024|timing",
+   "label": "supported_by_transcript",
+   "quote": "Great. We'll get you in this week for the root canal on nineteen, then the crown a few weeks after. For pain until then, ibuprofen, six hundred milligrams every six hours as needed.",
+   "confidence": 0.93
+  }
+ ],
+ "dentist_blockers": 31,
+ "blocker_kinds": {
+  "it_001": 1,
+  "it_023": 1,
+  "it_024": 1,
+  "it_015": 1,
+  "it_003": 1,
+  "conflict": 3,
+  "staged": 14,
+  "task": 9
+ },
+ "check_counts": {
+  "span_valid": {
+   "pass": 26
+  },
+  "normalization_valid": {
+   "pass": 16,
+   "not_applicable": 10
+  },
+  "semantic_support": {
+   "pass": 21,
+   "fail": 5
+  }
+ },
+ "relationships": []
+}

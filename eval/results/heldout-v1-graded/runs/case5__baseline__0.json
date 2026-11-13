@@ -1,0 +1,888 @@
+{
+ "case": "case5",
+ "pipeline": "baseline",
+ "repeat": 0,
+ "session": "c63ba788-3421-47c2-822f-b189fc20a94c",
+ "error": null,
+ "wall_s": 26.3,
+ "candidate": true,
+ "ready_for_review": true,
+ "failed_stages": [],
+ "production_failure_stage": null,
+ "calls": 4,
+ "usd_pipeline": 0.0764,
+ "usd_shared": 0.0146,
+ "per_agent": {
+  "B0": {
+   "calls": 2,
+   "in": 17653,
+   "out": 4108,
+   "seconds": 21.8,
+   "usd": 0.0764
+  },
+  "R2": {
+   "calls": 1,
+   "in": 2845,
+   "out": 307,
+   "seconds": 2.6,
+   "usd": 0.0088
+  },
+  "E3": {
+   "calls": 1,
+   "in": 1682,
+   "out": 252,
+   "seconds": 1.8,
+   "usd": 0.0059
+  }
+ },
+ "timings": [
+  18.3,
+  2.6,
+  3.6,
+  1.8
+ ],
+ "scored": true,
+ "grader_error": null,
+ "final": {
+  "gold": 18,
+  "matched": 15,
+  "produced": 16,
+  "precision": [
+   15,
+   16
+  ],
+  "recall": [
+   15,
+   18
+  ],
+  "by_type": {
+   "problem": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "history_change": {
+    "gold": 3,
+    "matched": 1,
+    "produced": 1
+   },
+   "vital_reading": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "symptom": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 2
+   },
+   "finding": {
+    "gold": 4,
+    "matched": 3,
+    "produced": 3
+   },
+   "radiograph": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "diagnosis": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "option_discussed": {
+    "gold": 2,
+    "matched": 2,
+    "produced": 2
+   },
+   "decision": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "next_visit": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "instruction": {
+    "gold": 2,
+    "matched": 2,
+    "produced": 2
+   }
+  },
+  "dims": {
+   "tooth": [
+    7,
+    11
+   ],
+   "role": [
+    1,
+    1
+   ],
+   "attr:complaint_text": [
+    1,
+    1
+   ],
+   "attr:complaint_location": [
+    1,
+    1
+   ],
+   "assertion_source": [
+    15,
+    15
+   ],
+   "attr:description": [
+    1,
+    1
+   ],
+   "assertion": [
+    13,
+    14
+   ],
+   "negation": [
+    2,
+    2
+   ],
+   "time_context": [
+    12,
+    14
+   ],
+   "attr:systolic": [
+    1,
+    1
+   ],
+   "attr:diastolic": [
+    1,
+    1
+   ],
+   "attr:unit": [
+    1,
+    1
+   ],
+   "attr:sequence": [
+    1,
+    1
+   ],
+   "target_relation": [
+    6,
+    10
+   ],
+   "attr:aspect": [
+    0,
+    1
+   ],
+   "attr:value": [
+    0,
+    1
+   ],
+   "attr:score": [
+    1,
+    1
+   ],
+   "attr:test": [
+    1,
+    3
+   ],
+   "attr:observation": [
+    1,
+    2
+   ],
+   "attr:response": [
+    1,
+    1
+   ],
+   "attr:lingering": [
+    1,
+    1
+   ],
+   "attr:result_description": [
+    1,
+    1
+   ],
+   "attr:type": [
+    1,
+    1
+   ],
+   "attr:target": [
+    0,
+    1
+   ],
+   "attr:finding": [
+    1,
+    1
+   ],
+   "action": [
+    1,
+    1
+   ],
+   "attr:diagnosis": [
+    1,
+    1
+   ],
+   "attr:certainty": [
+    1,
+    1
+   ],
+   "attr:option": [
+    3,
+    3
+   ],
+   "attr:recommended_by_clinician": [
+    1,
+    2
+   ],
+   "attr:decision": [
+    1,
+    1
+   ],
+   "attr:procedure": [
+    1,
+    1
+   ],
+   "attr:timing": [
+    1,
+    1
+   ],
+   "attr:text": [
+    2,
+    2
+   ]
+  },
+  "critical": {
+   "tooth": [
+    7,
+    11
+   ],
+   "negation": [
+    2,
+    2
+   ],
+   "certainty": [
+    1,
+    1
+   ],
+   "decision": [
+    1,
+    1
+   ]
+  },
+  "errors": [
+   "h2:assertion",
+   "s1:tooth",
+   "s1:target_relation",
+   "s1:attr:aspect",
+   "s1:attr:value",
+   "f1:attr:test",
+   "f5:attr:test",
+   "f5:attr:observation",
+   "r1:attr:target",
+   "o1:tooth",
+   "o1:target_relation",
+   "o1:attr:recommended_by_clinician",
+   "dc1:tooth",
+   "dc1:target_relation",
+   "i1:time_context",
+   "i2:time_context",
+   "o2:tooth",
+   "o2:target_relation"
+  ],
+  "omissions": [
+   "h1",
+   "f2",
+   "h3"
+  ],
+  "extras": [
+   "symptom:it_005"
+  ],
+  "problem_map": {
+   "P1": "pb_1"
+  },
+  "merged": [],
+  "split": [],
+  "target_accuracy": [
+   1,
+   1
+  ],
+  "flags": {
+   "caught": [
+    "treatment_target_disagreement",
+    "open_conflict"
+   ],
+   "missed": [
+    "quick_note_tooth_unclear",
+    "treatment_target_mismatch"
+   ],
+   "duplicates": [
+    "open_conflict"
+   ],
+   "false_alarms": [
+    "treatment_target_mismatch",
+    "quick_note_tooth_unclear",
+    "target_not_assessable (technical)"
+   ],
+   "tolerated": [],
+   "questions": [
+    "endo_findings_review"
+   ]
+  },
+  "forbidden_hits": [],
+  "expectations": []
+ },
+ "raw": {
+  "gold": 18,
+  "matched": 15,
+  "produced": 16,
+  "precision": [
+   15,
+   16
+  ],
+  "recall": [
+   15,
+   18
+  ],
+  "by_type": {
+   "problem": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "history_change": {
+    "gold": 3,
+    "matched": 1,
+    "produced": 1
+   },
+   "vital_reading": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "symptom": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 2
+   },
+   "finding": {
+    "gold": 4,
+    "matched": 3,
+    "produced": 3
+   },
+   "radiograph": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "diagnosis": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "option_discussed": {
+    "gold": 2,
+    "matched": 2,
+    "produced": 2
+   },
+   "decision": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "next_visit": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "instruction": {
+    "gold": 2,
+    "matched": 2,
+    "produced": 2
+   }
+  },
+  "dims": {
+   "tooth": [
+    7,
+    11
+   ],
+   "role": [
+    1,
+    1
+   ],
+   "attr:complaint_text": [
+    1,
+    1
+   ],
+   "attr:complaint_location": [
+    1,
+    1
+   ],
+   "assertion_source": [
+    15,
+    15
+   ],
+   "attr:description": [
+    1,
+    1
+   ],
+   "assertion": [
+    13,
+    14
+   ],
+   "negation": [
+    2,
+    2
+   ],
+   "time_context": [
+    12,
+    14
+   ],
+   "attr:systolic": [
+    1,
+    1
+   ],
+   "attr:diastolic": [
+    1,
+    1
+   ],
+   "attr:unit": [
+    1,
+    1
+   ],
+   "attr:sequence": [
+    1,
+    1
+   ],
+   "target_relation": [
+    0,
+    10
+   ],
+   "attr:aspect": [
+    0,
+    1
+   ],
+   "attr:value": [
+    0,
+    1
+   ],
+   "attr:score": [
+    1,
+    1
+   ],
+   "attr:test": [
+    1,
+    3
+   ],
+   "attr:observation": [
+    1,
+    2
+   ],
+   "attr:response": [
+    1,
+    1
+   ],
+   "attr:lingering": [
+    1,
+    1
+   ],
+   "attr:result_description": [
+    1,
+    1
+   ],
+   "attr:type": [
+    1,
+    1
+   ],
+   "attr:target": [
+    0,
+    1
+   ],
+   "attr:finding": [
+    1,
+    1
+   ],
+   "action": [
+    1,
+    1
+   ],
+   "attr:diagnosis": [
+    1,
+    1
+   ],
+   "attr:certainty": [
+    1,
+    1
+   ],
+   "attr:option": [
+    3,
+    3
+   ],
+   "attr:recommended_by_clinician": [
+    1,
+    2
+   ],
+   "attr:decision": [
+    1,
+    1
+   ],
+   "attr:procedure": [
+    1,
+    1
+   ],
+   "attr:timing": [
+    1,
+    1
+   ],
+   "attr:text": [
+    2,
+    2
+   ]
+  },
+  "critical": {
+   "tooth": [
+    7,
+    11
+   ],
+   "negation": [
+    2,
+    2
+   ],
+   "certainty": [
+    1,
+    1
+   ],
+   "decision": [
+    1,
+    1
+   ]
+  },
+  "errors": [
+   "h2:assertion",
+   "s1:tooth",
+   "s1:target_relation",
+   "s1:attr:aspect",
+   "s1:attr:value",
+   "f1:target_relation",
+   "f1:attr:test",
+   "f4:target_relation",
+   "f5:target_relation",
+   "f5:attr:test",
+   "f5:attr:observation",
+   "r1:target_relation",
+   "r1:attr:target",
+   "d1:target_relation",
+   "o1:tooth",
+   "o1:target_relation",
+   "o1:attr:recommended_by_clinician",
+   "dc1:tooth",
+   "dc1:target_relation",
+   "n1:target_relation",
+   "i1:time_context",
+   "i2:time_context",
+   "o2:tooth",
+   "o2:target_relation"
+  ],
+  "omissions": [
+   "h1",
+   "f2",
+   "h3"
+  ],
+  "extras": [
+   "symptom:it_005"
+  ],
+  "problem_map": {
+   "P1": "pb_1"
+  },
+  "merged": [],
+  "split": [],
+  "target_accuracy": [
+   1,
+   1
+  ],
+  "flags": {
+   "caught": [],
+   "missed": [
+    "treatment_target_disagreement",
+    "quick_note_tooth_unclear",
+    "treatment_target_mismatch",
+    "open_conflict"
+   ],
+   "duplicates": [],
+   "false_alarms": [],
+   "tolerated": [],
+   "questions": []
+  },
+  "forbidden_hits": [],
+  "expectations": []
+ },
+ "claims": {
+  "supported_by_quick_notes": 2,
+  "supported_by_transcript": 39
+ },
+ "claims_detail": [
+  {
+   "claim_id": "it_003|systolic",
+   "label": "supported_by_quick_notes",
+   "quote": "BP 118/76",
+   "confidence": 0.97
+  },
+  {
+   "claim_id": "it_003|diastolic",
+   "label": "supported_by_quick_notes",
+   "quote": "BP 118/76",
+   "confidence": 0.97
+  },
+  {
+   "claim_id": "it_004|description",
+   "label": "supported_by_transcript",
+   "quote": "Any health changes or medications?",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_004|assertion",
+   "label": "supported_by_transcript",
+   "quote": "No.",
+   "confidence": 0.88
+  },
+  {
+   "claim_id": "pb_1|role",
+   "label": "supported_by_transcript",
+   "quote": "I fell off my bike yesterday and hit my mouth on the handlebar. Chipped my right front tooth.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "pb_1|complaint_text",
+   "label": "supported_by_transcript",
+   "quote": "I fell off my bike yesterday and hit my mouth on the handlebar. Chipped my right front tooth.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "pb_1|complaint_location",
+   "label": "supported_by_transcript",
+   "quote": "I fell off my bike yesterday and hit my mouth on the handlebar. Chipped my right front tooth.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "pb_1|clinical_target",
+   "label": "supported_by_transcript",
+   "quote": "Number eight has a fracture of the biting edge. It's through the enamel and into some dentin, but I don't see any pink or bleeding, so the nerve isn't exposed. Lips and gums look fine, just a small cut on the inside of the upper lip.",
+   "confidence": 0.8
+  },
+  {
+   "claim_id": "it_005|aspect",
+   "label": "supported_by_transcript",
+   "quote": "It's a little sensitive to air and cold, but not bad. Maybe a three.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_005|value",
+   "label": "supported_by_transcript",
+   "quote": "It's a little sensitive to air and cold, but not bad. Maybe a three.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_006|aspect",
+   "label": "supported_by_transcript",
+   "quote": "It's a little sensitive to air and cold, but not bad. Maybe a three.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_006|value",
+   "label": "supported_by_transcript",
+   "quote": "It's a little sensitive to air and cold, but not bad. Maybe a three.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_006|score",
+   "label": "supported_by_transcript",
+   "quote": "It's a little sensitive to air and cold, but not bad. Maybe a three.",
+   "confidence": 0.85
+  },
+  {
+   "claim_id": "it_007|tooth",
+   "label": "supported_by_transcript",
+   "quote": "Number eight has a fracture of the biting edge. It's through the enamel and into some dentin, but I don't see any pink or bleeding, so the nerve isn't exposed. Lips and gums look fine, just a small cut on the inside of the upper lip.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_007|observation",
+   "label": "supported_by_transcript",
+   "quote": "Number eight has a fracture of the biting edge. It's through the enamel and into some dentin, but I don't see any pink or bleeding, so the nerve isn't exposed. Lips and gums look fine, just a small cut on the inside of the upper lip.",
+   "confidence": 0.92
+  },
+  {
+   "claim_id": "it_008|tooth",
+   "label": "supported_by_transcript",
+   "quote": "Tapping on eight. Okay? And cold.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_008|test",
+   "label": "supported_by_transcript",
+   "quote": "Tapping on eight. Okay? And cold.",
+   "confidence": 0.93
+  },
+  {
+   "claim_id": "it_008|response",
+   "label": "supported_by_transcript",
+   "quote": "Cold's a little sensitive but goes away.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_008|result_description",
+   "label": "supported_by_transcript",
+   "quote": "Cold's a little sensitive but goes away.",
+   "confidence": 0.93
+  },
+  {
+   "claim_id": "it_008|lingering",
+   "label": "supported_by_transcript",
+   "quote": "Cold's a little sensitive but goes away.",
+   "confidence": 0.85
+  },
+  {
+   "claim_id": "it_009|tooth",
+   "label": "supported_by_transcript",
+   "quote": "Good. The tooth isn't loose. Let's get a PA of the front teeth to check the roots.",
+   "confidence": 0.8
+  },
+  {
+   "claim_id": "it_009|observation",
+   "label": "supported_by_transcript",
+   "quote": "Good. The tooth isn't loose. Let's get a PA of the front teeth to check the roots.",
+   "confidence": 0.88
+  },
+  {
+   "claim_id": "it_009|assertion",
+   "label": "supported_by_transcript",
+   "quote": "Good. The tooth isn't loose. Let's get a PA of the front teeth to check the roots.",
+   "confidence": 0.88
+  },
+  {
+   "claim_id": "it_010|type",
+   "label": "supported_by_transcript",
+   "quote": "Good. The tooth isn't loose. Let's get a PA of the front teeth to check the roots.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_010|tooth",
+   "label": "supported_by_transcript",
+   "quote": "The roots of eight and nine look good, no root fracture.",
+   "confidence": 0.7
+  },
+  {
+   "claim_id": "it_010|target",
+   "label": "supported_by_transcript",
+   "quote": "Good. The tooth isn't loose. Let's get a PA of the front teeth to check the roots.",
+   "confidence": 0.93
+  },
+  {
+   "claim_id": "it_010|action",
+   "label": "supported_by_transcript",
+   "quote": "Taking it now.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_010|finding",
+   "label": "supported_by_transcript",
+   "quote": "The roots of eight and nine look good, no root fracture.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_011|diagnosis",
+   "label": "supported_by_transcript",
+   "quote": "Number eight has a fracture of the biting edge. It's through the enamel and into some dentin, but I don't see any pink or bleeding, so the nerve isn't exposed. Lips and gums look fine, just a small cut on the inside of the upper lip.",
+   "confidence": 0.8
+  },
+  {
+   "claim_id": "it_011|tooth",
+   "label": "supported_by_transcript",
+   "quote": "Number eight has a fracture of the biting edge. It's through the enamel and into some dentin, but I don't see any pink or bleeding, so the nerve isn't exposed. Lips and gums look fine, just a small cut on the inside of the upper lip.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_011|certainty",
+   "label": "supported_by_transcript",
+   "quote": "Number eight has a fracture of the biting edge. It's through the enamel and into some dentin, but I don't see any pink or bleeding, so the nerve isn't exposed. Lips and gums look fine, just a small cut on the inside of the upper lip.",
+   "confidence": 0.75
+  },
+  {
+   "claim_id": "it_001|option",
+   "label": "supported_by_transcript",
+   "quote": "It's very fixable. We can bond tooth-colored filling material onto it to rebuild the edge. That's called composite bonding. No crown needed right now.",
+   "confidence": 0.93
+  },
+  {
+   "claim_id": "it_002|option",
+   "label": "supported_by_transcript",
+   "quote": "It's very fixable. We can bond tooth-colored filling material onto it to rebuild the edge. That's called composite bonding. No crown needed right now.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_002|recommended_by_clinician",
+   "label": "supported_by_transcript",
+   "quote": "It's very fixable. We can bond tooth-colored filling material onto it to rebuild the edge. That's called composite bonding. No crown needed right now.",
+   "confidence": 0.85
+  },
+  {
+   "claim_id": "it_015|decision",
+   "label": "supported_by_transcript",
+   "quote": "Can we do that soon? I've got a wedding in two weeks.",
+   "confidence": 0.75
+  },
+  {
+   "claim_id": "it_015|option",
+   "label": "supported_by_transcript",
+   "quote": "Can we do that soon? I've got a wedding in two weeks.",
+   "confidence": 0.8
+  },
+  {
+   "claim_id": "it_012|procedure",
+   "label": "supported_by_transcript",
+   "quote": "We'll get you in next week to bond number nine. Until then, avoid biting into hard things with your front teeth. Sometimes after an injury the nerve can get irritated later, so if it turns gray or starts to hurt on its own, call us.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_012|tooth",
+   "label": "supported_by_transcript",
+   "quote": "We'll get you in next week to bond number nine. Until then, avoid biting into hard things with your front teeth. Sometimes after an injury the nerve can get irritated later, so if it turns gray or starts to hurt on its own, call us.",
+   "confidence": 0.55
+  },
+  {
+   "claim_id": "it_012|timing",
+   "label": "supported_by_transcript",
+   "quote": "We'll get you in next week to bond number nine. Until then, avoid biting into hard things with your front teeth. Sometimes after an injury the nerve can get irritated later, so if it turns gray or starts to hurt on its own, call us.",
+   "confidence": 0.93
+  },
+  {
+   "claim_id": "it_013|text",
+   "label": "supported_by_transcript",
+   "quote": "We'll get you in next week to bond number nine. Until then, avoid biting into hard things with your front teeth. Sometimes after an injury the nerve can get irritated later, so if it turns gray or starts to hurt on its own, call us.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_014|text",
+   "label": "supported_by_transcript",
+   "quote": "We'll get you in next week to bond number nine. Until then, avoid biting into hard things with your front teeth. Sometimes after an injury the nerve can get irritated later, so if it turns gray or starts to hurt on its own, call us.",
+   "confidence": 0.93
+  }
+ ],
+ "dentist_blockers": 6,
+ "blocker_kinds": {
+  "conflict": 2,
+  "staged": 2,
+  "safety-critical": 2
+ },
+ "check_counts": {
+  "span_valid": {
+   "pass": 16
+  },
+  "normalization_valid": {
+   "pass": 10,
+   "not_applicable": 6
+  },
+  "semantic_support": {
+   "not_applicable": 16
+  }
+ },
+ "relationships": []
+}

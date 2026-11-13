@@ -1,0 +1,858 @@
+{
+ "case": "case8",
+ "pipeline": "baseline",
+ "repeat": 0,
+ "session": "ce38bb76-4eb9-4530-90dd-fe9ed2c1bb4d",
+ "error": null,
+ "wall_s": 28.8,
+ "candidate": true,
+ "ready_for_review": true,
+ "failed_stages": [],
+ "production_failure_stage": null,
+ "calls": 3,
+ "usd_pipeline": 0.0904,
+ "usd_shared": 0.0074,
+ "per_agent": {
+  "B0": {
+   "calls": 2,
+   "in": 19690,
+   "out": 5099,
+   "seconds": 26.6,
+   "usd": 0.0904
+  },
+  "R2": {
+   "calls": 1,
+   "in": 2782,
+   "out": 188,
+   "seconds": 2.2,
+   "usd": 0.0074
+  }
+ },
+ "timings": [
+  13.2,
+  2.2,
+  13.4
+ ],
+ "scored": true,
+ "grader_error": null,
+ "final": {
+  "gold": 15,
+  "matched": 14,
+  "produced": 14,
+  "precision": [
+   14,
+   14
+  ],
+  "recall": [
+   14,
+   15
+  ],
+  "by_type": {
+   "problem": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "symptom": {
+    "gold": 4,
+    "matched": 4,
+    "produced": 4
+   },
+   "vital_reading": {
+    "gold": 2,
+    "matched": 2,
+    "produced": 2
+   },
+   "allergy": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "history_change": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "finding": {
+    "gold": 3,
+    "matched": 2,
+    "produced": 2
+   },
+   "radiograph": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "option_discussed": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "decision": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   }
+  },
+  "dims": {
+   "tooth": [
+    10,
+    10
+   ],
+   "role": [
+    1,
+    1
+   ],
+   "attr:complaint_text": [
+    0,
+    1
+   ],
+   "attr:complaint_location": [
+    1,
+    1
+   ],
+   "target_relation": [
+    9,
+    9
+   ],
+   "attr:aspect": [
+    1,
+    4
+   ],
+   "attr:value": [
+    1,
+    4
+   ],
+   "assertion": [
+    10,
+    13
+   ],
+   "time_context": [
+    12,
+    13
+   ],
+   "assertion_source": [
+    13,
+    13
+   ],
+   "negation": [
+    1,
+    3
+   ],
+   "attr:systolic": [
+    2,
+    2
+   ],
+   "attr:diastolic": [
+    2,
+    2
+   ],
+   "attr:unit": [
+    2,
+    2
+   ],
+   "attr:sequence": [
+    2,
+    2
+   ],
+   "attr:label": [
+    0,
+    2
+   ],
+   "attr:substance": [
+    1,
+    1
+   ],
+   "attr:reaction": [
+    1,
+    1
+   ],
+   "attr:original_wording": [
+    1,
+    1
+   ],
+   "status": [
+    0,
+    1
+   ],
+   "attr:description": [
+    1,
+    1
+   ],
+   "attr:test": [
+    1,
+    2
+   ],
+   "attr:observation": [
+    1,
+    1
+   ],
+   "attr:result_description": [
+    1,
+    2
+   ],
+   "attr:response": [
+    1,
+    1
+   ],
+   "attr:type": [
+    0,
+    1
+   ],
+   "attr:target": [
+    0,
+    1
+   ],
+   "attr:finding": [
+    1,
+    1
+   ],
+   "attr:bone_loss": [
+    1,
+    1
+   ],
+   "attr:action": [
+    1,
+    1
+   ],
+   "action": [
+    1,
+    1
+   ],
+   "attr:option": [
+    0,
+    2
+   ],
+   "attr:risks": [
+    1,
+    1
+   ],
+   "attr:benefits": [
+    0,
+    1
+   ],
+   "attr:recommended_by_clinician": [
+    1,
+    1
+   ],
+   "attr:decision": [
+    1,
+    1
+   ],
+   "attr:reason": [
+    1,
+    1
+   ]
+  },
+  "critical": {
+   "tooth": [
+    10,
+    10
+   ],
+   "negation": [
+    1,
+    3
+   ],
+   "allergy_status": [
+    0,
+    1
+   ],
+   "decision": [
+    1,
+    1
+   ]
+  },
+  "errors": [
+   "p1:attr:complaint_text",
+   "s2:attr:aspect",
+   "s2:attr:value",
+   "s2:assertion",
+   "s2:negation",
+   "s3:attr:aspect",
+   "s3:attr:value",
+   "s4:attr:aspect",
+   "s4:attr:value",
+   "s4:assertion",
+   "s4:negation",
+   "v1:attr:label",
+   "v2:attr:label",
+   "a1:time_context",
+   "a1:status:allergy_status",
+   "h1:assertion",
+   "f1:attr:test",
+   "f1:attr:result_description",
+   "x1:attr:type",
+   "x1:attr:target",
+   "o1:attr:option",
+   "o1:attr:benefits",
+   "d1:attr:option"
+  ],
+  "omissions": [
+   "f2"
+  ],
+  "extras": [],
+  "problem_map": {
+   "P1": "pb_1"
+  },
+  "merged": [],
+  "split": [],
+  "target_accuracy": [
+   1,
+   1
+  ],
+  "flags": {
+   "caught": [
+    "open_conflict",
+    "bp_reading",
+    "refusal_discussion"
+   ],
+   "missed": [],
+   "duplicates": [],
+   "false_alarms": [
+    "unsupported_content (technical)",
+    "open_review_task (technical)"
+   ],
+   "tolerated": [],
+   "questions": []
+  },
+  "forbidden_hits": [],
+  "expectations": []
+ },
+ "raw": {
+  "gold": 15,
+  "matched": 14,
+  "produced": 14,
+  "precision": [
+   14,
+   14
+  ],
+  "recall": [
+   14,
+   15
+  ],
+  "by_type": {
+   "problem": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "symptom": {
+    "gold": 4,
+    "matched": 4,
+    "produced": 4
+   },
+   "vital_reading": {
+    "gold": 2,
+    "matched": 2,
+    "produced": 2
+   },
+   "allergy": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "history_change": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "finding": {
+    "gold": 3,
+    "matched": 2,
+    "produced": 2
+   },
+   "radiograph": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "option_discussed": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "decision": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   }
+  },
+  "dims": {
+   "tooth": [
+    10,
+    10
+   ],
+   "role": [
+    1,
+    1
+   ],
+   "attr:complaint_text": [
+    0,
+    1
+   ],
+   "attr:complaint_location": [
+    1,
+    1
+   ],
+   "target_relation": [
+    0,
+    9
+   ],
+   "attr:aspect": [
+    1,
+    4
+   ],
+   "attr:value": [
+    1,
+    4
+   ],
+   "assertion": [
+    10,
+    13
+   ],
+   "time_context": [
+    12,
+    13
+   ],
+   "assertion_source": [
+    13,
+    13
+   ],
+   "negation": [
+    1,
+    3
+   ],
+   "attr:systolic": [
+    2,
+    2
+   ],
+   "attr:diastolic": [
+    2,
+    2
+   ],
+   "attr:unit": [
+    2,
+    2
+   ],
+   "attr:sequence": [
+    2,
+    2
+   ],
+   "attr:label": [
+    0,
+    2
+   ],
+   "attr:substance": [
+    1,
+    1
+   ],
+   "attr:reaction": [
+    1,
+    1
+   ],
+   "attr:original_wording": [
+    1,
+    1
+   ],
+   "status": [
+    0,
+    1
+   ],
+   "attr:description": [
+    1,
+    1
+   ],
+   "attr:test": [
+    1,
+    2
+   ],
+   "attr:observation": [
+    1,
+    1
+   ],
+   "attr:result_description": [
+    1,
+    2
+   ],
+   "attr:response": [
+    1,
+    1
+   ],
+   "attr:type": [
+    0,
+    1
+   ],
+   "attr:target": [
+    0,
+    1
+   ],
+   "attr:finding": [
+    1,
+    1
+   ],
+   "attr:bone_loss": [
+    1,
+    1
+   ],
+   "attr:action": [
+    1,
+    1
+   ],
+   "action": [
+    1,
+    1
+   ],
+   "attr:option": [
+    0,
+    2
+   ],
+   "attr:risks": [
+    1,
+    1
+   ],
+   "attr:benefits": [
+    0,
+    1
+   ],
+   "attr:recommended_by_clinician": [
+    1,
+    1
+   ],
+   "attr:decision": [
+    1,
+    1
+   ],
+   "attr:reason": [
+    1,
+    1
+   ]
+  },
+  "critical": {
+   "tooth": [
+    10,
+    10
+   ],
+   "negation": [
+    1,
+    3
+   ],
+   "allergy_status": [
+    0,
+    1
+   ],
+   "decision": [
+    1,
+    1
+   ]
+  },
+  "errors": [
+   "p1:attr:complaint_text",
+   "s1:target_relation",
+   "s2:target_relation",
+   "s2:attr:aspect",
+   "s2:attr:value",
+   "s2:assertion",
+   "s2:negation",
+   "s3:target_relation",
+   "s3:attr:aspect",
+   "s3:attr:value",
+   "s4:target_relation",
+   "s4:attr:aspect",
+   "s4:attr:value",
+   "s4:assertion",
+   "s4:negation",
+   "v1:attr:label",
+   "v2:attr:label",
+   "a1:time_context",
+   "a1:status:allergy_status",
+   "h1:assertion",
+   "f1:target_relation",
+   "f1:attr:test",
+   "f1:attr:result_description",
+   "f3:target_relation",
+   "x1:target_relation",
+   "x1:attr:type",
+   "x1:attr:target",
+   "o1:target_relation",
+   "o1:attr:option",
+   "o1:attr:benefits",
+   "d1:target_relation",
+   "d1:attr:option"
+  ],
+  "omissions": [
+   "f2"
+  ],
+  "extras": [],
+  "problem_map": {
+   "P1": "pb_1"
+  },
+  "merged": [],
+  "split": [],
+  "target_accuracy": [
+   1,
+   1
+  ],
+  "flags": {
+   "caught": [],
+   "missed": [
+    "open_conflict",
+    "bp_reading",
+    "refusal_discussion"
+   ],
+   "duplicates": [],
+   "false_alarms": [],
+   "tolerated": [],
+   "questions": []
+  },
+  "forbidden_hits": [],
+  "expectations": []
+ },
+ "claims": {
+  "supported_by_transcript": 35,
+  "supported_by_quick_notes": 2
+ },
+ "claims_detail": [
+  {
+   "claim_id": "it_006|systolic",
+   "label": "supported_by_transcript",
+   "quote": "Okay. Your blood pressure was one twenty-eight over eighty-four today, that looks good. Any allergies?",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_006|diastolic",
+   "label": "supported_by_transcript",
+   "quote": "Okay. Your blood pressure was one twenty-eight over eighty-four today, that looks good. Any allergies?",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_007|systolic",
+   "label": "supported_by_quick_notes",
+   "quote": "BP 162/98",
+   "confidence": 0.85
+  },
+  {
+   "claim_id": "it_007|diastolic",
+   "label": "supported_by_quick_notes",
+   "quote": "BP 162/98",
+   "confidence": 0.85
+  },
+  {
+   "claim_id": "it_008|substance",
+   "label": "supported_by_transcript",
+   "quote": "I was allergic to penicillin as a kid, I think. But I've taken amoxicillin since then with no problem.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_008|allergy_status",
+   "label": "supported_by_transcript",
+   "quote": "I was allergic to penicillin as a kid, I think. But I've taken amoxicillin since then with no problem.",
+   "confidence": 0.75
+  },
+  {
+   "claim_id": "it_009|description",
+   "label": "supported_by_transcript",
+   "quote": "Okay, we'll note that. Any changes to your health?",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_009|assertion",
+   "label": "supported_by_transcript",
+   "quote": "Nope.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "pb_1|role",
+   "label": "supported_by_transcript",
+   "quote": "Hi there, what brings you in?",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "pb_1|complaint_text",
+   "label": "supported_by_transcript",
+   "quote": "A piece of my filling broke off on the top left. Y me duele cuando como dulces. Sorry, it hurts when I eat sweets.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "pb_1|complaint_location",
+   "label": "supported_by_transcript",
+   "quote": "A piece of my filling broke off on the top left. Y me duele cuando como dulces. Sorry, it hurts when I eat sweets.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "pb_1|clinical_target",
+   "label": "supported_by_transcript",
+   "quote": "Let's take a look. Number twelve, the old filling has a big piece missing on the side, and there's a crack running through what's left of the tooth. Bite on this for me.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_002|aspect",
+   "label": "supported_by_transcript",
+   "quote": "Not really cold. Mostly sweets, and a little when I bite on it.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_002|value",
+   "label": "supported_by_transcript",
+   "quote": "Not really cold. Mostly sweets, and a little when I bite on it.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_003|aspect",
+   "label": "supported_by_transcript",
+   "quote": "Not really cold. Mostly sweets, and a little when I bite on it.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_003|value",
+   "label": "supported_by_transcript",
+   "quote": "Not really cold. Mostly sweets, and a little when I bite on it.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_004|aspect",
+   "label": "supported_by_transcript",
+   "quote": "Like four days ago, eating a granola bar.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_004|value",
+   "label": "supported_by_transcript",
+   "quote": "Like four days ago, eating a granola bar.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_005|aspect",
+   "label": "supported_by_transcript",
+   "quote": "Not really cold. Mostly sweets, and a little when I bite on it.",
+   "confidence": 0.85
+  },
+  {
+   "claim_id": "it_005|value",
+   "label": "supported_by_transcript",
+   "quote": "Not really cold. Mostly sweets, and a little when I bite on it.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_005|assertion",
+   "label": "supported_by_transcript",
+   "quote": "Not really cold. Mostly sweets, and a little when I bite on it.",
+   "confidence": 0.75
+  },
+  {
+   "claim_id": "it_010|tooth",
+   "label": "supported_by_transcript",
+   "quote": "Let's take a look. Number twelve, the old filling has a big piece missing on the side, and there's a crack running through what's left of the tooth. Bite on this for me.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_010|observation",
+   "label": "supported_by_transcript",
+   "quote": "Let's take a look. Number twelve, the old filling has a big piece missing on the side, and there's a crack running through what's left of the tooth. Bite on this for me.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_011|tooth",
+   "label": "supported_by_transcript",
+   "quote": "Let's take a look. Number twelve, the old filling has a big piece missing on the side, and there's a crack running through what's left of the tooth. Bite on this for me.",
+   "confidence": 0.85
+  },
+  {
+   "claim_id": "it_011|test",
+   "label": "supported_by_transcript",
+   "quote": "Let's take a look. Number twelve, the old filling has a big piece missing on the side, and there's a crack running through what's left of the tooth. Bite on this for me.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_011|response",
+   "label": "supported_by_transcript",
+   "quote": "Ooh, a little sharp.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_011|result_description",
+   "label": "supported_by_transcript",
+   "quote": "Ooh, a little sharp.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_012|type",
+   "label": "supported_by_transcript",
+   "quote": "Okay. We don't need a new x-ray. The bitewings from your cleaning last month show this area, and there's no decay near the nerve.",
+   "confidence": 0.7
+  },
+  {
+   "claim_id": "it_012|tooth",
+   "label": "supported_by_transcript",
+   "quote": "Okay. We don't need a new x-ray. The bitewings from your cleaning last month show this area, and there's no decay near the nerve.",
+   "confidence": 0.75
+  },
+  {
+   "claim_id": "it_012|action",
+   "label": "supported_by_transcript",
+   "quote": "Okay. We don't need a new x-ray. The bitewings from your cleaning last month show this area, and there's no decay near the nerve.",
+   "confidence": 0.8
+  },
+  {
+   "claim_id": "it_012|finding",
+   "label": "supported_by_transcript",
+   "quote": "Okay. We don't need a new x-ray. The bitewings from your cleaning last month show this area, and there's no decay near the nerve.",
+   "confidence": 0.8
+  },
+  {
+   "claim_id": "it_001|option",
+   "label": "supported_by_transcript",
+   "quote": "Because so much of the tooth is gone and it's cracked, I'd recommend a crown on twelve. A filling probably won't hold.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_001|tooth",
+   "label": "supported_by_transcript",
+   "quote": "Because so much of the tooth is gone and it's cracked, I'd recommend a crown on twelve. A filling probably won't hold.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_001|recommended_by_clinician",
+   "label": "supported_by_transcript",
+   "quote": "Because so much of the tooth is gone and it's cracked, I'd recommend a crown on twelve. A filling probably won't hold.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_013|decision",
+   "label": "supported_by_transcript",
+   "quote": "Honestly, money's tight right now. I don't think I'm going to do it.",
+   "confidence": 0.8
+  },
+  {
+   "claim_id": "it_013|option",
+   "label": "supported_by_transcript",
+   "quote": "Honestly, money's tight right now. I don't think I'm going to do it.",
+   "confidence": 0.85
+  },
+  {
+   "claim_id": "it_013|reason",
+   "label": "supported_by_transcript",
+   "quote": "Honestly, money's tight right now. I don't think I'm going to do it.",
+   "confidence": 0.95
+  }
+ ],
+ "dentist_blockers": 10,
+ "blocker_kinds": {
+  "pb_1": 1,
+  "conflict": 1,
+  "staged": 7,
+  "task": 1
+ },
+ "check_counts": {
+  "span_valid": {
+   "pass": 14
+  },
+  "normalization_valid": {
+   "fail": 1,
+   "pass": 13
+  },
+  "semantic_support": {
+   "not_applicable": 14
+  }
+ },
+ "relationships": []
+}
