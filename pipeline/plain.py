@@ -474,7 +474,8 @@ def build_cards(items, graph, check_log, staging, sources, role: str, flag_by_id
         key = "|".join(sorted(str(x.get("entity_id") or x.get("conflict_id") or x.get("task_id") or x.get("section")
                                   or x.get("pending_id") or x.get("staged_id") or x.get("flag_id") or x["kind"])
                               for x in group))
-        card = {"key": key, "kind": b["kind"], "hidden": False, "default": None, "options": [], "details": []}
+        card = {"key": key, "kind": b["kind"], "hidden": False, "default": None, "options": [], "details": [],
+                "comments": _comments([flag_by_id.get(f) for f in flag_ids])}
         k = b["kind"]
         if k == "check" or (k == "task" and graph.task(b["task_id"]).kind in ("check_failure", "registry_issue",
                                                                             "human_override_check")):
@@ -590,6 +591,21 @@ def build_cards(items, graph, check_log, staging, sources, role: str, flag_by_id
         if card["options"]:
             cards.append(card)
     return cards
+
+
+DEFAULT_REASON = "Reviewed by the {role} against the transcript"
+
+
+def _comments(flags) -> list[str]:
+    """Comments a reviewer typed when sending an item on (e.g. the assistant's note to the dentist)."""
+    out = []
+    for f in flags:
+        for h in (f.history if f is not None else []):
+            if h.reason and not h.reason.startswith("Reviewed by the ") and h.action in ("for_dentist", "comment"):
+                line = f"{h.by_role}: {h.reason}"
+                if line not in out:
+                    out.append(line)
+    return out
 
 
 # ---------------------------------------------------------------- errors in plain words

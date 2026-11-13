@@ -755,7 +755,7 @@ def apply_review(session, choices: list[dict], role: str, reason: str, *, client
     flags = [c for c in choices if c["op"] == "flag"]
     for c in flags:
         try:
-            flag_action(session, c["flag_id"], c["action"], role, reason)
+            flag_action(session, c["flag_id"], c["action"], role, c.get("reason") or reason)
         except HumanActionError as exc:
             errors.append(str(exc))
     graph_ops = [c for c in choices if c["op"] != "flag"]
@@ -767,7 +767,7 @@ def apply_review(session, choices: list[dict], role: str, reason: str, *, client
     try:
         for c in graph_ops:
             try:
-                _apply_choice(session, c, role, reason, client, agents)
+                _apply_choice(session, c, role, c.get("reason") or reason, client, agents)  # a card's own comment
                 applied += 1
             except HumanActionError as exc:
                 errors.append(str(exc))
