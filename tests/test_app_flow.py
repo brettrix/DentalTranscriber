@@ -340,12 +340,14 @@ def test_approved_note_offers_pdf_word_and_copy_never_markdown(monkeypatch, tmp_
     s.update_meta(patient="Maria Lopez 4417")
     run_pipeline(s, mode="baseline", client=FakeLLM())
     at = _app(monkeypatch, tmp_path, "Assistant")
-    assert not at.get("download_button"), "nothing to download before the dentist approves"
+    assert [d.label for d in at.get("download_button")] == ["Transcript (PDF)", "Transcript (text)"], \
+        "before approval only the transcript can be downloaded (a pasted transcript has no recording)"
     approval.force_approve_for_test(s)
     at = _app(monkeypatch, tmp_path, "Assistant")
     assert not at.exception, at.exception
     buttons = {d.label: d for d in at.get("download_button")}
-    assert list(buttons)[:2] == ["Download PDF", "Word (.docx)"], "PDF first"
+    assert list(buttons) == ["Download PDF", "Word (.docx)", "Download everything (.zip)", "Transcript (PDF)",
+                             "Transcript (text)"], "PDF first; no Recording button without a recording"
     assert not any("md" in label.lower() or "markdown" in label.lower() for label in buttons)
     assert not any(b.label == "Export" for b in at.button)
 
@@ -373,7 +375,7 @@ def test_waiting_and_cleared_tabs_follow_the_note(monkeypatch, tmp_path):
     at = _app(monkeypatch, tmp_path, "Assistant", page="Cleared by dentist")
     assert not at.exception, at.exception
     assert [m.value for m in at.markdown if m.value.startswith("**")] == ["**Ana Ruiz**"]
-    assert sorted(d.key for d in at.get("download_button")) == [f"docx_{a.id}", f"pdf_{a.id}"], \
+    assert sorted(d.key for d in at.get("download_button")) == [f"docx_{a.id}", f"pdf_{a.id}", f"zip_{a.id}"], \
         "each cleared note has its download buttons"
     approval.approve_dentist(b)
     at = _app(monkeypatch, tmp_path, "Assistant", page="Cleared by dentist")

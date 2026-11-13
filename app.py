@@ -452,6 +452,8 @@ def review_page():
             st.subheader("Quick notes")
             for q in src.quick_notes.notes:
                 st.write(f"- {q.text}")
+        st.caption("Download")
+        source_downloads(session, "review")
     technical_details(graph, latest)
 
 
@@ -482,18 +484,37 @@ def status_line(state, cards):
 
 
 def downloads():
-    """The approved note: PDF first, then Word and one-click copy. Never Markdown."""
+    """The approved note: PDF first, then Word, one-click copy and the whole visit as a zip. Never Markdown."""
     if exports.approved_record(session) is None:
         st.warning("This note changed after it was approved, so the dentist needs to approve it again.")
         return
     stem = exports.file_stem(session)
-    c1, c2, c3, _ = st.columns([2, 2, 2, 4])
+    c1, c2, c3, c4, _ = st.columns([2, 2, 2, 3, 2])
     c1.download_button("Download PDF", lambda: exports.note_pdf(session), file_name=f"{stem} note.pdf",
                        mime=exports.PDF_MIME, type="primary", key="dl_pdf", on_click="ignore", width="stretch")
     c2.download_button("Word (.docx)", lambda: exports.note_docx(session), file_name=f"{stem} note.docx",
                        mime=exports.DOCX_MIME, key="dl_docx", on_click="ignore", width="stretch")
     with c3:
         copy_button(exports.note_text(session), key="copy_note")
+    c4.download_button("Download everything (.zip)", lambda: exports.bundle_zip(session), file_name=f"{stem}.zip",
+                       mime="application/zip", key="dl_zip", on_click="ignore", width="stretch",
+                       help="One folder with the note (PDF and Word), the transcript (PDF and text) and the recording")
+
+
+def source_downloads(s, key: str):
+    """The transcript and the recording, available at any stage of the visit."""
+    stem = exports.file_stem(s)
+    audio = exports.recording_path(s)
+    cols = st.columns(3 if audio else 2)
+    cols[0].download_button("Transcript (PDF)", lambda: exports.transcript_pdf(s), file_name=f"{stem} transcript.pdf",
+                            mime=exports.PDF_MIME, key=f"tpdf_{key}", on_click="ignore", width="stretch")
+    cols[1].download_button("Transcript (text)", lambda: exports.transcript_text(s),
+                            file_name=f"{stem} transcript.txt", mime="text/plain", key=f"ttxt_{key}",
+                            on_click="ignore", width="stretch")
+    if audio:
+        cols[2].download_button("Recording", audio.read_bytes, file_name=f"{stem} recording{audio.suffix.lower()}",
+                                mime=exports.AUDIO_MIME[audio.suffix.lower()], key=f"rec_{key}", on_click="ignore",
+                                width="stretch")
 
 
 def no_graph():
@@ -862,8 +883,8 @@ def cleared_page():
         st.info("No approved notes yet. Notes appear here once the dentist approves them.")
         return
     st.caption("Approved notes, newest first.")
-    widths = [4, 2, 3, 2, 2, 2, 2]
-    _worklist_header("Patient", "Visit date", "Dentist", "Approved", "", "", "", widths=widths)
+    widths = [4, 2, 3, 2, 2, 2, 2, 2]
+    _worklist_header("Patient", "Visit date", "Dentist", "Approved", "Download", "", "", "", widths=widths)
     for r in rows[:MAX_LISTED]:
         s = r["session"]
         stem = exports.file_stem(s)
@@ -878,7 +899,10 @@ def cleared_page():
         c[5].download_button("Word", lambda s=s: exports.note_docx(s), file_name=f"{stem} note.docx",
                              mime=exports.DOCX_MIME, key=f"docx_{s.id}", on_click="ignore", width="stretch",
                              help="Download the note as a Word document")
-        if c[6].button("Open", key=f"open_c_{s.id}", width="stretch"):
+        c[6].download_button("Everything", lambda s=s: exports.bundle_zip(s), file_name=f"{stem}.zip",
+                             mime="application/zip", key=f"zip_{s.id}", on_click="ignore", width="stretch",
+                             help="A zip with the note, the transcript and the recording")
+        if c[7].button("Open", key=f"open_c_{s.id}", width="stretch"):
             go("Review", s.id)
     if len(rows) > MAX_LISTED:
         st.caption(f"Showing the newest {MAX_LISTED} of {len(rows)}. Use the search on the left for older visits.")
