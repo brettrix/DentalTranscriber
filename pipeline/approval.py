@@ -129,7 +129,8 @@ def blockers(session, target: str) -> list[str]:
             elif not _marked(flags, conflict_id=c.id):
                 out.append(f"conflict {c.id}: resolve or mark for dentist")
     # Staged records.
-    for r in staging.open_records():
+    last_run = session.meta().get("last_run")
+    for r in [r for r in staging.open_records() if r.run_id == last_run]:
         if target == "dentist":
             out.append(f"staged record {r.id} must be converted to a human entry or discarded with a reason")
         elif not _marked(flags, task_id=r.task_id):

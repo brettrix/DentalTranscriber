@@ -17,6 +17,7 @@ PATIENT: Yes, that's sharp.
 DENTIST: This is reversible pulpitis on fourteen.
 DENTIST: I'll prescribe ibuprofen 600 milligrams every six hours as needed.
 DENTIST: We'll do a filling on fourteen next week.
+DENTIST: Blood pressure is 150 over 95.
 """
 MINI_QUICK_NOTES = "BP 124/80\n"
 
@@ -145,7 +146,12 @@ class FakeLLM:
             return {"problems": [self.problem], "relationships": [], "items": list(self.items.values())}
         if agent == "Br":
             return {"problems": [self.problem], "relationships": []}
-        return {"items": [self.items[k] for k in TEAM_ITEMS.get(agent, []) if k in self.items]}
+        keys = re.findall(r"- problem_key (\S+?):", user)
+        out = [copy.deepcopy(self.items[k]) for k in TEAM_ITEMS.get(agent, []) if k in self.items]
+        for it in out:
+            if it.get("problem_key") and keys:
+                it["problem_key"] = keys[0]
+        return {"items": out}
 
     def _submit_repair(self, agent, user):
         if self.repair is not None:

@@ -138,7 +138,8 @@ def _assign_version(entity, previous: Graph | None) -> None:
 
 
 def convert_outputs(outputs: list[tuple[str, object]], sources, graph: Graph, previous: Graph | None,
-                    registry_owner: str, run_id: str | None = None) -> tuple[list, list[StagedRecord]]:
+                    registry_owner: str, run_id: str | None = None,
+                    human_chief_id: str | None = None) -> tuple[list, list[StagedRecord]]:
     """Agent outputs -> candidate entities (problems first). Returns (entities, staged records)."""
     keymap = KeyMap(graph)
     counters = next_ids(graph)
@@ -165,6 +166,12 @@ def convert_outputs(outputs: list[tuple[str, object]], sources, graph: Graph, pr
                   2 if t[2] == "item" and t[1].type in ("decision",) else
                   3 if t[2] == "item" and t[1].type == "consent_element" else 1))
     for owner, out, kind in ordered:
+        if kind == "problem" and out.role == "chief" and human_chief_id:
+            # A human-entered chief problem stands; the extractor's chief key resolves to it.
+            keymap.map[f"{owner}:{out.key}"] = human_chief_id
+            rec = stage(owner, kind, out, errors=["chief problem already entered by a human"])
+            rec.status = "superseded_by_human"
+            continue
         try:
             entity = _build(kind, owner, out, sources, keymap, registry_owner)
         except (ValidationError, ValueError) as exc:
@@ -242,7 +249,7 @@ def _build(kind: str, owner: str, out, sources, keymap: KeyMap, registry_owner: 
 # ---------------------------------------------------------------- batch commit (6.10)
 
 def commit_batch(graph: Graph, entities: list, staged: list[StagedRecord], sources, previous: Graph | None = None,
-                 *, require_chief: bool = True) -> tuple[list, list[StagedRecord]]:
+                 *, require_chief: bool = True, overrides: dict | None = None) -> tuple[list, list[StagedRecord]]:
     """Commit the closed, valid subset in one transaction. Returns (committed entities, uncommitted records).
     Mutates `graph` only on success."""
     by_ref = {id(e): rec for e, rec in zip(entities, [r for r in staged if r.entity is not None])}
@@ -276,9 +283,16 @@ def commit_batch(graph: Graph, entities: list, staged: list[StagedRecord], sourc
         if e.kind != "problem":
             rehash(e, sources.roles, trial)
         _assign_version(e, previous)
+    # 6.11: a regenerated entity a human removed or edited is committed as superseded by that assertion.
+    for e in candidates:
+        a = (overrides or {}).get(e.id)
+        if a is not None:
+            e.status = "superseded"
+            e.superseded_by = f"human:{a['id']}"
+            e.supersede_reason = f"{a['operation']} by {a['by_role']}: {a['reason']}"
     # Step 3: whole-graph constraints.
     errs = validate_graph(trial, require_chief=require_chief)
-    uncommitted = [r for r in staged if r.entity is None]
+    uncommitted = [r for r in staged if r.entity is None and r.status == "staged"]
     if errs:
         for e in entities:
             rec = by_ref.get(id(e))

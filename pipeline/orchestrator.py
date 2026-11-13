@@ -169,8 +169,14 @@ def run_pipeline(session: Session, *, mode: str | None = None, rule_mode: str | 
 # ---------------------------------------------------------------- Stage B
 
 def stage_b(run: Run) -> None:
+    from pipeline import human
     outputs: list[tuple[str, object]] = []
     status: dict[str, str] = {}
+    graph = Graph(pipeline_mode=run.mode, overlay_versions=run.sources.overlay_versions,
+                  source_hashes=run.sources.hashes)
+    # 6.11: human-entered entities carry over unchanged (a human-entered registry included).
+    human.carry_into(run.session, graph, run.previous, run.sources)
+    human_chief = graph.chief()
     if run.mode == "baseline":
         agent = run.agent("B0")
         st = now()
@@ -185,24 +191,29 @@ def stage_b(run: Run) -> None:
     else:
         registry_owner = "Br"
         st = now()
-        br_out = None
-        try:
-            br_out = run.agent("Br").extract(run.sources)
-            outputs.append(("Br", br_out))
-            status["Br"] = "succeeded"
-            br_rec = run.record("B", "Br", "succeeded", started=st)
-        except Exception as exc:  # noqa: BLE001
-            status["Br"] = "failed"
-            br_rec = run.record("B", "Br", "failed", error=_err(exc), started=st)
-        from agents.extract_common import registry_text
-        registry = registry_text(
-            [p.model_dump(mode="json") for p in br_out.problems],
-            [r.model_dump(mode="json") for r in br_out.relationships]) if br_out else None
-        runnable = TEAM_EXTRACTORS if br_out else ["B1"]
+        br_out, br_rec, registry = None, None, None
+        if human_chief is not None:
+            # A human-entered registry replaces Br (10.1: once it is saved, B2-B4 run and the batch commits).
+            run.record("B", "Br", "not_applicable", extra={"reason": "human-entered registry"})
+            registry = _registry_text_from_graph(graph)
+        else:
+            try:
+                br_out = run.agent("Br").extract(run.sources)
+                outputs.append(("Br", br_out))
+                status["Br"] = "succeeded"
+                br_rec = run.record("B", "Br", "succeeded", started=st)
+            except Exception as exc:  # noqa: BLE001
+                status["Br"] = "failed"
+                br_rec = run.record("B", "Br", "failed", error=_err(exc), started=st)
+            from agents.extract_common import registry_text
+            if br_out:
+                registry = registry_text([p.model_dump(mode="json") for p in br_out.problems],
+                                         [r.model_dump(mode="json") for r in br_out.relationships])
+        runnable = TEAM_EXTRACTORS if registry is not None else ["B1"]
         for name in TEAM_EXTRACTORS:
             if name not in runnable:
                 status[name] = "blocked"
-                run.record("B", name, "blocked", blocked_by=br_rec["id"])
+                run.record("B", name, "blocked", blocked_by=br_rec["id"] if br_rec else "B/Br")
 
         def call(name):
             st_ = now()
@@ -221,11 +232,10 @@ def stage_b(run: Run) -> None:
                     status[name] = "failed"
                     run.record("B", name, "failed", error=_err(exc), started=st_)
     # Linker
-    graph = Graph(pipeline_mode=run.mode, overlay_versions=run.sources.overlay_versions,
-                  source_hashes=run.sources.hashes)
-    _carry_human_state(run, graph)
-    entities, staged = convert_outputs(outputs, run.sources, graph, run.previous, registry_owner, run.run_id)
-    committed, uncommitted = commit_batch(graph, entities, staged, run.sources, run.previous)
+    entities, staged = convert_outputs(outputs, run.sources, graph, run.previous, registry_owner, run.run_id,
+                                       human_chief_id=human_chief.id if human_chief else None)
+    committed, uncommitted = commit_batch(graph, entities, staged, run.sources, run.previous,
+                                          overrides=human.human_overrides(run.session))
     for rec in staged:
         run.staging.add(rec)
     chief_ok = graph.chief() is not None
@@ -234,6 +244,7 @@ def stage_b(run: Run) -> None:
             (uncommitted[0].errors[-1:] if uncommitted and uncommitted[0].errors else ["no chief problem"])))
         run.graph = None
         return
+    human.after_commit(run.session, graph, run.previous, committed, run.sources)
     run.record("L", "Linker", "succeeded", extra={"committed": len(committed), "staged": len(uncommitted)})
     # Section records: every section each extractor owns, even with zero entities.
     for agent_name, st_ in status.items():
@@ -243,6 +254,10 @@ def stage_b(run: Run) -> None:
             sstatus = {"succeeded": "completed", "failed": "failed", "blocked": "not_run"}[st_]
             graph.section_records.append(SectionRecord(section=sec, owner=agent_name, status=sstatus, entities=n,
                                                        version=_section_version(run.previous, sec, sstatus, n)))
+    if human_chief is not None and run.mode == "team":
+        graph.section_records.append(SectionRecord(section="chief_complaint", owner="human", status="completed",
+                                                   entities=len(graph.active("problem"))))
+    human.carry_section_dispositions(graph, run.previous)
     for rec in uncommitted:
         task = make_task("staged_record", f"{rec.owner} {rec.kind} not committed: {'; '.join(rec.errors)[:400]}",
                          created_by_stage="L", severity="medium", staging_ids=[rec.id])
@@ -259,15 +274,6 @@ def _section_version(previous, section, status, n) -> int:
     if prev is None:
         return 1
     return prev.version if (prev.status, prev.entities) == (status, n) else prev.version + 1
-
-
-def _carry_human_state(run: Run, graph: Graph) -> None:
-    """Section 6.11: human assertions survive reruns (implemented in pipeline.human)."""
-    try:
-        from pipeline.human import carry_into
-    except ImportError:
-        return
-    carry_into(run.session, graph, run.previous, run.sources)
 
 
 # ---------------------------------------------------------------- Stage C
@@ -449,11 +455,8 @@ def reconcile_graph(g: Graph, sources, mode: str, r2_findings: list[dict], previ
     add_conflicts(g, r1_conflicts(g), previous)
     add_conflicts(g, link_r2(g, r2_findings, sources, previous), previous)
     link_tasks(g, previous)
-    try:
-        from pipeline.human import apply_carried_resolutions
-        apply_carried_resolutions(g)
-    except ImportError:
-        pass
+    from pipeline.human import apply_carried_resolutions
+    apply_carried_resolutions(g)
 
 
 # ---------------------------------------------------------------- Stages E and F

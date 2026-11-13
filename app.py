@@ -384,6 +384,6 @@ with tab_trace:
         rows = [r for r in read_traces(session) if r.get("kind") == "model_call"]
         st.dataframe([{k: r.get(k) for k in ("timestamp", "agent", "label", "attempt", "schema_retry", "result",
                                               "seconds", "input_tokens", "output_tokens", "model", "prompt_hash",
-                                              "graph_version", "error")} for r in rows], use_container_width=True)
+                                              "graph_version", "error")} for r in rows], width="stretch")
         st.subheader("Stage runs")
-        st.dataframe(session_stage_log(session).runs, use_container_width=True)
+        st.dataframe(session_stage_log(session).runs, width="stretch")
