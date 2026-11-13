@@ -61,3 +61,7 @@ Choices made where BUILD_PROMPT v4.3 was unclear. Each keeps the invariants in s
 - **Conflicts between a human entry and a regenerated entity** are raised only for single-valued subjects (not findings, symptoms, instructions or consent elements, which legitimately share a type and tooth).
 - **Approval-matrix rows** are checked from the graph itself (failed checks, conflicts, tasks, staged records, sections, pending changes); the flag rows cover the remaining high and safety-critical flags. "Marked for dentist" is a flag action. An E3 failure task does not block dentist approval (10.1 says the dentist *may* accept it).
 - **Dismissing a safety-critical flag** is Dentist-only. A dismissal is stored in the flag's history (keyed by its inputs hash) and never changes a check result.
+
+## Deepgram (stage 6)
+- Parameters were checked against Deepgram's current docs: `model=nova-3-medical` (a listed value); `keyterm` repeated once per term (the glossary's 56 terms are far below the 500-token keyterm cap); `utterances`, `smart_format` and `punctuate` set to `true`. `diarize=true` is kept because it is still accepted, though the docs now mark it deprecated in favour of `diarize_model`. Switch to `diarize_model` if Deepgram removes it.
+- Audio sessions start with an unconfirmed role overlay; `run_pipeline` refuses Stage B until a human confirms roles on the Role confirmation tab.
