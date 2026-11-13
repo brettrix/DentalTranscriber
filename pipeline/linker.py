@@ -1,6 +1,7 @@
 """L Linker (Python): ids and versions (6.5), references, hashes, structural validation, batch commits (6.10)."""
 from __future__ import annotations
 
+import re
 import uuid
 from dataclasses import asdict, dataclass, field
 
@@ -211,6 +212,23 @@ def graph_view_remove(graph: Graph, entity) -> None:
     graph.entities = [x for x in graph.entities if x is not entity]
 
 
+# Words that say nothing about a reaction: hedges, fillers and "none stated" placeholders.
+_NOT_A_REACTION = re.compile(
+    r"^(?:(?:i|we)\s+(?:think|guess|believe|suppose)(?:\s+so)?|maybe|probably|possibly|perhaps|(?:i'?m\s+)?not\s+sure"
+    r"|unsure|(?:i\s+)?(?:don'?t|do\s+not|can'?t|cannot)\s+(?:know|remember|recall)|unknown|unspecified"
+    r"|not\s+(?:stated|specified|given|mentioned|reported|known)|none(?:\s+(?:stated|reported|given))?|n/?a"
+    r"|no\s+(?:reaction|problems?)(?:\s+(?:stated|reported|since))?|\?+)[\s.,!?]*$", re.I)
+
+
+def clean_attributes(item_type: str, attributes: dict) -> dict:
+    """Deterministic tidy-up of extractor output: an allergy `reaction` stays empty unless a reaction was stated."""
+    if item_type == "allergy":
+        reaction = attributes.get("reaction")
+        if isinstance(reaction, str) and (not reaction.strip() or _NOT_A_REACTION.match(reaction.strip())):
+            attributes["reaction"] = None
+    return attributes
+
+
 def _build(kind: str, owner: str, out, sources, keymap: KeyMap, registry_owner: str):
     common = dict(id=out.id or "tmp", owner=owner, local_key=f"{owner}:{out.key}",
                   evidence=_spans(out.evidence, sources), derivations=_derivations(out.derivations),
@@ -227,7 +245,7 @@ def _build(kind: str, owner: str, out, sources, keymap: KeyMap, registry_owner: 
             raise ValueError(f"relationship problem_key {out.problem_key!r} does not resolve")
         return Relationship(problem_id=pid, tooth=out.tooth, relation_kind=out.relation_kind, note=out.note, **common)
     assert isinstance(out, ItemOut)
-    attributes = dict(out.attributes)
+    attributes = clean_attributes(out.type, dict(out.attributes))
     pid = keymap.resolve(out.problem_key, owner, registry_owner)
     if out.problem_key and pid is None:
         raise ValueError(f"problem_key {out.problem_key!r} does not resolve")

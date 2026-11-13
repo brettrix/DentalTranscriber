@@ -153,11 +153,69 @@ def test_displayed_text_says_in_the_past_and_hints_dentist_only():
     assert strip_ids("amoxicillin; historical (historical)") == "amoxicillin; in the past"
 
 
-def test_dentist_field_defaults_blank_and_guide_excludes_admin_remarks():
+def test_dentist_field_defaults_blank_and_guide_excludes_admin_remarks(monkeypatch, tmp_path):
+    import pipeline.storage as storage
+    monkeypatch.setattr(storage, "SESSIONS_DIR", tmp_path)
     at = AppTest.from_file("../app.py", default_timeout=60)
-    at.session_state["page"] = "Start"
+    at.session_state["page"] = "New visit"
     at.run()
     assert next(t for t in at.text_input if t.label == "Dentist").value == ""
     from agents.base import read_prompt
     guide = read_prompt("_extraction_guide.md")
     assert "front desk can give you an estimate" in guide and "not clinical facts or instructions" in guide
+
+
+def test_allergy_reaction_stays_empty_unless_a_reaction_is_stated(tmp_path):
+    """New case8 run: reaction was filled with "I think". A hedge is not a reaction."""
+    import copy
+
+    from pipeline.graph import load_graph
+    from pipeline.linker import clean_attributes
+    from pipeline.orchestrator import run_pipeline
+    from tests.fake_llm import ITEMS, FakeLLM, mini_session
+    for hedge in ("I think", "i think so.", "maybe", "Not sure", "I don't remember", "unknown", "none stated", "N/A",
+                  "no reaction", ""):
+        assert clean_attributes("allergy", {"reaction": hedge})["reaction"] is None, hedge
+    for real in ("hives", "rash and swelling", "I think it was hives", "throat closed up"):
+        assert clean_attributes("allergy", {"reaction": real})["reaction"] == real
+    assert clean_attributes("finding", {"result_description": "maybe"})["result_description"] == "maybe", "allergies only"
+
+    items = copy.deepcopy(ITEMS)
+    items["A1"]["attributes"]["reaction"] = "I think"
+    s = mini_session(tmp_path, "baseline")
+    run_pipeline(s, mode="baseline", client=FakeLLM(items=items))
+    allergy = next(e for e in load_graph(s).active("item") if e.type == "allergy")
+    assert allergy.attributes["reaction"] is None and allergy.attributes["substance"] == "penicillin"
+
+
+def test_finding_results_are_asked_for_kept_and_shown(tmp_path):
+    """A bite-paper check's result ("heavy mark on the new filling") survives extraction and reaches the note."""
+    import copy
+
+    from agents.b0_extract import B0ExtractionAgent
+    from agents.extract_common import EXTRACTION_ADDENDUM
+    from pipeline.chart import chart_line
+    from pipeline.graph import load_graph
+    from pipeline.orchestrator import run_pipeline
+    from tests.fake_llm import ITEMS, FakeLLM, mini_session
+    prompt = B0ExtractionAgent(client=FakeLLM()).system_prompt()
+    assert EXTRACTION_ADDENDUM in prompt and "result_description" in EXTRACTION_ADDENDUM
+    assert "`reaction` is null" in EXTRACTION_ADDENDUM
+    assert prompt.index(EXTRACTION_ADDENDUM) > prompt.index("put the hedge in `reaction`"), \
+        "sent after the frozen guide, whose older wording it overrides"
+
+    items = copy.deepcopy(ITEMS)
+    items["F1"]["attributes"] = {"test": "bite paper", "result_description": "heavy mark on the new filling"}
+    s = mini_session(tmp_path, "baseline")
+    run_pipeline(s, mode="baseline", client=FakeLLM(items=items))
+    g = load_graph(s)
+    finding = next(e for e in g.active("item") if e.type == "finding")
+    assert finding.attributes["result_description"] == "heavy mark on the new filling"
+    assert chart_line(finding, g) == "#14: bite paper \u2014 heavy mark on the new filling"
+
+
+def test_frozen_files_are_as_the_last_commit_left_them():
+    """The extraction additions live in code; nothing under the frozen paths changed in this work."""
+    from eval.freeze import check
+    assert set(check()) <= {"eval/run_eval.py", "eval/scoring.py", "prompts/_extraction_guide.md"}, \
+        "only the three files already changed (and documented in DECISIONS.md) before this work"
