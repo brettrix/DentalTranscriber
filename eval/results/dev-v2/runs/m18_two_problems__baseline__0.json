@@ -1,0 +1,21 @@
+{
+ "case": "m18_two_problems",
+ "pipeline": "baseline",
+ "repeat": 0,
+ "session": "18fcb51d-d07b-4308-bfc1-8975e53b371c",
+ "error": null,
+ "wall_s": 0.2,
+ "candidate": false,
+ "ready_for_review": false,
+ "failed_stages": [
+  "B/B0",
+  "L/Linker"
+ ],
+ "production_failure_stage": "B/B0",
+ "calls": 0,
+ "usd_pipeline": 0,
+ "usd_shared": 0,
+ "per_agent": {},
+ "timings": [],
+ "scored": false
+}

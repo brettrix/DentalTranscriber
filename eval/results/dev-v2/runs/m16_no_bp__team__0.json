@@ -1,0 +1,443 @@
+{
+ "case": "m16_no_bp",
+ "pipeline": "team",
+ "repeat": 0,
+ "session": "879bd918-8153-4c55-9e5b-3fbf7c751847",
+ "error": null,
+ "wall_s": 19.9,
+ "candidate": true,
+ "ready_for_review": true,
+ "failed_stages": [
+  "C/repair/B2",
+  "C/Cs",
+  "C/Cs",
+  "C/Cs",
+  "C/Co",
+  "E/E3"
+ ],
+ "production_failure_stage": null,
+ "calls": 18,
+ "usd_pipeline": 0.2228,
+ "usd_shared": 0.0048,
+ "per_agent": {
+  "Br": {
+   "calls": 1,
+   "in": 6022,
+   "out": 274,
+   "seconds": 2.5,
+   "usd": 0.0148
+  },
+  "B1": {
+   "calls": 1,
+   "in": 6180,
+   "out": 51,
+   "seconds": 1.7,
+   "usd": 0.0129
+  },
+  "B3": {
+   "calls": 2,
+   "in": 13299,
+   "out": 797,
+   "seconds": 5.4,
+   "usd": 0.0346
+  },
+  "B4": {
+   "calls": 2,
+   "in": 13715,
+   "out": 1178,
+   "seconds": 7.2,
+   "usd": 0.0392
+  },
+  "B2": {
+   "calls": 2,
+   "in": 12968,
+   "out": 918,
+   "seconds": 7.1,
+   "usd": 0.0351
+  },
+  "Cs": {
+   "calls": 5,
+   "in": 25227,
+   "out": 1967,
+   "seconds": 13.2,
+   "usd": 0.0701
+  },
+  "Ce": {
+   "calls": 3,
+   "in": 4384,
+   "out": 263,
+   "seconds": 3.7,
+   "usd": 0.0114
+  },
+  "Co": {
+   "calls": 1,
+   "in": 2084,
+   "out": 53,
+   "seconds": 1.0,
+   "usd": 0.0047
+  },
+  "R2": {
+   "calls": 1,
+   "in": 2129,
+   "out": 53,
+   "seconds": 1.4,
+   "usd": 0.0048
+  }
+ },
+ "timings": [
+  2.5,
+  1.7,
+  2.8,
+  2.9,
+  3.7,
+  2.4,
+  2.7,
+  2.8,
+  2.9,
+  2.4,
+  1.1,
+  1.1,
+  1.5,
+  1.0,
+  1.4,
+  2.6,
+  3.4,
+  4.4
+ ],
+ "scored": true,
+ "grader_error": "AgentError: Grader: API error 400",
+ "final": {
+  "gold": 5,
+  "matched": 5,
+  "produced": 7,
+  "precision": [
+   5,
+   7
+  ],
+  "recall": [
+   5,
+   5
+  ],
+  "by_type": {
+   "problem": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "symptom": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 2
+   },
+   "finding": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "diagnosis": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 2
+   },
+   "decision": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   }
+  },
+  "dims": {
+   "tooth": [
+    3,
+    4
+   ],
+   "role": [
+    1,
+    1
+   ],
+   "attr:aspect": [
+    1,
+    1
+   ],
+   "attr:value": [
+    1,
+    1
+   ],
+   "assertion": [
+    4,
+    4
+   ],
+   "time_context": [
+    4,
+    4
+   ],
+   "assertion_source": [
+    3,
+    4
+   ],
+   "target_relation": [
+    2,
+    2
+   ],
+   "attr:test": [
+    1,
+    1
+   ],
+   "attr:response": [
+    1,
+    1
+   ],
+   "attr:lingering": [
+    1,
+    1
+   ],
+   "attr:diagnosis": [
+    1,
+    1
+   ],
+   "attr:certainty": [
+    1,
+    1
+   ],
+   "attr:decision": [
+    1,
+    1
+   ]
+  },
+  "critical": {
+   "tooth": [
+    3,
+    4
+   ],
+   "certainty": [
+    1,
+    1
+   ],
+   "decision": [
+    1,
+    1
+   ]
+  },
+  "errors": [
+   "dc1:tooth",
+   "dc1:assertion_source"
+  ],
+  "omissions": [],
+  "extras": [
+   "symptom:it_002",
+   "diagnosis:it_006"
+  ],
+  "problem_map": {
+   "P1": "pb_1"
+  },
+  "merged": [],
+  "split": [],
+  "target_accuracy": [
+   1,
+   1
+  ],
+  "flags": {
+   "caught": [
+    "bp_reading",
+    "unknown_option_link"
+   ],
+   "missed": [],
+   "duplicates": [],
+   "false_alarms": [
+    "stage_failure (technical)",
+    "stage_failure (technical)",
+    "unsupported_content (technical)",
+    "unsupported_content (technical)",
+    "unsupported_content (technical)",
+    "stage_failure (technical)",
+    "stage_failure (technical)",
+    "stage_failure (technical)",
+    "unsupported_content (technical)"
+   ],
+   "tolerated": [
+    "open_review_task",
+    "open_review_task",
+    "open_review_task",
+    "open_review_task"
+   ],
+   "questions": []
+  },
+  "forbidden_hits": [],
+  "expectations": [
+   {
+    "check": "flag_severity",
+    "rule_id": "bp_reading",
+    "severity": "low",
+    "pass": true
+   }
+  ]
+ },
+ "raw": {
+  "gold": 5,
+  "matched": 5,
+  "produced": 6,
+  "precision": [
+   5,
+   6
+  ],
+  "recall": [
+   5,
+   5
+  ],
+  "by_type": {
+   "problem": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "symptom": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 2
+   },
+   "finding": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "diagnosis": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "decision": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   }
+  },
+  "dims": {
+   "tooth": [
+    3,
+    4
+   ],
+   "role": [
+    1,
+    1
+   ],
+   "attr:aspect": [
+    1,
+    1
+   ],
+   "attr:value": [
+    1,
+    1
+   ],
+   "assertion": [
+    4,
+    4
+   ],
+   "time_context": [
+    4,
+    4
+   ],
+   "assertion_source": [
+    4,
+    4
+   ],
+   "target_relation": [
+    0,
+    2
+   ],
+   "attr:test": [
+    1,
+    1
+   ],
+   "attr:response": [
+    1,
+    1
+   ],
+   "attr:lingering": [
+    1,
+    1
+   ],
+   "attr:diagnosis": [
+    1,
+    1
+   ],
+   "attr:certainty": [
+    1,
+    1
+   ],
+   "attr:decision": [
+    1,
+    1
+   ]
+  },
+  "critical": {
+   "tooth": [
+    3,
+    4
+   ],
+   "certainty": [
+    1,
+    1
+   ],
+   "decision": [
+    1,
+    1
+   ]
+  },
+  "errors": [
+   "f1:target_relation",
+   "d1:target_relation",
+   "dc1:tooth"
+  ],
+  "omissions": [],
+  "extras": [
+   "symptom:it_002"
+  ],
+  "problem_map": {
+   "P1": "pb_1"
+  },
+  "merged": [],
+  "split": [],
+  "target_accuracy": [
+   1,
+   1
+  ],
+  "flags": {
+   "caught": [],
+   "missed": [
+    "bp_reading",
+    "unknown_option_link"
+   ],
+   "duplicates": [],
+   "false_alarms": [],
+   "tolerated": [],
+   "questions": []
+  },
+  "forbidden_hits": [],
+  "expectations": []
+ },
+ "claims": {},
+ "claims_detail": [],
+ "dentist_blockers": 16,
+ "blocker_kinds": {
+  "it_002": 1,
+  "it_005": 1,
+  "it_006": 1,
+  "it_003": 1,
+  "staged": 2,
+  "task": 8,
+  "high": 2
+ },
+ "check_counts": {
+  "span_valid": {
+   "pass": 7
+  },
+  "normalization_valid": {
+   "pass": 7
+  },
+  "semantic_support": {
+   "pass": 3,
+   "fail": 1,
+   "not_assessed_due_to_failure": 3
+  }
+ },
+ "relationships": []
+}

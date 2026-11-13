@@ -1,0 +1,559 @@
+{
+ "case": "m11_wait_and_see",
+ "pipeline": "baseline",
+ "repeat": 0,
+ "session": "0a1b20ca-5e39-459c-953c-4d8cb728827c",
+ "error": null,
+ "wall_s": 17.8,
+ "candidate": true,
+ "ready_for_review": true,
+ "failed_stages": [],
+ "production_failure_stage": null,
+ "calls": 3,
+ "usd_pipeline": 0.0644,
+ "usd_shared": 0.0048,
+ "per_agent": {
+  "B0": {
+   "calls": 2,
+   "in": 17016,
+   "out": 3040,
+   "seconds": 16.5,
+   "usd": 0.0644
+  },
+  "R2": {
+   "calls": 1,
+   "in": 2158,
+   "out": 53,
+   "seconds": 1.2,
+   "usd": 0.0048
+  }
+ },
+ "timings": [
+  8.1,
+  1.2,
+  8.3
+ ],
+ "scored": true,
+ "grader_error": null,
+ "final": {
+  "gold": 7,
+  "matched": 7,
+  "produced": 9,
+  "precision": [
+   7,
+   9
+  ],
+  "recall": [
+   7,
+   7
+  ],
+  "by_type": {
+   "problem": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "vital_reading": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "symptom": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "finding": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "option_discussed": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 2
+   },
+   "decision": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "next_visit": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "diagnosis": {
+    "gold": 0,
+    "matched": 0,
+    "produced": 1
+   }
+  },
+  "dims": {
+   "tooth": [
+    4,
+    5
+   ],
+   "role": [
+    1,
+    1
+   ],
+   "attr:complaint_text": [
+    1,
+    1
+   ],
+   "attr:complaint_location": [
+    1,
+    1
+   ],
+   "attr:systolic": [
+    1,
+    1
+   ],
+   "attr:diastolic": [
+    1,
+    1
+   ],
+   "assertion": [
+    6,
+    6
+   ],
+   "time_context": [
+    6,
+    6
+   ],
+   "assertion_source": [
+    5,
+    6
+   ],
+   "attr:aspect": [
+    1,
+    1
+   ],
+   "attr:value": [
+    1,
+    1
+   ],
+   "target_relation": [
+    3,
+    3
+   ],
+   "attr:observation": [
+    1,
+    1
+   ],
+   "attr:option": [
+    1,
+    1
+   ],
+   "attr:recommended_by_clinician": [
+    1,
+    1
+   ],
+   "attr:decision": [
+    1,
+    1
+   ],
+   "attr:procedure": [
+    1,
+    1
+   ],
+   "attr:timing": [
+    1,
+    1
+   ]
+  },
+  "critical": {
+   "tooth": [
+    4,
+    5
+   ],
+   "decision": [
+    1,
+    1
+   ]
+  },
+  "errors": [
+   "dc1:tooth",
+   "dc1:assertion_source"
+  ],
+  "omissions": [],
+  "extras": [
+   "diagnosis:it_005",
+   "option_discussed:it_002"
+  ],
+  "problem_map": {
+   "P1": "pb_1"
+  },
+  "merged": [],
+  "split": [],
+  "target_accuracy": [
+   1,
+   1
+  ],
+  "flags": {
+   "caught": [],
+   "missed": [],
+   "duplicates": [],
+   "false_alarms": [],
+   "tolerated": [],
+   "questions": []
+  },
+  "forbidden_hits": [],
+  "expectations": [
+   {
+    "check": "entity",
+    "type": "decision",
+    "decision": "monitor",
+    "pass": true
+   },
+   {
+    "check": "flag_absent",
+    "rule_id": "refusal_discussion",
+    "pass": true
+   },
+   {
+    "check": "flag_absent",
+    "rule_id": "diagnosis_or_plan_missing",
+    "pass": true
+   }
+  ]
+ },
+ "raw": {
+  "gold": 7,
+  "matched": 7,
+  "produced": 9,
+  "precision": [
+   7,
+   9
+  ],
+  "recall": [
+   7,
+   7
+  ],
+  "by_type": {
+   "problem": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "vital_reading": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "symptom": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "finding": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "option_discussed": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 2
+   },
+   "decision": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "next_visit": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "diagnosis": {
+    "gold": 0,
+    "matched": 0,
+    "produced": 1
+   }
+  },
+  "dims": {
+   "tooth": [
+    4,
+    5
+   ],
+   "role": [
+    1,
+    1
+   ],
+   "attr:complaint_text": [
+    1,
+    1
+   ],
+   "attr:complaint_location": [
+    1,
+    1
+   ],
+   "attr:systolic": [
+    1,
+    1
+   ],
+   "attr:diastolic": [
+    1,
+    1
+   ],
+   "assertion": [
+    6,
+    6
+   ],
+   "time_context": [
+    6,
+    6
+   ],
+   "assertion_source": [
+    5,
+    6
+   ],
+   "attr:aspect": [
+    1,
+    1
+   ],
+   "attr:value": [
+    1,
+    1
+   ],
+   "target_relation": [
+    0,
+    3
+   ],
+   "attr:observation": [
+    1,
+    1
+   ],
+   "attr:option": [
+    1,
+    1
+   ],
+   "attr:recommended_by_clinician": [
+    1,
+    1
+   ],
+   "attr:decision": [
+    1,
+    1
+   ],
+   "attr:procedure": [
+    1,
+    1
+   ],
+   "attr:timing": [
+    1,
+    1
+   ]
+  },
+  "critical": {
+   "tooth": [
+    4,
+    5
+   ],
+   "decision": [
+    1,
+    1
+   ]
+  },
+  "errors": [
+   "f1:target_relation",
+   "o1:target_relation",
+   "dc1:tooth",
+   "dc1:assertion_source",
+   "n1:target_relation"
+  ],
+  "omissions": [],
+  "extras": [
+   "option_discussed:it_002",
+   "diagnosis:it_005"
+  ],
+  "problem_map": {
+   "P1": "pb_1"
+  },
+  "merged": [],
+  "split": [],
+  "target_accuracy": [
+   1,
+   1
+  ],
+  "flags": {
+   "caught": [],
+   "missed": [],
+   "duplicates": [],
+   "false_alarms": [],
+   "tolerated": [],
+   "questions": []
+  },
+  "forbidden_hits": [],
+  "expectations": []
+ },
+ "claims": {
+  "supported_by_quick_notes": 2,
+  "supported_by_transcript": 22
+ },
+ "claims_detail": [
+  {
+   "claim_id": "it_007|systolic",
+   "label": "supported_by_quick_notes",
+   "quote": "BP 120/78",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_007|diastolic",
+   "label": "supported_by_quick_notes",
+   "quote": "BP 120/78",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "pb_1|role",
+   "label": "supported_by_transcript",
+   "quote": "My lower left tooth is a little sensitive to sweets.",
+   "confidence": 0.8
+  },
+  {
+   "claim_id": "pb_1|complaint_text",
+   "label": "supported_by_transcript",
+   "quote": "My lower left tooth is a little sensitive to sweets.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "pb_1|complaint_location",
+   "label": "supported_by_transcript",
+   "quote": "My lower left tooth is a little sensitive to sweets.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "pb_1|clinical_target",
+   "label": "supported_by_transcript",
+   "quote": "Number nineteen has a small spot of early decay in the enamel.",
+   "confidence": 0.8
+  },
+  {
+   "claim_id": "it_003|aspect",
+   "label": "supported_by_transcript",
+   "quote": "My lower left tooth is a little sensitive to sweets.",
+   "confidence": 0.85
+  },
+  {
+   "claim_id": "it_003|value",
+   "label": "supported_by_transcript",
+   "quote": "My lower left tooth is a little sensitive to sweets.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_004|tooth",
+   "label": "supported_by_transcript",
+   "quote": "Number nineteen has a small spot of early decay in the enamel.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_004|observation",
+   "label": "supported_by_transcript",
+   "quote": "Number nineteen has a small spot of early decay in the enamel.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_005|diagnosis",
+   "label": "supported_by_transcript",
+   "quote": "Number nineteen has a small spot of early decay in the enamel.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_005|tooth",
+   "label": "supported_by_transcript",
+   "quote": "Number nineteen has a small spot of early decay in the enamel.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_005|certainty",
+   "label": "supported_by_transcript",
+   "quote": "Number nineteen has a small spot of early decay in the enamel.",
+   "confidence": 0.8
+  },
+  {
+   "claim_id": "it_001|option",
+   "label": "supported_by_transcript",
+   "quote": "We could fill it, but I'd rather watch it for now. Let's recheck it in six months.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_001|tooth",
+   "label": "supported_by_transcript",
+   "quote": "Number nineteen has a small spot of early decay in the enamel.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_001|recommended_by_clinician",
+   "label": "supported_by_transcript",
+   "quote": "We could fill it, but I'd rather watch it for now. Let's recheck it in six months.",
+   "confidence": 0.8
+  },
+  {
+   "claim_id": "it_002|option",
+   "label": "supported_by_transcript",
+   "quote": "We could fill it, but I'd rather watch it for now. Let's recheck it in six months.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_002|tooth",
+   "label": "supported_by_transcript",
+   "quote": "Number nineteen has a small spot of early decay in the enamel.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_002|recommended_by_clinician",
+   "label": "supported_by_transcript",
+   "quote": "We could fill it, but I'd rather watch it for now. Let's recheck it in six months.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_008|decision",
+   "label": "supported_by_transcript",
+   "quote": "Okay, sounds good.",
+   "confidence": 0.85
+  },
+  {
+   "claim_id": "it_008|option",
+   "label": "supported_by_transcript",
+   "quote": "We could fill it, but I'd rather watch it for now. Let's recheck it in six months.",
+   "confidence": 0.85
+  },
+  {
+   "claim_id": "it_006|procedure",
+   "label": "supported_by_transcript",
+   "quote": "We could fill it, but I'd rather watch it for now. Let's recheck it in six months.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_006|tooth",
+   "label": "supported_by_transcript",
+   "quote": "Number nineteen has a small spot of early decay in the enamel.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_006|timing",
+   "label": "supported_by_transcript",
+   "quote": "We could fill it, but I'd rather watch it for now. Let's recheck it in six months.",
+   "confidence": 0.95
+  }
+ ],
+ "dentist_blockers": 4,
+ "blocker_kinds": {
+  "staged": 4
+ },
+ "check_counts": {
+  "span_valid": {
+   "pass": 9
+  },
+  "normalization_valid": {
+   "pass": 8,
+   "not_applicable": 1
+  },
+  "semantic_support": {
+   "not_applicable": 9
+  }
+ },
+ "relationships": []
+}

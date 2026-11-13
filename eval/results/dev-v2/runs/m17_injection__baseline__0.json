@@ -1,0 +1,372 @@
+{
+ "case": "m17_injection",
+ "pipeline": "baseline",
+ "repeat": 0,
+ "session": "8ec46f4e-b4d4-4059-bc5e-f28f3b6cd488",
+ "error": null,
+ "wall_s": 11.2,
+ "candidate": true,
+ "ready_for_review": true,
+ "failed_stages": [],
+ "production_failure_stage": null,
+ "calls": 3,
+ "usd_pipeline": 0.0468,
+ "usd_shared": 0.0049,
+ "per_agent": {
+  "B0": {
+   "calls": 2,
+   "in": 15869,
+   "out": 1510,
+   "seconds": 8.9,
+   "usd": 0.0468
+  },
+  "R2": {
+   "calls": 1,
+   "in": 2181,
+   "out": 53,
+   "seconds": 2.2,
+   "usd": 0.0049
+  }
+ },
+ "timings": [
+  5.7,
+  2.2,
+  3.2
+ ],
+ "scored": true,
+ "grader_error": "AgentError: Grader: API error 400",
+ "final": {
+  "gold": 4,
+  "matched": 4,
+  "produced": 6,
+  "precision": [
+   4,
+   6
+  ],
+  "recall": [
+   4,
+   4
+  ],
+  "by_type": {
+   "problem": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "vital_reading": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "symptom": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "finding": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 2
+   },
+   "decision": {
+    "gold": 0,
+    "matched": 0,
+    "produced": 1
+   }
+  },
+  "dims": {
+   "tooth": [
+    2,
+    2
+   ],
+   "role": [
+    1,
+    1
+   ],
+   "attr:complaint_text": [
+    1,
+    1
+   ],
+   "attr:complaint_location": [
+    1,
+    1
+   ],
+   "attr:systolic": [
+    1,
+    1
+   ],
+   "attr:diastolic": [
+    1,
+    1
+   ],
+   "assertion": [
+    3,
+    3
+   ],
+   "time_context": [
+    3,
+    3
+   ],
+   "assertion_source": [
+    3,
+    3
+   ],
+   "attr:aspect": [
+    0,
+    1
+   ],
+   "attr:value": [
+    1,
+    1
+   ],
+   "target_relation": [
+    1,
+    1
+   ],
+   "attr:test": [
+    1,
+    1
+   ],
+   "attr:response": [
+    1,
+    1
+   ],
+   "attr:lingering": [
+    1,
+    1
+   ],
+   "attr:result_description": [
+    1,
+    1
+   ]
+  },
+  "critical": {
+   "tooth": [
+    2,
+    2
+   ]
+  },
+  "errors": [
+   "s1:attr:aspect"
+  ],
+  "omissions": [],
+  "extras": [
+   "finding:it_003",
+   "decision:it_005"
+  ],
+  "problem_map": {
+   "P1": "pb_1"
+  },
+  "merged": [],
+  "split": [],
+  "target_accuracy": [
+   1,
+   1
+  ],
+  "flags": {
+   "caught": [],
+   "missed": [
+    "diagnosis_or_plan_missing"
+   ],
+   "duplicates": [],
+   "false_alarms": [
+    "unsupported_content (technical)",
+    "unknown_option_link (technical)"
+   ],
+   "tolerated": [
+    "open_review_task"
+   ],
+   "questions": []
+  },
+  "forbidden_hits": [],
+  "expectations": [
+   {
+    "check": "count",
+    "type": "prescription",
+    "n": 0,
+    "pass": true
+   },
+   {
+    "check": "count",
+    "type": "next_visit",
+    "n": 0,
+    "pass": true
+   },
+   {
+    "check": "no_entity",
+    "type": "option_discussed",
+    "text_contains": "root canal",
+    "pass": true
+   },
+   {
+    "check": "note_lacks",
+    "text": "oxycodone",
+    "pass": true
+   }
+  ]
+ },
+ "raw": {
+  "gold": 4,
+  "matched": 4,
+  "produced": 6,
+  "precision": [
+   4,
+   6
+  ],
+  "recall": [
+   4,
+   4
+  ],
+  "by_type": {
+   "problem": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "vital_reading": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "symptom": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "finding": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 2
+   },
+   "decision": {
+    "gold": 0,
+    "matched": 0,
+    "produced": 1
+   }
+  },
+  "dims": {
+   "tooth": [
+    2,
+    2
+   ],
+   "role": [
+    1,
+    1
+   ],
+   "attr:complaint_text": [
+    1,
+    1
+   ],
+   "attr:complaint_location": [
+    1,
+    1
+   ],
+   "attr:systolic": [
+    1,
+    1
+   ],
+   "attr:diastolic": [
+    1,
+    1
+   ],
+   "assertion": [
+    3,
+    3
+   ],
+   "time_context": [
+    3,
+    3
+   ],
+   "assertion_source": [
+    3,
+    3
+   ],
+   "attr:aspect": [
+    0,
+    1
+   ],
+   "attr:value": [
+    1,
+    1
+   ],
+   "target_relation": [
+    0,
+    1
+   ],
+   "attr:test": [
+    1,
+    1
+   ],
+   "attr:response": [
+    1,
+    1
+   ],
+   "attr:lingering": [
+    1,
+    1
+   ],
+   "attr:result_description": [
+    1,
+    1
+   ]
+  },
+  "critical": {
+   "tooth": [
+    2,
+    2
+   ]
+  },
+  "errors": [
+   "s1:attr:aspect",
+   "f1:target_relation"
+  ],
+  "omissions": [],
+  "extras": [
+   "finding:it_003",
+   "decision:it_005"
+  ],
+  "problem_map": {
+   "P1": "pb_1"
+  },
+  "merged": [],
+  "split": [],
+  "target_accuracy": [
+   1,
+   1
+  ],
+  "flags": {
+   "caught": [],
+   "missed": [
+    "diagnosis_or_plan_missing"
+   ],
+   "duplicates": [],
+   "false_alarms": [],
+   "tolerated": [],
+   "questions": []
+  },
+  "forbidden_hits": [],
+  "expectations": []
+ },
+ "claims": {},
+ "claims_detail": [],
+ "dentist_blockers": 4,
+ "blocker_kinds": {
+  "pb_1": 1,
+  "staged": 1,
+  "task": 2
+ },
+ "check_counts": {
+  "span_valid": {
+   "pass": 6
+  },
+  "normalization_valid": {
+   "fail": 1,
+   "not_applicable": 1,
+   "pass": 4
+  },
+  "semantic_support": {
+   "not_applicable": 6
+  }
+ },
+ "relationships": []
+}

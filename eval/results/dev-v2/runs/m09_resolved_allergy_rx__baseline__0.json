@@ -1,0 +1,543 @@
+{
+ "case": "m09_resolved_allergy_rx",
+ "pipeline": "baseline",
+ "repeat": 0,
+ "session": "c0844c86-39e1-44a7-afe9-8fe2afd92ff6",
+ "error": null,
+ "wall_s": 10.4,
+ "candidate": true,
+ "ready_for_review": true,
+ "failed_stages": [],
+ "production_failure_stage": null,
+ "calls": 3,
+ "usd_pipeline": 0.0309,
+ "usd_shared": 0.0104,
+ "per_agent": {
+  "B0": {
+   "calls": 1,
+   "in": 8173,
+   "out": 1459,
+   "seconds": 7.2,
+   "usd": 0.0309
+  },
+  "R2": {
+   "calls": 1,
+   "in": 2156,
+   "out": 53,
+   "seconds": 1.2,
+   "usd": 0.0048
+  },
+  "E3": {
+   "calls": 1,
+   "in": 1589,
+   "out": 234,
+   "seconds": 1.8,
+   "usd": 0.0055
+  }
+ },
+ "timings": [
+  7.2,
+  1.2,
+  1.8
+ ],
+ "scored": true,
+ "grader_error": null,
+ "final": {
+  "gold": 5,
+  "matched": 5,
+  "produced": 6,
+  "precision": [
+   5,
+   6
+  ],
+  "recall": [
+   5,
+   5
+  ],
+  "by_type": {
+   "problem": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "vital_reading": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "allergy": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "diagnosis": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "prescription": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "medication": {
+    "gold": 0,
+    "matched": 0,
+    "produced": 1
+   }
+  },
+  "dims": {
+   "tooth": [
+    2,
+    2
+   ],
+   "role": [
+    1,
+    1
+   ],
+   "attr:complaint_text": [
+    0,
+    1
+   ],
+   "attr:complaint_location": [
+    1,
+    1
+   ],
+   "attr:systolic": [
+    1,
+    1
+   ],
+   "attr:diastolic": [
+    1,
+    1
+   ],
+   "assertion": [
+    4,
+    4
+   ],
+   "time_context": [
+    3,
+    4
+   ],
+   "assertion_source": [
+    4,
+    4
+   ],
+   "attr:substance": [
+    1,
+    1
+   ],
+   "status": [
+    2,
+    2
+   ],
+   "target_relation": [
+    1,
+    1
+   ],
+   "attr:diagnosis": [
+    1,
+    1
+   ],
+   "attr:certainty": [
+    1,
+    1
+   ],
+   "attr:drug": [
+    1,
+    1
+   ],
+   "attr:strength": [
+    1,
+    1
+   ],
+   "attr:frequency_code": [
+    1,
+    1
+   ],
+   "attr:duration_days": [
+    1,
+    1
+   ]
+  },
+  "critical": {
+   "tooth": [
+    2,
+    2
+   ],
+   "allergy_status": [
+    1,
+    1
+   ],
+   "certainty": [
+    1,
+    1
+   ],
+   "drug": [
+    1,
+    1
+   ],
+   "dose": [
+    1,
+    1
+   ]
+  },
+  "errors": [
+   "p_P1:attr:complaint_text",
+   "a1:time_context"
+  ],
+  "omissions": [],
+  "extras": [
+   "medication:it_002"
+  ],
+  "problem_map": {
+   "P1": "pb_1"
+  },
+  "merged": [],
+  "split": [],
+  "target_accuracy": [
+   1,
+   1
+  ],
+  "flags": {
+   "caught": [
+    "allergy_rx"
+   ],
+   "missed": [],
+   "duplicates": [],
+   "false_alarms": [],
+   "tolerated": [],
+   "questions": [
+    "diagnosis_without_findings",
+    "endo_findings_review"
+   ]
+  },
+  "forbidden_hits": [],
+  "expectations": [
+   {
+    "check": "flag_severity",
+    "rule_id": "allergy_rx",
+    "severity": "medium",
+    "pass": true
+   }
+  ]
+ },
+ "raw": {
+  "gold": 5,
+  "matched": 5,
+  "produced": 6,
+  "precision": [
+   5,
+   6
+  ],
+  "recall": [
+   5,
+   5
+  ],
+  "by_type": {
+   "problem": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "vital_reading": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "allergy": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "diagnosis": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "prescription": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "medication": {
+    "gold": 0,
+    "matched": 0,
+    "produced": 1
+   }
+  },
+  "dims": {
+   "tooth": [
+    2,
+    2
+   ],
+   "role": [
+    1,
+    1
+   ],
+   "attr:complaint_text": [
+    0,
+    1
+   ],
+   "attr:complaint_location": [
+    1,
+    1
+   ],
+   "attr:systolic": [
+    1,
+    1
+   ],
+   "attr:diastolic": [
+    1,
+    1
+   ],
+   "assertion": [
+    4,
+    4
+   ],
+   "time_context": [
+    3,
+    4
+   ],
+   "assertion_source": [
+    4,
+    4
+   ],
+   "attr:substance": [
+    1,
+    1
+   ],
+   "status": [
+    2,
+    2
+   ],
+   "target_relation": [
+    0,
+    1
+   ],
+   "attr:diagnosis": [
+    1,
+    1
+   ],
+   "attr:certainty": [
+    1,
+    1
+   ],
+   "attr:drug": [
+    1,
+    1
+   ],
+   "attr:strength": [
+    1,
+    1
+   ],
+   "attr:frequency_code": [
+    1,
+    1
+   ],
+   "attr:duration_days": [
+    1,
+    1
+   ]
+  },
+  "critical": {
+   "tooth": [
+    2,
+    2
+   ],
+   "allergy_status": [
+    1,
+    1
+   ],
+   "certainty": [
+    1,
+    1
+   ],
+   "drug": [
+    1,
+    1
+   ],
+   "dose": [
+    1,
+    1
+   ]
+  },
+  "errors": [
+   "p_P1:attr:complaint_text",
+   "a1:time_context",
+   "d1:target_relation"
+  ],
+  "omissions": [],
+  "extras": [
+   "medication:it_002"
+  ],
+  "problem_map": {
+   "P1": "pb_1"
+  },
+  "merged": [],
+  "split": [],
+  "target_accuracy": [
+   1,
+   1
+  ],
+  "flags": {
+   "caught": [],
+   "missed": [
+    "allergy_rx"
+   ],
+   "duplicates": [],
+   "false_alarms": [],
+   "tolerated": [],
+   "questions": []
+  },
+  "forbidden_hits": [],
+  "expectations": []
+ },
+ "claims": {
+  "supported_by_transcript": 16,
+  "supported_by_quick_notes": 2,
+  "unsupported": 3
+ },
+ "claims_detail": [
+  {
+   "claim_id": "it_001|substance",
+   "label": "supported_by_transcript",
+   "quote": "I was allergic to penicillin as a kid, but I outgrew it. I've had amoxicillin since with no problem.",
+   "confidence": 0.97
+  },
+  {
+   "claim_id": "it_001|allergy_status",
+   "label": "supported_by_transcript",
+   "quote": "I was allergic to penicillin as a kid, but I outgrew it. I've had amoxicillin since with no problem.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_001|time_context",
+   "label": "supported_by_transcript",
+   "quote": "I was allergic to penicillin as a kid, but I outgrew it. I've had amoxicillin since with no problem.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_002|drug",
+   "label": "supported_by_transcript",
+   "quote": "I was allergic to penicillin as a kid, but I outgrew it. I've had amoxicillin since with no problem.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_002|medication_status",
+   "label": "supported_by_transcript",
+   "quote": "I was allergic to penicillin as a kid, but I outgrew it. I've had amoxicillin since with no problem.",
+   "confidence": 0.85
+  },
+  {
+   "claim_id": "it_002|time_context",
+   "label": "supported_by_transcript",
+   "quote": "I was allergic to penicillin as a kid, but I outgrew it. I've had amoxicillin since with no problem.",
+   "confidence": 0.85
+  },
+  {
+   "claim_id": "it_003|systolic",
+   "label": "supported_by_quick_notes",
+   "quote": "BP 120/78",
+   "confidence": 0.97
+  },
+  {
+   "claim_id": "it_003|diastolic",
+   "label": "supported_by_quick_notes",
+   "quote": "BP 120/78",
+   "confidence": 0.97
+  },
+  {
+   "claim_id": "pb_1|role",
+   "label": "unsupported",
+   "quote": null,
+   "confidence": 0.6
+  },
+  {
+   "claim_id": "pb_1|complaint_text",
+   "label": "unsupported",
+   "quote": null,
+   "confidence": 0.5
+  },
+  {
+   "claim_id": "pb_1|complaint_location",
+   "label": "unsupported",
+   "quote": null,
+   "confidence": 0.5
+  },
+  {
+   "claim_id": "pb_1|clinical_target",
+   "label": "supported_by_transcript",
+   "quote": "Okay. Number nineteen has an abscess. I'll prescribe amoxicillin 500 milligrams three times a day for seven days.",
+   "confidence": 0.75
+  },
+  {
+   "claim_id": "it_004|diagnosis",
+   "label": "supported_by_transcript",
+   "quote": "Okay. Number nineteen has an abscess. I'll prescribe amoxicillin 500 milligrams three times a day for seven days.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_004|tooth",
+   "label": "supported_by_transcript",
+   "quote": "Okay. Number nineteen has an abscess. I'll prescribe amoxicillin 500 milligrams three times a day for seven days.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_004|certainty",
+   "label": "supported_by_transcript",
+   "quote": "Okay. Number nineteen has an abscess. I'll prescribe amoxicillin 500 milligrams three times a day for seven days.",
+   "confidence": 0.85
+  },
+  {
+   "claim_id": "it_005|drug",
+   "label": "supported_by_transcript",
+   "quote": "Okay. Number nineteen has an abscess. I'll prescribe amoxicillin 500 milligrams three times a day for seven days.",
+   "confidence": 0.97
+  },
+  {
+   "claim_id": "it_005|strength",
+   "label": "supported_by_transcript",
+   "quote": "Okay. Number nineteen has an abscess. I'll prescribe amoxicillin 500 milligrams three times a day for seven days.",
+   "confidence": 0.97
+  },
+  {
+   "claim_id": "it_005|frequency_code",
+   "label": "supported_by_transcript",
+   "quote": "Okay. Number nineteen has an abscess. I'll prescribe amoxicillin 500 milligrams three times a day for seven days.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_005|duration_days",
+   "label": "supported_by_transcript",
+   "quote": "Okay. Number nineteen has an abscess. I'll prescribe amoxicillin 500 milligrams three times a day for seven days.",
+   "confidence": 0.97
+  },
+  {
+   "claim_id": "it_005|as_needed",
+   "label": "supported_by_transcript",
+   "quote": "Okay. Number nineteen has an abscess. I'll prescribe amoxicillin 500 milligrams three times a day for seven days.",
+   "confidence": 0.65
+  },
+  {
+   "claim_id": "it_005|prescription_status",
+   "label": "supported_by_transcript",
+   "quote": "Okay. Number nineteen has an abscess. I'll prescribe amoxicillin 500 milligrams three times a day for seven days.",
+   "confidence": 0.9
+  }
+ ],
+ "dentist_blockers": 0,
+ "blocker_kinds": {},
+ "check_counts": {
+  "span_valid": {
+   "pass": 6
+  },
+  "normalization_valid": {
+   "pass": 6
+  },
+  "semantic_support": {
+   "not_applicable": 6
+  }
+ },
+ "relationships": []
+}

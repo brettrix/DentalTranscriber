@@ -1,0 +1,486 @@
+{
+ "case": "m14_patient_belief",
+ "pipeline": "team",
+ "repeat": 0,
+ "session": "a57ad5d8-5013-4f45-bf0b-9e4966360540",
+ "error": null,
+ "wall_s": 21.3,
+ "candidate": true,
+ "ready_for_review": true,
+ "failed_stages": [],
+ "production_failure_stage": null,
+ "calls": 19,
+ "usd_pipeline": 0.2116,
+ "usd_shared": 0.0047,
+ "per_agent": {
+  "Br": {
+   "calls": 1,
+   "in": 6002,
+   "out": 273,
+   "seconds": 2.3,
+   "usd": 0.0147
+  },
+  "B4": {
+   "calls": 1,
+   "in": 6371,
+   "out": 51,
+   "seconds": 1.1,
+   "usd": 0.0133
+  },
+  "B3": {
+   "calls": 2,
+   "in": 13166,
+   "out": 698,
+   "seconds": 5.2,
+   "usd": 0.0333
+  },
+  "B1": {
+   "calls": 1,
+   "in": 6159,
+   "out": 274,
+   "seconds": 2.4,
+   "usd": 0.0151
+  },
+  "B2": {
+   "calls": 2,
+   "in": 12834,
+   "out": 701,
+   "seconds": 4.6,
+   "usd": 0.0327
+  },
+  "Cs": {
+   "calls": 6,
+   "in": 30406,
+   "out": 2144,
+   "seconds": 14.4,
+   "usd": 0.0823
+  },
+  "Ce": {
+   "calls": 3,
+   "in": 4322,
+   "out": 240,
+   "seconds": 4.0,
+   "usd": 0.011
+  },
+  "Co": {
+   "calls": 2,
+   "in": 4097,
+   "out": 106,
+   "seconds": 2.8,
+   "usd": 0.0093
+  },
+  "R2": {
+   "calls": 1,
+   "in": 2109,
+   "out": 53,
+   "seconds": 1.3,
+   "usd": 0.0047
+  }
+ },
+ "timings": [
+  2.3,
+  1.1,
+  2.3,
+  2.4,
+  2.7,
+  1.3,
+  2.2,
+  2.3,
+  3.3,
+  1.0,
+  1.5,
+  1.3,
+  1.3,
+  1.9,
+  2.9,
+  2.5,
+  2.8,
+  1.6,
+  1.5
+ ],
+ "scored": true,
+ "grader_error": null,
+ "final": {
+  "gold": 5,
+  "matched": 5,
+  "produced": 5,
+  "precision": [
+   5,
+   5
+  ],
+  "recall": [
+   5,
+   5
+  ],
+  "by_type": {
+   "problem": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "vital_reading": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "symptom": {
+    "gold": 2,
+    "matched": 2,
+    "produced": 2
+   },
+   "finding": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   }
+  },
+  "dims": {
+   "tooth": [
+    2,
+    2
+   ],
+   "role": [
+    1,
+    1
+   ],
+   "attr:complaint_text": [
+    1,
+    1
+   ],
+   "attr:complaint_location": [
+    1,
+    1
+   ],
+   "attr:systolic": [
+    1,
+    1
+   ],
+   "attr:diastolic": [
+    1,
+    1
+   ],
+   "assertion": [
+    3,
+    4
+   ],
+   "time_context": [
+    4,
+    4
+   ],
+   "assertion_source": [
+    4,
+    4
+   ],
+   "attr:aspect": [
+    2,
+    2
+   ],
+   "attr:value": [
+    2,
+    2
+   ],
+   "target_relation": [
+    1,
+    1
+   ],
+   "attr:test": [
+    1,
+    1
+   ],
+   "attr:response": [
+    1,
+    1
+   ]
+  },
+  "critical": {
+   "tooth": [
+    2,
+    2
+   ]
+  },
+  "errors": [
+   "s2:assertion"
+  ],
+  "omissions": [],
+  "extras": [],
+  "problem_map": {
+   "P1": "pb_1"
+  },
+  "merged": [],
+  "split": [],
+  "target_accuracy": [
+   1,
+   1
+  ],
+  "flags": {
+   "caught": [
+    "diagnosis_or_plan_missing"
+   ],
+   "missed": [],
+   "duplicates": [],
+   "false_alarms": [],
+   "tolerated": [],
+   "questions": []
+  },
+  "forbidden_hits": [],
+  "expectations": [
+   {
+    "check": "count",
+    "type": "diagnosis",
+    "n": 0,
+    "pass": true
+   },
+   {
+    "check": "entity",
+    "type": "symptom",
+    "assertion_source": "patient_report",
+    "text_contains": "absce",
+    "pass": true
+   },
+   {
+    "check": "role",
+    "speaker": "S1",
+    "role": "Patient",
+    "pass": false
+   }
+  ]
+ },
+ "raw": {
+  "gold": 5,
+  "matched": 5,
+  "produced": 5,
+  "precision": [
+   5,
+   5
+  ],
+  "recall": [
+   5,
+   5
+  ],
+  "by_type": {
+   "problem": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "vital_reading": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "symptom": {
+    "gold": 2,
+    "matched": 2,
+    "produced": 2
+   },
+   "finding": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   }
+  },
+  "dims": {
+   "tooth": [
+    2,
+    2
+   ],
+   "role": [
+    1,
+    1
+   ],
+   "attr:complaint_text": [
+    1,
+    1
+   ],
+   "attr:complaint_location": [
+    1,
+    1
+   ],
+   "attr:systolic": [
+    1,
+    1
+   ],
+   "attr:diastolic": [
+    1,
+    1
+   ],
+   "assertion": [
+    4,
+    4
+   ],
+   "time_context": [
+    4,
+    4
+   ],
+   "assertion_source": [
+    4,
+    4
+   ],
+   "attr:aspect": [
+    2,
+    2
+   ],
+   "attr:value": [
+    2,
+    2
+   ],
+   "target_relation": [
+    0,
+    1
+   ],
+   "attr:test": [
+    1,
+    1
+   ],
+   "attr:response": [
+    1,
+    1
+   ]
+  },
+  "critical": {
+   "tooth": [
+    2,
+    2
+   ]
+  },
+  "errors": [
+   "f1:target_relation"
+  ],
+  "omissions": [],
+  "extras": [],
+  "problem_map": {
+   "P1": "pb_1"
+  },
+  "merged": [],
+  "split": [],
+  "target_accuracy": [
+   1,
+   1
+  ],
+  "flags": {
+   "caught": [],
+   "missed": [
+    "diagnosis_or_plan_missing"
+   ],
+   "duplicates": [],
+   "false_alarms": [],
+   "tolerated": [],
+   "questions": []
+  },
+  "forbidden_hits": [],
+  "expectations": []
+ },
+ "claims": {
+  "supported_by_quick_notes": 2,
+  "supported_by_transcript": 13
+ },
+ "claims_detail": [
+  {
+   "claim_id": "it_001|systolic",
+   "label": "supported_by_quick_notes",
+   "quote": "BP 120/78",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_001|diastolic",
+   "label": "supported_by_quick_notes",
+   "quote": "BP 120/78",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "pb_1|role",
+   "label": "supported_by_transcript",
+   "quote": "My lower left tooth is throbbing. I think it's abscessing.",
+   "confidence": 0.8
+  },
+  {
+   "claim_id": "pb_1|complaint_text",
+   "label": "supported_by_transcript",
+   "quote": "My lower left tooth is throbbing. I think it's abscessing.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "pb_1|complaint_location",
+   "label": "supported_by_transcript",
+   "quote": "My lower left tooth is throbbing. I think it's abscessing.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "pb_1|clinical_target",
+   "label": "supported_by_transcript",
+   "quote": "Let's take a look. Tapping on nineteen.",
+   "confidence": 0.7
+  },
+  {
+   "claim_id": "it_002|aspect",
+   "label": "supported_by_transcript",
+   "quote": "My lower left tooth is throbbing. I think it's abscessing.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_002|value",
+   "label": "supported_by_transcript",
+   "quote": "My lower left tooth is throbbing. I think it's abscessing.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_003|aspect",
+   "label": "supported_by_transcript",
+   "quote": "My lower left tooth is throbbing. I think it's abscessing.",
+   "confidence": 0.8
+  },
+  {
+   "claim_id": "it_003|value",
+   "label": "supported_by_transcript",
+   "quote": "My lower left tooth is throbbing. I think it's abscessing.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_003|assertion",
+   "label": "supported_by_transcript",
+   "quote": "My lower left tooth is throbbing. I think it's abscessing.",
+   "confidence": 0.85
+  },
+  {
+   "claim_id": "it_004|tooth",
+   "label": "supported_by_transcript",
+   "quote": "Let's take a look. Tapping on nineteen.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_004|test",
+   "label": "supported_by_transcript",
+   "quote": "Let's take a look. Tapping on nineteen.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_004|response",
+   "label": "supported_by_transcript",
+   "quote": "Ow.",
+   "confidence": 0.8
+  },
+  {
+   "claim_id": "it_004|result_description",
+   "label": "supported_by_transcript",
+   "quote": "Ow.",
+   "confidence": 0.9
+  }
+ ],
+ "dentist_blockers": 2,
+ "blocker_kinds": {
+  "staged": 2
+ },
+ "check_counts": {
+  "span_valid": {
+   "pass": 5
+  },
+  "normalization_valid": {
+   "pass": 5
+  },
+  "semantic_support": {
+   "unconfirmed": 1,
+   "pass": 4
+  }
+ },
+ "relationships": []
+}

@@ -1,0 +1,653 @@
+{
+ "case": "m01_control_tooth",
+ "pipeline": "team",
+ "repeat": 0,
+ "session": "fcda17ae-7967-4adb-87b6-4a5e89815d72",
+ "error": null,
+ "wall_s": 27.2,
+ "candidate": true,
+ "ready_for_review": true,
+ "failed_stages": [],
+ "production_failure_stage": null,
+ "calls": 19,
+ "usd_pipeline": 0.2137,
+ "usd_shared": 0.0104,
+ "per_agent": {
+  "Br": {
+   "calls": 1,
+   "in": 6143,
+   "out": 453,
+   "seconds": 2.8,
+   "usd": 0.0168
+  },
+  "B1": {
+   "calls": 1,
+   "in": 6324,
+   "out": 237,
+   "seconds": 2.3,
+   "usd": 0.015
+  },
+  "B2": {
+   "calls": 1,
+   "in": 6201,
+   "out": 438,
+   "seconds": 2.5,
+   "usd": 0.0168
+  },
+  "B4": {
+   "calls": 1,
+   "in": 6536,
+   "out": 297,
+   "seconds": 2.7,
+   "usd": 0.016
+  },
+  "B3": {
+   "calls": 2,
+   "in": 13655,
+   "out": 1161,
+   "seconds": 10.2,
+   "usd": 0.0389
+  },
+  "Cs": {
+   "calls": 6,
+   "in": 31387,
+   "out": 2512,
+   "seconds": 17.2,
+   "usd": 0.0879
+  },
+  "Ce": {
+   "calls": 3,
+   "in": 4463,
+   "out": 291,
+   "seconds": 3.6,
+   "usd": 0.0118
+  },
+  "Co": {
+   "calls": 2,
+   "in": 4676,
+   "out": 106,
+   "seconds": 1.9,
+   "usd": 0.0104
+  },
+  "R2": {
+   "calls": 1,
+   "in": 2250,
+   "out": 53,
+   "seconds": 1.5,
+   "usd": 0.005
+  },
+  "E3": {
+   "calls": 1,
+   "in": 1597,
+   "out": 214,
+   "seconds": 2.3,
+   "usd": 0.0053
+  }
+ },
+ "timings": [
+  2.8,
+  2.3,
+  2.5,
+  2.7,
+  3.5,
+  1.4,
+  3.5,
+  3.5,
+  3.5,
+  2.5,
+  1.0,
+  1.0,
+  1.6,
+  0.9,
+  1.5,
+  6.7,
+  2.7,
+  1.0,
+  2.3
+ ],
+ "scored": true,
+ "grader_error": null,
+ "final": {
+  "gold": 7,
+  "matched": 7,
+  "produced": 8,
+  "precision": [
+   7,
+   8
+  ],
+  "recall": [
+   7,
+   7
+  ],
+  "by_type": {
+   "problem": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "relationship": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "vital_reading": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "symptom": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 2
+   },
+   "finding": {
+    "gold": 2,
+    "matched": 2,
+    "produced": 2
+   },
+   "diagnosis": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   }
+  },
+  "dims": {
+   "tooth": [
+    5,
+    5
+   ],
+   "role": [
+    1,
+    1
+   ],
+   "attr:complaint_text": [
+    1,
+    1
+   ],
+   "attr:complaint_location": [
+    1,
+    1
+   ],
+   "attr:relation_kind": [
+    1,
+    1
+   ],
+   "attr:systolic": [
+    1,
+    1
+   ],
+   "attr:diastolic": [
+    1,
+    1
+   ],
+   "assertion": [
+    5,
+    5
+   ],
+   "time_context": [
+    5,
+    5
+   ],
+   "assertion_source": [
+    5,
+    5
+   ],
+   "attr:aspect": [
+    1,
+    1
+   ],
+   "attr:value": [
+    1,
+    1
+   ],
+   "target_relation": [
+    2,
+    3
+   ],
+   "attr:test": [
+    2,
+    2
+   ],
+   "attr:response": [
+    2,
+    2
+   ],
+   "attr:lingering": [
+    2,
+    2
+   ],
+   "attr:duration_s": [
+    1,
+    1
+   ],
+   "attr:diagnosis": [
+    1,
+    1
+   ],
+   "attr:certainty": [
+    1,
+    1
+   ]
+  },
+  "critical": {
+   "tooth": [
+    5,
+    5
+   ],
+   "relationship": [
+    1,
+    1
+   ],
+   "certainty": [
+    1,
+    1
+   ]
+  },
+  "errors": [
+   "f1:target_relation"
+  ],
+  "omissions": [],
+  "extras": [
+   "symptom:it_003"
+  ],
+  "problem_map": {
+   "P1": "pb_1"
+  },
+  "merged": [],
+  "split": [],
+  "target_accuracy": [
+   1,
+   1
+  ],
+  "flags": {
+   "caught": [],
+   "missed": [],
+   "duplicates": [],
+   "false_alarms": [
+    "unsupported_content (technical)",
+    "open_review_task (technical)",
+    "unexplained_other_tooth"
+   ],
+   "tolerated": [],
+   "questions": [
+    "endo_findings_review"
+   ]
+  },
+  "forbidden_hits": [],
+  "expectations": [
+   {
+    "check": "entity",
+    "kind": "relationship",
+    "relation_kind": "control",
+    "tooth": 3,
+    "pass": true
+   },
+   {
+    "check": "flag_absent",
+    "rule_id": "unexplained_other_tooth",
+    "modes": [
+     "team"
+    ],
+    "pass": false
+   },
+   {
+    "check": "flag_absent",
+    "rule_id": "treatment_target_mismatch",
+    "pass": true
+   }
+  ]
+ },
+ "raw": {
+  "gold": 7,
+  "matched": 7,
+  "produced": 8,
+  "precision": [
+   7,
+   8
+  ],
+  "recall": [
+   7,
+   7
+  ],
+  "by_type": {
+   "problem": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "relationship": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "vital_reading": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "symptom": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 2
+   },
+   "finding": {
+    "gold": 2,
+    "matched": 2,
+    "produced": 2
+   },
+   "diagnosis": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   }
+  },
+  "dims": {
+   "tooth": [
+    5,
+    5
+   ],
+   "role": [
+    1,
+    1
+   ],
+   "attr:complaint_text": [
+    1,
+    1
+   ],
+   "attr:complaint_location": [
+    1,
+    1
+   ],
+   "attr:relation_kind": [
+    1,
+    1
+   ],
+   "attr:systolic": [
+    1,
+    1
+   ],
+   "attr:diastolic": [
+    1,
+    1
+   ],
+   "assertion": [
+    5,
+    5
+   ],
+   "time_context": [
+    5,
+    5
+   ],
+   "assertion_source": [
+    5,
+    5
+   ],
+   "attr:aspect": [
+    1,
+    1
+   ],
+   "attr:value": [
+    1,
+    1
+   ],
+   "target_relation": [
+    0,
+    3
+   ],
+   "attr:test": [
+    2,
+    2
+   ],
+   "attr:response": [
+    2,
+    2
+   ],
+   "attr:lingering": [
+    2,
+    2
+   ],
+   "attr:duration_s": [
+    1,
+    1
+   ],
+   "attr:diagnosis": [
+    1,
+    1
+   ],
+   "attr:certainty": [
+    1,
+    1
+   ]
+  },
+  "critical": {
+   "tooth": [
+    5,
+    5
+   ],
+   "relationship": [
+    1,
+    1
+   ],
+   "certainty": [
+    1,
+    1
+   ]
+  },
+  "errors": [
+   "f1:target_relation",
+   "f2:target_relation",
+   "d1:target_relation"
+  ],
+  "omissions": [],
+  "extras": [
+   "symptom:it_003"
+  ],
+  "problem_map": {
+   "P1": "pb_1"
+  },
+  "merged": [],
+  "split": [],
+  "target_accuracy": [
+   1,
+   1
+  ],
+  "flags": {
+   "caught": [],
+   "missed": [],
+   "duplicates": [],
+   "false_alarms": [],
+   "tolerated": [],
+   "questions": []
+  },
+  "forbidden_hits": [],
+  "expectations": []
+ },
+ "claims": {
+  "supported_by_quick_notes": 2,
+  "supported_by_transcript": 23,
+  "changed_meaning": 1
+ },
+ "claims_detail": [
+  {
+   "claim_id": "it_001|systolic",
+   "label": "supported_by_quick_notes",
+   "quote": "BP 120/78",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_001|diastolic",
+   "label": "supported_by_quick_notes",
+   "quote": "BP 120/78",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "pb_1|role",
+   "label": "supported_by_transcript",
+   "quote": "What's bothering you today?",
+   "confidence": 0.85
+  },
+  {
+   "claim_id": "pb_1|complaint_text",
+   "label": "supported_by_transcript",
+   "quote": "My upper left back tooth hurts when I drink cold things.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "pb_1|complaint_location",
+   "label": "supported_by_transcript",
+   "quote": "My upper left back tooth hurts when I drink cold things.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "pb_1|clinical_target",
+   "label": "supported_by_transcript",
+   "quote": "Fourteen lingered about ten seconds. That points to irreversible pulpitis on fourteen.",
+   "confidence": 0.85
+  },
+  {
+   "claim_id": "rl_1|tooth",
+   "label": "supported_by_transcript",
+   "quote": "I'll test number three first as a control, so you know what normal feels like. Cold on number three.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "rl_1|relation_kind",
+   "label": "supported_by_transcript",
+   "quote": "I'll test number three first as a control, so you know what normal feels like. Cold on number three.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "rl_1|note",
+   "label": "supported_by_transcript",
+   "quote": null,
+   "confidence": 0.6
+  },
+  {
+   "claim_id": "it_002|aspect",
+   "label": "supported_by_transcript",
+   "quote": "My upper left back tooth hurts when I drink cold things.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_002|value",
+   "label": "supported_by_transcript",
+   "quote": "My upper left back tooth hurts when I drink cold things.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_003|aspect",
+   "label": "supported_by_transcript",
+   "quote": "My upper left back tooth hurts when I drink cold things.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_003|value",
+   "label": "supported_by_transcript",
+   "quote": "My upper left back tooth hurts when I drink cold things.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_004|tooth",
+   "label": "supported_by_transcript",
+   "quote": "I'll test number three first as a control, so you know what normal feels like. Cold on number three.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_004|test",
+   "label": "supported_by_transcript",
+   "quote": "I'll test number three first as a control, so you know what normal feels like. Cold on number three.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_004|response",
+   "label": "supported_by_transcript",
+   "quote": "Feels cold, and it's gone.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_004|lingering",
+   "label": "supported_by_transcript",
+   "quote": "Feels cold, and it's gone.",
+   "confidence": 0.85
+  },
+  {
+   "claim_id": "it_005|tooth",
+   "label": "supported_by_transcript",
+   "quote": "Now cold on number fourteen.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_005|test",
+   "label": "supported_by_transcript",
+   "quote": "Now cold on number fourteen.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_005|response",
+   "label": "supported_by_transcript",
+   "quote": "Ow. That one hangs around.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_005|result_description",
+   "label": "supported_by_transcript",
+   "quote": "Ow. That one hangs around.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_005|lingering",
+   "label": "supported_by_transcript",
+   "quote": "Fourteen lingered about ten seconds. That points to irreversible pulpitis on fourteen.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_005|duration_s",
+   "label": "supported_by_transcript",
+   "quote": "Fourteen lingered about ten seconds. That points to irreversible pulpitis on fourteen.",
+   "confidence": 0.8
+  },
+  {
+   "claim_id": "it_006|diagnosis",
+   "label": "supported_by_transcript",
+   "quote": "Fourteen lingered about ten seconds. That points to irreversible pulpitis on fourteen.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_006|tooth",
+   "label": "supported_by_transcript",
+   "quote": "Fourteen lingered about ten seconds. That points to irreversible pulpitis on fourteen.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_006|certainty",
+   "label": "changed_meaning",
+   "quote": "Fourteen lingered about ten seconds. That points to irreversible pulpitis on fourteen.",
+   "confidence": 0.8
+  }
+ ],
+ "dentist_blockers": 3,
+ "blocker_kinds": {
+  "rl_1": 1,
+  "staged": 1,
+  "task": 1
+ },
+ "check_counts": {
+  "span_valid": {
+   "pass": 8
+  },
+  "normalization_valid": {
+   "pass": 8
+  },
+  "semantic_support": {
+   "pass": 7,
+   "fail": 1
+  }
+ },
+ "relationships": [
+  {
+   "tooth": 3,
+   "kind": "control",
+   "semantic": "fail"
+  }
+ ]
+}

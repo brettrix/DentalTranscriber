@@ -60,7 +60,27 @@ Clinical-content rules (`bp_reading`, `allergy_rx`, `refusal_discussion`, the E3
 
 ## Evaluation
 
-`eval/` holds the development cases (`cases/`, split from `scripts_cases_1-3_tuning.md`), the edge-case matrix (`matrix/`, 18 short synthetic cases), draft gold (`gold/`), the runner, the scoring code and fault injection. Results are in `eval/results/` (see the summary below).
+`eval/` holds the development cases (`cases/`, split from `scripts_cases_1-3_tuning.md`), the edge-case matrix (`matrix/`, 18 short synthetic cases), draft gold (`gold/`), the runner, the scoring code and fault injection. Results are in `eval/results/`.
+
+### Results so far (development cases only; draft gold, provisional)
+
+dev-v1 is the complete run. dev-v2 ran after the changes listed in DECISIONS.md, and 3 of its 42 runs were lost to an exhausted API credit balance (see the note in its report).
+
+| | baseline v1 | team v1 | baseline v2 | team v2 |
+|---|---|---|---|---|
+| Runs producing a candidate | 21/21 | 21/21 | 20/21* | 19/21* |
+| Entity recall | 94% | 98% | 94% | 97% |
+| Entity precision | 94% | 88% | 93% | 88% |
+| Expected flags caught / missed | 14 / 1 | 14 / 1 | 13 / 1 | 13 / 0 |
+| False alarms (clinical / technical) | 11 total | 73 total | 0 / 9 | 3 / 44 |
+| Model cost, extraction + checks (USD) | 0.89 | 5.86 | 0.87 | 5.00 |
+
+\* billing failures, not pipeline failures.
+
+Fault injection (gold converted to graph form, 5 cases, `eval/results/faults-v2`):
+- Derivation-breaking faults: Cv caught 11/11.
+- Association-preserving faults: Cs caught 27/28 (missed: one dropped qualifier).
+- False rejections: Cs also fails 26/85 *unmodified* gold entities (31%). That high catch rate comes with a high false-rejection rate, and it is the main reason team mode raises more technical flags. Reducing it, without losing the catches, is the most important next tuning step.
 
 **Gold status:** all development and matrix gold is `annotated_by: claude`, with `checked_by` empty. A person must check it before any number is treated as more than provisional. `grader_review.csv` in each results folder lists what to check by hand: every critical-field grade, every baseline/team disagreement, and a 20% sample of the rest.
 

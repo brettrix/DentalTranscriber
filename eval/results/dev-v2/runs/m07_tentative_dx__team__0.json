@@ -1,0 +1,548 @@
+{
+ "case": "m07_tentative_dx",
+ "pipeline": "team",
+ "repeat": 0,
+ "session": "16a5460b-7ad1-4baf-99a0-8858d2b0ee76",
+ "error": null,
+ "wall_s": 20.6,
+ "candidate": true,
+ "ready_for_review": true,
+ "failed_stages": [],
+ "production_failure_stage": null,
+ "calls": 18,
+ "usd_pipeline": 0.2072,
+ "usd_shared": 0.0048,
+ "per_agent": {
+  "Br": {
+   "calls": 1,
+   "in": 6046,
+   "out": 271,
+   "seconds": 2.1,
+   "usd": 0.0148
+  },
+  "B2": {
+   "calls": 1,
+   "in": 6078,
+   "out": 251,
+   "seconds": 1.7,
+   "usd": 0.0147
+  },
+  "B1": {
+   "calls": 1,
+   "in": 6201,
+   "out": 237,
+   "seconds": 2.5,
+   "usd": 0.0148
+  },
+  "B3": {
+   "calls": 1,
+   "in": 6174,
+   "out": 300,
+   "seconds": 2.5,
+   "usd": 0.0153
+  },
+  "B4": {
+   "calls": 2,
+   "in": 13565,
+   "out": 932,
+   "seconds": 6.1,
+   "usd": 0.0364
+  },
+  "Cs": {
+   "calls": 7,
+   "in": 35120,
+   "out": 2390,
+   "seconds": 17.1,
+   "usd": 0.0941
+  },
+  "Ce": {
+   "calls": 2,
+   "in": 2878,
+   "out": 161,
+   "seconds": 2.9,
+   "usd": 0.0074
+  },
+  "Co": {
+   "calls": 2,
+   "in": 4274,
+   "out": 106,
+   "seconds": 1.9,
+   "usd": 0.0096
+  },
+  "R2": {
+   "calls": 1,
+   "in": 2153,
+   "out": 53,
+   "seconds": 1.2,
+   "usd": 0.0048
+  }
+ },
+ "timings": [
+  2.1,
+  1.7,
+  2.5,
+  2.5,
+  2.7,
+  1.5,
+  2.3,
+  2.6,
+  2.8,
+  2.5,
+  2.7,
+  1.5,
+  1.5,
+  1.1,
+  1.2,
+  3.4,
+  2.7,
+  0.9
+ ],
+ "scored": true,
+ "grader_error": null,
+ "final": {
+  "gold": 6,
+  "matched": 6,
+  "produced": 6,
+  "precision": [
+   6,
+   6
+  ],
+  "recall": [
+   6,
+   6
+  ],
+  "by_type": {
+   "problem": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "vital_reading": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "symptom": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "finding": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "diagnosis": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "next_visit": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   }
+  },
+  "dims": {
+   "tooth": [
+    3,
+    4
+   ],
+   "role": [
+    1,
+    1
+   ],
+   "attr:complaint_text": [
+    1,
+    1
+   ],
+   "attr:complaint_location": [
+    1,
+    1
+   ],
+   "attr:systolic": [
+    1,
+    1
+   ],
+   "attr:diastolic": [
+    1,
+    1
+   ],
+   "assertion": [
+    4,
+    5
+   ],
+   "time_context": [
+    5,
+    5
+   ],
+   "assertion_source": [
+    5,
+    5
+   ],
+   "attr:aspect": [
+    1,
+    1
+   ],
+   "attr:value": [
+    1,
+    1
+   ],
+   "target_relation": [
+    2,
+    2
+   ],
+   "attr:test": [
+    1,
+    1
+   ],
+   "attr:response": [
+    1,
+    1
+   ],
+   "attr:diagnosis": [
+    1,
+    1
+   ],
+   "attr:certainty": [
+    1,
+    1
+   ],
+   "attr:procedure": [
+    1,
+    1
+   ],
+   "attr:timing": [
+    1,
+    1
+   ]
+  },
+  "critical": {
+   "tooth": [
+    3,
+    4
+   ],
+   "certainty": [
+    1,
+    1
+   ]
+  },
+  "errors": [
+   "d1:assertion",
+   "n1:tooth"
+  ],
+  "omissions": [],
+  "extras": [],
+  "problem_map": {
+   "P1": "pb_1"
+  },
+  "merged": [],
+  "split": [],
+  "target_accuracy": [
+   1,
+   1
+  ],
+  "flags": {
+   "caught": [],
+   "missed": [],
+   "duplicates": [],
+   "false_alarms": [],
+   "tolerated": [],
+   "questions": []
+  },
+  "forbidden_hits": [],
+  "expectations": [
+   {
+    "check": "entity",
+    "type": "diagnosis",
+    "certainty": "possible",
+    "pass": true
+   },
+   {
+    "check": "flag_absent",
+    "rule_id": "diagnosis_or_plan_missing",
+    "pass": true
+   }
+  ]
+ },
+ "raw": {
+  "gold": 6,
+  "matched": 6,
+  "produced": 6,
+  "precision": [
+   6,
+   6
+  ],
+  "recall": [
+   6,
+   6
+  ],
+  "by_type": {
+   "problem": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "vital_reading": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "symptom": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "finding": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "diagnosis": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "next_visit": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   }
+  },
+  "dims": {
+   "tooth": [
+    3,
+    4
+   ],
+   "role": [
+    1,
+    1
+   ],
+   "attr:complaint_text": [
+    1,
+    1
+   ],
+   "attr:complaint_location": [
+    1,
+    1
+   ],
+   "attr:systolic": [
+    1,
+    1
+   ],
+   "attr:diastolic": [
+    1,
+    1
+   ],
+   "assertion": [
+    4,
+    5
+   ],
+   "time_context": [
+    5,
+    5
+   ],
+   "assertion_source": [
+    5,
+    5
+   ],
+   "attr:aspect": [
+    1,
+    1
+   ],
+   "attr:value": [
+    1,
+    1
+   ],
+   "target_relation": [
+    0,
+    2
+   ],
+   "attr:test": [
+    1,
+    1
+   ],
+   "attr:response": [
+    1,
+    1
+   ],
+   "attr:diagnosis": [
+    1,
+    1
+   ],
+   "attr:certainty": [
+    1,
+    1
+   ],
+   "attr:procedure": [
+    1,
+    1
+   ],
+   "attr:timing": [
+    1,
+    1
+   ]
+  },
+  "critical": {
+   "tooth": [
+    3,
+    4
+   ],
+   "certainty": [
+    1,
+    1
+   ]
+  },
+  "errors": [
+   "f1:target_relation",
+   "d1:target_relation",
+   "d1:assertion",
+   "n1:tooth"
+  ],
+  "omissions": [],
+  "extras": [],
+  "problem_map": {
+   "P1": "pb_1"
+  },
+  "merged": [],
+  "split": [],
+  "target_accuracy": [
+   1,
+   1
+  ],
+  "flags": {
+   "caught": [],
+   "missed": [],
+   "duplicates": [],
+   "false_alarms": [],
+   "tolerated": [],
+   "questions": []
+  },
+  "forbidden_hits": [],
+  "expectations": []
+ },
+ "claims": {
+  "supported_by_quick_notes": 2,
+  "supported_by_transcript": 15
+ },
+ "claims_detail": [
+  {
+   "claim_id": "it_001|systolic",
+   "label": "supported_by_quick_notes",
+   "quote": "BP 120/78",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_001|diastolic",
+   "label": "supported_by_quick_notes",
+   "quote": "BP 120/78",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "pb_1|role",
+   "label": "supported_by_transcript",
+   "quote": "My lower right molar hurts when I bite.",
+   "confidence": 0.85
+  },
+  {
+   "claim_id": "pb_1|complaint_text",
+   "label": "supported_by_transcript",
+   "quote": "My lower right molar hurts when I bite.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "pb_1|complaint_location",
+   "label": "supported_by_transcript",
+   "quote": "My lower right molar hurts when I bite.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "pb_1|clinical_target",
+   "label": "supported_by_transcript",
+   "quote": "Biting on number thirty.",
+   "confidence": 0.85
+  },
+  {
+   "claim_id": "it_002|aspect",
+   "label": "supported_by_transcript",
+   "quote": "My lower right molar hurts when I bite.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_002|value",
+   "label": "supported_by_transcript",
+   "quote": "My lower right molar hurts when I bite.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_003|tooth",
+   "label": "supported_by_transcript",
+   "quote": "Biting on number thirty.",
+   "confidence": 0.85
+  },
+  {
+   "claim_id": "it_003|test",
+   "label": "supported_by_transcript",
+   "quote": "Biting on number thirty.",
+   "confidence": 0.7
+  },
+  {
+   "claim_id": "it_003|response",
+   "label": "supported_by_transcript",
+   "quote": "Ow, yes.",
+   "confidence": 0.8
+  },
+  {
+   "claim_id": "it_004|diagnosis",
+   "label": "supported_by_transcript",
+   "quote": "It could be a crack in thirty. Let's do a bite test next visit.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_004|tooth",
+   "label": "supported_by_transcript",
+   "quote": "It could be a crack in thirty. Let's do a bite test next visit.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_004|certainty",
+   "label": "supported_by_transcript",
+   "quote": "It could be a crack in thirty. Let's do a bite test next visit.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_005|procedure",
+   "label": "supported_by_transcript",
+   "quote": "It could be a crack in thirty. Let's do a bite test next visit.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_005|tooth",
+   "label": "supported_by_transcript",
+   "quote": "It could be a crack in thirty. Let's do a bite test next visit.",
+   "confidence": 0.8
+  },
+  {
+   "claim_id": "it_005|timing",
+   "label": "supported_by_transcript",
+   "quote": "It could be a crack in thirty. Let's do a bite test next visit.",
+   "confidence": 0.95
+  }
+ ],
+ "dentist_blockers": 1,
+ "blocker_kinds": {
+  "staged": 1
+ },
+ "check_counts": {
+  "span_valid": {
+   "pass": 6
+  },
+  "normalization_valid": {
+   "pass": 6
+  },
+  "semantic_support": {
+   "pass": 6
+  }
+ },
+ "relationships": []
+}

@@ -1,0 +1,1113 @@
+{
+ "case": "case3",
+ "pipeline": "baseline",
+ "repeat": 0,
+ "session": "81da08da-7e60-41c7-a56f-431ae4d0e25e",
+ "error": null,
+ "wall_s": 38.4,
+ "candidate": true,
+ "ready_for_review": true,
+ "failed_stages": [],
+ "production_failure_stage": null,
+ "calls": 4,
+ "usd_pipeline": 0.1118,
+ "usd_shared": 0.0129,
+ "per_agent": {
+  "B0": {
+   "calls": 2,
+   "in": 20365,
+   "out": 7106,
+   "seconds": 34.5,
+   "usd": 0.1118
+  },
+  "R2": {
+   "calls": 1,
+   "in": 3049,
+   "out": 53,
+   "seconds": 1.6,
+   "usd": 0.0066
+  },
+  "E3": {
+   "calls": 1,
+   "in": 1765,
+   "out": 277,
+   "seconds": 2.1,
+   "usd": 0.0063
+  }
+ },
+ "timings": [
+  21.3,
+  1.6,
+  13.2,
+  2.1
+ ],
+ "scored": true,
+ "grader_error": null,
+ "final": {
+  "gold": 25,
+  "matched": 24,
+  "produced": 24,
+  "precision": [
+   24,
+   24
+  ],
+  "recall": [
+   24,
+   25
+  ],
+  "by_type": {
+   "problem": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "symptom": {
+    "gold": 6,
+    "matched": 6,
+    "produced": 6
+   },
+   "allergy": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "history_change": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "vital_reading": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "finding": {
+    "gold": 5,
+    "matched": 5,
+    "produced": 5
+   },
+   "radiograph": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "diagnosis": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "option_discussed": {
+    "gold": 2,
+    "matched": 2,
+    "produced": 2
+   },
+   "consent_element": {
+    "gold": 1,
+    "matched": 0,
+    "produced": 0
+   },
+   "decision": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "prescription": {
+    "gold": 2,
+    "matched": 2,
+    "produced": 2
+   },
+   "next_visit": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "instruction": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   }
+  },
+  "dims": {
+   "tooth": [
+    11,
+    12
+   ],
+   "role": [
+    1,
+    1
+   ],
+   "attr:complaint_text": [
+    0,
+    1
+   ],
+   "attr:complaint_location": [
+    1,
+    1
+   ],
+   "attr:aspect": [
+    6,
+    6
+   ],
+   "attr:value": [
+    4,
+    5
+   ],
+   "assertion": [
+    22,
+    23
+   ],
+   "time_context": [
+    23,
+    23
+   ],
+   "assertion_source": [
+    23,
+    23
+   ],
+   "attr:score": [
+    1,
+    1
+   ],
+   "negation": [
+    1,
+    2
+   ],
+   "attr:substance": [
+    1,
+    1
+   ],
+   "attr:reaction": [
+    1,
+    1
+   ],
+   "status": [
+    3,
+    3
+   ],
+   "attr:description": [
+    1,
+    1
+   ],
+   "attr:systolic": [
+    1,
+    1
+   ],
+   "attr:diastolic": [
+    1,
+    1
+   ],
+   "target_relation": [
+    10,
+    10
+   ],
+   "attr:observation": [
+    2,
+    2
+   ],
+   "attr:test": [
+    3,
+    3
+   ],
+   "attr:response": [
+    3,
+    3
+   ],
+   "attr:result_description": [
+    1,
+    1
+   ],
+   "attr:type": [
+    1,
+    1
+   ],
+   "attr:finding": [
+    1,
+    1
+   ],
+   "action": [
+    1,
+    1
+   ],
+   "attr:diagnosis": [
+    1,
+    1
+   ],
+   "attr:certainty": [
+    1,
+    1
+   ],
+   "attr:option": [
+    3,
+    3
+   ],
+   "attr:decision": [
+    1,
+    1
+   ],
+   "attr:drug": [
+    2,
+    2
+   ],
+   "attr:strength": [
+    2,
+    2
+   ],
+   "attr:frequency_code": [
+    2,
+    2
+   ],
+   "attr:duration_days": [
+    1,
+    1
+   ],
+   "attr:procedure": [
+    1,
+    1
+   ],
+   "attr:timing": [
+    1,
+    1
+   ],
+   "attr:text": [
+    1,
+    1
+   ]
+  },
+  "critical": {
+   "tooth": [
+    11,
+    12
+   ],
+   "negation": [
+    1,
+    2
+   ],
+   "allergy_status": [
+    1,
+    1
+   ],
+   "certainty": [
+    1,
+    1
+   ],
+   "decision": [
+    1,
+    1
+   ],
+   "drug": [
+    2,
+    2
+   ],
+   "dose": [
+    2,
+    2
+   ]
+  },
+  "errors": [
+   "p1:attr:complaint_text",
+   "s1:attr:value",
+   "s6:assertion",
+   "s6:negation",
+   "dc1:tooth"
+  ],
+  "omissions": [
+   "c1"
+  ],
+  "extras": [],
+  "problem_map": {
+   "P1": "pb_1"
+  },
+  "merged": [],
+  "split": [],
+  "target_accuracy": [
+   1,
+   1
+  ],
+  "flags": {
+   "caught": [
+    "allergy_rx"
+   ],
+   "missed": [],
+   "duplicates": [],
+   "false_alarms": [],
+   "tolerated": [],
+   "questions": [
+    "endo_findings_review"
+   ]
+  },
+  "forbidden_hits": [],
+  "expectations": []
+ },
+ "raw": {
+  "gold": 25,
+  "matched": 24,
+  "produced": 24,
+  "precision": [
+   24,
+   24
+  ],
+  "recall": [
+   24,
+   25
+  ],
+  "by_type": {
+   "problem": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "symptom": {
+    "gold": 6,
+    "matched": 6,
+    "produced": 6
+   },
+   "allergy": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "history_change": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "vital_reading": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "finding": {
+    "gold": 5,
+    "matched": 5,
+    "produced": 5
+   },
+   "radiograph": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "diagnosis": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "option_discussed": {
+    "gold": 2,
+    "matched": 2,
+    "produced": 2
+   },
+   "consent_element": {
+    "gold": 1,
+    "matched": 0,
+    "produced": 0
+   },
+   "decision": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "prescription": {
+    "gold": 2,
+    "matched": 2,
+    "produced": 2
+   },
+   "next_visit": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "instruction": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   }
+  },
+  "dims": {
+   "tooth": [
+    11,
+    12
+   ],
+   "role": [
+    1,
+    1
+   ],
+   "attr:complaint_text": [
+    0,
+    1
+   ],
+   "attr:complaint_location": [
+    1,
+    1
+   ],
+   "attr:aspect": [
+    6,
+    6
+   ],
+   "attr:value": [
+    4,
+    5
+   ],
+   "assertion": [
+    22,
+    23
+   ],
+   "time_context": [
+    23,
+    23
+   ],
+   "assertion_source": [
+    23,
+    23
+   ],
+   "attr:score": [
+    1,
+    1
+   ],
+   "negation": [
+    1,
+    2
+   ],
+   "attr:substance": [
+    1,
+    1
+   ],
+   "attr:reaction": [
+    1,
+    1
+   ],
+   "status": [
+    3,
+    3
+   ],
+   "attr:description": [
+    1,
+    1
+   ],
+   "attr:systolic": [
+    1,
+    1
+   ],
+   "attr:diastolic": [
+    1,
+    1
+   ],
+   "target_relation": [
+    0,
+    10
+   ],
+   "attr:observation": [
+    2,
+    2
+   ],
+   "attr:test": [
+    3,
+    3
+   ],
+   "attr:response": [
+    3,
+    3
+   ],
+   "attr:result_description": [
+    1,
+    1
+   ],
+   "attr:type": [
+    1,
+    1
+   ],
+   "attr:finding": [
+    1,
+    1
+   ],
+   "action": [
+    1,
+    1
+   ],
+   "attr:diagnosis": [
+    1,
+    1
+   ],
+   "attr:certainty": [
+    1,
+    1
+   ],
+   "attr:option": [
+    3,
+    3
+   ],
+   "attr:decision": [
+    1,
+    1
+   ],
+   "attr:drug": [
+    2,
+    2
+   ],
+   "attr:strength": [
+    2,
+    2
+   ],
+   "attr:frequency_code": [
+    2,
+    2
+   ],
+   "attr:duration_days": [
+    1,
+    1
+   ],
+   "attr:procedure": [
+    1,
+    1
+   ],
+   "attr:timing": [
+    1,
+    1
+   ],
+   "attr:text": [
+    1,
+    1
+   ]
+  },
+  "critical": {
+   "tooth": [
+    11,
+    12
+   ],
+   "negation": [
+    1,
+    2
+   ],
+   "allergy_status": [
+    1,
+    1
+   ],
+   "certainty": [
+    1,
+    1
+   ],
+   "decision": [
+    1,
+    1
+   ],
+   "drug": [
+    2,
+    2
+   ],
+   "dose": [
+    2,
+    2
+   ]
+  },
+  "errors": [
+   "p1:attr:complaint_text",
+   "s1:attr:value",
+   "s6:assertion",
+   "s6:negation",
+   "f1:target_relation",
+   "f2:target_relation",
+   "f3:target_relation",
+   "f4:target_relation",
+   "f5:target_relation",
+   "x1:target_relation",
+   "d1:target_relation",
+   "o1:target_relation",
+   "o2:target_relation",
+   "dc1:tooth",
+   "n1:target_relation"
+  ],
+  "omissions": [
+   "c1"
+  ],
+  "extras": [],
+  "problem_map": {
+   "P1": "pb_1"
+  },
+  "merged": [],
+  "split": [],
+  "target_accuracy": [
+   1,
+   1
+  ],
+  "flags": {
+   "caught": [],
+   "missed": [
+    "allergy_rx"
+   ],
+   "duplicates": [],
+   "false_alarms": [],
+   "tolerated": [],
+   "questions": []
+  },
+  "forbidden_hits": [],
+  "expectations": []
+ },
+ "claims": {
+  "supported_by_transcript": 69,
+  "supported_by_quick_notes": 2,
+  "changed_meaning": 3
+ },
+ "claims_detail": [
+  {
+   "claim_id": "it_009|substance",
+   "label": "supported_by_transcript",
+   "quote": "Yes, penicillin. It gives me hives.",
+   "confidence": 0.97
+  },
+  {
+   "claim_id": "it_009|reaction",
+   "label": "supported_by_transcript",
+   "quote": "Yes, penicillin. It gives me hives.",
+   "confidence": 0.97
+  },
+  {
+   "claim_id": "it_009|allergy_status",
+   "label": "supported_by_transcript",
+   "quote": "Yes, penicillin. It gives me hives.",
+   "confidence": 0.85
+  },
+  {
+   "claim_id": "it_010|description",
+   "label": "supported_by_transcript",
+   "quote": "No.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_010|assertion",
+   "label": "supported_by_transcript",
+   "quote": "No.",
+   "confidence": 0.88
+  },
+  {
+   "claim_id": "it_011|systolic",
+   "label": "supported_by_quick_notes",
+   "quote": "BP 130/84",
+   "confidence": 0.97
+  },
+  {
+   "claim_id": "it_011|diastolic",
+   "label": "supported_by_quick_notes",
+   "quote": "BP 130/84",
+   "confidence": 0.97
+  },
+  {
+   "claim_id": "pb_1|role",
+   "label": "supported_by_transcript",
+   "quote": "Yeah, my lower left jaw started swelling yesterday, and the tooth back there is throbbing. It kept me up last night.",
+   "confidence": 0.85
+  },
+  {
+   "claim_id": "pb_1|complaint_text",
+   "label": "supported_by_transcript",
+   "quote": "Yeah, my lower left jaw started swelling yesterday, and the tooth back there is throbbing. It kept me up last night.",
+   "confidence": 0.93
+  },
+  {
+   "claim_id": "pb_1|complaint_location",
+   "label": "supported_by_transcript",
+   "quote": "Yeah, my lower left jaw started swelling yesterday, and the tooth back there is throbbing. It kept me up last night.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "pb_1|clinical_target",
+   "label": "supported_by_transcript",
+   "quote": "Okay. Number nineteen has a big filling and there's swelling in the gum next to it on the cheek side. I'm going to press here.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_003|aspect",
+   "label": "supported_by_transcript",
+   "quote": "Yeah, my lower left jaw started swelling yesterday, and the tooth back there is throbbing. It kept me up last night.",
+   "confidence": 0.93
+  },
+  {
+   "claim_id": "it_003|value",
+   "label": "supported_by_transcript",
+   "quote": "Yeah, my lower left jaw started swelling yesterday, and the tooth back there is throbbing. It kept me up last night.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_004|aspect",
+   "label": "supported_by_transcript",
+   "quote": "Yeah, my lower left jaw started swelling yesterday, and the tooth back there is throbbing. It kept me up last night.",
+   "confidence": 0.93
+  },
+  {
+   "claim_id": "it_004|value",
+   "label": "supported_by_transcript",
+   "quote": "Yeah, my lower left jaw started swelling yesterday, and the tooth back there is throbbing. It kept me up last night.",
+   "confidence": 0.96
+  },
+  {
+   "claim_id": "it_005|aspect",
+   "label": "supported_by_transcript",
+   "quote": "Yeah, my lower left jaw started swelling yesterday, and the tooth back there is throbbing. It kept me up last night.",
+   "confidence": 0.92
+  },
+  {
+   "claim_id": "it_005|value",
+   "label": "supported_by_transcript",
+   "quote": "Yeah, my lower left jaw started swelling yesterday, and the tooth back there is throbbing. It kept me up last night.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_006|aspect",
+   "label": "changed_meaning",
+   "quote": "It hurt on and off a few months ago, then it stopped, and now this.",
+   "confidence": 0.85
+  },
+  {
+   "claim_id": "it_006|value",
+   "label": "supported_by_transcript",
+   "quote": "It hurt on and off a few months ago, then it stopped, and now this.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_006|time_context",
+   "label": "supported_by_transcript",
+   "quote": "It hurt on and off a few months ago, then it stopped, and now this.",
+   "confidence": 0.88
+  },
+  {
+   "claim_id": "it_007|aspect",
+   "label": "supported_by_transcript",
+   "quote": "Pain level right now?",
+   "confidence": 0.93
+  },
+  {
+   "claim_id": "it_007|value",
+   "label": "supported_by_transcript",
+   "quote": "An eight.",
+   "confidence": 0.96
+  },
+  {
+   "claim_id": "it_007|score",
+   "label": "supported_by_transcript",
+   "quote": "An eight.",
+   "confidence": 0.85
+  },
+  {
+   "claim_id": "it_008|aspect",
+   "label": "supported_by_transcript",
+   "quote": "Any fever?",
+   "confidence": 0.7
+  },
+  {
+   "claim_id": "it_008|value",
+   "label": "supported_by_transcript",
+   "quote": "Any fever?",
+   "confidence": 0.8
+  },
+  {
+   "claim_id": "it_008|assertion",
+   "label": "changed_meaning",
+   "quote": "I don't think so.",
+   "confidence": 0.8
+  },
+  {
+   "claim_id": "it_012|tooth",
+   "label": "supported_by_transcript",
+   "quote": "Okay. Number nineteen has a big filling and there's swelling in the gum next to it on the cheek side. I'm going to press here.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_012|observation",
+   "label": "supported_by_transcript",
+   "quote": "Okay. Number nineteen has a big filling and there's swelling in the gum next to it on the cheek side. I'm going to press here.",
+   "confidence": 0.96
+  },
+  {
+   "claim_id": "it_013|tooth",
+   "label": "supported_by_transcript",
+   "quote": "Okay. Number nineteen has a big filling and there's swelling in the gum next to it on the cheek side. I'm going to press here.",
+   "confidence": 0.92
+  },
+  {
+   "claim_id": "it_013|observation",
+   "label": "supported_by_transcript",
+   "quote": "Okay. Number nineteen has a big filling and there's swelling in the gum next to it on the cheek side. I'm going to press here.",
+   "confidence": 0.94
+  },
+  {
+   "claim_id": "it_014|tooth",
+   "label": "supported_by_transcript",
+   "quote": "Okay. Number nineteen has a big filling and there's swelling in the gum next to it on the cheek side. I'm going to press here.",
+   "confidence": 0.8
+  },
+  {
+   "claim_id": "it_014|test",
+   "label": "supported_by_transcript",
+   "quote": "Okay. Number nineteen has a big filling and there's swelling in the gum next to it on the cheek side. I'm going to press here.",
+   "confidence": 0.88
+  },
+  {
+   "claim_id": "it_014|response",
+   "label": "supported_by_transcript",
+   "quote": "Ow, yeah, that's tender.",
+   "confidence": 0.92
+  },
+  {
+   "claim_id": "it_014|result_description",
+   "label": "supported_by_transcript",
+   "quote": "Ow, yeah, that's tender.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_015|tooth",
+   "label": "supported_by_transcript",
+   "quote": "Tapping on nineteen?",
+   "confidence": 0.96
+  },
+  {
+   "claim_id": "it_015|test",
+   "label": "supported_by_transcript",
+   "quote": "Tapping on nineteen?",
+   "confidence": 0.94
+  },
+  {
+   "claim_id": "it_015|response",
+   "label": "supported_by_transcript",
+   "quote": "Ow. Yes.",
+   "confidence": 0.93
+  },
+  {
+   "claim_id": "it_016|tooth",
+   "label": "supported_by_transcript",
+   "quote": "Cold on nineteen.",
+   "confidence": 0.96
+  },
+  {
+   "claim_id": "it_016|test",
+   "label": "supported_by_transcript",
+   "quote": "Cold on nineteen.",
+   "confidence": 0.96
+  },
+  {
+   "claim_id": "it_016|response",
+   "label": "supported_by_transcript",
+   "quote": "No response to cold. Let's get a PA.",
+   "confidence": 0.96
+  },
+  {
+   "claim_id": "it_017|type",
+   "label": "supported_by_transcript",
+   "quote": "PA of nineteen, done.",
+   "confidence": 0.96
+  },
+  {
+   "claim_id": "it_017|tooth",
+   "label": "supported_by_transcript",
+   "quote": "PA of nineteen, done.",
+   "confidence": 0.96
+  },
+  {
+   "claim_id": "it_017|target",
+   "label": "supported_by_transcript",
+   "quote": "PA of nineteen, done.",
+   "confidence": 0.94
+  },
+  {
+   "claim_id": "it_017|action",
+   "label": "supported_by_transcript",
+   "quote": "PA of nineteen, done.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_017|finding",
+   "label": "supported_by_transcript",
+   "quote": "On the x-ray there's a dark area around the root tips of nineteen. That's infection. The nerve in the tooth has died, and the infection has spread out the end of the root. That's pulp necrosis with an acute apical abscess.",
+   "confidence": 0.96
+  },
+  {
+   "claim_id": "it_018|diagnosis",
+   "label": "supported_by_transcript",
+   "quote": "On the x-ray there's a dark area around the root tips of nineteen. That's infection. The nerve in the tooth has died, and the infection has spread out the end of the root. That's pulp necrosis with an acute apical abscess.",
+   "confidence": 0.96
+  },
+  {
+   "claim_id": "it_018|tooth",
+   "label": "supported_by_transcript",
+   "quote": "On the x-ray there's a dark area around the root tips of nineteen. That's infection. The nerve in the tooth has died, and the infection has spread out the end of the root. That's pulp necrosis with an acute apical abscess.",
+   "confidence": 0.93
+  },
+  {
+   "claim_id": "it_018|certainty",
+   "label": "supported_by_transcript",
+   "quote": "On the x-ray there's a dark area around the root tips of nineteen. That's infection. The nerve in the tooth has died, and the infection has spread out the end of the root. That's pulp necrosis with an acute apical abscess.",
+   "confidence": 0.88
+  },
+  {
+   "claim_id": "it_001|option",
+   "label": "supported_by_transcript",
+   "quote": "Two main options. One, a root canal to clean out the infection, then a crown to protect the tooth. That saves the tooth. Two, take the tooth out. That's faster and cheaper up front, but then you have a gap, and we'd talk about an implant or bridge later.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_001|tooth",
+   "label": "supported_by_transcript",
+   "quote": "On the x-ray there's a dark area around the root tips of nineteen. That's infection. The nerve in the tooth has died, and the infection has spread out the end of the root. That's pulp necrosis with an acute apical abscess.",
+   "confidence": 0.88
+  },
+  {
+   "claim_id": "it_001|benefits",
+   "label": "supported_by_transcript",
+   "quote": "Two main options. One, a root canal to clean out the infection, then a crown to protect the tooth. That saves the tooth. Two, take the tooth out. That's faster and cheaper up front, but then you have a gap, and we'd talk about an implant or bridge later.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_002|option",
+   "label": "supported_by_transcript",
+   "quote": "Two main options. One, a root canal to clean out the infection, then a crown to protect the tooth. That saves the tooth. Two, take the tooth out. That's faster and cheaper up front, but then you have a gap, and we'd talk about an implant or bridge later.",
+   "confidence": 0.94
+  },
+  {
+   "claim_id": "it_002|tooth",
+   "label": "supported_by_transcript",
+   "quote": "On the x-ray there's a dark area around the root tips of nineteen. That's infection. The nerve in the tooth has died, and the infection has spread out the end of the root. That's pulp necrosis with an acute apical abscess.",
+   "confidence": 0.88
+  },
+  {
+   "claim_id": "it_002|risks",
+   "label": "supported_by_transcript",
+   "quote": "Two main options. One, a root canal to clean out the infection, then a crown to protect the tooth. That saves the tooth. Two, take the tooth out. That's faster and cheaper up front, but then you have a gap, and we'd talk about an implant or bridge later.",
+   "confidence": 0.8
+  },
+  {
+   "claim_id": "it_002|benefits",
+   "label": "supported_by_transcript",
+   "quote": "Two main options. One, a root canal to clean out the infection, then a crown to protect the tooth. That saves the tooth. Two, take the tooth out. That's faster and cheaper up front, but then you have a gap, and we'd talk about an implant or bridge later.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_023|decision",
+   "label": "supported_by_transcript",
+   "quote": "I'd really like to save it.",
+   "confidence": 0.88
+  },
+  {
+   "claim_id": "it_023|option",
+   "label": "supported_by_transcript",
+   "quote": "Okay, we'll do the root canal. I'll get you scheduled in the next few days. In the meantime, I'll send in amoxicillin, 500 milligrams three times a day for seven days, to get the swelling down. And you can take ibuprofen, 600 milligrams every six hours as needed for pain.",
+   "confidence": 0.82
+  },
+  {
+   "claim_id": "it_020|drug",
+   "label": "supported_by_transcript",
+   "quote": "Okay, we'll do the root canal. I'll get you scheduled in the next few days. In the meantime, I'll send in amoxicillin, 500 milligrams three times a day for seven days, to get the swelling down. And you can take ibuprofen, 600 milligrams every six hours as needed for pain.",
+   "confidence": 0.97
+  },
+  {
+   "claim_id": "it_020|strength",
+   "label": "supported_by_transcript",
+   "quote": "Okay, we'll do the root canal. I'll get you scheduled in the next few days. In the meantime, I'll send in amoxicillin, 500 milligrams three times a day for seven days, to get the swelling down. And you can take ibuprofen, 600 milligrams every six hours as needed for pain.",
+   "confidence": 0.88
+  },
+  {
+   "claim_id": "it_020|dose",
+   "label": "supported_by_transcript",
+   "quote": "Okay, we'll do the root canal. I'll get you scheduled in the next few days. In the meantime, I'll send in amoxicillin, 500 milligrams three times a day for seven days, to get the swelling down. And you can take ibuprofen, 600 milligrams every six hours as needed for pain.",
+   "confidence": 0.94
+  },
+  {
+   "claim_id": "it_020|frequency_code",
+   "label": "supported_by_transcript",
+   "quote": "Okay, we'll do the root canal. I'll get you scheduled in the next few days. In the meantime, I'll send in amoxicillin, 500 milligrams three times a day for seven days, to get the swelling down. And you can take ibuprofen, 600 milligrams every six hours as needed for pain.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_020|duration_days",
+   "label": "supported_by_transcript",
+   "quote": "Okay, we'll do the root canal. I'll get you scheduled in the next few days. In the meantime, I'll send in amoxicillin, 500 milligrams three times a day for seven days, to get the swelling down. And you can take ibuprofen, 600 milligrams every six hours as needed for pain.",
+   "confidence": 0.96
+  },
+  {
+   "claim_id": "it_020|as_needed",
+   "label": "supported_by_transcript",
+   "quote": "Okay, we'll do the root canal. I'll get you scheduled in the next few days. In the meantime, I'll send in amoxicillin, 500 milligrams three times a day for seven days, to get the swelling down. And you can take ibuprofen, 600 milligrams every six hours as needed for pain.",
+   "confidence": 0.8
+  },
+  {
+   "claim_id": "it_020|prescription_status",
+   "label": "supported_by_transcript",
+   "quote": "Okay, we'll do the root canal. I'll get you scheduled in the next few days. In the meantime, I'll send in amoxicillin, 500 milligrams three times a day for seven days, to get the swelling down. And you can take ibuprofen, 600 milligrams every six hours as needed for pain.",
+   "confidence": 0.88
+  },
+  {
+   "claim_id": "it_021|drug",
+   "label": "supported_by_transcript",
+   "quote": "Okay, we'll do the root canal. I'll get you scheduled in the next few days. In the meantime, I'll send in amoxicillin, 500 milligrams three times a day for seven days, to get the swelling down. And you can take ibuprofen, 600 milligrams every six hours as needed for pain.",
+   "confidence": 0.96
+  },
+  {
+   "claim_id": "it_021|strength",
+   "label": "supported_by_transcript",
+   "quote": "Okay, we'll do the root canal. I'll get you scheduled in the next few days. In the meantime, I'll send in amoxicillin, 500 milligrams three times a day for seven days, to get the swelling down. And you can take ibuprofen, 600 milligrams every six hours as needed for pain.",
+   "confidence": 0.8
+  },
+  {
+   "claim_id": "it_021|dose",
+   "label": "supported_by_transcript",
+   "quote": "Okay, we'll do the root canal. I'll get you scheduled in the next few days. In the meantime, I'll send in amoxicillin, 500 milligrams three times a day for seven days, to get the swelling down. And you can take ibuprofen, 600 milligrams every six hours as needed for pain.",
+   "confidence": 0.94
+  },
+  {
+   "claim_id": "it_021|frequency_code",
+   "label": "supported_by_transcript",
+   "quote": "Okay, we'll do the root canal. I'll get you scheduled in the next few days. In the meantime, I'll send in amoxicillin, 500 milligrams three times a day for seven days, to get the swelling down. And you can take ibuprofen, 600 milligrams every six hours as needed for pain.",
+   "confidence": 0.94
+  },
+  {
+   "claim_id": "it_021|as_needed",
+   "label": "supported_by_transcript",
+   "quote": "Okay, we'll do the root canal. I'll get you scheduled in the next few days. In the meantime, I'll send in amoxicillin, 500 milligrams three times a day for seven days, to get the swelling down. And you can take ibuprofen, 600 milligrams every six hours as needed for pain.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_021|prescription_status",
+   "label": "changed_meaning",
+   "quote": "Okay, we'll do the root canal. I'll get you scheduled in the next few days. In the meantime, I'll send in amoxicillin, 500 milligrams three times a day for seven days, to get the swelling down. And you can take ibuprofen, 600 milligrams every six hours as needed for pain.",
+   "confidence": 0.75
+  },
+  {
+   "claim_id": "it_019|procedure",
+   "label": "supported_by_transcript",
+   "quote": "Okay, we'll do the root canal. I'll get you scheduled in the next few days. In the meantime, I'll send in amoxicillin, 500 milligrams three times a day for seven days, to get the swelling down. And you can take ibuprofen, 600 milligrams every six hours as needed for pain.",
+   "confidence": 0.96
+  },
+  {
+   "claim_id": "it_019|tooth",
+   "label": "supported_by_transcript",
+   "quote": "On the x-ray there's a dark area around the root tips of nineteen. That's infection. The nerve in the tooth has died, and the infection has spread out the end of the root. That's pulp necrosis with an acute apical abscess.",
+   "confidence": 0.88
+  },
+  {
+   "claim_id": "it_019|timing",
+   "label": "supported_by_transcript",
+   "quote": "Okay, we'll do the root canal. I'll get you scheduled in the next few days. In the meantime, I'll send in amoxicillin, 500 milligrams three times a day for seven days, to get the swelling down. And you can take ibuprofen, 600 milligrams every six hours as needed for pain.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_022|text",
+   "label": "supported_by_transcript",
+   "quote": "If the swelling spreads toward your eye or down your neck, or you have trouble swallowing or breathing, go to the ER right away.",
+   "confidence": 0.93
+  }
+ ],
+ "dentist_blockers": 8,
+ "blocker_kinds": {
+  "staged": 7,
+  "safety-critical": 1
+ },
+ "check_counts": {
+  "span_valid": {
+   "pass": 24
+  },
+  "normalization_valid": {
+   "pass": 18,
+   "not_applicable": 6
+  },
+  "semantic_support": {
+   "not_applicable": 24
+  }
+ },
+ "relationships": []
+}
