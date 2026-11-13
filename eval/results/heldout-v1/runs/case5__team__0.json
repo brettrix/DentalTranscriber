@@ -1,0 +1,120 @@
+{
+ "case": "case5",
+ "pipeline": "team",
+ "repeat": 0,
+ "session": "d05b39f1-a98f-4243-86dc-26f27d96eee1",
+ "error": null,
+ "wall_s": 50.4,
+ "candidate": true,
+ "ready_for_review": true,
+ "failed_stages": [],
+ "production_failure_stage": null,
+ "calls": 37,
+ "usd_pipeline": 0.5081,
+ "usd_shared": 0.0106,
+ "per_agent": {
+  "Br": {
+   "calls": 1,
+   "in": 6738,
+   "out": 802,
+   "seconds": 5.6,
+   "usd": 0.0215
+  },
+  "B1": {
+   "calls": 2,
+   "in": 14302,
+   "out": 693,
+   "seconds": 6.0,
+   "usd": 0.0355
+  },
+  "B2": {
+   "calls": 2,
+   "in": 15197,
+   "out": 1167,
+   "seconds": 7.0,
+   "usd": 0.0421
+  },
+  "B3": {
+   "calls": 2,
+   "in": 15793,
+   "out": 1770,
+   "seconds": 9.9,
+   "usd": 0.0493
+  },
+  "B4": {
+   "calls": 2,
+   "in": 15700,
+   "out": 2093,
+   "seconds": 13.2,
+   "usd": 0.0523
+  },
+  "Cs": {
+   "calls": 14,
+   "in": 76273,
+   "out": 8969,
+   "seconds": 53.6,
+   "usd": 0.2422
+  },
+  "Ce": {
+   "calls": 11,
+   "in": 16511,
+   "out": 1140,
+   "seconds": 17.7,
+   "usd": 0.0444
+  },
+  "Co": {
+   "calls": 2,
+   "in": 7015,
+   "out": 673,
+   "seconds": 5.2,
+   "usd": 0.0208
+  },
+  "R2": {
+   "calls": 1,
+   "in": 2845,
+   "out": 486,
+   "seconds": 3.7,
+   "usd": 0.0106
+  }
+ },
+ "timings": [
+  5.6,
+  3.0,
+  3.5,
+  5.7,
+  6.0,
+  2.5,
+  3.1,
+  3.2,
+  5.0,
+  2.5,
+  2.6,
+  2.5,
+  4.0,
+  8.7,
+  1.1,
+  1.6,
+  1.6,
+  1.8,
+  1.9,
+  1.7,
+  2.0,
+  1.7,
+  3.7,
+  3.0,
+  3.5,
+  4.3,
+  7.2,
+  2.9,
+  3.4,
+  3.9,
+  3.1,
+  6.2,
+  1.5,
+  1.5,
+  1.5,
+  1.5,
+  3.5
+ ],
+ "scored": false
+}

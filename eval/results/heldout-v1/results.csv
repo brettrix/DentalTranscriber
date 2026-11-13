@@ -1,0 +1,11 @@
+case,pipeline,repeat,session,candidate,production_failure_stage,ready_for_review,recall_n,recall_d,precision_n,precision_d,tooth_n,tooth_d,flags_caught,flags_missed,flags_false_alarms,expectations_pass,expectations_total,calls,usd_pipeline,usd_shared,wall_s,error
+case4,baseline,0,89f63913-2b3a-4365-85ad-e7f32f4e1117,True,,True,,,,,,,,,,,,3,0.0848,0.0063,25.2,
+case4,team,0,d0a79da3-de96-4313-8d21-f1ee40ef5210,True,,True,,,,,,,,,,,,39,0.5856,0.0063,53.6,
+case5,baseline,0,c63ba788-3421-47c2-822f-b189fc20a94c,True,,True,,,,,,,,,,,,4,0.0764,0.0146,26.3,
+case5,team,0,d05b39f1-a98f-4243-86dc-26f27d96eee1,True,,True,,,,,,,,,,,,37,0.5081,0.0106,50.4,
+case6,baseline,0,6f42659e-b609-4456-90d3-d4ff7b109ba4,True,,True,,,,,,,,,,,,3,0.0732,0.0066,20.9,
+case6,team,0,508ba75c-6a32-4302-ab49-afe977a73934,True,,True,,,,,,,,,,,,36,0.5577,0.0066,45.2,
+case7,baseline,0,c4d342cd-7283-4429-ada0-1c0ca1c1c3f0,True,,True,,,,,,,,,,,,4,0.0806,0.0175,26.3,
+case7,team,0,d5f6a921-b1f2-4646-8044-4180ff5fda3a,True,,True,,,,,,,,,,,,47,0.6636,0.0178,63.6,
+case8,baseline,0,ce38bb76-4eb9-4530-90dd-fe9ed2c1bb4d,True,,True,,,,,,,,,,,,3,0.0904,0.0074,28.8,
+case8,team,0,576c771b-9072-4381-882e-ab41a445e6fd,True,,True,,,,,,,,,,,,40,0.5061,0.0074,38.4,

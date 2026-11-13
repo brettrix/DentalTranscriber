@@ -1,0 +1,37 @@
+{
+ "case": "case8",
+ "pipeline": "baseline",
+ "repeat": 0,
+ "session": "ce38bb76-4eb9-4530-90dd-fe9ed2c1bb4d",
+ "error": null,
+ "wall_s": 28.8,
+ "candidate": true,
+ "ready_for_review": true,
+ "failed_stages": [],
+ "production_failure_stage": null,
+ "calls": 3,
+ "usd_pipeline": 0.0904,
+ "usd_shared": 0.0074,
+ "per_agent": {
+  "B0": {
+   "calls": 2,
+   "in": 19690,
+   "out": 5099,
+   "seconds": 26.6,
+   "usd": 0.0904
+  },
+  "R2": {
+   "calls": 1,
+   "in": 2782,
+   "out": 188,
+   "seconds": 2.2,
+   "usd": 0.0074
+  }
+ },
+ "timings": [
+  13.2,
+  2.2,
+  13.4
+ ],
+ "scored": false
+}
