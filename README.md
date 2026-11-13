@@ -15,6 +15,8 @@ cp .env.example .env            # add ANTHROPIC_API_KEY and DEEPGRAM_API_KEY (ne
 SCRIBE_ALLOW_REAL=1 .venv/bin/streamlit run app.py  # UI (processing a visit makes real model calls)
 ```
 
+The app is written for the dental assistant. **New visit**: enter the patient (name or chart #), then record the visit, upload a recording or paste a transcript, add quick notes, and press "Write the note". **Review**: the status line says who the note is waiting on; answer the cards, send it to the dentist, and download the approved note as PDF, Word or copied text. **Waiting for dentist** and **Cleared by dentist** are her two queues. Pipeline mode, rule mode and test cases are under "Admin settings"; speaker roles, the technical log and the switch that shows test visits are in **Admin**.
+
 Run one case from the command line: `python -m eval.run_case eval/cases/case1 --mode team`.
 Run the evaluation: `python -m eval.run_eval --cases eval/cases eval/matrix --pipeline both`.
 Fault injection: `python -m eval.fault_injection --cases case1 case2 case3`.

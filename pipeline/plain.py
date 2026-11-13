@@ -55,17 +55,18 @@ def section_title(section_id: str) -> str:
 
 
 def describe(e, graph) -> str:
-    """A short plain label for an entity, e.g. 'Exam finding: #14; cold; positive/felt'."""
+    """A short plain label for an entity, e.g. 'Exam finding: #14: cold test positive'."""
     if e is None:
         return "an item that was removed"
-    text = strip_ids(entity_text(e, graph)[0])
+    from pipeline.chart import chart_line
+    text = strip_ids(chart_line(e, graph))  # the same wording as the note on the page
     if e.kind == "problem":
-        return text
+        return f"Chief complaint: {text}" if e.role == "chief" else text
     if e.kind == "relationship":
-        return text
+        return f"Related tooth {text}"
     label = TYPE_LABEL.get(e.type, e.type).capitalize()
     where = " (from the quick note)" if e.evidence and all(s.source_type == "quick_note" for s in e.evidence) else ""
-    if text.lower().startswith((label.lower(), "allergy", "bp ", "denies")):
+    if text.lower().startswith((label.lower(), "allergy", "no known allerg", "no allergy", "bp ", "possible allergy")):
         return f"{text}{where}"
     return f"{label}: {text}{where}"
 

@@ -381,3 +381,48 @@ def test_waiting_and_cleared_tabs_follow_the_note(monkeypatch, tmp_path):
     at = _app(monkeypatch, tmp_path, "Assistant", page="Cleared by dentist")
     assert [m.value for m in at.markdown if m.value.startswith("**")] == ["**Ben Cho**", "**Ana Ruiz**"], "newest first"
     assert draft.id not in " ".join(d.key for d in at.get("download_button"))
+
+
+def _recorded(tmp_path, bad_quote=False):
+    """An audio visit without any real call: a recording file and a time on every line."""
+    import json
+    import wave
+    items = copy.deepcopy(ITEMS)
+    if bad_quote:
+        items["F1"]["evidence"][0]["quote"] = "Cold on tooth fourteen."
+    s = mini_session(tmp_path, "baseline")
+    s.update_meta(patient="Ben Cho")
+    with wave.open(str(s.path("sources", "audio.wav")), "wb") as w:
+        w.setnchannels(1), w.setsampwidth(2), w.setframerate(8000)
+        w.writeframes(b"\x00\x00" * 8000)
+    path = s.path("sources", "utterances.json")
+    data = json.loads(path.read_text())
+    for i, u in enumerate(data["utterances"]):
+        u["start"], u["end"] = 20.5 * i, 20.5 * i + 3
+    path.write_text(json.dumps(data))
+    run_pipeline(s, mode="baseline", client=FakeLLM(items=items))
+    return s
+
+
+def test_recorded_visit_has_clickable_timestamps_and_a_player(monkeypatch, tmp_path):
+    _recorded(tmp_path, bad_quote=True)
+    at = _app(monkeypatch, tmp_path, "Dentist")
+    assert not at.exception, at.exception
+    talk = next(m.value for m in at.markdown if "What brings you in today?" in m.value and "<b>" in m.value)
+    assert talk.startswith('<a href="#t=0.00" title="Play from here">00:00</a> &nbsp;<b>Dentist:</b> What brings')
+    assert '<a href="#t=102.50" title="Play from here">01:42</a> &nbsp;<b>Patient:</b> Yes, that' in talk
+    assert len(at.get("audio")) == 1, "the recording is on the page for the pinned player to drive"
+    assert any(c.value == "Click a time to hear that part of the recording." for c in at.caption)
+    quote = next(m.value for m in at.markdown if "\u201cYes, that&#x27;s sharp.\u201d" in m.value
+                 or "\u201cYes, that's sharp.\u201d" in m.value)
+    assert quote.count('href="#t=') >= 1 and 'href="#t=102.50"' in quote, "a quote on a card jumps to where it was said"
+    assert "Recording" in [d.label for d in at.get("download_button")]
+
+
+def test_pasted_transcript_has_no_player_and_no_timestamps(monkeypatch, tmp_path):
+    _bad_session(tmp_path)
+    at = _app(monkeypatch, tmp_path, "Dentist")
+    assert not at.get("audio")
+    assert not any("#t=" in m.value for m in at.markdown)
+    assert not any("Click a time" in c.value for c in at.caption)
+    assert "Recording" not in [d.label for d in at.get("download_button")]

@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import html
 import json
+import re
 import shutil
 import tempfile
 import typing
@@ -11,7 +12,7 @@ from pathlib import Path
 
 import streamlit as st
 
-from components import copy_button
+from components import audio_player, copy_button, seek_link
 from pipeline import approval, exports, human, plain
 from pipeline.chart import chart_sections
 from pipeline.dispositions import accepted
@@ -93,7 +94,7 @@ role = st.sidebar.selectbox("Your role (Prototype: no real login)", ["Assistant"
 sessions = list_sessions()  # newest first
 by_id = {s.id: s for s in sessions}
 st.sidebar.markdown("""<style>
-section[data-testid='stSidebar'] { min-width: 330px; }
+@media (min-width: 900px) { section[data-testid='stSidebar'] { min-width: 330px; } }
 section[data-testid='stSidebar'] [class*='st-key-visit_'] button { justify-content: flex-start; text-align: left; }
 </style>""", unsafe_allow_html=True)
 if st.sidebar.button("＋ New visit", key="new_visit", width="stretch"):
@@ -348,19 +349,37 @@ def field_form(e, key: str) -> dict:
     return changes
 
 
-def render_transcript(src, highlight):
+def render_transcript(src, highlight, timed: bool):
+    """The conversation, speaker by speaker. For a recording, each line starts with its time; clicking the time
+    plays the recording from there."""
     rows = []
-    for u in src.utterances.utterances:
-        text = u.text
-        spans = sorted((s, e) for uid, s, e in highlight if uid == u.id and s is not None)
+    for r in exports.transcript_rows(session, src):
+        text = r["text"]
+        spans = sorted((s, e) for uid, s, e in highlight if uid == r["id"] and s is not None)
         out, pos = "", 0
         for s, e in spans:
             if s >= pos:
                 out += esc(text[pos:s]) + f"<mark>{esc(text[s:e])}</mark>"
                 pos = e
         out += esc(text[pos:])
-        rows.append(f"<b>{esc(src.role_of(u.speaker) or 'Speaker')}:</b> {out}")
+        when = seek_link(r["start"], r["time"]) + " &nbsp;" if timed and r["start"] is not None else ""
+        rows.append(f"{when}<b>{esc(r['speaker'])}:</b> {out}")
     st.markdown("<br>".join(rows), unsafe_allow_html=True)
+
+
+def _quote_times(src) -> list[tuple[str, float]]:
+    return [(u.text, u.start) for u in src.utterances.utterances if u.start is not None]
+
+
+def _with_seek(text: str, times) -> str:
+    """Escape a card's text; a quoted line that was said in the recording becomes a link that plays it."""
+    out = []
+    for line in text.split("\n"):
+        m = re.search("\u201c(.+?)\u201d", line)
+        start = next((t for words, t in times if m and m.group(1) in words), None) if times else None
+        out.append(seek_link(start, "\u25b6 " + esc(line), "Play this part of the recording") if start is not None
+                   else esc(line))
+    return "  \n".join(out)
 
 
 # ---------------------------------------------------------------- Review
@@ -377,8 +396,10 @@ REVIEW_CSS = """<style>
 [class*="st-key-noteline_"]:focus-within [class*="st-key-edit_"],
 [class*="st-key-noteline_open_"] [class*="st-key-edit_"] { opacity: 1; }
 @media (hover: none) { [class*="st-key-noteline_"] [class*="st-key-edit_"] { opacity: 1; } }
-[class*="st-key-noteline_"] [data-testid="stVerticalBlock"] { gap: 0.2rem; }
-[class*="st-key-noteline_"] button { padding: 0 .4rem; min-height: 1.6rem; }
+[class*="st-key-noteline_"] [class*="st-key-edit_"] button { padding: 0 .4rem; min-height: 1.5rem; }
+[class*="st-key-notesec_"] { margin-bottom: .5rem; }
+[class*="st-key-noteline_"] [data-testid="stMarkdownContainer"] ul { margin-bottom: 0; }
+[class*="st-key-noteline_"] [data-testid="stMarkdownContainer"] li { margin: .1rem 0; }
 </style>"""
 APPROVED = ("dentist_approved", "exported")
 
@@ -424,9 +445,10 @@ def review_page():
     staging = session_staging(session)
     cards = plain.build_cards(items, graph, log, staging, src, role, flag_by_id)
 
+    timed = exports.has_timestamps(session, src)  # a recording with times; pasted transcripts have neither
     status_line(state, cards)
     if not approved:
-        checklist(cards)
+        checklist(cards, _quote_times(src) if timed else ())
         sign_off(state, cards, items)
         alerts(graph, flags, _covered_by(items, graph, log, staging))
 
@@ -436,18 +458,21 @@ def review_page():
         st.subheader("Note")
         chart = chart_sections(latest.get("note") or {}, graph)
         for sec in chart["sections"]:
-            st.markdown(f"**{esc(sec['title'])}**")
-            if sec["incomplete"]:
-                st.caption("This part couldn't be filled in automatically. Check the conversation.")
-            for line in sec["lines"]:
-                note_line(line, graph, log, highlight, editable=not approved)
+            with st.container(gap=None, key=f"notesec_{sec['id']}"):
+                st.markdown(f"**{esc(sec['title'])}**")
+                if sec["incomplete"]:
+                    st.caption("This part couldn't be filled in automatically. Check the conversation.")
+                for line in sec["lines"]:
+                    note_line(line, graph, log, highlight, editable=not approved)
         if chart["not_discussed"]:
             st.caption("Not discussed: " + ", ".join(chart["not_discussed"]))
         if not approved:
             add_item(graph)
     with right:
         st.subheader("Conversation")
-        render_transcript(src, highlight)
+        if timed:
+            st.caption("Click a time to hear that part of the recording.")
+        render_transcript(src, highlight, timed)
         if src.quick_notes.notes:
             st.subheader("Quick notes")
             for q in src.quick_notes.notes:
@@ -455,6 +480,9 @@ def review_page():
         st.caption("Download")
         source_downloads(session, "review")
     technical_details(graph, latest)
+    if timed:
+        audio = exports.recording_path(session)
+        audio_player(audio, exports.AUDIO_MIME[audio.suffix.lower()])
 
 
 def status_line(state, cards):
@@ -551,7 +579,7 @@ def _card_key(card) -> str:
     return "card_" + hashlib.sha1(f"{role}|{card['key']}".encode()).hexdigest()[:10]
 
 
-def _render_card(card):
+def _render_card(card, times=()):
     key = _card_key(card)
     labels = {v: lbl for v, lbl, _ in card["options"]}
     with st.container(border=True):
@@ -564,10 +592,10 @@ def _render_card(card):
         c1, c2 = st.columns(2)
         with c1.container(border=True):
             st.caption(card["left"][0])
-            st.markdown(esc(card["left"][1]).replace("\n", "  \n"))
+            st.markdown(_with_seek(card["left"][1], times), unsafe_allow_html=True)
         with c2.container(border=True):
             st.caption(card["right"][0])
-            st.markdown(esc(card["right"][1]).replace("\n", "  \n"))
+            st.markdown(_with_seek(card["right"][1], times), unsafe_allow_html=True)
         kw = {} if key in st.session_state else {"default": card["default"]}
         c1, c2 = st.columns([3, 2])
         with c1:
@@ -581,19 +609,19 @@ def _render_card(card):
                 st.caption(esc(d))
 
 
-def checklist(cards):
+def checklist(cards, times=()):
     """Review cards: choose on each card (with an optional comment), then save everything at once."""
     shown = [c for c in cards if not c["hidden"]]
     hidden = [c for c in cards if c["hidden"]]
     if cards:
         st.subheader("To answer")
     for card in shown:
-        _render_card(card)
+        _render_card(card, times)
     if hidden:
         n = len(hidden)
         with st.expander(f"{n} more {'item looks' if n == 1 else 'items look'} right · show"):
             for card in hidden:
-                _render_card(card)
+                _render_card(card, times)
     if cards:
         answered = sum(1 for c in cards if st.session_state.get(_card_key(c)) is not None)
         c1, c2 = st.columns([2, 6])
@@ -738,12 +766,12 @@ def note_line(line, graph, log, highlight, editable=True):
         st.markdown(f"- {esc(line['text'])}", unsafe_allow_html=True)
         return
     opened = st.session_state.get("editing") == eid
-    with st.container(key=f"noteline_{'open_' if opened else ''}{eid}"):
-        c1, c2 = st.columns([8, 1])
-        c1.markdown(f"- {esc(line['text'])}{chip}", unsafe_allow_html=True)
-        if c2.button("Close" if opened else "Edit", key=f"edit_{eid}", type="tertiary"):
-            st.session_state["editing"] = None if opened else eid
-            st.rerun()
+    with st.container(key=f"noteline_{'open_' if opened else ''}{eid}", gap=None):
+        with st.container(horizontal=True, vertical_alignment="center", gap="small"):
+            st.markdown(f"- {esc(line['text'])}{chip}", unsafe_allow_html=True, width="stretch")
+            if st.button("Close" if opened else "Edit", key=f"edit_{eid}", type="tertiary"):
+                st.session_state["editing"] = None if opened else eid
+                st.rerun()
         show_notice(f"line_{eid}")
         if opened:
             for s in e.evidence:
