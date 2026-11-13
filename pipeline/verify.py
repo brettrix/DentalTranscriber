@@ -203,9 +203,10 @@ def _check_negation(entity, d, k, sources) -> list[str]:
     if d.concept.lower() not in concept_span.text.lower():
         out.append(f"derivation[{k}]: concept {d.concept!r} not in evidence[{ci}]")
     if ci != d.evidence_index:
+        question = sources.source_text(concept_span.source_type, concept_span.source_id) or ""
         adjacent = (cue_span.source_type == concept_span.source_type == "transcript"
                     and sources.utterance_index(cue_span.source_id) - sources.utterance_index(concept_span.source_id) == 1
-                    and concept_span.text.rstrip().endswith("?"))
+                    and question.rstrip().endswith("?"))
         if not adjacent:
             out.append(f"derivation[{k}]: negation cue and concept are in different spans that are not a direct "
                        f"question and answer")

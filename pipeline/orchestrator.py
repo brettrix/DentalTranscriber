@@ -145,6 +145,7 @@ def run_pipeline(session: Session, *, mode: str | None = None, rule_mode: str | 
                 run.graph = None
             else:
                 run.graph = save_graph(session, run.graph)
+                run.tracer.graph_version = run.graph.version
                 run.record("D", "freeze", "succeeded", inputs={"graph": snapshot_hash(run.graph)})
         else:
             for agent in ("Cv", "R2") + (("Cs", "Ce", "Co") if mode == "team" else ()):
@@ -247,8 +248,8 @@ def stage_b(run: Run) -> None:
                          created_by_stage="L", severity="medium", staging_ids=[rec.id])
         rec.task_id = task.id
         add_task(graph, task, run.previous)
-    run.graph = graph
     run.graph = save_graph(run.session, graph)
+    run.tracer.graph_version = run.graph.version
 
 
 def _section_version(previous, section, status, n) -> int:
@@ -316,6 +317,7 @@ def stage_c(run: Run) -> None:
     summarize_all(g, run.check_log, run.mode, sem_config)
     _remaining_issue_tasks(run)
     run.graph = save_graph(run.session, g)
+    run.tracer.graph_version = run.graph.version
 
 
 def repair_round(run: Run, issues: list[Issue]):

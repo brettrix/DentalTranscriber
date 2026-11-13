@@ -91,7 +91,7 @@ def entity_text(e, graph) -> tuple[str, dict]:
                            a["frequency"], (a["medication_status"] or "").replace("_", " "))
     elif t == "allergy":
         show(substance=a["substance"] or a["original_wording"], reaction=a["reaction"], allergy_status=a["allergy_status"])
-        if a["allergy_status"] == "denied" and not shown.get("substance"):
+        if a["allergy_status"] == "denied" and not a["substance"]:
             text = "Denies allergies"
         else:
             text = _join(f"Allergy: {shown.get('substance', 'unspecified')}", a["reaction"] and f"reaction: {a['reaction']}",

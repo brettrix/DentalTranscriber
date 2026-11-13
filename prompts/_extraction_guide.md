@@ -20,7 +20,8 @@ Speaker roles are shown on each transcript line; do not change them.
 
 ## Status and time
 - `assertion`: `present` (stated as so), `absent` (stated as not so, e.g. "no swelling"), `denied` (patient denies, e.g. "no allergies"), `possible` (hedged), `unintelligible`.
-- `time_context`: `current`, `historical` (past, e.g. a medicine stopped last year), `planned` (future visits, planned imaging).
+- `time_context` is about when the fact holds: `current` (true now, or said or done during this visit — including options discussed, decisions made, instructions given and prescriptions written today), `historical` (in the past, e.g. a medicine stopped last year), `planned` (a future procedure or imaging that has not happened yet; `next_visit` items are `planned`).
+- Use `denied` when the patient says no to a question about themselves (symptoms, history, allergies); use `absent` when a clinician reports something is not there.
 - Never infer from silence: if something was not discussed, do not create an entity for it, and leave unstated attributes `null`.
 
 ## Values and derivations
@@ -48,7 +49,7 @@ Some attributes are normalized values. For each one, add a derivation `{attribut
 
 ## Items
 Each item has a `type`, a `problem_key` (null for encounter items), a `target` (tooth/surface/site/free_text), `attributes` from the table below, `assertion`, `time_context`, `assertion_source`, evidence and derivations.
-- One finding per test or observation per tooth. `response`: present (felt / positive), absent (nothing felt / negative), uncertain. `lingering`: true, false, or null if not discussed. `duration_s`: seconds if stated.
+- One finding per test or observation per tooth. A test that was done is `assertion: present` whatever its result; a negative result is `response: absent`. `response`: present (felt / positive), absent (nothing felt / negative), uncertain. `lingering`: true, false, or null if not discussed. `duration_s`: seconds if stated.
 - Radiograph `action`: performed, discussed, planned, declined, not_needed. Put what the image shows in `finding`.
 - Diagnosis only from a clinician's assessment. `certainty`: `possible` when hedged ("could be", "might", "probably", "rule out"), otherwise `definite`.
 - `option_discussed.recommended_by_clinician`: true only when the dentist recommends it; false when the dentist advises against it; otherwise null.
