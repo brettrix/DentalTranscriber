@@ -121,7 +121,8 @@ class FakeLLM:
         system = kw["system"]
         agent = {"submit_extraction": _agent_of(system), "submit_repair": "repair:" + _agent_of(system),
                  "submit_contradictions": "R2", "submit_window_extractions": "Cs", "submit_verdicts": "Ce",
-                 "submit_omissions": "Co", "submit_questions": "E3"}[tool]
+                 "submit_omissions": "Co", "submit_questions": "E3", "submit_grades": "Grader",
+                 "submit_claim_grades": "Grader"}[tool]
         self.calls.append(agent)
         failure = self.fail.get(agent)
         if isinstance(failure, Exception):
@@ -194,6 +195,14 @@ class FakeLLM:
 
     def _submit_omissions(self, agent, user):
         return {"omissions": self.co_omissions}
+
+    def _submit_grades(self, agent, user):
+        return {"grades": [{"pair_id": pid, "verdict": "equivalent", "confidence": 0.9}
+                           for pid in re.findall(r"pair_id (\S+) \|", user)]}
+
+    def _submit_claim_grades(self, agent, user):
+        return {"grades": [{"claim_id": cid, "label": "supported_by_transcript", "quote": None, "confidence": 0.8}
+                           for cid in re.findall(r"claim_id (\S+) \|", user)]}
 
     def _submit_questions(self, agent, user):
         out = []

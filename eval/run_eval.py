@@ -73,7 +73,8 @@ def load_gold(case_id: str):
     return GoldCase.model_validate(json.loads(p.read_text())) if p.exists() else None
 
 
-def run_one(case_dir: Path, pipeline: str, repeat: int, out_dir: Path, grade: bool, rule_mode: str) -> dict:
+def run_one(case_dir: Path, pipeline: str, repeat: int, out_dir: Path, grade: bool, rule_mode: str,
+            client=None) -> dict:
     from eval.run_case import new_case_session
     from pipeline.orchestrator import run_pipeline
     row = {"case": case_dir.name, "pipeline": pipeline, "repeat": repeat}
@@ -81,21 +82,21 @@ def run_one(case_dir: Path, pipeline: str, repeat: int, out_dir: Path, grade: bo
     row["session"] = session.id
     t0 = time.monotonic()
     try:
-        result = run_pipeline(session, mode=pipeline, rule_mode=rule_mode)
+        result = run_pipeline(session, mode=pipeline, rule_mode=rule_mode, client=client)
         row["error"] = None
     except Exception as exc:  # noqa: BLE001 - a crash is a candidate-production failure, reported as such
         result = None
         row["error"] = f"{type(exc).__name__}: {exc}"
         traceback.print_exc()
     row["wall_s"] = round(time.monotonic() - t0, 1)
-    row.update(score_session(session, pipeline, grade=grade, result=result))
+    row.update(score_session(session, pipeline, grade=grade, result=result, client=client))
     (out_dir / "runs").mkdir(parents=True, exist_ok=True)
     (out_dir / "runs" / f"{case_dir.name}__{pipeline}__{repeat}.json").write_text(json.dumps(row, indent=1, default=str))
     print(f"done {case_dir.name} {pipeline} r{repeat}: candidate={row['candidate']} wall={row['wall_s']}s", flush=True)
     return row
 
 
-def score_session(session, pipeline: str, *, grade: bool = True, result=None) -> dict:
+def score_session(session, pipeline: str, *, grade: bool = True, result=None, client=None) -> dict:
     from eval import scoring
     from pipeline.graph import load_graph
     from pipeline.orchestrator import load_latest
@@ -132,8 +133,8 @@ def score_session(session, pipeline: str, *, grade: bool = True, result=None) ->
     grades, claim_counts, claims_detail, grader_err = {}, Counter(), [], None
     if grade:
         try:
-            grades = grade_pairs([final] + ([raw] if raw else []))
-            claim_counts, claims_detail = grade_claims(session, sources, latest.get("note"), graph)
+            grades = grade_pairs([final] + ([raw] if raw else []), client=client)
+            claim_counts, claims_detail = grade_claims(session, sources, latest.get("note"), graph, client=client)
         except Exception as exc:  # noqa: BLE001
             grader_err = f"{type(exc).__name__}: {exc}"
     scoring.apply_grades(final, grades)
@@ -190,7 +191,7 @@ def summarize_score(score, graph) -> dict:
             "forbidden_hits": score.forbidden_hits, "expectations": score.expectations}
 
 
-def grade_pairs(scores) -> dict[str, str]:
+def grade_pairs(scores, client=None) -> dict[str, str]:
     from agents.grader import GraderEquivalence
     pairs, seen = [], set()
     for sc in scores:
@@ -204,11 +205,11 @@ def grade_pairs(scores) -> dict[str, str]:
                 pairs.append({"pair_id": pid, "attribute": dim, "gold": g, "produced": p})
     if not pairs:
         return {}
-    out = GraderEquivalence(tracer=grader_tracer()).grade(pairs)
+    out = GraderEquivalence(client=client, tracer=grader_tracer()).grade(pairs)
     return {g.pair_id: g.verdict for g in out.grades}
 
 
-def grade_claims(session, sources, note, graph):
+def grade_claims(session, sources, note, graph, client=None):
     from agents.grader import GraderClaims
     claims = []
     for sec in (note or {}).get("sections", []):
@@ -223,7 +224,7 @@ def grade_claims(session, sources, note, graph):
     if not claims:
         return Counter(), []
     humans = "\n".join(f"{e.id}: {e.evidence[0].text}" for e in graph.active() if e.owner == "human")
-    out = GraderClaims(tracer=grader_tracer()).grade(sources, claims, humans)
+    out = GraderClaims(client=client, tracer=grader_tracer()).grade(sources, claims, humans)
     return Counter(g.label for g in out.grades), [g.model_dump() for g in out.grades]
 
 
@@ -448,6 +449,42 @@ def write_grader_review(rows, out_dir: Path, fraction: float):
         wr.writerows(out)
 
 
+def load_rows(results_dir: Path) -> list[dict]:
+    return [json.loads(p.read_text()) for p in sorted((results_dir / "runs").glob("*.json"))]
+
+
+def rescore(results_dir: Path, out_dir: Path, only=None, client=None) -> list[dict]:
+    """Re-score existing sessions (no pipeline re-run): e.g. to add Grader scores a run is missing."""
+    from pipeline.storage import Session
+    rows = []
+    for row in load_rows(results_dir):
+        if only and row["case"] not in only:
+            continue
+        s = Session(row["session"])
+        new = {**row, **score_session(s, row["pipeline"], grade=True, client=client)}
+        (out_dir / "runs").mkdir(parents=True, exist_ok=True)
+        (out_dir / "runs" / f"{row['case']}__{row['pipeline']}__{row['repeat']}.json").write_text(
+            json.dumps(new, indent=1, default=str))
+        rows.append(new)
+    return rows
+
+
+def merge(base_dir: Path, patch_dirs: list[Path]) -> list[dict]:
+    """Rows from base_dir, each replaced by the latest patch row for the same case/pipeline/repeat."""
+    key = lambda r: (r["case"], r["pipeline"], r["repeat"])  # noqa: E731
+    rows = {key(r): r for r in load_rows(base_dir)}
+    for d in patch_dirs:
+        for r in load_rows(d):
+            rows[key(r)] = {**r, "merged_from": str(d.name)}
+    return list(rows.values())
+
+
+def finish(rows, out_dir: Path, prov: dict, title: str):
+    write_csv(rows, out_dir)
+    write_grader_review(rows, out_dir, yaml.safe_load((ROOT / "config" / "eval.yaml").read_text())["grader_sample_fraction"])
+    write_report(rows, out_dir, prov, title)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--cases", nargs="+", default=["eval/cases"])
@@ -460,7 +497,18 @@ def main():
     ap.add_argument("--out", default=None)
     ap.add_argument("--title", default="Evaluation report: baseline vs team")
     ap.add_argument("--only", nargs="*", default=None, help="case folder names to include")
+    ap.add_argument("--rescore", default=None, help="re-score the sessions of an existing results dir (no pipeline run)")
+    ap.add_argument("--merge", nargs="+", default=None, help="BASE PATCH...: combine results dirs, no model calls")
     args = ap.parse_args()
+    if args.merge:
+        out_dir = ROOT / (args.out or f"eval/results/merged-{datetime.now().strftime('%Y%m%d-%H%M%S')}")
+        out_dir.mkdir(parents=True, exist_ok=True)
+        rows = merge(ROOT / args.merge[0], [ROOT / d for d in args.merge[1:]])
+        prov = {**json.loads((ROOT / args.merge[0] / "provenance.json").read_text()), "merged": args.merge}
+        (out_dir / "provenance.json").write_text(json.dumps(prov, indent=1))
+        finish(rows, out_dir, prov, args.title)
+        print(f"report: {out_dir / 'report.md'}")
+        return
     if args.mode == "audio":
         raise SystemExit("audio mode needs recordings and verified transcripts (stage 6 follow-up)")
     if any("heldout" in c for c in args.cases):
@@ -480,12 +528,15 @@ def main():
     GRADER_TRACE[0] = out_dir / "grader_traces.jsonl"
     prov = provenance()
     (out_dir / "provenance.json").write_text(json.dumps(prov, indent=1))
+    if args.rescore:
+        rows = rescore(ROOT / args.rescore, out_dir, args.only)
+        finish(rows, out_dir, prov, args.title)
+        print(f"report: {out_dir / 'report.md'}")
+        return
     jobs = [(d, p, r) for d in case_dirs for p in pipelines for r in range(args.repeats)]
     with ThreadPoolExecutor(max_workers=args.workers) as pool:
         rows = list(pool.map(lambda j: run_one(j[0], j[1], j[2], out_dir, not args.no_grader, args.rule_mode), jobs))
-    write_csv(rows, out_dir)
-    write_grader_review(rows, out_dir, yaml.safe_load((ROOT / "config" / "eval.yaml").read_text())["grader_sample_fraction"])
-    write_report(rows, out_dir, prov, args.title)
+    finish(rows, out_dir, prov, args.title)
     print(f"report: {out_dir / 'report.md'}")
 
 

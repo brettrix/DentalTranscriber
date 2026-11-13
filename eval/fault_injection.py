@@ -478,6 +478,15 @@ def write_report(rows, out: Path):
     (out / "fault_report.md").write_text("\n".join(L) + "\n", "utf-8")
 
 
+def run(cases, out: Path, client=None) -> list[dict]:
+    out.mkdir(parents=True, exist_ok=True)
+    FAULT_TRACE[0] = out / "fault_traces.jsonl"
+    rows = [run_case(c, client) for c in cases]
+    (out / "faults.json").write_text(json.dumps(rows, indent=1, default=str))
+    write_report(rows, out)
+    return rows
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--cases", nargs="+", default=["case1", "case2", "case3"])
