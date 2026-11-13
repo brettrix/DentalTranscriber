@@ -1,0 +1,534 @@
+{
+ "case_id": "case4",
+ "annotated_by": "grader (claude-sonnet-5-5)",
+ "checked_by": null,
+ "entities": [
+  {
+   "gid": "p1",
+   "kind": "problem",
+   "type": null,
+   "problem_key": "P1",
+   "scope": null,
+   "target": 3,
+   "target_relation": null,
+   "key_attributes": {
+    "role": "chief",
+    "complaint_text": "My gums in the upper right are sore, and they bleed every time I brush.",
+    "complaint_location": "upper right"
+   },
+   "assertion": null,
+   "time_context": null,
+   "assertion_source": null,
+   "action": null,
+   "status_fields": {},
+   "evidence": [
+    {
+     "utterance_id": "u1",
+     "quick_note_id": null,
+     "time_range": null
+    },
+    {
+     "utterance_id": "u2",
+     "quick_note_id": null,
+     "time_range": null
+    },
+    {
+     "utterance_id": null,
+     "quick_note_id": "q2",
+     "time_range": null
+    },
+    {
+     "utterance_id": null,
+     "quick_note_id": "q3",
+     "time_range": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "gid": "s1",
+   "kind": "item",
+   "type": "symptom",
+   "problem_key": "P1",
+   "scope": "problem",
+   "target": 3,
+   "target_relation": "matches_target",
+   "key_attributes": {
+    "aspect": "duration",
+    "value": "a couple months"
+   },
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "patient_report",
+   "action": null,
+   "status_fields": {},
+   "evidence": [
+    {
+     "utterance_id": "u2",
+     "quick_note_id": null,
+     "time_range": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "gid": "s2",
+   "kind": "item",
+   "type": "symptom",
+   "problem_key": "P1",
+   "scope": "problem",
+   "target": 3,
+   "target_relation": "matches_target",
+   "key_attributes": {
+    "aspect": "taste",
+    "value": "bad taste sometimes"
+   },
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "patient_report",
+   "action": null,
+   "status_fields": {},
+   "evidence": [
+    {
+     "utterance_id": "u4",
+     "quick_note_id": null,
+     "time_range": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "gid": "s3",
+   "kind": "item",
+   "type": "symptom",
+   "problem_key": "P1",
+   "scope": "problem",
+   "target": 3,
+   "target_relation": "matches_target",
+   "key_attributes": {
+    "aspect": "tooth pain with cold or biting",
+    "value": "not really"
+   },
+   "assertion": "denied",
+   "time_context": "current",
+   "assertion_source": "patient_report",
+   "action": null,
+   "status_fields": {},
+   "evidence": [
+    {
+     "utterance_id": "u3",
+     "quick_note_id": null,
+     "time_range": null
+    },
+    {
+     "utterance_id": "u4",
+     "quick_note_id": null,
+     "time_range": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "gid": "h1",
+   "kind": "item",
+   "type": "history_change",
+   "problem_key": null,
+   "scope": "encounter",
+   "target": null,
+   "target_relation": "unknown",
+   "key_attributes": {
+    "description": "Last cleaning maybe three years ago"
+   },
+   "assertion": "present",
+   "time_context": "historical",
+   "assertion_source": "patient_report",
+   "action": null,
+   "status_fields": {},
+   "evidence": [
+    {
+     "utterance_id": "u5",
+     "quick_note_id": null,
+     "time_range": null
+    },
+    {
+     "utterance_id": "u6",
+     "quick_note_id": null,
+     "time_range": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "gid": "h2",
+   "kind": "item",
+   "type": "history_change",
+   "problem_key": null,
+   "scope": "encounter",
+   "target": null,
+   "target_relation": "unknown",
+   "key_attributes": {
+    "description": "No health changes or new meds"
+   },
+   "assertion": "denied",
+   "time_context": "current",
+   "assertion_source": "patient_report",
+   "action": null,
+   "status_fields": {},
+   "evidence": [
+    {
+     "utterance_id": "u7",
+     "quick_note_id": null,
+     "time_range": null
+    },
+    {
+     "utterance_id": "u8",
+     "quick_note_id": null,
+     "time_range": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "gid": "v1",
+   "kind": "item",
+   "type": "vital_reading",
+   "problem_key": null,
+   "scope": "encounter",
+   "target": null,
+   "target_relation": "unknown",
+   "key_attributes": {
+    "systolic": 128,
+    "diastolic": 78,
+    "unit": "mmHg"
+   },
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "assistant_record",
+   "action": null,
+   "status_fields": {},
+   "evidence": [
+    {
+     "utterance_id": null,
+     "quick_note_id": "q1",
+     "time_range": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "gid": "f1",
+   "kind": "item",
+   "type": "finding",
+   "problem_key": "P1",
+   "scope": "problem",
+   "target": 3,
+   "target_relation": "matches_target",
+   "key_attributes": {
+    "test": "visual exam",
+    "observation": "gums red and puffy"
+   },
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "clinician_observation",
+   "action": null,
+   "status_fields": {},
+   "evidence": [
+    {
+     "utterance_id": "u9",
+     "quick_note_id": null,
+     "time_range": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "gid": "m1",
+   "kind": "item",
+   "type": "perio_measurement",
+   "problem_key": "P1",
+   "scope": "problem",
+   "target": 3,
+   "target_relation": "matches_target",
+   "key_attributes": {
+    "site": "buccal (DB, B, MB)",
+    "probing_depth_mm": "6-4-7",
+    "bleeding": true
+   },
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "clinician_observation",
+   "action": null,
+   "status_fields": {},
+   "evidence": [
+    {
+     "utterance_id": "u9",
+     "quick_note_id": null,
+     "time_range": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "gid": "m2",
+   "kind": "item",
+   "type": "perio_measurement",
+   "problem_key": "P1",
+   "scope": "problem",
+   "target": 3,
+   "target_relation": "matches_target",
+   "key_attributes": {
+    "site": "lingual",
+    "probing_depth_mm": "5-4-6",
+    "bleeding": true
+   },
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "clinician_observation",
+   "action": null,
+   "status_fields": {},
+   "evidence": [
+    {
+     "utterance_id": "u9",
+     "quick_note_id": null,
+     "time_range": null
+    }
+   ],
+   "note": "Lots of bleeding"
+  },
+  {
+   "gid": "f2",
+   "kind": "item",
+   "type": "finding",
+   "problem_key": "P1",
+   "scope": "problem",
+   "target": 3,
+   "target_relation": "matches_target",
+   "key_attributes": {
+    "test": "plaque",
+    "observation": "moderate"
+   },
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "clinician_observation",
+   "action": null,
+   "status_fields": {},
+   "evidence": [
+    {
+     "utterance_id": "u11",
+     "quick_note_id": null,
+     "time_range": null
+    }
+   ],
+   "note": "Record exactly as 'moderate'."
+  },
+  {
+   "gid": "r1",
+   "kind": "item",
+   "type": "radiograph",
+   "problem_key": "P1",
+   "scope": "problem",
+   "target": 3,
+   "target_relation": "matches_target",
+   "key_attributes": {
+    "type": "bitewing",
+    "target": 3,
+    "finding": "calculus on the roots, some bone loss, no decay",
+    "bone_loss": "some"
+   },
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "clinician_observation",
+   "action": "taken",
+   "status_fields": {},
+   "evidence": [
+    {
+     "utterance_id": "u11",
+     "quick_note_id": null,
+     "time_range": null
+    },
+    {
+     "utterance_id": "u12",
+     "quick_note_id": null,
+     "time_range": null
+    },
+    {
+     "utterance_id": "u13",
+     "quick_note_id": null,
+     "time_range": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "gid": "d1",
+   "kind": "item",
+   "type": "diagnosis",
+   "problem_key": "P1",
+   "scope": "problem",
+   "target": 3,
+   "target_relation": "matches_target",
+   "key_attributes": {
+    "diagnosis": "periodontitis",
+    "certainty": "stated"
+   },
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "clinician_assessment",
+   "action": null,
+   "status_fields": {},
+   "evidence": [
+    {
+     "utterance_id": "u15",
+     "quick_note_id": null,
+     "time_range": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "gid": "o1",
+   "kind": "item",
+   "type": "option_discussed",
+   "problem_key": "P1",
+   "scope": "problem",
+   "target": 3,
+   "target_relation": "matches_target",
+   "key_attributes": {
+    "option": "scaling and root planing, upper right quadrant",
+    "risks": "sore a day or two; untreated: bone loss, tooth can get loose",
+    "benefits": "cleans under gumline; comfortable with numbing",
+    "recommended_by_clinician": true
+   },
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "clinician_assessment",
+   "action": null,
+   "status_fields": {},
+   "evidence": [
+    {
+     "utterance_id": "u15",
+     "quick_note_id": null,
+     "time_range": null
+    },
+    {
+     "utterance_id": "u17",
+     "quick_note_id": null,
+     "time_range": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "gid": "dc1",
+   "kind": "item",
+   "type": "decision",
+   "problem_key": "P1",
+   "scope": "problem",
+   "target": 3,
+   "target_relation": "matches_target",
+   "key_attributes": {
+    "option": "scaling and root planing, upper right quadrant",
+    "decision": "accepted"
+   },
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "patient_report",
+   "action": null,
+   "status_fields": {},
+   "evidence": [
+    {
+     "utterance_id": "u18",
+     "quick_note_id": null,
+     "time_range": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "gid": "n1",
+   "kind": "item",
+   "type": "next_visit",
+   "problem_key": "P1",
+   "scope": "problem",
+   "target": 3,
+   "target_relation": "matches_target",
+   "key_attributes": {
+    "procedure": "scaling and root planing, upper right quadrant",
+    "timing": null
+   },
+   "assertion": "present",
+   "time_context": "planned",
+   "assertion_source": "clinician_instruction",
+   "action": null,
+   "status_fields": {},
+   "evidence": [
+    {
+     "utterance_id": "u19",
+     "quick_note_id": null,
+     "time_range": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "gid": "rx1",
+   "kind": "item",
+   "type": "prescription",
+   "problem_key": "P1",
+   "scope": "problem",
+   "target": null,
+   "target_relation": "unknown",
+   "key_attributes": {
+    "drug": "chlorhexidine",
+    "route": "rinse",
+    "frequency_code": "BID",
+    "duration_days": 14,
+    "original_wording": "chlorhexidine rinse, use it twice a day for two weeks"
+   },
+   "assertion": "present",
+   "time_context": "planned",
+   "assertion_source": "clinician_instruction",
+   "action": null,
+   "status_fields": {
+    "prescription_status": "prescribed"
+   },
+   "evidence": [
+    {
+     "utterance_id": "u19",
+     "quick_note_id": null,
+     "time_range": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "gid": "i1",
+   "kind": "item",
+   "type": "instruction",
+   "problem_key": "P1",
+   "scope": "problem",
+   "target": null,
+   "target_relation": "unknown",
+   "key_attributes": {
+    "text": "floss daily, even if it bleeds at first"
+   },
+   "assertion": "present",
+   "time_context": "planned",
+   "assertion_source": "clinician_instruction",
+   "action": null,
+   "status_fields": {},
+   "evidence": [
+    {
+     "utterance_id": "u19",
+     "quick_note_id": null,
+     "time_range": null
+    }
+   ],
+   "note": null
+  }
+ ],
+ "expected_flags": [],
+ "forbidden_facts": [],
+ "expected_decision": "accepted",
+ "notes": "Drafted by the gold drafter from the transcript and answer key. Must be checked by a person (fill checked_by) before held-out scoring."
+}
