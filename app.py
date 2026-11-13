@@ -372,6 +372,8 @@ def _render_card(card):
     with st.container(border=True):
         color = TAG_COLOR.get(card["tag"], "gray")
         st.markdown(f"**{esc(card['title'])}** &nbsp; :{color}-badge[{esc(card['tag'])}]")
+        if card.get("hint"):
+            st.caption(card["hint"])
         c1, c2 = st.columns(2)
         with c1.container(border=True):
             st.caption(card["left"][0])
@@ -403,7 +405,8 @@ def checklist(graph, flag_by_id, log, reason):
     for card in shown:
         _render_card(card)
     if hidden:
-        with st.expander(f"{len(hidden)} more items look right \u00b7 show"):
+        n = len(hidden)
+        with st.expander(f"{n} more {'item looks' if n == 1 else 'items look'} right \u00b7 show"):
             for card in hidden:
                 _render_card(card)
     if cards:

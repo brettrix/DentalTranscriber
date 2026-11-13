@@ -138,3 +138,14 @@ def test_second_read_wording_says_what_differs():
     text = why(None, Log(["free-text details: different (producer 'large filling' vs checker 'bite test; big filling')"]))
     assert "described it differently" not in text and "“bite test; big filling”" in text
     assert "the patient" in why(None, Log(["assertion_source: producer 'clinician_assessment' vs checker 'patient_report'"]))
+
+
+def test_displayed_text_says_in_the_past_and_hints_dentist_only():
+    from pipeline.plain import describe, dentist_only_hint
+    g = graph(problem())
+    med = item("medication", problem_id=None, drug="warfarin", medication_status="discontinued")
+    med.time_context = "historical"
+    assert "(in the past)" in describe(med, g) and "historical" not in describe(med, g)
+    assert dentist_only_hint(item("allergy", problem_id=None, substance="penicillin")) == \
+        "Only the dentist can confirm allergies."
+    assert dentist_only_hint(problem()) == "Only the dentist can confirm the chief complaint."

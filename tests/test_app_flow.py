@@ -132,6 +132,7 @@ def test_ask_dentist_is_part_of_the_choice(monkeypatch, tmp_path):
     grp = at.button_group[0]
     assert "Ask dentist" in grp.options and "Looks right" not in grp.options, \
         "a critical item can't be passed by the assistant"
+    assert any(c.value == "Only the dentist can confirm tooth numbers." for c in at.caption)
     grp.set_value("ask").run()
     next(b for b in at.button if b.key == "save_review").click().run()
     at = _app(monkeypatch, tmp_path, "Assistant")
@@ -147,8 +148,8 @@ def test_wording_only_disagreements_are_folded(monkeypatch, tmp_path):
                                                              {"attributes.value": "cold drinks hurt a lot"}},
                                                 ce_verdict="different"))
     at = _app(monkeypatch, tmp_path, "Dentist")
-    folded = [e for e in at.expander if e.label.endswith("more items look right \u00b7 show")]
-    assert folded and folded[0].label.startswith("1 more"), [e.label for e in at.expander]
+    folded = [e for e in at.expander if "look" in e.label and e.label.endswith("right \u00b7 show")]
+    assert folded and folded[0].label == "1 more item looks right \u00b7 show", [e.label for e in at.expander]
     assert _answered(at).startswith("**1 of 1"), "folded items arrive pre-answered as 'Looks right'"
 
 

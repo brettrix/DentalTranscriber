@@ -40,7 +40,7 @@ FIELD_LABEL = {
 
 
 def strip_ids(text: str) -> str:
-    text = _ID.sub("", text or "")
+    text = _ID.sub("", text or "").replace("(historical)", "(in the past)")
     text = re.sub(r"\bQuick note q\d+\b", "The quick note", text)
     return re.sub(r"\s{2,}", " ", text).strip()
 
@@ -379,6 +379,24 @@ def check_tag(e, check_log) -> str:
     return "Wording"
 
 
+DENTIST_ONLY = {"allergy": "allergies", "medication": "medications", "prescription": "prescriptions",
+                "vital_reading": "blood pressure readings", "diagnosis": "diagnoses", "decision": "decisions",
+                "consent_element": "discussion points"}
+
+
+def dentist_only_hint(e) -> str:
+    """Why an assistant can't confirm a critical item, in one line."""
+    if e is None:
+        return ""
+    if e.kind == "problem":
+        what = "the chief complaint"
+    elif e.kind == "relationship":
+        what = "related teeth"
+    else:
+        what = DENTIST_ONLY.get(e.type) or ("tooth numbers" if e.target.tooth is not None else "this item")
+    return f"Only the dentist can confirm {what}."
+
+
 def short_title(e, graph) -> str:
     if e is None:
         return "Removed item"
@@ -468,6 +486,8 @@ def build_cards(items, graph, check_log, staging, sources, role: str, flag_by_id
                         else "human_reviewed"}]
             if role == "Dentist" or not critical:
                 card["options"].append(("ok", "Looks right", confirm))
+            else:
+                card["hint"] = dentist_only_hint(e)
             card["options"].append(("remove", "Remove from note", [{"op": "remove", "entity_id": eid}]))
             if ask and ask_op:
                 card["options"].append(("ask", "Ask dentist", ask_op))
