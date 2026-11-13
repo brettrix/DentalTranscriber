@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "provider": "text",
+  "utterances": [
+    {"id": "u21", "speaker": "S0", "start": null, "end": null, "text": "Cold on number three."},
+    {"id": "u22", "speaker": "S1", "start": null, "end": null, "text": "Ow, yes, that's sharp."},
+    {"id": "u23", "speaker": "S0", "start": null, "end": null, "text": "Is it still there?"},
+    {"id": "u24", "speaker": "S1", "start": null, "end": null, "text": "It's gone already, yeah."}
+  ]
+}

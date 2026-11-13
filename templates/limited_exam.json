@@ -1,0 +1,23 @@
+{
+  "template_id": "limited_exam",
+  "version": "1",
+  "renderer_version": "1",
+  "sections": [
+    {"id": "visit", "title": "Visit", "source": "visit_meta", "team_owner": null, "item_types": []},
+    {"id": "medical_history", "title": "Medical history", "team_owner": "B1", "item_types": ["history_change", "medication", "allergy", "vital_reading"]},
+    {"id": "chief_complaint", "title": "Chief complaint", "team_owner": "Br", "item_types": [], "entity_kinds": ["problem", "relationship"]},
+    {"id": "hpi", "title": "History of present illness", "team_owner": "B2", "item_types": ["symptom"]},
+    {"id": "clinical_findings", "title": "Clinical findings", "team_owner": "B3", "item_types": ["finding"]},
+    {"id": "perio", "title": "Periodontal measurements", "team_owner": "B3", "item_types": ["perio_measurement"]},
+    {"id": "radiographs", "title": "Radiographs", "team_owner": "B3", "item_types": ["radiograph"]},
+    {"id": "assessment", "title": "Assessment", "team_owner": "B4", "item_types": ["diagnosis"]},
+    {"id": "options", "title": "Options discussed", "team_owner": "B4", "item_types": ["option_discussed"]},
+    {"id": "decision", "title": "Patient decision", "team_owner": "B4", "item_types": ["decision"]},
+    {"id": "discussion_elements", "title": "Discussion elements documented", "team_owner": "B4", "item_types": ["consent_element"]},
+    {"id": "treatment_today", "title": "Treatment today", "team_owner": "B4", "item_types": ["treatment_today"]},
+    {"id": "prescriptions", "title": "Prescriptions", "team_owner": "B4", "item_types": ["prescription"]},
+    {"id": "referral", "title": "Referral", "team_owner": "B4", "item_types": ["referral"]},
+    {"id": "next_visit", "title": "Next visit", "team_owner": "B4", "item_types": ["next_visit"]},
+    {"id": "instructions", "title": "Instructions", "team_owner": "B4", "item_types": ["instruction"]}
+  ]
+}

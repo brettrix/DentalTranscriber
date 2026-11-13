@@ -1,0 +1,12 @@
+{
+  "id": "pb_1", "kind": "problem", "version": 1, "status": "active", "key": "Br:P1", "role": "chief",
+  "complaint_text": "Sensitivity to cold on the upper right",
+  "complaint_location": {"free_text": "upper right", "tooth": null},
+  "clinical_target": {"tooth": 3, "free_text": null},
+  "assertion_source": "clinician_assessment",
+  "evidence": [{"source_type": "transcript", "source_id": "u21", "source_version": 1, "start": 0, "end": 21, "text": "Cold on number three."}],
+  "derivations": [{"attribute": "clinical_target.tooth", "rule": "spoken_tooth_number", "from": "number three", "to": 3, "evidence_index": 0}],
+  "speaker_ids": ["S0"], "roles": ["Dentist"],
+  "checks": {"span_valid": "pass", "normalization_valid": "pass", "semantic_support": "not_applicable"},
+  "dispositions": [], "owner": "B0"
+}

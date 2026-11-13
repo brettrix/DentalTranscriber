@@ -1,0 +1,22 @@
+# Model per agent. Producers and checkers default to claude-sonnet-5-5 (BUILD_PROMPT section 3).
+# effort: Sonnet 5.5 effort level (thinking is adaptive); timeout_s: per-call timeout (spec: 60 s).
+defaults:
+  model: claude-sonnet-5-5
+  effort: medium
+  max_tokens: 16000
+  timeout_s: 60
+  fallbacks: default        # server-side refusal fallback (beta server-side-fallback-2026-07-01)
+agents:
+  B0: {effort: medium}
+  Br: {effort: medium}
+  B1: {effort: low}
+  B2: {effort: low}
+  B3: {effort: low}
+  B4: {effort: medium}
+  Cs: {effort: low}
+  Ce: {effort: low}
+  Co: {effort: low}
+  R2: {effort: low}
+  E3: {effort: low}
+  # Eval-only grader: a different, stronger model than the producers, with a longer timeout.
+  Grader: {model: claude-opus-5-5, effort: medium, timeout_s: 180}

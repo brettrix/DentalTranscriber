@@ -1,0 +1,14 @@
+# Secrets
+.env
+
+# Session data (synthetic only, still never committed)
+data/sessions/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+
+# macOS
+.DS_Store
