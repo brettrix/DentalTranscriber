@@ -9,7 +9,7 @@ import pipeline.storage as storage
 from pipeline import approval
 from pipeline.graph import load_graph
 from pipeline.orchestrator import run_pipeline
-from tests.fake_llm import ITEMS, FakeLLM, mini_session, q
+from tests.fake_llm import ITEMS, MINI_TRANSCRIPT, FakeLLM, mini_session, q
 
 os.environ["SCRIBE_NO_SLEEP"] = "1"
 ID = re.compile(r"\b(?:it_\d+|pb_\w+|rl_\w+|tk_\w+|st_\w+|cf_\w+|pc_\w+)\b")
@@ -153,16 +153,71 @@ def test_wording_only_disagreements_are_folded(monkeypatch, tmp_path):
     assert _answered(at).startswith("**1 of 1"), "folded items arrive pre-answered as 'Looks right'"
 
 
-def test_process_selects_new_visit_and_opens_review(monkeypatch, tmp_path):
+def test_new_visit_needs_a_patient_then_writes_the_note_and_opens_review(monkeypatch, tmp_path):
     old = mini_session(tmp_path, "baseline")
     run_pipeline(old, mode="baseline", client=FakeLLM())
-    at = _app(monkeypatch, tmp_path, "Assistant", page="Start")
-    next(r for r in at.radio if r.label == "Input").set_value("Test case").run()
-    _button(at, "Process").click().run()
+    at = _app(monkeypatch, tmp_path, "Assistant", page="New visit")
+    labels = [w.label for w in at.radio]
+    assert "Pipeline mode" in labels and "Rule mode" in labels, "still there, inside Admin settings"
+    assert any(e.label == "Admin settings" for e in at.expander)
+    how = next(r for r in at.radio if r.key == "nv_input")
+    assert how.options == ["Record visit", "Upload a recording", "Paste a transcript"]
+    assert not any("Mode:" in e.value or "Rules:" in e.value for e in at.error), "no mode or rules in the banner"
+    quick = next(t for t in at.text_area if t.key == "nv_quick")
+    assert quick.placeholder == "BP 124/80\nCC: lower left pain\n#19"
+
+    how.set_value("Paste a transcript").run()
+    _button(at, "Write the note").click().run()
+    assert any("patient's name or chart number" in e.value for e in at.error)
+    assert len(storage.list_sessions(tmp_path)) == 1, "nothing created without a patient"
+    next(t for t in at.text_input if t.key == "nv_patient").set_value("Maria Lopez 4417").run()
+    _button(at, "Write the note").click().run()
+    assert any(e.value == "Paste the transcript first." for e in at.error)
+    next(t for t in at.text_area if t.key == "nv_transcript").set_value(MINI_TRANSCRIPT).run()
+    _button(at, "Write the note").click().run()
     assert not at.exception, at.exception
     assert at.session_state["page"] == "Review"
-    sessions = storage.list_sessions(tmp_path)
-    assert at.session_state["sid"] == sessions[0].id != old.id, "the new visit is selected"
+    new = storage.list_sessions(tmp_path)[0]
+    assert at.session_state["sid"] == new.id != old.id, "the new visit is selected"
+    assert new.meta()["patient"] == "Maria Lopez 4417"
+    assert any(m.value.startswith("### Maria Lopez 4417 · ") for m in at.markdown), "the patient is the visit name"
+    assert any(b.label.startswith("Maria Lopez 4417 · ") for b in at.sidebar.button)
+
+
+def test_bad_transcript_gives_a_plain_message_and_leaves_no_visit(monkeypatch, tmp_path):
+    at = _app(monkeypatch, tmp_path, "Assistant", page="New visit")
+    next(r for r in at.radio if r.key == "nv_input").set_value("Paste a transcript").run()
+    next(t for t in at.text_input if t.key == "nv_patient").set_value("Chart 88").run()
+    next(t for t in at.text_area if t.key == "nv_transcript").set_value("hello there, no speakers here").run()
+    _button(at, "Write the note").click().run()
+    assert not at.exception
+    err = " ".join(e.value for e in at.error)
+    assert "speaker at the start of each line" in err and "TranscriptFormatError" not in err and "prefix" not in err
+    assert storage.list_sessions(tmp_path) == []
+
+
+def test_test_case_lives_in_admin_settings_and_test_visits_are_hidden_by_default(monkeypatch, tmp_path):
+    real = mini_session(tmp_path, "baseline")
+    real.update_meta(patient="Sam Park")
+    run_pipeline(real, mode="baseline", client=FakeLLM())
+    legacy = mini_session(tmp_path, "baseline")
+    legacy.update_meta(case="case8")
+    run_pipeline(legacy, mode="baseline", client=FakeLLM())
+    at = _app(monkeypatch, tmp_path, "Assistant", page="New visit")
+    assert [b.key for b in at.sidebar.button if b.key.startswith("visit_")] == [f"visit_{real.id}"]
+    next(w for w in at.selectbox if w.key == "nv_case").set_value("case1").run()
+    _button(at, "Write the note").click().run()
+    assert not at.exception, at.exception
+    new = storage.list_sessions(tmp_path)[0]
+    assert new.meta()["case"] == "case1" and new.meta()["test"] is True
+    assert at.session_state["sid"] == new.id and at.session_state["page"] == "Review"
+    at.session_state["page"] = "Admin"
+    at.run()
+    toggle = next(t for t in at.toggle if t.key == "show_tests_widget")
+    assert toggle.value is True, "switched on so the test visit just started is listed"
+    toggle.set_value(False).run()
+    assert [b.key for b in at.sidebar.button if b.key.startswith("visit_")] == [f"visit_{real.id}"]
+    assert any(e.label == "Speaker roles" for e in at.expander) and any(e.label == "Technical log" for e in at.expander)
 
 
 def _visit(tmp_path, patient, date, created):

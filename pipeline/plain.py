@@ -590,3 +590,51 @@ def build_cards(items, graph, check_log, staging, sources, role: str, flag_by_id
         if card["options"]:
             cards.append(card)
     return cards
+
+
+# ---------------------------------------------------------------- errors in plain words
+
+_ERRORS = [
+    (r"no graph yet", "The note hasn't been built yet."),
+    (r"stale|being processed|already being", "This visit is still being updated. Wait a moment and try again."),
+    (r"only the Dentist|accepted by the Dentist", "Only the dentist can do that."),
+    (r"needs a reason|needs an explanation", "Add a short comment saying why, then try again."),
+    (r"not an active entity|is not active|no such|no open staged|no pending|no longer applies",
+     "That item has already changed. Reload the page to see the latest note."),
+    (r"unsupported audio type", "That file type isn't supported. Use a wav, mp3, m4a or flac recording."),
+    (r"over 50 MB", "That recording is too large (over 50 MB). Record or upload a shorter one."),
+    (r"over 30 minutes", "That recording is too long (over 30 minutes)."),
+    (r"no role prefix|no utterances found|has two roles",
+     "The transcript needs a speaker at the start of each line, like “DENTIST: …” or “PATIENT: …”."),
+    (r"DEEPGRAM_API_KEY|ANTHROPIC_API_KEY|api[_ ]key",
+     "Transcription isn't set up on this computer yet. Ask your admin to add the API keys."),
+    (r"Deepgram error", "The recording couldn't be transcribed. Check the recording and try again."),
+]
+
+
+def friendly_error(exc: BaseException, doing: str = "do that") -> str:
+    """One plain sentence for the person at the screen; never the exception's own text."""
+    name, text = type(exc).__name__, str(exc)
+    if name == "ApprovalBlocked":
+        reasons = getattr(exc, "reasons", [])
+        if any("assistant review must be complete" in r for r in reasons):
+            return "The assistant needs to finish their review first."
+        if any("derived outputs are not current" in r or "no candidate graph" in r for r in reasons):
+            return "The note isn't ready yet. Reload the page and try again."
+        n = len(reasons)
+        return f"Answer the {n} item{'' if n == 1 else 's'} above first."
+    if name == "ExportRefused":
+        return "The note changed after it was approved, so the dentist needs to approve it again."
+    if name == "RealCallsDisabled":
+        return ("This computer is in practice mode, so it can't transcribe or write notes from new visits. "
+                "Ask your admin to turn on live processing.")
+    if name == "RolesNotConfirmed":
+        return "Tell us who is speaking first."
+    if name == "SessionBusy":
+        return "This visit is still being processed. Wait a moment and try again."
+    if name == "StructuralError":
+        return "That change doesn't fit the note (something required is missing). Check the fields and try again."
+    for pattern, message in _ERRORS:
+        if re.search(pattern, text, re.I):
+            return message
+    return f"Couldn't {doing}. Nothing was changed. Try again, or ask your admin to check the technical log."
