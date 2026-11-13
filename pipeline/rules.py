@@ -116,7 +116,16 @@ class Engine:
             if tooth is None or p is None:
                 continue
             target = p.clinical_target.tooth
-            if target is None:
+            marked = next((r for r in self.g.active("relationship") if r.problem_id == p.id and r.tooth == tooth
+                           and r.relation_kind in ("control", "adjacent_examined", "referred_from")), None)
+            if target is None and marked is not None:
+                # The record itself says this tooth is not the problem tooth; a relationship never explains
+                # treatment (6.2), so this is a mismatch even without an identified clinical target.
+                self.emit("treatment_target_mismatch", "high",
+                          f"{i.type.replace('_', ' ')} names #{tooth}, which is recorded as a "
+                          f"{marked.relation_kind.replace('_', ' ')} tooth; no clinical target was identified.",
+                          [i, p, marked], target=tooth, problem_id=p.id)
+            elif target is None:
                 self.emit("target_not_assessable", "low",
                           f"{i.type} names #{tooth} but problem {p.id} has no clinical target to compare.", [i, p],
                           target=tooth, problem_id=p.id)

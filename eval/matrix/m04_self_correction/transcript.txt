@@ -1,0 +1,5 @@
+DENTIST: What's going on?
+PATIENT: My front tooth is sensitive.
+DENTIST: Cold on number eight. Sorry, I mean number nine.
+PATIENT: Yes, that's sharp.
+DENTIST: Nine is sensitive but it settles quickly. Let's watch it.

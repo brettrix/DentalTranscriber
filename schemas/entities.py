@@ -95,7 +95,7 @@ class VitalReadingAttrs(Strict):
 class SymptomAttrs(Strict):
     aspect: Optional[Literal["onset", "duration", "quality", "trigger", "lingering", "severity", "swelling",
                              "night_pain", "spontaneous_pain", "prior_treatment", "location", "biting_pain",
-                             "other"]] = attr("exact", critical=True)
+                             "other"]] = attr("semantic")
     value: Optional[str] = attr("semantic")
     score: Optional[float] = attr("normalized", rule="spoken_number", critical=True)
 

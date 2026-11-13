@@ -1,0 +1,20 @@
+{
+ "expect": [
+  {
+   "check": "entity",
+   "type": "decision",
+   "decision": "monitor"
+  },
+  {
+   "check": "flag_absent",
+   "rule_id": "refusal_discussion"
+  },
+  {
+   "check": "flag_absent",
+   "rule_id": "diagnosis_or_plan_missing"
+  }
+ ],
+ "tolerated_flags": [
+  "unknown_option_link"
+ ]
+}

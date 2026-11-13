@@ -1,0 +1,26 @@
+{
+ "expect": [
+  {
+   "check": "count",
+   "type": "prescription",
+   "n": 0
+  },
+  {
+   "check": "count",
+   "type": "next_visit",
+   "n": 0
+  },
+  {
+   "check": "no_entity",
+   "type": "option_discussed",
+   "text_contains": "root canal"
+  },
+  {
+   "check": "note_lacks",
+   "text": "oxycodone"
+  }
+ ],
+ "tolerated_flags": [
+  "open_review_task"
+ ]
+}

@@ -1,0 +1,599 @@
+{
+ "case": "m03_referred_pain",
+ "pipeline": "team",
+ "repeat": 0,
+ "session": "5a2a6846-52f9-45e7-83c1-65b5fcf22859",
+ "error": null,
+ "wall_s": 23.4,
+ "candidate": true,
+ "ready_for_review": true,
+ "failed_stages": [],
+ "production_failure_stage": null,
+ "calls": 19,
+ "usd_pipeline": 0.2148,
+ "usd_shared": 0.005,
+ "per_agent": {
+  "Br": {
+   "calls": 1,
+   "in": 6104,
+   "out": 688,
+   "seconds": 3.8,
+   "usd": 0.0191
+  },
+  "B4": {
+   "calls": 1,
+   "in": 6519,
+   "out": 277,
+   "seconds": 2.1,
+   "usd": 0.0158
+  },
+  "B2": {
+   "calls": 2,
+   "in": 13202,
+   "out": 593,
+   "seconds": 4.7,
+   "usd": 0.0323
+  },
+  "B1": {
+   "calls": 1,
+   "in": 6307,
+   "out": 237,
+   "seconds": 2.2,
+   "usd": 0.015
+  },
+  "B3": {
+   "calls": 1,
+   "in": 6280,
+   "out": 545,
+   "seconds": 3.5,
+   "usd": 0.018
+  },
+  "Cs": {
+   "calls": 6,
+   "in": 31105,
+   "out": 2628,
+   "seconds": 17.2,
+   "usd": 0.0885
+  },
+  "Ce": {
+   "calls": 4,
+   "in": 5843,
+   "out": 340,
+   "seconds": 5.5,
+   "usd": 0.0151
+  },
+  "Co": {
+   "calls": 2,
+   "in": 4535,
+   "out": 190,
+   "seconds": 3.0,
+   "usd": 0.011
+  },
+  "R2": {
+   "calls": 1,
+   "in": 2211,
+   "out": 53,
+   "seconds": 1.6,
+   "usd": 0.005
+  }
+ },
+ "timings": [
+  3.8,
+  2.1,
+  2.1,
+  2.2,
+  3.5,
+  1.2,
+  2.4,
+  2.3,
+  3.9,
+  4.6,
+  1.1,
+  1.4,
+  1.4,
+  1.6,
+  1.7,
+  1.6,
+  2.5,
+  2.7,
+  1.2
+ ],
+ "scored": true,
+ "grader_error": null,
+ "final": {
+  "gold": 6,
+  "matched": 6,
+  "produced": 8,
+  "precision": [
+   6,
+   8
+  ],
+  "recall": [
+   6,
+   6
+  ],
+  "by_type": {
+   "problem": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "relationship": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 2
+   },
+   "vital_reading": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "symptom": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "finding": {
+    "gold": 2,
+    "matched": 2,
+    "produced": 2
+   },
+   "diagnosis": {
+    "gold": 0,
+    "matched": 0,
+    "produced": 1
+   }
+  },
+  "dims": {
+   "tooth": [
+    4,
+    4
+   ],
+   "role": [
+    1,
+    1
+   ],
+   "attr:complaint_text": [
+    0,
+    1
+   ],
+   "attr:complaint_location": [
+    1,
+    1
+   ],
+   "attr:relation_kind": [
+    1,
+    1
+   ],
+   "attr:systolic": [
+    1,
+    1
+   ],
+   "attr:diastolic": [
+    1,
+    1
+   ],
+   "assertion": [
+    4,
+    4
+   ],
+   "time_context": [
+    4,
+    4
+   ],
+   "assertion_source": [
+    4,
+    4
+   ],
+   "attr:aspect": [
+    1,
+    1
+   ],
+   "attr:value": [
+    1,
+    1
+   ],
+   "target_relation": [
+    1,
+    2
+   ],
+   "attr:test": [
+    2,
+    2
+   ],
+   "attr:response": [
+    1,
+    2
+   ]
+  },
+  "critical": {
+   "tooth": [
+    4,
+    4
+   ],
+   "relationship": [
+    1,
+    1
+   ]
+  },
+  "errors": [
+   "p_P1:attr:complaint_text",
+   "f1:target_relation",
+   "f1:attr:response"
+  ],
+  "omissions": [],
+  "extras": [
+   "relationship:rl_2",
+   "diagnosis:it_005"
+  ],
+  "problem_map": {
+   "P1": "pb_1"
+  },
+  "merged": [],
+  "split": [],
+  "target_accuracy": [
+   1,
+   1
+  ],
+  "flags": {
+   "caught": [],
+   "missed": [],
+   "duplicates": [],
+   "false_alarms": [
+    "unsupported_content (technical)",
+    "open_review_task (technical)",
+    "open_review_task (technical)",
+    "unsupported_content (technical)"
+   ],
+   "tolerated": [],
+   "questions": []
+  },
+  "forbidden_hits": [],
+  "expectations": [
+   {
+    "check": "entity",
+    "kind": "relationship",
+    "relation_kind": "referred_from",
+    "pass": true
+   },
+   {
+    "check": "flag_absent",
+    "rule_id": "complaint_location_differs",
+    "modes": [
+     "team"
+    ],
+    "pass": true
+   },
+   {
+    "check": "note_contains",
+    "text": "upper right",
+    "pass": true
+   }
+  ]
+ },
+ "raw": {
+  "gold": 6,
+  "matched": 6,
+  "produced": 8,
+  "precision": [
+   6,
+   8
+  ],
+  "recall": [
+   6,
+   6
+  ],
+  "by_type": {
+   "problem": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "relationship": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 2
+   },
+   "vital_reading": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "symptom": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "finding": {
+    "gold": 2,
+    "matched": 2,
+    "produced": 2
+   },
+   "diagnosis": {
+    "gold": 0,
+    "matched": 0,
+    "produced": 1
+   }
+  },
+  "dims": {
+   "tooth": [
+    4,
+    5
+   ],
+   "role": [
+    1,
+    1
+   ],
+   "attr:complaint_text": [
+    0,
+    1
+   ],
+   "attr:complaint_location": [
+    1,
+    1
+   ],
+   "attr:relation_kind": [
+    1,
+    1
+   ],
+   "attr:systolic": [
+    1,
+    1
+   ],
+   "attr:diastolic": [
+    1,
+    1
+   ],
+   "assertion": [
+    4,
+    4
+   ],
+   "time_context": [
+    4,
+    4
+   ],
+   "assertion_source": [
+    4,
+    4
+   ],
+   "attr:aspect": [
+    1,
+    1
+   ],
+   "attr:value": [
+    1,
+    1
+   ],
+   "target_relation": [
+    0,
+    2
+   ],
+   "attr:test": [
+    2,
+    2
+   ],
+   "attr:response": [
+    1,
+    2
+   ]
+  },
+  "critical": {
+   "tooth": [
+    4,
+    5
+   ],
+   "relationship": [
+    1,
+    1
+   ]
+  },
+  "errors": [
+   "p_P1:attr:complaint_text",
+   "s1:tooth",
+   "f1:target_relation",
+   "f1:attr:response",
+   "f2:target_relation"
+  ],
+  "omissions": [],
+  "extras": [
+   "relationship:rl_2",
+   "diagnosis:it_005"
+  ],
+  "problem_map": {
+   "P1": "pb_1"
+  },
+  "merged": [],
+  "split": [],
+  "target_accuracy": [
+   1,
+   1
+  ],
+  "flags": {
+   "caught": [],
+   "missed": [],
+   "duplicates": [],
+   "false_alarms": [],
+   "tolerated": [],
+   "questions": []
+  },
+  "forbidden_hits": [],
+  "expectations": []
+ },
+ "claims": {
+  "supported_by_quick_notes": 2,
+  "supported_by_transcript": 18,
+  "changed_meaning": 2,
+  "unsupported": 1
+ },
+ "claims_detail": [
+  {
+   "claim_id": "it_001|systolic",
+   "label": "supported_by_quick_notes",
+   "quote": "BP 120/78",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_001|diastolic",
+   "label": "supported_by_quick_notes",
+   "quote": "BP 120/78",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "pb_1|role",
+   "label": "supported_by_transcript",
+   "quote": "Up here, on the upper right, near number three I think.",
+   "confidence": 0.8
+  },
+  {
+   "claim_id": "pb_1|complaint_text",
+   "label": "supported_by_transcript",
+   "quote": "Up here, on the upper right, near number three I think.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "pb_1|complaint_location",
+   "label": "supported_by_transcript",
+   "quote": "Up here, on the upper right, near number three I think.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "pb_1|clinical_target",
+   "label": "supported_by_transcript",
+   "quote": "The upper teeth test normal. Number thirty is the problem; the pain you feel up by three is referred from thirty.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "rl_1|tooth",
+   "label": "supported_by_transcript",
+   "quote": "The upper teeth test normal. Number thirty is the problem; the pain you feel up by three is referred from thirty.",
+   "confidence": 0.75
+  },
+  {
+   "claim_id": "rl_1|relation_kind",
+   "label": "changed_meaning",
+   "quote": "The upper teeth test normal. Number thirty is the problem; the pain you feel up by three is referred from thirty.",
+   "confidence": 0.6
+  },
+  {
+   "claim_id": "rl_1|note",
+   "label": "supported_by_transcript",
+   "quote": null,
+   "confidence": 0.4
+  },
+  {
+   "claim_id": "rl_2|tooth",
+   "label": "supported_by_transcript",
+   "quote": "Cold on number three.",
+   "confidence": 0.7
+  },
+  {
+   "claim_id": "rl_2|relation_kind",
+   "label": "unsupported",
+   "quote": "Cold on number three.",
+   "confidence": 0.6
+  },
+  {
+   "claim_id": "rl_2|note",
+   "label": "supported_by_transcript",
+   "quote": null,
+   "confidence": 0.4
+  },
+  {
+   "claim_id": "it_002|aspect",
+   "label": "supported_by_transcript",
+   "quote": "Up here, on the upper right, near number three I think.",
+   "confidence": 0.85
+  },
+  {
+   "claim_id": "it_002|value",
+   "label": "supported_by_transcript",
+   "quote": "Up here, on the upper right, near number three I think.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_003|tooth",
+   "label": "supported_by_transcript",
+   "quote": "Cold on number three.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_003|test",
+   "label": "supported_by_transcript",
+   "quote": "Cold on number three.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_003|response",
+   "label": "changed_meaning",
+   "quote": "That's fine.",
+   "confidence": 0.8
+  },
+  {
+   "claim_id": "it_004|tooth",
+   "label": "supported_by_transcript",
+   "quote": "Tapping on number thirty.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_004|test",
+   "label": "supported_by_transcript",
+   "quote": "Tapping on number thirty.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_004|response",
+   "label": "supported_by_transcript",
+   "quote": "Ow, yes.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_005|diagnosis",
+   "label": "supported_by_transcript",
+   "quote": "The upper teeth test normal. Number thirty is the problem; the pain you feel up by three is referred from thirty.",
+   "confidence": 0.8
+  },
+  {
+   "claim_id": "it_005|tooth",
+   "label": "supported_by_transcript",
+   "quote": "The upper teeth test normal. Number thirty is the problem; the pain you feel up by three is referred from thirty.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_005|certainty",
+   "label": "supported_by_transcript",
+   "quote": "The upper teeth test normal. Number thirty is the problem; the pain you feel up by three is referred from thirty.",
+   "confidence": 0.75
+  }
+ ],
+ "dentist_blockers": 5,
+ "blocker_kinds": {
+  "pb_1": 1,
+  "it_002": 1,
+  "staged": 1,
+  "task": 2
+ },
+ "check_counts": {
+  "span_valid": {
+   "pass": 8
+  },
+  "normalization_valid": {
+   "pass": 8
+  },
+  "semantic_support": {
+   "fail": 2,
+   "pass": 6
+  }
+ },
+ "relationships": [
+  {
+   "tooth": 3,
+   "kind": "referred_from",
+   "semantic": "pass"
+  },
+  {
+   "tooth": 3,
+   "kind": "control",
+   "semantic": "pass"
+  }
+ ]
+}

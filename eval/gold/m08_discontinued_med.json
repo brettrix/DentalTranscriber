@@ -1,0 +1,119 @@
+{
+ "case_id": "m08_discontinued_med",
+ "annotated_by": "claude",
+ "checked_by": null,
+ "entities": [
+  {
+   "type": null,
+   "scope": null,
+   "target_relation": null,
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": null,
+   "action": null,
+   "status_fields": {},
+   "key_attributes": {
+    "role": "chief",
+    "complaint_text": "lower left tooth a bit sensitive",
+    "complaint_location": "lower left"
+   },
+   "gid": "p_P1",
+   "kind": "problem",
+   "problem_key": "P1",
+   "target": null,
+   "evidence": [
+    {
+     "utterance_id": "u6"
+    }
+   ]
+  },
+  {
+   "type": "vital_reading",
+   "scope": "encounter",
+   "target_relation": null,
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "assistant_record",
+   "action": null,
+   "status_fields": {},
+   "key_attributes": {
+    "systolic": 120,
+    "diastolic": 78
+   },
+   "gid": "v1",
+   "kind": "item",
+   "problem_key": null,
+   "target": null,
+   "evidence": [
+    {
+     "quick_note_id": "q1"
+    }
+   ]
+  },
+  {
+   "type": "medication",
+   "scope": "encounter",
+   "target_relation": null,
+   "assertion": "present",
+   "time_context": "historical",
+   "assertion_source": "patient_report",
+   "action": null,
+   "status_fields": {
+    "medication_status": "discontinued"
+   },
+   "key_attributes": {
+    "drug": "warfarin"
+   },
+   "gid": "m1",
+   "kind": "item",
+   "problem_key": null,
+   "target": null,
+   "evidence": [
+    {
+     "utterance_id": "u2"
+    }
+   ]
+  },
+  {
+   "type": "symptom",
+   "scope": "problem",
+   "target_relation": null,
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "patient_report",
+   "action": null,
+   "status_fields": {},
+   "key_attributes": {
+    "aspect": "quality",
+    "value": "a bit sensitive"
+   },
+   "gid": "s1",
+   "kind": "item",
+   "problem_key": "P1",
+   "target": null,
+   "evidence": [
+    {
+     "utterance_id": "u6"
+    }
+   ]
+  }
+ ],
+ "expected_flags": [
+  {
+   "rule_id": "chief_problem_minimum",
+   "problem_key": "P1",
+   "target": null,
+   "meaning": "no clinical target and no finding",
+   "evidence": []
+  },
+  {
+   "rule_id": "diagnosis_or_plan_missing",
+   "problem_key": "P1",
+   "target": null,
+   "meaning": "no diagnosis or plan",
+   "evidence": []
+  }
+ ],
+ "forbidden_facts": [],
+ "notes": "Draft matrix gold; needs a person to check."
+}

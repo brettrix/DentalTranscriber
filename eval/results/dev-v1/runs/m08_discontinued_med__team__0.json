@@ -1,0 +1,466 @@
+{
+ "case": "m08_discontinued_med",
+ "pipeline": "team",
+ "repeat": 0,
+ "session": "e3a784cb-cb7c-4020-84dc-e3b9bda39a6b",
+ "error": null,
+ "wall_s": 19.3,
+ "candidate": true,
+ "ready_for_review": true,
+ "failed_stages": [],
+ "production_failure_stage": null,
+ "calls": 18,
+ "usd_pipeline": 0.1916,
+ "usd_shared": 0.0049,
+ "per_agent": {
+  "Br": {
+   "calls": 1,
+   "in": 6059,
+   "out": 217,
+   "seconds": 1.7,
+   "usd": 0.0143
+  },
+  "B3": {
+   "calls": 1,
+   "in": 6190,
+   "out": 51,
+   "seconds": 1.1,
+   "usd": 0.0129
+  },
+  "B4": {
+   "calls": 1,
+   "in": 6429,
+   "out": 51,
+   "seconds": 1.1,
+   "usd": 0.0134
+  },
+  "B2": {
+   "calls": 2,
+   "in": 12955,
+   "out": 512,
+   "seconds": 3.7,
+   "usd": 0.031
+  },
+  "B1": {
+   "calls": 2,
+   "in": 12828,
+   "out": 728,
+   "seconds": 5.5,
+   "usd": 0.0329
+  },
+  "Cs": {
+   "calls": 5,
+   "in": 25579,
+   "out": 1383,
+   "seconds": 9.9,
+   "usd": 0.065
+  },
+  "Ce": {
+   "calls": 3,
+   "in": 4343,
+   "out": 241,
+   "seconds": 4.1,
+   "usd": 0.0111
+  },
+  "Co": {
+   "calls": 2,
+   "in": 4188,
+   "out": 261,
+   "seconds": 3.1,
+   "usd": 0.011
+  },
+  "R2": {
+   "calls": 1,
+   "in": 2166,
+   "out": 53,
+   "seconds": 1.3,
+   "usd": 0.0049
+  }
+ },
+ "timings": [
+  1.7,
+  1.1,
+  1.1,
+  2.0,
+  3.2,
+  1.8,
+  1.8,
+  2.4,
+  1.0,
+  1.5,
+  1.6,
+  1.3,
+  1.8,
+  2.3,
+  1.7,
+  2.3,
+  1.5,
+  1.5
+ ],
+ "scored": true,
+ "grader_error": null,
+ "final": {
+  "gold": 4,
+  "matched": 4,
+  "produced": 5,
+  "precision": [
+   4,
+   5
+  ],
+  "recall": [
+   4,
+   4
+  ],
+  "by_type": {
+   "problem": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "vital_reading": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "medication": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "symptom": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "history_change": {
+    "gold": 0,
+    "matched": 0,
+    "produced": 1
+   }
+  },
+  "dims": {
+   "role": [
+    1,
+    1
+   ],
+   "attr:complaint_text": [
+    1,
+    1
+   ],
+   "attr:complaint_location": [
+    1,
+    1
+   ],
+   "attr:systolic": [
+    1,
+    1
+   ],
+   "attr:diastolic": [
+    1,
+    1
+   ],
+   "assertion": [
+    3,
+    3
+   ],
+   "time_context": [
+    3,
+    3
+   ],
+   "assertion_source": [
+    3,
+    3
+   ],
+   "attr:drug": [
+    1,
+    1
+   ],
+   "status": [
+    1,
+    1
+   ],
+   "attr:aspect": [
+    0,
+    1
+   ],
+   "attr:value": [
+    1,
+    1
+   ]
+  },
+  "critical": {
+   "drug": [
+    1,
+    1
+   ],
+   "medication_status": [
+    1,
+    1
+   ]
+  },
+  "errors": [
+   "s1:attr:aspect"
+  ],
+  "omissions": [],
+  "extras": [
+   "history_change:it_004"
+  ],
+  "problem_map": {
+   "P1": "pb_1"
+  },
+  "merged": [],
+  "split": [],
+  "target_accuracy": [
+   1,
+   1
+  ],
+  "flags": {
+   "caught": [
+    "chief_problem_minimum",
+    "diagnosis_or_plan_missing"
+   ],
+   "missed": [],
+   "duplicates": [],
+   "false_alarms": [],
+   "tolerated": [],
+   "questions": []
+  },
+  "forbidden_hits": [],
+  "expectations": [
+   {
+    "check": "entity",
+    "type": "medication",
+    "medication_status": "discontinued",
+    "time_context": "historical",
+    "pass": true
+   },
+   {
+    "check": "no_entity",
+    "type": "medication",
+    "medication_status": "current",
+    "pass": true
+   }
+  ]
+ },
+ "raw": {
+  "gold": 4,
+  "matched": 4,
+  "produced": 4,
+  "precision": [
+   4,
+   4
+  ],
+  "recall": [
+   4,
+   4
+  ],
+  "by_type": {
+   "problem": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "vital_reading": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "medication": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "symptom": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   }
+  },
+  "dims": {
+   "role": [
+    1,
+    1
+   ],
+   "attr:complaint_text": [
+    1,
+    1
+   ],
+   "attr:complaint_location": [
+    1,
+    1
+   ],
+   "attr:systolic": [
+    1,
+    1
+   ],
+   "attr:diastolic": [
+    1,
+    1
+   ],
+   "assertion": [
+    3,
+    3
+   ],
+   "time_context": [
+    3,
+    3
+   ],
+   "assertion_source": [
+    3,
+    3
+   ],
+   "attr:drug": [
+    1,
+    1
+   ],
+   "status": [
+    1,
+    1
+   ],
+   "attr:aspect": [
+    1,
+    1
+   ],
+   "attr:value": [
+    1,
+    1
+   ]
+  },
+  "critical": {
+   "drug": [
+    1,
+    1
+   ],
+   "medication_status": [
+    1,
+    1
+   ]
+  },
+  "errors": [],
+  "omissions": [],
+  "extras": [],
+  "problem_map": {
+   "P1": "pb_1"
+  },
+  "merged": [],
+  "split": [],
+  "target_accuracy": [
+   1,
+   1
+  ],
+  "flags": {
+   "caught": [],
+   "missed": [
+    "chief_problem_minimum",
+    "diagnosis_or_plan_missing"
+   ],
+   "duplicates": [],
+   "false_alarms": [],
+   "tolerated": [],
+   "questions": []
+  },
+  "forbidden_hits": [],
+  "expectations": []
+ },
+ "claims": {
+  "supported_by_transcript": 11,
+  "supported_by_quick_notes": 2
+ },
+ "claims_detail": [
+  {
+   "claim_id": "it_001|drug",
+   "label": "supported_by_transcript",
+   "quote": "I used to take warfarin, but I stopped last year.",
+   "confidence": 0.97
+  },
+  {
+   "claim_id": "it_001|medication_status",
+   "label": "supported_by_transcript",
+   "quote": "I used to take warfarin, but I stopped last year.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_001|time_context",
+   "label": "supported_by_transcript",
+   "quote": "I used to take warfarin, but I stopped last year.",
+   "confidence": 0.93
+  },
+  {
+   "claim_id": "it_002|systolic",
+   "label": "supported_by_quick_notes",
+   "quote": "BP 120/78",
+   "confidence": 0.97
+  },
+  {
+   "claim_id": "it_002|diastolic",
+   "label": "supported_by_quick_notes",
+   "quote": "BP 120/78",
+   "confidence": 0.97
+  },
+  {
+   "claim_id": "it_004|description",
+   "label": "supported_by_transcript",
+   "quote": "No.",
+   "confidence": 0.75
+  },
+  {
+   "claim_id": "it_004|assertion",
+   "label": "supported_by_transcript",
+   "quote": "No.",
+   "confidence": 0.75
+  },
+  {
+   "claim_id": "pb_1|role",
+   "label": "supported_by_transcript",
+   "quote": "A cleaning check, and my lower left tooth is a bit sensitive.",
+   "confidence": 0.6
+  },
+  {
+   "claim_id": "pb_1|complaint_text",
+   "label": "supported_by_transcript",
+   "quote": "A cleaning check, and my lower left tooth is a bit sensitive.",
+   "confidence": 0.92
+  },
+  {
+   "claim_id": "pb_1|complaint_location",
+   "label": "supported_by_transcript",
+   "quote": "A cleaning check, and my lower left tooth is a bit sensitive.",
+   "confidence": 0.92
+  },
+  {
+   "claim_id": "pb_1|clinical_target",
+   "label": "supported_by_transcript",
+   "quote": "A cleaning check, and my lower left tooth is a bit sensitive.",
+   "confidence": 0.6
+  },
+  {
+   "claim_id": "it_003|aspect",
+   "label": "supported_by_transcript",
+   "quote": "A cleaning check, and my lower left tooth is a bit sensitive.",
+   "confidence": 0.8
+  },
+  {
+   "claim_id": "it_003|value",
+   "label": "supported_by_transcript",
+   "quote": "A cleaning check, and my lower left tooth is a bit sensitive.",
+   "confidence": 0.92
+  }
+ ],
+ "dentist_blockers": 1,
+ "blocker_kinds": {
+  "staged": 1
+ },
+ "check_counts": {
+  "span_valid": {
+   "pass": 5
+  },
+  "normalization_valid": {
+   "not_applicable": 1,
+   "pass": 4
+  },
+  "semantic_support": {
+   "pass": 5
+  }
+ },
+ "relationships": []
+}

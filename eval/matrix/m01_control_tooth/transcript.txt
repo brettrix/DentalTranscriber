@@ -1,0 +1,7 @@
+DENTIST: What's bothering you today?
+PATIENT: My upper left back tooth hurts when I drink cold things.
+DENTIST: I'll test number three first as a control, so you know what normal feels like. Cold on number three.
+PATIENT: Feels cold, and it's gone.
+DENTIST: Now cold on number fourteen.
+PATIENT: Ow. That one hangs around.
+DENTIST: Fourteen lingered about ten seconds. That points to irreversible pulpitis on fourteen.

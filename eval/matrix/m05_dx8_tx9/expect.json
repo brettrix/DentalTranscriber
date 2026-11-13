@@ -1,0 +1,9 @@
+{
+ "expect": [
+  {
+   "check": "flag_present",
+   "rule_id": "treatment_target_disagreement"
+  }
+ ],
+ "tolerated_flags": []
+}

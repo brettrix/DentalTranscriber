@@ -1,0 +1,4 @@
+DENTIST: What happened?
+PATIENT: I chipped my front tooth on a fork.
+DENTIST: Number eight has a crack along the edge. This is a cracked tooth, number eight.
+DENTIST: We'll do a crown on number nine next week.

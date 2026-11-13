@@ -1,0 +1,420 @@
+{
+ "case": "m13_monitor_no_option",
+ "pipeline": "baseline",
+ "repeat": 0,
+ "session": "04edb79b-7f43-4641-b461-5c433c3371c7",
+ "error": null,
+ "wall_s": 10.2,
+ "candidate": true,
+ "ready_for_review": true,
+ "failed_stages": [],
+ "production_failure_stage": null,
+ "calls": 3,
+ "usd_pipeline": 0.0456,
+ "usd_shared": 0.0047,
+ "per_agent": {
+  "B0": {
+   "calls": 2,
+   "in": 15787,
+   "out": 1398,
+   "seconds": 8.7,
+   "usd": 0.0456
+  },
+  "R2": {
+   "calls": 1,
+   "in": 2095,
+   "out": 53,
+   "seconds": 1.4,
+   "usd": 0.0047
+  }
+ },
+ "timings": [
+  5.3,
+  1.4,
+  3.4
+ ],
+ "scored": true,
+ "grader_error": null,
+ "final": {
+  "gold": 5,
+  "matched": 5,
+  "produced": 5,
+  "precision": [
+   5,
+   5
+  ],
+  "recall": [
+   5,
+   5
+  ],
+  "by_type": {
+   "problem": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "vital_reading": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "symptom": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "finding": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "decision": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   }
+  },
+  "dims": {
+   "tooth": [
+    2,
+    3
+   ],
+   "role": [
+    1,
+    1
+   ],
+   "attr:complaint_text": [
+    1,
+    1
+   ],
+   "attr:complaint_location": [
+    1,
+    1
+   ],
+   "attr:systolic": [
+    1,
+    1
+   ],
+   "attr:diastolic": [
+    1,
+    1
+   ],
+   "assertion": [
+    4,
+    4
+   ],
+   "time_context": [
+    4,
+    4
+   ],
+   "assertion_source": [
+    4,
+    4
+   ],
+   "attr:aspect": [
+    0,
+    1
+   ],
+   "attr:value": [
+    1,
+    1
+   ],
+   "target_relation": [
+    1,
+    1
+   ],
+   "attr:observation": [
+    1,
+    1
+   ],
+   "attr:decision": [
+    1,
+    1
+   ]
+  },
+  "critical": {
+   "tooth": [
+    2,
+    3
+   ],
+   "decision": [
+    1,
+    1
+   ]
+  },
+  "errors": [
+   "s1:attr:aspect",
+   "dc1:tooth"
+  ],
+  "omissions": [],
+  "extras": [],
+  "problem_map": {
+   "P1": "pb_1"
+  },
+  "merged": [],
+  "split": [],
+  "target_accuracy": [
+   1,
+   1
+  ],
+  "flags": {
+   "caught": [
+    "unknown_option_link"
+   ],
+   "missed": [],
+   "duplicates": [],
+   "false_alarms": [],
+   "tolerated": [
+    "target_not_assessable"
+   ],
+   "questions": []
+  },
+  "forbidden_hits": [],
+  "expectations": [
+   {
+    "check": "entity",
+    "type": "decision",
+    "decision": "monitor",
+    "option_link": "unknown",
+    "pass": true
+   },
+   {
+    "check": "count",
+    "type": "option_discussed",
+    "n": 0,
+    "pass": true
+   },
+   {
+    "check": "flag_present",
+    "rule_id": "unknown_option_link",
+    "pass": true
+   }
+  ]
+ },
+ "raw": {
+  "gold": 5,
+  "matched": 5,
+  "produced": 5,
+  "precision": [
+   5,
+   5
+  ],
+  "recall": [
+   5,
+   5
+  ],
+  "by_type": {
+   "problem": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "vital_reading": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "symptom": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "finding": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "decision": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   }
+  },
+  "dims": {
+   "tooth": [
+    2,
+    3
+   ],
+   "role": [
+    1,
+    1
+   ],
+   "attr:complaint_text": [
+    1,
+    1
+   ],
+   "attr:complaint_location": [
+    1,
+    1
+   ],
+   "attr:systolic": [
+    1,
+    1
+   ],
+   "attr:diastolic": [
+    1,
+    1
+   ],
+   "assertion": [
+    4,
+    4
+   ],
+   "time_context": [
+    4,
+    4
+   ],
+   "assertion_source": [
+    4,
+    4
+   ],
+   "attr:aspect": [
+    0,
+    1
+   ],
+   "attr:value": [
+    1,
+    1
+   ],
+   "target_relation": [
+    0,
+    1
+   ],
+   "attr:observation": [
+    1,
+    1
+   ],
+   "attr:decision": [
+    1,
+    1
+   ]
+  },
+  "critical": {
+   "tooth": [
+    2,
+    3
+   ],
+   "decision": [
+    1,
+    1
+   ]
+  },
+  "errors": [
+   "s1:attr:aspect",
+   "f1:target_relation",
+   "dc1:tooth"
+  ],
+  "omissions": [],
+  "extras": [],
+  "problem_map": {
+   "P1": "pb_1"
+  },
+  "merged": [],
+  "split": [],
+  "target_accuracy": [
+   1,
+   1
+  ],
+  "flags": {
+   "caught": [],
+   "missed": [
+    "unknown_option_link"
+   ],
+   "duplicates": [],
+   "false_alarms": [],
+   "tolerated": [],
+   "questions": []
+  },
+  "forbidden_hits": [],
+  "expectations": []
+ },
+ "claims": {
+  "supported_by_quick_notes": 2,
+  "supported_by_transcript": 9
+ },
+ "claims_detail": [
+  {
+   "claim_id": "it_003|systolic",
+   "label": "supported_by_quick_notes",
+   "quote": "BP 120/78",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_003|diastolic",
+   "label": "supported_by_quick_notes",
+   "quote": "BP 120/78",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "pb_1|role",
+   "label": "supported_by_transcript",
+   "quote": "My lower front gums bleed a little when I floss.",
+   "confidence": 0.75
+  },
+  {
+   "claim_id": "pb_1|complaint_text",
+   "label": "supported_by_transcript",
+   "quote": "My lower front gums bleed a little when I floss.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "pb_1|complaint_location",
+   "label": "supported_by_transcript",
+   "quote": "My lower front gums bleed a little when I floss.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "pb_1|clinical_target",
+   "label": "supported_by_transcript",
+   "quote": "The gums around twenty-five are a bit red. We'll keep an eye on it.",
+   "confidence": 0.85
+  },
+  {
+   "claim_id": "it_001|aspect",
+   "label": "supported_by_transcript",
+   "quote": "My lower front gums bleed a little when I floss.",
+   "confidence": 0.8
+  },
+  {
+   "claim_id": "it_001|value",
+   "label": "supported_by_transcript",
+   "quote": "My lower front gums bleed a little when I floss.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_002|tooth",
+   "label": "supported_by_transcript",
+   "quote": "The gums around twenty-five are a bit red. We'll keep an eye on it.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_002|observation",
+   "label": "supported_by_transcript",
+   "quote": "The gums around twenty-five are a bit red. We'll keep an eye on it.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_004|decision",
+   "label": "supported_by_transcript",
+   "quote": "The gums around twenty-five are a bit red. We'll keep an eye on it.",
+   "confidence": 0.9
+  }
+ ],
+ "dentist_blockers": 2,
+ "blocker_kinds": {
+  "staged": 1,
+  "task": 1
+ },
+ "check_counts": {
+  "span_valid": {
+   "pass": 5
+  },
+  "normalization_valid": {
+   "pass": 4,
+   "not_applicable": 1
+  },
+  "semantic_support": {
+   "not_applicable": 5
+  }
+ },
+ "relationships": []
+}

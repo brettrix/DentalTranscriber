@@ -1,0 +1,3 @@
+PATIENT: A piece of my filling came out on the upper right.
+DENTIST: Number three lost a small piece of its filling. We don't need an x-ray today.
+DENTIST: We'll replace the filling on three next week.

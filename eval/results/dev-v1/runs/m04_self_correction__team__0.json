@@ -1,0 +1,527 @@
+{
+ "case": "m04_self_correction",
+ "pipeline": "team",
+ "repeat": 0,
+ "session": "dd9c1644-c7c3-4d50-ae69-e1b06b93eb30",
+ "error": null,
+ "wall_s": 21.4,
+ "candidate": true,
+ "ready_for_review": true,
+ "failed_stages": [],
+ "production_failure_stage": null,
+ "calls": 18,
+ "usd_pipeline": 0.2162,
+ "usd_shared": 0.006,
+ "per_agent": {
+  "Br": {
+   "calls": 1,
+   "in": 6056,
+   "out": 268,
+   "seconds": 2.5,
+   "usd": 0.0148
+  },
+  "B1": {
+   "calls": 1,
+   "in": 6209,
+   "out": 237,
+   "seconds": 1.7,
+   "usd": 0.0148
+  },
+  "B4": {
+   "calls": 2,
+   "in": 13677,
+   "out": 603,
+   "seconds": 4.7,
+   "usd": 0.0334
+  },
+  "B3": {
+   "calls": 1,
+   "in": 6182,
+   "out": 414,
+   "seconds": 2.5,
+   "usd": 0.0165
+  },
+  "B2": {
+   "calls": 2,
+   "in": 13177,
+   "out": 745,
+   "seconds": 5.2,
+   "usd": 0.0338
+  },
+  "Cs": {
+   "calls": 6,
+   "in": 30556,
+   "out": 2085,
+   "seconds": 13.0,
+   "usd": 0.082
+  },
+  "Ce": {
+   "calls": 2,
+   "in": 2914,
+   "out": 182,
+   "seconds": 2.2,
+   "usd": 0.0076
+  },
+  "Co": {
+   "calls": 2,
+   "in": 4284,
+   "out": 477,
+   "seconds": 5.2,
+   "usd": 0.0133
+  },
+  "R2": {
+   "calls": 1,
+   "in": 2163,
+   "out": 168,
+   "seconds": 2.0,
+   "usd": 0.006
+  }
+ },
+ "timings": [
+  2.5,
+  1.7,
+  2.0,
+  2.5,
+  2.5,
+  1.4,
+  2.3,
+  2.3,
+  3.1,
+  1.9,
+  1.1,
+  1.1,
+  2.7,
+  2.0,
+  2.7,
+  2.7,
+  2.0,
+  2.6
+ ],
+ "scored": true,
+ "grader_error": null,
+ "final": {
+  "gold": 5,
+  "matched": 5,
+  "produced": 6,
+  "precision": [
+   5,
+   6
+  ],
+  "recall": [
+   5,
+   5
+  ],
+  "by_type": {
+   "problem": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "vital_reading": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "symptom": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 2
+   },
+   "finding": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "decision": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   }
+  },
+  "dims": {
+   "tooth": [
+    2,
+    3
+   ],
+   "role": [
+    1,
+    1
+   ],
+   "attr:complaint_text": [
+    1,
+    1
+   ],
+   "attr:complaint_location": [
+    1,
+    1
+   ],
+   "attr:systolic": [
+    1,
+    1
+   ],
+   "attr:diastolic": [
+    1,
+    1
+   ],
+   "assertion": [
+    4,
+    4
+   ],
+   "time_context": [
+    4,
+    4
+   ],
+   "assertion_source": [
+    3,
+    4
+   ],
+   "attr:aspect": [
+    0,
+    1
+   ],
+   "attr:value": [
+    1,
+    1
+   ],
+   "target_relation": [
+    1,
+    1
+   ],
+   "attr:test": [
+    1,
+    1
+   ],
+   "attr:response": [
+    1,
+    1
+   ],
+   "attr:lingering": [
+    1,
+    1
+   ],
+   "attr:decision": [
+    1,
+    1
+   ]
+  },
+  "critical": {
+   "tooth": [
+    2,
+    3
+   ],
+   "decision": [
+    1,
+    1
+   ]
+  },
+  "errors": [
+   "s1:attr:aspect",
+   "dc1:tooth",
+   "dc1:assertion_source"
+  ],
+  "omissions": [],
+  "extras": [
+   "symptom:it_003"
+  ],
+  "problem_map": {
+   "P1": "pb_1"
+  },
+  "merged": [],
+  "split": [],
+  "target_accuracy": [
+   1,
+   1
+  ],
+  "flags": {
+   "caught": [],
+   "missed": [],
+   "duplicates": [],
+   "false_alarms": [
+    "open_review_task (technical)",
+    "unsupported_content (technical)",
+    "target_not_assessable (technical)"
+   ],
+   "tolerated": [
+    "open_conflict",
+    "unknown_option_link"
+   ],
+   "questions": []
+  },
+  "forbidden_hits": [],
+  "expectations": [
+   {
+    "check": "conflict",
+    "kind": "self_correction",
+    "later_contains": "nine",
+    "pass": true
+   }
+  ]
+ },
+ "raw": {
+  "gold": 5,
+  "matched": 5,
+  "produced": 6,
+  "precision": [
+   5,
+   6
+  ],
+  "recall": [
+   5,
+   5
+  ],
+  "by_type": {
+   "problem": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "vital_reading": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "symptom": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 2
+   },
+   "finding": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "decision": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   }
+  },
+  "dims": {
+   "tooth": [
+    2,
+    3
+   ],
+   "role": [
+    1,
+    1
+   ],
+   "attr:complaint_text": [
+    1,
+    1
+   ],
+   "attr:complaint_location": [
+    1,
+    1
+   ],
+   "attr:systolic": [
+    1,
+    1
+   ],
+   "attr:diastolic": [
+    1,
+    1
+   ],
+   "assertion": [
+    4,
+    4
+   ],
+   "time_context": [
+    4,
+    4
+   ],
+   "assertion_source": [
+    4,
+    4
+   ],
+   "attr:aspect": [
+    0,
+    1
+   ],
+   "attr:value": [
+    1,
+    1
+   ],
+   "target_relation": [
+    0,
+    1
+   ],
+   "attr:test": [
+    1,
+    1
+   ],
+   "attr:response": [
+    1,
+    1
+   ],
+   "attr:lingering": [
+    1,
+    1
+   ],
+   "attr:decision": [
+    1,
+    1
+   ]
+  },
+  "critical": {
+   "tooth": [
+    2,
+    3
+   ],
+   "decision": [
+    1,
+    1
+   ]
+  },
+  "errors": [
+   "s1:attr:aspect",
+   "f1:target_relation",
+   "dc1:tooth"
+  ],
+  "omissions": [],
+  "extras": [
+   "symptom:it_003"
+  ],
+  "problem_map": {
+   "P1": "pb_1"
+  },
+  "merged": [],
+  "split": [],
+  "target_accuracy": [
+   1,
+   1
+  ],
+  "flags": {
+   "caught": [],
+   "missed": [],
+   "duplicates": [],
+   "false_alarms": [],
+   "tolerated": [],
+   "questions": []
+  },
+  "forbidden_hits": [],
+  "expectations": []
+ },
+ "claims": {
+  "supported_by_quick_notes": 2,
+  "supported_by_transcript": 14
+ },
+ "claims_detail": [
+  {
+   "claim_id": "it_001|systolic",
+   "label": "supported_by_quick_notes",
+   "quote": "BP 120/78",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_001|diastolic",
+   "label": "supported_by_quick_notes",
+   "quote": "BP 120/78",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "pb_1|role",
+   "label": "supported_by_transcript",
+   "quote": "My front tooth is sensitive.",
+   "confidence": 0.85
+  },
+  {
+   "claim_id": "pb_1|complaint_text",
+   "label": "supported_by_transcript",
+   "quote": "My front tooth is sensitive.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "pb_1|complaint_location",
+   "label": "supported_by_transcript",
+   "quote": "My front tooth is sensitive.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "pb_1|clinical_target",
+   "label": "supported_by_transcript",
+   "quote": "Nine is sensitive but it settles quickly. Let's watch it.",
+   "confidence": 0.75
+  },
+  {
+   "claim_id": "it_002|aspect",
+   "label": "supported_by_transcript",
+   "quote": "My front tooth is sensitive.",
+   "confidence": 0.7
+  },
+  {
+   "claim_id": "it_002|value",
+   "label": "supported_by_transcript",
+   "quote": "My front tooth is sensitive.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_003|aspect",
+   "label": "supported_by_transcript",
+   "quote": "Yes, that's sharp.",
+   "confidence": 0.7
+  },
+  {
+   "claim_id": "it_003|value",
+   "label": "supported_by_transcript",
+   "quote": "Yes, that's sharp.",
+   "confidence": 0.8
+  },
+  {
+   "claim_id": "it_004|tooth",
+   "label": "supported_by_transcript",
+   "quote": "Cold on number eight. Sorry, I mean number nine.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_004|test",
+   "label": "supported_by_transcript",
+   "quote": "Cold on number eight. Sorry, I mean number nine.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_004|response",
+   "label": "supported_by_transcript",
+   "quote": "Yes, that's sharp.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_004|result_description",
+   "label": "supported_by_transcript",
+   "quote": "Yes, that's sharp.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_004|lingering",
+   "label": "supported_by_transcript",
+   "quote": "Nine is sensitive but it settles quickly. Let's watch it.",
+   "confidence": 0.85
+  },
+  {
+   "claim_id": "it_005|decision",
+   "label": "supported_by_transcript",
+   "quote": "Nine is sensitive but it settles quickly. Let's watch it.",
+   "confidence": 0.9
+  }
+ ],
+ "dentist_blockers": 6,
+ "blocker_kinds": {
+  "it_003": 1,
+  "conflict": 1,
+  "staged": 2,
+  "task": 2
+ },
+ "check_counts": {
+  "span_valid": {
+   "pass": 6
+  },
+  "normalization_valid": {
+   "pass": 5,
+   "not_applicable": 1
+  },
+  "semantic_support": {
+   "pass": 5,
+   "fail": 1
+  }
+ },
+ "relationships": []
+}

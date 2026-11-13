@@ -1,0 +1,24 @@
+{
+ "expect": [
+  {
+   "check": "entity",
+   "kind": "relationship",
+   "relation_kind": "control",
+   "tooth": 3
+  },
+  {
+   "check": "flag_absent",
+   "rule_id": "unexplained_other_tooth",
+   "modes": [
+    "team"
+   ]
+  },
+  {
+   "check": "flag_absent",
+   "rule_id": "treatment_target_mismatch"
+  }
+ ],
+ "tolerated_flags": [
+  "unexplained_other_tooth:baseline"
+ ]
+}

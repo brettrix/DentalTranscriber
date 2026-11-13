@@ -1,0 +1,7 @@
+DENTIST: Where does it hurt?
+PATIENT: Up here, on the upper right, near number three I think.
+DENTIST: Cold on number three.
+PATIENT: That's fine.
+DENTIST: Tapping on number thirty.
+PATIENT: Ow, yes.
+DENTIST: The upper teeth test normal. Number thirty is the problem; the pain you feel up by three is referred from thirty.

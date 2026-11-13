@@ -1,0 +1,411 @@
+{
+ "case": "m12_no_xray_needed",
+ "pipeline": "baseline",
+ "repeat": 0,
+ "session": "b71beeae-003c-449d-9d9e-9d00a3b1b338",
+ "error": null,
+ "wall_s": 6.5,
+ "candidate": true,
+ "ready_for_review": true,
+ "failed_stages": [],
+ "production_failure_stage": null,
+ "calls": 2,
+ "usd_pipeline": 0.0254,
+ "usd_shared": 0.0048,
+ "per_agent": {
+  "B0": {
+   "calls": 1,
+   "in": 8137,
+   "out": 916,
+   "seconds": 5.1,
+   "usd": 0.0254
+  },
+  "R2": {
+   "calls": 1,
+   "in": 2120,
+   "out": 53,
+   "seconds": 1.3,
+   "usd": 0.0048
+  }
+ },
+ "timings": [
+  5.1,
+  1.3
+ ],
+ "scored": true,
+ "grader_error": null,
+ "final": {
+  "gold": 6,
+  "matched": 5,
+  "produced": 5,
+  "precision": [
+   5,
+   5
+  ],
+  "recall": [
+   5,
+   6
+  ],
+  "by_type": {
+   "problem": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "vital_reading": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "symptom": {
+    "gold": 1,
+    "matched": 0,
+    "produced": 0
+   },
+   "finding": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "radiograph": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "next_visit": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   }
+  },
+  "dims": {
+   "tooth": [
+    3,
+    3
+   ],
+   "role": [
+    1,
+    1
+   ],
+   "attr:complaint_text": [
+    1,
+    1
+   ],
+   "attr:complaint_location": [
+    1,
+    1
+   ],
+   "attr:systolic": [
+    1,
+    1
+   ],
+   "attr:diastolic": [
+    1,
+    1
+   ],
+   "assertion": [
+    4,
+    4
+   ],
+   "time_context": [
+    4,
+    4
+   ],
+   "assertion_source": [
+    4,
+    4
+   ],
+   "target_relation": [
+    2,
+    2
+   ],
+   "attr:observation": [
+    1,
+    1
+   ],
+   "action": [
+    1,
+    1
+   ],
+   "attr:procedure": [
+    1,
+    1
+   ],
+   "attr:timing": [
+    1,
+    1
+   ]
+  },
+  "critical": {
+   "tooth": [
+    3,
+    3
+   ]
+  },
+  "errors": [],
+  "omissions": [
+   "s1"
+  ],
+  "extras": [],
+  "problem_map": {
+   "P1": "pb_1"
+  },
+  "merged": [],
+  "split": [],
+  "target_accuracy": [
+   1,
+   1
+  ],
+  "flags": {
+   "caught": [],
+   "missed": [],
+   "duplicates": [],
+   "false_alarms": [],
+   "tolerated": [],
+   "questions": []
+  },
+  "forbidden_hits": [],
+  "expectations": [
+   {
+    "check": "entity",
+    "type": "radiograph",
+    "action": "not_needed",
+    "pass": true
+   },
+   {
+    "check": "flag_absent",
+    "rule_id": "radiograph_finding_missing",
+    "pass": true
+   }
+  ]
+ },
+ "raw": {
+  "gold": 6,
+  "matched": 5,
+  "produced": 5,
+  "precision": [
+   5,
+   5
+  ],
+  "recall": [
+   5,
+   6
+  ],
+  "by_type": {
+   "problem": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "vital_reading": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "symptom": {
+    "gold": 1,
+    "matched": 0,
+    "produced": 0
+   },
+   "finding": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "radiograph": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "next_visit": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   }
+  },
+  "dims": {
+   "tooth": [
+    3,
+    3
+   ],
+   "role": [
+    1,
+    1
+   ],
+   "attr:complaint_text": [
+    1,
+    1
+   ],
+   "attr:complaint_location": [
+    1,
+    1
+   ],
+   "attr:systolic": [
+    1,
+    1
+   ],
+   "attr:diastolic": [
+    1,
+    1
+   ],
+   "assertion": [
+    4,
+    4
+   ],
+   "time_context": [
+    4,
+    4
+   ],
+   "assertion_source": [
+    4,
+    4
+   ],
+   "target_relation": [
+    0,
+    2
+   ],
+   "attr:observation": [
+    1,
+    1
+   ],
+   "action": [
+    1,
+    1
+   ],
+   "attr:procedure": [
+    1,
+    1
+   ],
+   "attr:timing": [
+    1,
+    1
+   ]
+  },
+  "critical": {
+   "tooth": [
+    3,
+    3
+   ]
+  },
+  "errors": [
+   "f1:target_relation",
+   "n1:target_relation"
+  ],
+  "omissions": [
+   "s1"
+  ],
+  "extras": [],
+  "problem_map": {
+   "P1": "pb_1"
+  },
+  "merged": [],
+  "split": [],
+  "target_accuracy": [
+   1,
+   1
+  ],
+  "flags": {
+   "caught": [],
+   "missed": [],
+   "duplicates": [],
+   "false_alarms": [],
+   "tolerated": [],
+   "questions": []
+  },
+  "forbidden_hits": [],
+  "expectations": []
+ },
+ "claims": {
+  "supported_by_quick_notes": 2,
+  "supported_by_transcript": 10
+ },
+ "claims_detail": [
+  {
+   "claim_id": "it_001|systolic",
+   "label": "supported_by_quick_notes",
+   "quote": "BP 120/78",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_001|diastolic",
+   "label": "supported_by_quick_notes",
+   "quote": "BP 120/78",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "pb_1|role",
+   "label": "supported_by_transcript",
+   "quote": "A piece of my filling came out on the upper right.",
+   "confidence": 0.85
+  },
+  {
+   "claim_id": "pb_1|complaint_text",
+   "label": "supported_by_transcript",
+   "quote": "A piece of my filling came out on the upper right.",
+   "confidence": 0.98
+  },
+  {
+   "claim_id": "pb_1|complaint_location",
+   "label": "supported_by_transcript",
+   "quote": "A piece of my filling came out on the upper right.",
+   "confidence": 0.97
+  },
+  {
+   "claim_id": "pb_1|clinical_target",
+   "label": "supported_by_transcript",
+   "quote": "Number three lost a small piece of its filling. We don't need an x-ray today.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_002|tooth",
+   "label": "supported_by_transcript",
+   "quote": "Number three lost a small piece of its filling. We don't need an x-ray today.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_002|observation",
+   "label": "supported_by_transcript",
+   "quote": "Number three lost a small piece of its filling. We don't need an x-ray today.",
+   "confidence": 0.97
+  },
+  {
+   "claim_id": "it_003|action",
+   "label": "supported_by_transcript",
+   "quote": "Number three lost a small piece of its filling. We don't need an x-ray today.",
+   "confidence": 0.93
+  },
+  {
+   "claim_id": "it_004|procedure",
+   "label": "supported_by_transcript",
+   "quote": "We'll replace the filling on three next week.",
+   "confidence": 0.97
+  },
+  {
+   "claim_id": "it_004|tooth",
+   "label": "supported_by_transcript",
+   "quote": "We'll replace the filling on three next week.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_004|timing",
+   "label": "supported_by_transcript",
+   "quote": "We'll replace the filling on three next week.",
+   "confidence": 0.97
+  }
+ ],
+ "dentist_blockers": 0,
+ "blocker_kinds": {},
+ "check_counts": {
+  "span_valid": {
+   "pass": 5
+  },
+  "normalization_valid": {
+   "pass": 4,
+   "not_applicable": 1
+  },
+  "semantic_support": {
+   "not_applicable": 5
+  }
+ },
+ "relationships": []
+}

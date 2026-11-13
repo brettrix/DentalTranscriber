@@ -1,0 +1,7 @@
+DENTIST: What brings you in?
+PATIENT: My upper left molar is sensitive to cold.
+DENTIST: Number three is our control tooth. Cold on three.
+PATIENT: Normal.
+DENTIST: Cold on number fourteen.
+PATIENT: Yes, that hurts.
+DENTIST: We'll put a filling on number three next week.

@@ -1,0 +1,4 @@
+PATIENT: My lower right tooth is sensitive to cold.
+DENTIST: Cold on thirty.
+PATIENT: Yes, but it goes away.
+DENTIST: That's reversible pulpitis on thirty. We'll watch it.

@@ -1,0 +1,23 @@
+{
+ "expect": [
+  {
+   "check": "entity",
+   "type": "decision",
+   "decision": "monitor",
+   "option_link": "unknown"
+  },
+  {
+   "check": "count",
+   "type": "option_discussed",
+   "n": 0
+  },
+  {
+   "check": "flag_present",
+   "rule_id": "unknown_option_link"
+  }
+ ],
+ "tolerated_flags": [
+  "open_review_task",
+  "target_not_assessable"
+ ]
+}

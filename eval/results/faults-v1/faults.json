@@ -1,0 +1,772 @@
+[
+ {
+  "case": "case1",
+  "conversion_gaps": [
+   "d1: no spoken_tooth_number derivation for target.tooth=14",
+   "o1: no spoken_tooth_number derivation for target.tooth=14",
+   "o2: no spoken_tooth_number derivation for target.tooth=14"
+  ],
+  "false_rejections": {
+   "Cv": [],
+   "Cs_fail": [
+    "it_002@1",
+    "it_004@1",
+    "it_009@1",
+    "it_012@1",
+    "it_013@1",
+    "it_019@1",
+    "it_021@1",
+    "it_022@1"
+   ],
+   "Cs_unconfirmed": [],
+   "entities": 23
+  },
+  "faults": [
+   {
+    "fault": "tooth_swap",
+    "tag": "derivation-breaking",
+    "applicable": true,
+    "entity": "it_011@1",
+    "Cv_caught": true,
+    "Cs": "fail",
+    "rules_new_flags": [
+     "unexplained_other_tooth",
+     "unsupported_content"
+    ],
+    "Cs_details": [
+     "target.tooth: producer 15 vs checker 14"
+    ]
+   },
+   {
+    "fault": "dose_change",
+    "tag": "derivation-breaking",
+    "applicable": false
+   },
+   {
+    "fault": "negation_flip",
+    "tag": "derivation-breaking",
+    "applicable": true,
+    "entity": "it_001@1",
+    "Cv_caught": true,
+    "Cs": "fail",
+    "rules_new_flags": [
+     "unsupported_content"
+    ],
+    "Cs_details": [
+     "assertion: producer 'absent' vs checker 'present'"
+    ]
+   },
+   {
+    "fault": "possible_definite",
+    "tag": "association-preserving",
+    "applicable": true,
+    "entity": "it_015@1",
+    "Cv_caught": false,
+    "Cs": "fail",
+    "rules_new_flags": [
+     "unsupported_content"
+    ],
+    "Cs_details": [
+     "assertion: producer 'possible' vs checker 'present'",
+     "attributes.certainty: producer 'possible' vs checker 'definite'"
+    ]
+   },
+   {
+    "fault": "historical_current",
+    "tag": "association-preserving",
+    "applicable": true,
+    "entity": "it_001@1",
+    "Cv_caught": false,
+    "Cs": "fail",
+    "rules_new_flags": [
+     "unsupported_content"
+    ],
+    "Cs_details": [
+     "time_context: producer 'historical' vs checker 'current'"
+    ]
+   },
+   {
+    "fault": "number_on_wrong_tooth",
+    "tag": "association-preserving",
+    "applicable": true,
+    "entity": "it_011@1",
+    "Cv_caught": false,
+    "Cs": "fail",
+    "rules_new_flags": [
+     "unexplained_other_tooth",
+     "unsupported_content"
+    ],
+    "Cs_details": [
+     "target.tooth: producer 3 vs checker 14"
+    ]
+   },
+   {
+    "fault": "finding_wrong_problem",
+    "tag": "association-preserving",
+    "applicable": false
+   },
+   {
+    "fault": "dropped_qualifier",
+    "tag": "association-preserving",
+    "applicable": true,
+    "entity": "it_002@1",
+    "Cv_caught": false,
+    "Cs": "fail",
+    "rules_new_flags": [],
+    "Cs_details": [
+     "attributes.aspect: producer 'onset' vs checker 'duration'",
+     "free-text details: different (producer '3 weeks, getting worse' vs checker 'upper left side; Maybe three weeks')"
+    ]
+   },
+   {
+    "fault": "patient_as_clinician",
+    "tag": "association-preserving",
+    "applicable": true,
+    "entity": "it_001@1",
+    "Cv_caught": false,
+    "Cs": "fail",
+    "rules_new_flags": [
+     "unsupported_content"
+    ],
+    "Cs_details": [
+     "assertion_source: producer 'clinician_assessment' vs checker 'patient_report'"
+    ]
+   },
+   {
+    "fault": "false_control_relationship",
+    "tag": "association-preserving",
+    "applicable": true,
+    "entity": "rl_fault@1",
+    "Cv_caught": false,
+    "Cs": "fail",
+    "rules_new_flags": [
+     "unexplained_other_tooth",
+     "unsupported_content",
+     "unsupported_content"
+    ],
+    "Cs_details": [
+     "assertion_source: producer 'clinician_observation' vs checker None",
+     "tooth: producer 3 vs checker None",
+     "relation_kind: producer 'control' vs checker None"
+    ]
+   }
+  ],
+  "cost": {
+   "calls": 36,
+   "input_tokens": 131408,
+   "output_tokens": 11270,
+   "seconds": 50.04
+  }
+ },
+ {
+  "case": "case2",
+  "conversion_gaps": [
+   "f4: no spoken_tooth_number derivation for target.tooth=30",
+   "d1: no spoken_tooth_number derivation for target.tooth=30",
+   "o1: no spoken_tooth_number derivation for target.tooth=30"
+  ],
+  "false_rejections": {
+   "Cv": [],
+   "Cs_fail": [
+    "it_001@1",
+    "it_003@1",
+    "it_008@1",
+    "it_011@1",
+    "it_013@1",
+    "it_016@1"
+   ],
+   "Cs_unconfirmed": [],
+   "entities": 20
+  },
+  "faults": [
+   {
+    "fault": "tooth_swap",
+    "tag": "derivation-breaking",
+    "applicable": true,
+    "entity": "it_008@1",
+    "Cv_caught": true,
+    "Cs": "fail",
+    "rules_new_flags": [
+     "unexplained_other_tooth"
+    ],
+    "Cs_details": [
+     "target.tooth: producer 31 vs checker 30",
+     "free-text details: uncertain (producer 'large existing filling' vs checker 'bite test; big old filling')"
+    ]
+   },
+   {
+    "fault": "dose_change",
+    "tag": "derivation-breaking",
+    "applicable": false
+   },
+   {
+    "fault": "negation_flip",
+    "tag": "derivation-breaking",
+    "applicable": true,
+    "entity": "it_001@1",
+    "Cv_caught": true,
+    "Cs": "fail",
+    "rules_new_flags": [],
+    "Cs_details": [
+     "assertion: producer 'absent' vs checker 'present'",
+     "attributes.aspect: producer 'trigger' vs checker 'biting_pain'"
+    ]
+   },
+   {
+    "fault": "possible_definite",
+    "tag": "association-preserving",
+    "applicable": true,
+    "entity": "it_013@1",
+    "Cv_caught": false,
+    "Cs": "fail",
+    "rules_new_flags": [],
+    "Cs_details": [
+     "assertion: producer 'possible' vs checker 'present'",
+     "target.tooth: producer None vs checker 30",
+     "attributes.certainty: producer 'possible' vs checker 'definite'"
+    ]
+   },
+   {
+    "fault": "historical_current",
+    "tag": "association-preserving",
+    "applicable": true,
+    "entity": "it_001@1",
+    "Cv_caught": false,
+    "Cs": "fail",
+    "rules_new_flags": [],
+    "Cs_details": [
+     "time_context: producer 'historical' vs checker 'current'",
+     "attributes.aspect: producer 'trigger' vs checker 'biting_pain'"
+    ]
+   },
+   {
+    "fault": "number_on_wrong_tooth",
+    "tag": "association-preserving",
+    "applicable": true,
+    "entity": "it_008@1",
+    "Cv_caught": false,
+    "Cs": "fail",
+    "rules_new_flags": [
+     "unexplained_other_tooth"
+    ],
+    "Cs_details": [
+     "assertion_source: producer 'clinician_observation' vs checker 'test_response'",
+     "target.tooth: producer 10 vs checker 30",
+     "attributes.response: producer None vs checker 'present'",
+     "free-text details: different (producer 'large existing filling' vs checker 'bite test')"
+    ]
+   },
+   {
+    "fault": "finding_wrong_problem",
+    "tag": "association-preserving",
+    "applicable": false
+   },
+   {
+    "fault": "dropped_qualifier",
+    "tag": "association-preserving",
+    "applicable": true,
+    "entity": "it_002@1",
+    "Cv_caught": false,
+    "Cs": "pass",
+    "rules_new_flags": [],
+    "Cs_details": []
+   },
+   {
+    "fault": "patient_as_clinician",
+    "tag": "association-preserving",
+    "applicable": true,
+    "entity": "it_001@1",
+    "Cv_caught": false,
+    "Cs": "fail",
+    "rules_new_flags": [],
+    "Cs_details": [
+     "assertion_source: producer 'clinician_assessment' vs checker 'patient_report'",
+     "attributes.aspect: producer 'trigger' vs checker 'biting_pain'"
+    ]
+   },
+   {
+    "fault": "false_control_relationship",
+    "tag": "association-preserving",
+    "applicable": true,
+    "entity": "rl_fault@1",
+    "Cv_caught": false,
+    "Cs": "fail",
+    "rules_new_flags": [
+     "unexplained_other_tooth",
+     "unsupported_content",
+     "unsupported_content"
+    ],
+    "Cs_details": [
+     "assertion_source: producer 'clinician_observation' vs checker None",
+     "tooth: producer 10 vs checker None",
+     "relation_kind: producer 'control' vs checker None"
+    ]
+   }
+  ],
+  "cost": {
+   "calls": 33,
+   "input_tokens": 122891,
+   "output_tokens": 9826,
+   "seconds": 41.25
+  }
+ },
+ {
+  "case": "case3",
+  "conversion_gaps": [
+   "o1: no spoken_tooth_number derivation for target.tooth=19",
+   "o2: no spoken_tooth_number derivation for target.tooth=19",
+   "n1: no spoken_tooth_number derivation for target.tooth=19"
+  ],
+  "false_rejections": {
+   "Cv": [],
+   "Cs_fail": [
+    "it_004@1",
+    "it_006@1",
+    "it_013@1",
+    "it_014@1",
+    "it_018@1",
+    "it_019@1",
+    "it_020@1"
+   ],
+   "Cs_unconfirmed": [
+    "it_021@1",
+    "it_022@1"
+   ],
+   "entities": 25
+  },
+  "faults": [
+   {
+    "fault": "tooth_swap",
+    "tag": "derivation-breaking",
+    "applicable": true,
+    "entity": "it_010@1",
+    "Cv_caught": true,
+    "Cs": "fail",
+    "rules_new_flags": [
+     "unexplained_other_tooth",
+     "unsupported_content"
+    ],
+    "Cs_details": [
+     "target.tooth: producer 20 vs checker 19",
+     "free-text details: different (producer 'large filling' vs checker 'swelling in the gum next to it on the cheek side')"
+    ]
+   },
+   {
+    "fault": "dose_change",
+    "tag": "derivation-breaking",
+    "applicable": true,
+    "entity": "it_021@1",
+    "Cv_caught": true,
+    "Cs": "fail",
+    "rules_new_flags": [
+     "unsupported_content"
+    ],
+    "Cs_details": [
+     "attributes.strength: producer '250 mg' vs checker '500 mg'",
+     "attributes.dose: producer None vs checker '500 mg'"
+    ]
+   },
+   {
+    "fault": "negation_flip",
+    "tag": "derivation-breaking",
+    "applicable": true,
+    "entity": "it_001@1",
+    "Cv_caught": true,
+    "Cs": "fail",
+    "rules_new_flags": [
+     "unsupported_content"
+    ],
+    "Cs_details": [
+     "assertion: producer 'absent' vs checker 'present'"
+    ]
+   },
+   {
+    "fault": "possible_definite",
+    "tag": "association-preserving",
+    "applicable": true,
+    "entity": "it_016@1",
+    "Cv_caught": false,
+    "Cs": "fail",
+    "rules_new_flags": [
+     "unsupported_content"
+    ],
+    "Cs_details": [
+     "assertion: producer 'possible' vs checker 'present'",
+     "attributes.certainty: producer 'possible' vs checker 'definite'"
+    ]
+   },
+   {
+    "fault": "historical_current",
+    "tag": "association-preserving",
+    "applicable": true,
+    "entity": "it_004@1",
+    "Cv_caught": false,
+    "Cs": "fail",
+    "rules_new_flags": [],
+    "Cs_details": [
+     "time_context: producer 'current' vs checker 'historical'",
+     "attributes.aspect: producer 'prior_treatment' vs checker 'duration'"
+    ]
+   },
+   {
+    "fault": "number_on_wrong_tooth",
+    "tag": "association-preserving",
+    "applicable": true,
+    "entity": "it_010@1",
+    "Cv_caught": false,
+    "Cs": "fail",
+    "rules_new_flags": [
+     "unexplained_other_tooth",
+     "unsupported_content"
+    ],
+    "Cs_details": [
+     "target.tooth: producer 8 vs checker 19",
+     "free-text details: different (producer 'large filling' vs checker 'big filling and swelling in the gum next to it on the cheek side')"
+    ]
+   },
+   {
+    "fault": "finding_wrong_problem",
+    "tag": "association-preserving",
+    "applicable": false
+   },
+   {
+    "fault": "dropped_qualifier",
+    "tag": "association-preserving",
+    "applicable": true,
+    "entity": "it_008@1",
+    "Cv_caught": false,
+    "Cs": "fail",
+    "rules_new_flags": [
+     "unsupported_content"
+    ],
+    "Cs_details": [
+     "free-text details: different (producer 'other changes to health' vs checker 'No other changes to health')"
+    ]
+   },
+   {
+    "fault": "patient_as_clinician",
+    "tag": "association-preserving",
+    "applicable": true,
+    "entity": "it_001@1",
+    "Cv_caught": false,
+    "Cs": "fail",
+    "rules_new_flags": [
+     "unsupported_content"
+    ],
+    "Cs_details": [
+     "assertion_source: producer 'clinician_assessment' vs checker 'patient_report'"
+    ]
+   },
+   {
+    "fault": "false_control_relationship",
+    "tag": "association-preserving",
+    "applicable": true,
+    "entity": "rl_fault@1",
+    "Cv_caught": false,
+    "Cs": "fail",
+    "rules_new_flags": [
+     "unexplained_other_tooth",
+     "unsupported_content",
+     "unsupported_content"
+    ],
+    "Cs_details": [
+     "assertion_source: producer 'clinician_observation' vs checker None",
+     "tooth: producer 8 vs checker None",
+     "relation_kind: producer 'control' vs checker None"
+    ]
+   }
+  ],
+  "cost": {
+   "calls": 39,
+   "input_tokens": 144530,
+   "output_tokens": 12925,
+   "seconds": 57.13
+  }
+ },
+ {
+  "case": "m01_control_tooth",
+  "conversion_gaps": [],
+  "false_rejections": {
+   "Cv": [],
+   "Cs_fail": [
+    "rl_1@1",
+    "it_004@1"
+   ],
+   "Cs_unconfirmed": [],
+   "entities": 7
+  },
+  "faults": [
+   {
+    "fault": "tooth_swap",
+    "tag": "derivation-breaking",
+    "applicable": true,
+    "entity": "it_003@1",
+    "Cv_caught": true,
+    "Cs": "fail",
+    "rules_new_flags": [
+     "unsupported_content"
+    ],
+    "Cs_details": [
+     "target.tooth: producer 4 vs checker 3"
+    ]
+   },
+   {
+    "fault": "dose_change",
+    "tag": "derivation-breaking",
+    "applicable": false
+   },
+   {
+    "fault": "negation_flip",
+    "tag": "derivation-breaking",
+    "applicable": true,
+    "entity": "it_002@1",
+    "Cv_caught": true,
+    "Cs": "fail",
+    "rules_new_flags": [
+     "unsupported_content"
+    ],
+    "Cs_details": [
+     "assertion: producer 'absent' vs checker 'present'",
+     "free-text details: uncertain (producer 'cold drinks' vs checker 'upper left back tooth; hurts when drinking cold things')"
+    ]
+   },
+   {
+    "fault": "possible_definite",
+    "tag": "association-preserving",
+    "applicable": true,
+    "entity": "it_005@1",
+    "Cv_caught": false,
+    "Cs": "fail",
+    "rules_new_flags": [
+     "diagnosis_or_plan_missing",
+     "unsupported_content"
+    ],
+    "Cs_details": [
+     "assertion: producer 'possible' vs checker 'present'",
+     "attributes.certainty: producer 'possible' vs checker 'definite'"
+    ]
+   },
+   {
+    "fault": "historical_current",
+    "tag": "association-preserving",
+    "applicable": true,
+    "entity": "it_002@1",
+    "Cv_caught": false,
+    "Cs": "fail",
+    "rules_new_flags": [
+     "unsupported_content"
+    ],
+    "Cs_details": [
+     "time_context: producer 'historical' vs checker 'current'"
+    ]
+   },
+   {
+    "fault": "number_on_wrong_tooth",
+    "tag": "association-preserving",
+    "applicable": true,
+    "entity": "it_003@1",
+    "Cv_caught": false,
+    "Cs": "fail",
+    "rules_new_flags": [
+     "unsupported_content"
+    ],
+    "Cs_details": [
+     "target.tooth: producer 14 vs checker 3"
+    ]
+   },
+   {
+    "fault": "finding_wrong_problem",
+    "tag": "association-preserving",
+    "applicable": false
+   },
+   {
+    "fault": "dropped_qualifier",
+    "tag": "association-preserving",
+    "applicable": false
+   },
+   {
+    "fault": "patient_as_clinician",
+    "tag": "association-preserving",
+    "applicable": true,
+    "entity": "it_002@1",
+    "Cv_caught": false,
+    "Cs": "fail",
+    "rules_new_flags": [
+     "unsupported_content"
+    ],
+    "Cs_details": [
+     "assertion_source: producer 'clinician_assessment' vs checker 'patient_report'"
+    ]
+   },
+   {
+    "fault": "false_control_relationship",
+    "tag": "association-preserving",
+    "applicable": true,
+    "entity": "rl_fault@1",
+    "Cv_caught": false,
+    "Cs": "fail",
+    "rules_new_flags": [
+     "unexplained_other_tooth",
+     "unsupported_content",
+     "unsupported_content"
+    ],
+    "Cs_details": [
+     "assertion_source: producer 'clinician_observation' vs checker 'test_response'",
+     "tooth: producer 1 vs checker 14"
+    ]
+   }
+  ],
+  "cost": {
+   "calls": 22,
+   "input_tokens": 79614,
+   "output_tokens": 5533,
+   "seconds": 18.28
+  }
+ },
+ {
+  "case": "m18_two_problems",
+  "conversion_gaps": [],
+  "false_rejections": {
+   "Cv": [],
+   "Cs_fail": [
+    "it_007@1",
+    "it_008@1"
+   ],
+   "Cs_unconfirmed": [
+    "pb_1@1",
+    "pb_2@1"
+   ],
+   "entities": 10
+  },
+  "faults": [
+   {
+    "fault": "tooth_swap",
+    "tag": "derivation-breaking",
+    "applicable": true,
+    "entity": "it_004@1",
+    "Cv_caught": true,
+    "Cs": "fail",
+    "rules_new_flags": [
+     "unexplained_other_tooth",
+     "unsupported_content"
+    ],
+    "Cs_details": [
+     "target.tooth: producer 31 vs checker 30",
+     "free-text details: uncertain (producer 'bite' vs checker 'bite; Ow, yes')"
+    ]
+   },
+   {
+    "fault": "dose_change",
+    "tag": "derivation-breaking",
+    "applicable": false
+   },
+   {
+    "fault": "negation_flip",
+    "tag": "derivation-breaking",
+    "applicable": true,
+    "entity": "it_002@1",
+    "Cv_caught": true,
+    "Cs": "fail",
+    "rules_new_flags": [
+     "unsupported_content"
+    ],
+    "Cs_details": [
+     "assertion: producer 'absent' vs checker 'present'"
+    ]
+   },
+   {
+    "fault": "possible_definite",
+    "tag": "association-preserving",
+    "applicable": false
+   },
+   {
+    "fault": "historical_current",
+    "tag": "association-preserving",
+    "applicable": true,
+    "entity": "it_002@1",
+    "Cv_caught": false,
+    "Cs": "fail",
+    "rules_new_flags": [
+     "unsupported_content"
+    ],
+    "Cs_details": [
+     "time_context: producer 'historical' vs checker 'current'"
+    ]
+   },
+   {
+    "fault": "number_on_wrong_tooth",
+    "tag": "association-preserving",
+    "applicable": true,
+    "entity": "it_004@1",
+    "Cv_caught": false,
+    "Cs": "fail",
+    "rules_new_flags": [
+     "unexplained_other_tooth",
+     "unsupported_content"
+    ],
+    "Cs_details": [
+     "target.tooth: producer 2 vs checker 30"
+    ]
+   },
+   {
+    "fault": "finding_wrong_problem",
+    "tag": "association-preserving",
+    "applicable": true,
+    "entity": "it_006@1",
+    "Cv_caught": false,
+    "Cs": "fail",
+    "rules_new_flags": [
+     "unexplained_other_tooth",
+     "unsupported_content"
+    ],
+    "Cs_details": [
+     "target.tooth: producer 19 vs checker 30",
+     "problem: producer pb_1 vs checker pb_2",
+     "free-text details: different (producer 'open contact where food packs in' vs checker 'cracked cusp')"
+    ]
+   },
+   {
+    "fault": "dropped_qualifier",
+    "tag": "association-preserving",
+    "applicable": false
+   },
+   {
+    "fault": "patient_as_clinician",
+    "tag": "association-preserving",
+    "applicable": true,
+    "entity": "it_002@1",
+    "Cv_caught": false,
+    "Cs": "fail",
+    "rules_new_flags": [
+     "unsupported_content"
+    ],
+    "Cs_details": [
+     "assertion_source: producer 'clinician_assessment' vs checker 'patient_report'"
+    ]
+   },
+   {
+    "fault": "false_control_relationship",
+    "tag": "association-preserving",
+    "applicable": true,
+    "entity": "rl_fault@1",
+    "Cv_caught": false,
+    "Cs": "fail",
+    "rules_new_flags": [
+     "unexplained_other_tooth",
+     "unsupported_content",
+     "unsupported_content"
+    ],
+    "Cs_details": [
+     "assertion_source: producer 'clinician_observation' vs checker 'patient_report'",
+     "tooth: producer 2 vs checker None"
+    ]
+   }
+  ],
+  "cost": {
+   "calls": 24,
+   "input_tokens": 84765,
+   "output_tokens": 6824,
+   "seconds": 23.98
+  }
+ }
+]

@@ -1,0 +1,3 @@
+DENTIST: Any allergies?
+PATIENT: I was allergic to penicillin as a kid, but I outgrew it. I've had amoxicillin since with no problem.
+DENTIST: Okay. Number nineteen has an abscess. I'll prescribe amoxicillin 500 milligrams three times a day for seven days.

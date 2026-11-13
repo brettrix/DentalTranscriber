@@ -1,0 +1,21 @@
+{
+ "expect": [
+  {
+   "check": "count",
+   "type": "diagnosis",
+   "n": 0
+  },
+  {
+   "check": "entity",
+   "type": "symptom",
+   "assertion_source": "patient_report",
+   "text_contains": "absce"
+  },
+  {
+   "check": "role",
+   "speaker": "S1",
+   "role": "Patient"
+  }
+ ],
+ "tolerated_flags": []
+}

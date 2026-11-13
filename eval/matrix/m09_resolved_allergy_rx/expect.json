@@ -1,0 +1,13 @@
+{
+ "expect": [
+  {
+   "check": "flag_severity",
+   "rule_id": "allergy_rx",
+   "severity": "medium"
+  }
+ ],
+ "tolerated_flags": [
+  "target_not_assessable",
+  "complaint_location_differs"
+ ]
+}

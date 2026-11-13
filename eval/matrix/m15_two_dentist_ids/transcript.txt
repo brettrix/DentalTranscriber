@@ -1,0 +1,5 @@
+DENTIST [S0]: What brings you in?
+PATIENT [S1]: My upper right tooth hurts with cold.
+DENTIST [S2]: Cold on number three.
+PATIENT [S1]: Yes.
+DENTIST [S0]: That's reversible pulpitis on three.

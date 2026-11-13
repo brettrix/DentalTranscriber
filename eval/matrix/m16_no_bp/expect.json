@@ -1,0 +1,12 @@
+{
+ "expect": [
+  {
+   "check": "flag_severity",
+   "rule_id": "bp_reading",
+   "severity": "low"
+  }
+ ],
+ "tolerated_flags": [
+  "open_review_task"
+ ]
+}

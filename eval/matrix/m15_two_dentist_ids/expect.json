@@ -1,0 +1,15 @@
+{
+ "expect": [
+  {
+   "check": "role",
+   "speaker": "S0",
+   "role": "Dentist"
+  },
+  {
+   "check": "role",
+   "speaker": "S2",
+   "role": "Dentist"
+  }
+ ],
+ "tolerated_flags": []
+}

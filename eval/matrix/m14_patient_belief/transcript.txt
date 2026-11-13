@@ -1,0 +1,3 @@
+PATIENT: My lower left tooth is throbbing. I think it's abscessing.
+DENTIST: Let's take a look. Tapping on nineteen.
+PATIENT: Ow.

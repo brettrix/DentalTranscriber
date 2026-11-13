@@ -1,0 +1,139 @@
+{
+ "case_id": "m13_monitor_no_option",
+ "annotated_by": "claude",
+ "checked_by": null,
+ "entities": [
+  {
+   "type": null,
+   "scope": null,
+   "target_relation": null,
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": null,
+   "action": null,
+   "status_fields": {},
+   "key_attributes": {
+    "role": "chief",
+    "complaint_text": "lower front gums bleed when flossing",
+    "complaint_location": "lower front"
+   },
+   "gid": "p_P1",
+   "kind": "problem",
+   "problem_key": "P1",
+   "target": 25,
+   "evidence": [
+    {
+     "utterance_id": "u1"
+    },
+    {
+     "utterance_id": "u2"
+    }
+   ]
+  },
+  {
+   "type": "vital_reading",
+   "scope": "encounter",
+   "target_relation": null,
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "assistant_record",
+   "action": null,
+   "status_fields": {},
+   "key_attributes": {
+    "systolic": 120,
+    "diastolic": 78
+   },
+   "gid": "v1",
+   "kind": "item",
+   "problem_key": null,
+   "target": null,
+   "evidence": [
+    {
+     "quick_note_id": "q1"
+    }
+   ]
+  },
+  {
+   "type": "symptom",
+   "scope": "problem",
+   "target_relation": null,
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "patient_report",
+   "action": null,
+   "status_fields": {},
+   "key_attributes": {
+    "aspect": "trigger",
+    "value": "flossing; bleeds a little"
+   },
+   "gid": "s1",
+   "kind": "item",
+   "problem_key": "P1",
+   "target": null,
+   "evidence": [
+    {
+     "utterance_id": "u1"
+    }
+   ]
+  },
+  {
+   "type": "finding",
+   "scope": "problem",
+   "target_relation": "matches_target",
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "clinician_observation",
+   "action": null,
+   "status_fields": {},
+   "key_attributes": {
+    "observation": "gums a bit red"
+   },
+   "gid": "f1",
+   "kind": "item",
+   "problem_key": "P1",
+   "target": 25,
+   "evidence": [
+    {
+     "utterance_id": "u2"
+    }
+   ]
+  },
+  {
+   "type": "decision",
+   "scope": "problem",
+   "target_relation": null,
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "clinician_assessment",
+   "action": null,
+   "status_fields": {},
+   "key_attributes": {
+    "decision": "monitor"
+   },
+   "gid": "dc1",
+   "kind": "item",
+   "problem_key": "P1",
+   "target": null,
+   "evidence": [
+    {
+     "utterance_id": "u2"
+    }
+   ]
+  }
+ ],
+ "expected_flags": [
+  {
+   "rule_id": "unknown_option_link",
+   "problem_key": "P1",
+   "target": null,
+   "meaning": "monitor decision has no linked option",
+   "evidence": [
+    {
+     "utterance_id": "u2"
+    }
+   ]
+  }
+ ],
+ "forbidden_facts": [],
+ "notes": "Draft matrix gold; needs a person to check."
+}

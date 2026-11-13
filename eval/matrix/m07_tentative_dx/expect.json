@@ -1,0 +1,14 @@
+{
+ "expect": [
+  {
+   "check": "entity",
+   "type": "diagnosis",
+   "certainty": "possible"
+  },
+  {
+   "check": "flag_absent",
+   "rule_id": "diagnosis_or_plan_missing"
+  }
+ ],
+ "tolerated_flags": []
+}

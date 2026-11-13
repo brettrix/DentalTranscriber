@@ -1,0 +1,462 @@
+{
+ "case": "m10_conflicting_qn_bp",
+ "pipeline": "team",
+ "repeat": 0,
+ "session": "9a1684a1-1fea-4c93-9587-40239852991f",
+ "error": null,
+ "wall_s": 14.6,
+ "candidate": true,
+ "ready_for_review": true,
+ "failed_stages": [],
+ "production_failure_stage": null,
+ "calls": 13,
+ "usd_pipeline": 0.1411,
+ "usd_shared": 0.0065,
+ "per_agent": {
+  "Br": {
+   "calls": 1,
+   "in": 6038,
+   "out": 302,
+   "seconds": 2.7,
+   "usd": 0.0151
+  },
+  "B4": {
+   "calls": 1,
+   "in": 6407,
+   "out": 51,
+   "seconds": 1.5,
+   "usd": 0.0133
+  },
+  "B2": {
+   "calls": 1,
+   "in": 6072,
+   "out": 250,
+   "seconds": 1.8,
+   "usd": 0.0146
+  },
+  "B3": {
+   "calls": 1,
+   "in": 6168,
+   "out": 296,
+   "seconds": 2.6,
+   "usd": 0.0153
+  },
+  "B1": {
+   "calls": 1,
+   "in": 6195,
+   "out": 491,
+   "seconds": 3.0,
+   "usd": 0.0173
+  },
+  "Cs": {
+   "calls": 4,
+   "in": 20440,
+   "out": 1247,
+   "seconds": 9.5,
+   "usd": 0.0534
+  },
+  "Ce": {
+   "calls": 2,
+   "in": 2886,
+   "out": 161,
+   "seconds": 3.1,
+   "usd": 0.0074
+  },
+  "Co": {
+   "calls": 1,
+   "in": 2100,
+   "out": 53,
+   "seconds": 1.9,
+   "usd": 0.0047
+  },
+  "R2": {
+   "calls": 1,
+   "in": 2145,
+   "out": 218,
+   "seconds": 2.4,
+   "usd": 0.0065
+  }
+ },
+ "timings": [
+  2.7,
+  1.5,
+  1.8,
+  2.6,
+  3.0,
+  1.7,
+  2.4,
+  2.5,
+  3.0,
+  1.5,
+  1.6,
+  1.9,
+  2.4
+ ],
+ "scored": true,
+ "grader_error": null,
+ "final": {
+  "gold": 5,
+  "matched": 5,
+  "produced": 5,
+  "precision": [
+   5,
+   5
+  ],
+  "recall": [
+   5,
+   5
+  ],
+  "by_type": {
+   "problem": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "vital_reading": {
+    "gold": 2,
+    "matched": 2,
+    "produced": 2
+   },
+   "symptom": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "finding": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   }
+  },
+  "dims": {
+   "tooth": [
+    2,
+    2
+   ],
+   "role": [
+    1,
+    1
+   ],
+   "attr:complaint_text": [
+    1,
+    1
+   ],
+   "attr:complaint_location": [
+    1,
+    1
+   ],
+   "attr:systolic": [
+    2,
+    2
+   ],
+   "attr:diastolic": [
+    2,
+    2
+   ],
+   "assertion": [
+    4,
+    4
+   ],
+   "time_context": [
+    4,
+    4
+   ],
+   "assertion_source": [
+    3,
+    4
+   ],
+   "attr:aspect": [
+    1,
+    1
+   ],
+   "attr:value": [
+    1,
+    1
+   ],
+   "target_relation": [
+    1,
+    1
+   ],
+   "attr:test": [
+    1,
+    1
+   ],
+   "attr:response": [
+    1,
+    1
+   ]
+  },
+  "critical": {
+   "tooth": [
+    2,
+    2
+   ]
+  },
+  "errors": [
+   "v2:assertion_source"
+  ],
+  "omissions": [],
+  "extras": [],
+  "problem_map": {
+   "P1": "pb_1"
+  },
+  "merged": [],
+  "split": [],
+  "target_accuracy": [
+   1,
+   1
+  ],
+  "flags": {
+   "caught": [
+    "open_conflict"
+   ],
+   "missed": [],
+   "duplicates": [],
+   "false_alarms": [],
+   "tolerated": [
+    "diagnosis_or_plan_missing"
+   ],
+   "questions": []
+  },
+  "forbidden_hits": [],
+  "expectations": [
+   {
+    "check": "conflict",
+    "kind": "quick_note_vs_transcript",
+    "pass": true
+   },
+   {
+    "check": "count",
+    "type": "vital_reading",
+    "n": 2,
+    "pass": true
+   }
+  ]
+ },
+ "raw": {
+  "gold": 5,
+  "matched": 5,
+  "produced": 5,
+  "precision": [
+   5,
+   5
+  ],
+  "recall": [
+   5,
+   5
+  ],
+  "by_type": {
+   "problem": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "vital_reading": {
+    "gold": 2,
+    "matched": 2,
+    "produced": 2
+   },
+   "symptom": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "finding": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   }
+  },
+  "dims": {
+   "tooth": [
+    2,
+    2
+   ],
+   "role": [
+    1,
+    1
+   ],
+   "attr:complaint_text": [
+    1,
+    1
+   ],
+   "attr:complaint_location": [
+    1,
+    1
+   ],
+   "attr:systolic": [
+    2,
+    2
+   ],
+   "attr:diastolic": [
+    2,
+    2
+   ],
+   "assertion": [
+    4,
+    4
+   ],
+   "time_context": [
+    4,
+    4
+   ],
+   "assertion_source": [
+    3,
+    4
+   ],
+   "attr:aspect": [
+    1,
+    1
+   ],
+   "attr:value": [
+    1,
+    1
+   ],
+   "target_relation": [
+    0,
+    1
+   ],
+   "attr:test": [
+    1,
+    1
+   ],
+   "attr:response": [
+    1,
+    1
+   ]
+  },
+  "critical": {
+   "tooth": [
+    2,
+    2
+   ]
+  },
+  "errors": [
+   "v2:assertion_source",
+   "f1:target_relation"
+  ],
+  "omissions": [],
+  "extras": [],
+  "problem_map": {
+   "P1": "pb_1"
+  },
+  "merged": [],
+  "split": [],
+  "target_accuracy": [
+   1,
+   1
+  ],
+  "flags": {
+   "caught": [],
+   "missed": [
+    "open_conflict"
+   ],
+   "duplicates": [],
+   "false_alarms": [],
+   "tolerated": [],
+   "questions": []
+  },
+  "forbidden_hits": [],
+  "expectations": []
+ },
+ "claims": {
+  "supported_by_transcript": 11,
+  "supported_by_quick_notes": 2
+ },
+ "claims_detail": [
+  {
+   "claim_id": "it_001|systolic",
+   "label": "supported_by_transcript",
+   "quote": "Your blood pressure today is 128 over 82.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_001|diastolic",
+   "label": "supported_by_transcript",
+   "quote": "Your blood pressure today is 128 over 82.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_002|systolic",
+   "label": "supported_by_quick_notes",
+   "quote": "BP 142/90",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_002|diastolic",
+   "label": "supported_by_quick_notes",
+   "quote": "BP 142/90",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "pb_1|role",
+   "label": "supported_by_transcript",
+   "quote": "What brings you in?",
+   "confidence": 0.85
+  },
+  {
+   "claim_id": "pb_1|complaint_text",
+   "label": "supported_by_transcript",
+   "quote": "My lower right tooth is sore when I chew.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "pb_1|complaint_location",
+   "label": "supported_by_transcript",
+   "quote": "My lower right tooth is sore when I chew.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "pb_1|clinical_target",
+   "label": "supported_by_transcript",
+   "quote": "Tapping on thirty.",
+   "confidence": 0.8
+  },
+  {
+   "claim_id": "it_003|aspect",
+   "label": "supported_by_transcript",
+   "quote": "My lower right tooth is sore when I chew.",
+   "confidence": 0.85
+  },
+  {
+   "claim_id": "it_003|value",
+   "label": "supported_by_transcript",
+   "quote": "My lower right tooth is sore when I chew.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_004|tooth",
+   "label": "supported_by_transcript",
+   "quote": "Tapping on thirty.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_004|test",
+   "label": "supported_by_transcript",
+   "quote": "Tapping on thirty.",
+   "confidence": 0.85
+  },
+  {
+   "claim_id": "it_004|response",
+   "label": "supported_by_transcript",
+   "quote": "That's the one.",
+   "confidence": 0.7
+  }
+ ],
+ "dentist_blockers": 1,
+ "blocker_kinds": {
+  "conflict": 1
+ },
+ "check_counts": {
+  "span_valid": {
+   "pass": 5
+  },
+  "normalization_valid": {
+   "pass": 5
+  },
+  "semantic_support": {
+   "pass": 5
+  }
+ },
+ "relationships": []
+}

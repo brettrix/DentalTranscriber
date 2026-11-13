@@ -1,0 +1,5 @@
+DENTIST: Your blood pressure today is 128 over 82.
+DENTIST: What brings you in?
+PATIENT: My lower right tooth is sore when I chew.
+DENTIST: Tapping on thirty.
+PATIENT: That's the one.

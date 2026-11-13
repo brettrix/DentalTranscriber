@@ -1,0 +1,12 @@
+# Evaluation configuration (hashed into every report; frozen before held-out runs, section 14.5).
+version: "1"
+matching:
+  require_evidence_overlap: true        # entities and flags need at least one shared utterance/quick-note id
+  audio_overlap_fraction: 0.5           # time-range overlap of the shorter range (audio mode)
+  audio_short_range_s: 1.0
+critical_fields: [tooth, relationship, drug, dose, negation, certainty, decision, allergy_status, medication_status]
+pricing_per_mtok:                       # USD, first-party API list prices
+  claude-sonnet-5-5: {input: 2.0, output: 10.0}
+  claude-opus-5-5: {input: 4.0, output: 20.0}
+shared_stage_agents: [R2, E3]           # reported separately from extraction/checking cost
+grader_sample_fraction: 0.2

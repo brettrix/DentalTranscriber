@@ -1,0 +1,255 @@
+{
+ "case_id": "m18_two_problems",
+ "annotated_by": "claude",
+ "checked_by": null,
+ "entities": [
+  {
+   "type": null,
+   "scope": null,
+   "target_relation": null,
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": null,
+   "action": null,
+   "status_fields": {},
+   "key_attributes": {
+    "role": "chief",
+    "complaint_text": "lower right molar hurts when chewing",
+    "complaint_location": "lower right molar"
+   },
+   "gid": "p_P1",
+   "kind": "problem",
+   "problem_key": "P1",
+   "target": 30,
+   "evidence": [
+    {
+     "utterance_id": "u1"
+    },
+    {
+     "utterance_id": "u2"
+    }
+   ]
+  },
+  {
+   "type": null,
+   "scope": null,
+   "target_relation": null,
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": null,
+   "action": null,
+   "status_fields": {},
+   "key_attributes": {
+    "role": "secondary",
+    "complaint_text": "food gets stuck on the lower left",
+    "complaint_location": "lower left"
+   },
+   "gid": "p_P2",
+   "kind": "problem",
+   "problem_key": "P2",
+   "target": 19,
+   "evidence": [
+    {
+     "utterance_id": "u1"
+    },
+    {
+     "utterance_id": "u4"
+    }
+   ]
+  },
+  {
+   "type": "vital_reading",
+   "scope": "encounter",
+   "target_relation": null,
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "assistant_record",
+   "action": null,
+   "status_fields": {},
+   "key_attributes": {
+    "systolic": 120,
+    "diastolic": 78
+   },
+   "gid": "v1",
+   "kind": "item",
+   "problem_key": null,
+   "target": null,
+   "evidence": [
+    {
+     "quick_note_id": "q1"
+    }
+   ]
+  },
+  {
+   "type": "symptom",
+   "scope": "problem",
+   "target_relation": null,
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "patient_report",
+   "action": null,
+   "status_fields": {},
+   "key_attributes": {
+    "aspect": "biting_pain",
+    "value": "hurts when chewing"
+   },
+   "gid": "s1",
+   "kind": "item",
+   "problem_key": "P1",
+   "target": null,
+   "evidence": [
+    {
+     "utterance_id": "u1"
+    }
+   ]
+  },
+  {
+   "type": "symptom",
+   "scope": "problem",
+   "target_relation": null,
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "patient_report",
+   "action": null,
+   "status_fields": {},
+   "key_attributes": {
+    "aspect": "other",
+    "value": "food gets stuck"
+   },
+   "gid": "s2",
+   "kind": "item",
+   "problem_key": "P2",
+   "target": null,
+   "evidence": [
+    {
+     "utterance_id": "u1"
+    }
+   ]
+  },
+  {
+   "type": "finding",
+   "scope": "problem",
+   "target_relation": "matches_target",
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "test_response",
+   "action": null,
+   "status_fields": {},
+   "key_attributes": {
+    "test": "bite",
+    "response": "present"
+   },
+   "gid": "f1",
+   "kind": "item",
+   "problem_key": "P1",
+   "target": 30,
+   "evidence": [
+    {
+     "utterance_id": "u2"
+    },
+    {
+     "utterance_id": "u3"
+    }
+   ]
+  },
+  {
+   "type": "finding",
+   "scope": "problem",
+   "target_relation": "matches_target",
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "clinician_observation",
+   "action": null,
+   "status_fields": {},
+   "key_attributes": {
+    "observation": "cracked cusp"
+   },
+   "gid": "f2",
+   "kind": "item",
+   "problem_key": "P1",
+   "target": 30,
+   "evidence": [
+    {
+     "utterance_id": "u4"
+    }
+   ]
+  },
+  {
+   "type": "finding",
+   "scope": "problem",
+   "target_relation": "matches_target",
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "clinician_observation",
+   "action": null,
+   "status_fields": {},
+   "key_attributes": {
+    "observation": "open contact where food packs in"
+   },
+   "gid": "f3",
+   "kind": "item",
+   "problem_key": "P2",
+   "target": 19,
+   "evidence": [
+    {
+     "utterance_id": "u4"
+    }
+   ]
+  },
+  {
+   "type": "option_discussed",
+   "scope": "problem",
+   "target_relation": "matches_target",
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "clinician_assessment",
+   "action": null,
+   "status_fields": {},
+   "key_attributes": {
+    "option": "crown"
+   },
+   "gid": "o1",
+   "kind": "item",
+   "problem_key": "P1",
+   "target": 30,
+   "evidence": [
+    {
+     "utterance_id": "u5"
+    }
+   ]
+  },
+  {
+   "type": "option_discussed",
+   "scope": "problem",
+   "target_relation": "matches_target",
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "clinician_assessment",
+   "action": null,
+   "status_fields": {},
+   "key_attributes": {
+    "option": "filling to fix the contact"
+   },
+   "gid": "o2",
+   "kind": "item",
+   "problem_key": "P2",
+   "target": 19,
+   "evidence": [
+    {
+     "utterance_id": "u5"
+    }
+   ]
+  }
+ ],
+ "expected_flags": [
+  {
+   "rule_id": "diagnosis_or_plan_missing",
+   "problem_key": "P1",
+   "target": null,
+   "meaning": "no diagnosis or decision",
+   "evidence": []
+  }
+ ],
+ "forbidden_facts": [],
+ "notes": "Draft matrix gold; needs a person to check."
+}

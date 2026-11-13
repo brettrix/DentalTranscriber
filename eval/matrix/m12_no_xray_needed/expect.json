@@ -1,0 +1,14 @@
+{
+ "expect": [
+  {
+   "check": "entity",
+   "type": "radiograph",
+   "action": "not_needed"
+  },
+  {
+   "check": "flag_absent",
+   "rule_id": "radiograph_finding_missing"
+  }
+ ],
+ "tolerated_flags": []
+}

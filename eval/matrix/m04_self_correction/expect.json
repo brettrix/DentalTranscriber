@@ -1,0 +1,14 @@
+{
+ "expect": [
+  {
+   "check": "conflict",
+   "kind": "self_correction",
+   "later_contains": "nine"
+  }
+ ],
+ "tolerated_flags": [
+  "unknown_option_link",
+  "open_conflict",
+  "diagnosis_or_plan_missing"
+ ]
+}

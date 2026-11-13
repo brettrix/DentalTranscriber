@@ -1,0 +1,4 @@
+PATIENT: My lower left tooth is a little sensitive to sweets.
+DENTIST: Number nineteen has a small spot of early decay in the enamel.
+DENTIST: We could fill it, but I'd rather watch it for now. Let's recheck it in six months.
+PATIENT: Okay, sounds good.

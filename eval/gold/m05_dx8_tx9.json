@@ -1,0 +1,177 @@
+{
+ "case_id": "m05_dx8_tx9",
+ "annotated_by": "claude",
+ "checked_by": null,
+ "entities": [
+  {
+   "type": null,
+   "scope": null,
+   "target_relation": null,
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": null,
+   "action": null,
+   "status_fields": {},
+   "key_attributes": {
+    "role": "chief",
+    "complaint_text": "chipped front tooth",
+    "complaint_location": "front tooth"
+   },
+   "gid": "p_P1",
+   "kind": "problem",
+   "problem_key": "P1",
+   "target": 8,
+   "evidence": [
+    {
+     "utterance_id": "u2"
+    },
+    {
+     "utterance_id": "u3"
+    }
+   ]
+  },
+  {
+   "type": "vital_reading",
+   "scope": "encounter",
+   "target_relation": null,
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "assistant_record",
+   "action": null,
+   "status_fields": {},
+   "key_attributes": {
+    "systolic": 120,
+    "diastolic": 78
+   },
+   "gid": "v1",
+   "kind": "item",
+   "problem_key": null,
+   "target": null,
+   "evidence": [
+    {
+     "quick_note_id": "q1"
+    }
+   ]
+  },
+  {
+   "type": "symptom",
+   "scope": "problem",
+   "target_relation": null,
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "patient_report",
+   "action": null,
+   "status_fields": {},
+   "key_attributes": {
+    "aspect": "onset",
+    "value": "chipped on a fork"
+   },
+   "gid": "s1",
+   "kind": "item",
+   "problem_key": "P1",
+   "target": null,
+   "evidence": [
+    {
+     "utterance_id": "u2"
+    }
+   ]
+  },
+  {
+   "type": "finding",
+   "scope": "problem",
+   "target_relation": "matches_target",
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "clinician_observation",
+   "action": null,
+   "status_fields": {},
+   "key_attributes": {
+    "observation": "crack along the edge"
+   },
+   "gid": "f1",
+   "kind": "item",
+   "problem_key": "P1",
+   "target": 8,
+   "evidence": [
+    {
+     "utterance_id": "u3"
+    }
+   ]
+  },
+  {
+   "type": "diagnosis",
+   "scope": "problem",
+   "target_relation": "matches_target",
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "clinician_assessment",
+   "action": null,
+   "status_fields": {},
+   "key_attributes": {
+    "diagnosis": "cracked tooth",
+    "certainty": "definite"
+   },
+   "gid": "d1",
+   "kind": "item",
+   "problem_key": "P1",
+   "target": 8,
+   "evidence": [
+    {
+     "utterance_id": "u3"
+    }
+   ]
+  },
+  {
+   "type": "next_visit",
+   "scope": "problem",
+   "target_relation": "unknown",
+   "assertion": "present",
+   "time_context": "planned",
+   "assertion_source": "clinician_instruction",
+   "action": null,
+   "status_fields": {},
+   "key_attributes": {
+    "procedure": "crown",
+    "timing": "next week"
+   },
+   "gid": "n1",
+   "kind": "item",
+   "problem_key": "P1",
+   "target": 9,
+   "evidence": [
+    {
+     "utterance_id": "u4"
+    }
+   ]
+  }
+ ],
+ "expected_flags": [
+  {
+   "rule_id": "treatment_target_disagreement",
+   "problem_key": "P1",
+   "target": null,
+   "meaning": "diagnosis on #8 but crown scheduled on #9",
+   "evidence": [
+    {
+     "utterance_id": "u3"
+    },
+    {
+     "utterance_id": "u4"
+    }
+   ]
+  },
+  {
+   "rule_id": "treatment_target_mismatch",
+   "problem_key": "P1",
+   "target": 9,
+   "meaning": "crown on #9 differs from the clinical target #8",
+   "evidence": [
+    {
+     "utterance_id": "u4"
+    }
+   ]
+  }
+ ],
+ "forbidden_facts": [],
+ "notes": "Draft matrix gold; needs a person to check."
+}

@@ -271,3 +271,12 @@ def test_unknown_option_link():
 def test_pending_critical_correction():
     assert fired(graph(problem()), "pending_critical_correction", pending_corrections=["tooth 14 -> 15"])
     assert not fired(graph(problem()), "pending_critical_correction")
+
+
+def test_treatment_on_recorded_control_tooth_without_target_is_mismatch():
+    g = graph(problem(target=None, mode="team"), rel(tooth=3, kind="control"),
+              item("next_visit", 3, mode="team", procedure="filling"), mode="team")
+    f = fired(g, "treatment_target_mismatch", mode="team")
+    assert f and f[0].severity == "high" and f[0].safety_critical
+    g2 = graph(problem(target=None), item("next_visit", 3, procedure="filling"))
+    assert not fired(g2, "treatment_target_mismatch") and fired(g2, "target_not_assessable")

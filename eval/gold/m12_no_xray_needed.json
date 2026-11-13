@@ -1,0 +1,148 @@
+{
+ "case_id": "m12_no_xray_needed",
+ "annotated_by": "claude",
+ "checked_by": null,
+ "entities": [
+  {
+   "type": null,
+   "scope": null,
+   "target_relation": null,
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": null,
+   "action": null,
+   "status_fields": {},
+   "key_attributes": {
+    "role": "chief",
+    "complaint_text": "piece of filling came out, upper right",
+    "complaint_location": "upper right"
+   },
+   "gid": "p_P1",
+   "kind": "problem",
+   "problem_key": "P1",
+   "target": 3,
+   "evidence": [
+    {
+     "utterance_id": "u1"
+    },
+    {
+     "utterance_id": "u2"
+    }
+   ]
+  },
+  {
+   "type": "vital_reading",
+   "scope": "encounter",
+   "target_relation": null,
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "assistant_record",
+   "action": null,
+   "status_fields": {},
+   "key_attributes": {
+    "systolic": 120,
+    "diastolic": 78
+   },
+   "gid": "v1",
+   "kind": "item",
+   "problem_key": null,
+   "target": null,
+   "evidence": [
+    {
+     "quick_note_id": "q1"
+    }
+   ]
+  },
+  {
+   "type": "symptom",
+   "scope": "problem",
+   "target_relation": null,
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "patient_report",
+   "action": null,
+   "status_fields": {},
+   "key_attributes": {
+    "aspect": "other",
+    "value": "piece of filling came out"
+   },
+   "gid": "s1",
+   "kind": "item",
+   "problem_key": "P1",
+   "target": null,
+   "evidence": [
+    {
+     "utterance_id": "u1"
+    }
+   ]
+  },
+  {
+   "type": "finding",
+   "scope": "problem",
+   "target_relation": "matches_target",
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "clinician_observation",
+   "action": null,
+   "status_fields": {},
+   "key_attributes": {
+    "observation": "lost a small piece of its filling"
+   },
+   "gid": "f1",
+   "kind": "item",
+   "problem_key": "P1",
+   "target": 3,
+   "evidence": [
+    {
+     "utterance_id": "u2"
+    }
+   ]
+  },
+  {
+   "type": "radiograph",
+   "scope": "problem",
+   "target_relation": null,
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "clinician_assessment",
+   "action": "not_needed",
+   "status_fields": {},
+   "key_attributes": {},
+   "gid": "x1",
+   "kind": "item",
+   "problem_key": "P1",
+   "target": null,
+   "evidence": [
+    {
+     "utterance_id": "u2"
+    }
+   ]
+  },
+  {
+   "type": "next_visit",
+   "scope": "problem",
+   "target_relation": "matches_target",
+   "assertion": "present",
+   "time_context": "planned",
+   "assertion_source": "clinician_instruction",
+   "action": null,
+   "status_fields": {},
+   "key_attributes": {
+    "procedure": "replace the filling",
+    "timing": "next week"
+   },
+   "gid": "n1",
+   "kind": "item",
+   "problem_key": "P1",
+   "target": 3,
+   "evidence": [
+    {
+     "utterance_id": "u3"
+    }
+   ]
+  }
+ ],
+ "expected_flags": [],
+ "forbidden_facts": [],
+ "notes": "Draft matrix gold; needs a person to check."
+}

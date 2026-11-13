@@ -1,0 +1,4 @@
+DENTIST: What brings you in?
+PATIENT: My upper left gums feel sore.
+DENTIST: There's no swelling around fourteen; fifteen is tender when I press.
+DENTIST: Fifteen is the sore spot.

@@ -1,0 +1,520 @@
+{
+ "case": "m02_treatment_on_control",
+ "pipeline": "baseline",
+ "repeat": 0,
+ "session": "afc96a55-685c-41d7-a8c7-5ca9512997b0",
+ "error": null,
+ "wall_s": 9.7,
+ "candidate": true,
+ "ready_for_review": true,
+ "failed_stages": [],
+ "production_failure_stage": null,
+ "calls": 2,
+ "usd_pipeline": 0.03,
+ "usd_shared": 0.0067,
+ "per_agent": {
+  "B0": {
+   "calls": 1,
+   "in": 8211,
+   "out": 1361,
+   "seconds": 6.9,
+   "usd": 0.03
+  },
+  "R2": {
+   "calls": 1,
+   "in": 2194,
+   "out": 234,
+   "seconds": 2.8,
+   "usd": 0.0067
+  }
+ },
+ "timings": [
+  6.9,
+  2.8
+ ],
+ "scored": true,
+ "grader_error": null,
+ "final": {
+  "gold": 7,
+  "matched": 7,
+  "produced": 7,
+  "precision": [
+   7,
+   7
+  ],
+  "recall": [
+   7,
+   7
+  ],
+  "by_type": {
+   "problem": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "relationship": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "vital_reading": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "symptom": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "finding": {
+    "gold": 2,
+    "matched": 2,
+    "produced": 2
+   },
+   "next_visit": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   }
+  },
+  "dims": {
+   "tooth": [
+    5,
+    5
+   ],
+   "role": [
+    1,
+    1
+   ],
+   "attr:complaint_text": [
+    1,
+    1
+   ],
+   "attr:complaint_location": [
+    1,
+    1
+   ],
+   "attr:relation_kind": [
+    1,
+    1
+   ],
+   "attr:systolic": [
+    1,
+    1
+   ],
+   "attr:diastolic": [
+    1,
+    1
+   ],
+   "assertion": [
+    5,
+    5
+   ],
+   "time_context": [
+    5,
+    5
+   ],
+   "assertion_source": [
+    5,
+    5
+   ],
+   "attr:aspect": [
+    1,
+    1
+   ],
+   "attr:value": [
+    1,
+    1
+   ],
+   "target_relation": [
+    1,
+    3
+   ],
+   "attr:test": [
+    2,
+    2
+   ],
+   "attr:response": [
+    1,
+    2
+   ],
+   "attr:procedure": [
+    1,
+    1
+   ],
+   "attr:timing": [
+    1,
+    1
+   ]
+  },
+  "critical": {
+   "tooth": [
+    5,
+    5
+   ],
+   "relationship": [
+    1,
+    1
+   ]
+  },
+  "errors": [
+   "f1:target_relation",
+   "f1:attr:response",
+   "n1:target_relation"
+  ],
+  "omissions": [],
+  "extras": [],
+  "problem_map": {
+   "P1": "pb_1"
+  },
+  "merged": [],
+  "split": [],
+  "target_accuracy": [
+   1,
+   1
+  ],
+  "flags": {
+   "caught": [
+    "treatment_target_mismatch"
+   ],
+   "missed": [],
+   "duplicates": [],
+   "false_alarms": [
+    "unsupported_content (technical)",
+    "open_review_task (technical)"
+   ],
+   "tolerated": [
+    "unexplained_other_tooth"
+   ],
+   "questions": []
+  },
+  "forbidden_hits": [],
+  "expectations": [
+   {
+    "check": "flag_present",
+    "rule_id": "treatment_target_mismatch",
+    "pass": true
+   }
+  ]
+ },
+ "raw": {
+  "gold": 7,
+  "matched": 7,
+  "produced": 7,
+  "precision": [
+   7,
+   7
+  ],
+  "recall": [
+   7,
+   7
+  ],
+  "by_type": {
+   "problem": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "relationship": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "vital_reading": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "symptom": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "finding": {
+    "gold": 2,
+    "matched": 2,
+    "produced": 2
+   },
+   "next_visit": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   }
+  },
+  "dims": {
+   "tooth": [
+    5,
+    5
+   ],
+   "role": [
+    1,
+    1
+   ],
+   "attr:complaint_text": [
+    1,
+    1
+   ],
+   "attr:complaint_location": [
+    1,
+    1
+   ],
+   "attr:relation_kind": [
+    1,
+    1
+   ],
+   "attr:systolic": [
+    1,
+    1
+   ],
+   "attr:diastolic": [
+    1,
+    1
+   ],
+   "assertion": [
+    5,
+    5
+   ],
+   "time_context": [
+    5,
+    5
+   ],
+   "assertion_source": [
+    5,
+    5
+   ],
+   "attr:aspect": [
+    1,
+    1
+   ],
+   "attr:value": [
+    1,
+    1
+   ],
+   "target_relation": [
+    0,
+    3
+   ],
+   "attr:test": [
+    2,
+    2
+   ],
+   "attr:response": [
+    1,
+    2
+   ],
+   "attr:procedure": [
+    1,
+    1
+   ],
+   "attr:timing": [
+    1,
+    1
+   ]
+  },
+  "critical": {
+   "tooth": [
+    5,
+    5
+   ],
+   "relationship": [
+    1,
+    1
+   ]
+  },
+  "errors": [
+   "f1:target_relation",
+   "f1:attr:response",
+   "f2:target_relation",
+   "n1:target_relation"
+  ],
+  "omissions": [],
+  "extras": [],
+  "problem_map": {
+   "P1": "pb_1"
+  },
+  "merged": [],
+  "split": [],
+  "target_accuracy": [
+   1,
+   1
+  ],
+  "flags": {
+   "caught": [],
+   "missed": [
+    "treatment_target_mismatch"
+   ],
+   "duplicates": [],
+   "false_alarms": [],
+   "tolerated": [],
+   "questions": []
+  },
+  "forbidden_hits": [],
+  "expectations": []
+ },
+ "claims": {
+  "supported_by_quick_notes": 2,
+  "supported_by_transcript": 19,
+  "changed_meaning": 1
+ },
+ "claims_detail": [
+  {
+   "claim_id": "it_001|systolic",
+   "label": "supported_by_quick_notes",
+   "quote": "BP 120/78",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_001|diastolic",
+   "label": "supported_by_quick_notes",
+   "quote": "BP 120/78",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "pb_1|role",
+   "label": "supported_by_transcript",
+   "quote": "What brings you in?",
+   "confidence": 0.85
+  },
+  {
+   "claim_id": "pb_1|complaint_text",
+   "label": "supported_by_transcript",
+   "quote": "My upper left molar is sensitive to cold.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "pb_1|complaint_location",
+   "label": "supported_by_transcript",
+   "quote": "My upper left molar is sensitive to cold.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "pb_1|clinical_target",
+   "label": "supported_by_transcript",
+   "quote": "Cold on number fourteen.",
+   "confidence": 0.65
+  },
+  {
+   "claim_id": "rl_1|tooth",
+   "label": "supported_by_transcript",
+   "quote": "Number three is our control tooth. Cold on three.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "rl_1|relation_kind",
+   "label": "supported_by_transcript",
+   "quote": "Number three is our control tooth. Cold on three.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "rl_1|note",
+   "label": "supported_by_transcript",
+   "quote": "Number three is our control tooth. Cold on three.",
+   "confidence": 0.5
+  },
+  {
+   "claim_id": "it_002|aspect",
+   "label": "supported_by_transcript",
+   "quote": "My upper left molar is sensitive to cold.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_002|value",
+   "label": "supported_by_transcript",
+   "quote": "My upper left molar is sensitive to cold.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_003|tooth",
+   "label": "supported_by_transcript",
+   "quote": "Number three is our control tooth. Cold on three.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_003|test",
+   "label": "supported_by_transcript",
+   "quote": "Number three is our control tooth. Cold on three.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_003|response",
+   "label": "changed_meaning",
+   "quote": "Normal.",
+   "confidence": 0.85
+  },
+  {
+   "claim_id": "it_003|result_description",
+   "label": "supported_by_transcript",
+   "quote": "Normal.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_004|tooth",
+   "label": "supported_by_transcript",
+   "quote": "Cold on number fourteen.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_004|test",
+   "label": "supported_by_transcript",
+   "quote": "Cold on number fourteen.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_004|response",
+   "label": "supported_by_transcript",
+   "quote": "Yes, that hurts.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_004|result_description",
+   "label": "supported_by_transcript",
+   "quote": "Yes, that hurts.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_005|procedure",
+   "label": "supported_by_transcript",
+   "quote": "We'll put a filling on number three next week.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_005|tooth",
+   "label": "supported_by_transcript",
+   "quote": "We'll put a filling on number three next week.",
+   "confidence": 0.85
+  },
+  {
+   "claim_id": "it_005|timing",
+   "label": "supported_by_transcript",
+   "quote": "We'll put a filling on number three next week.",
+   "confidence": 0.95
+  }
+ ],
+ "dentist_blockers": 3,
+ "blocker_kinds": {
+  "rl_1": 1,
+  "task": 1,
+  "safety-critical": 1
+ },
+ "check_counts": {
+  "span_valid": {
+   "pass": 7
+  },
+  "normalization_valid": {
+   "pass": 5,
+   "fail": 1,
+   "not_applicable": 1
+  },
+  "semantic_support": {
+   "not_applicable": 7
+  }
+ },
+ "relationships": [
+  {
+   "tooth": 3,
+   "kind": "control",
+   "semantic": "not_applicable"
+  }
+ ]
+}

@@ -83,6 +83,7 @@ class Run:
     issues: list[Issue] = field(default_factory=list)
     log: list[str] = field(default_factory=list)
     stage_tasks: list = field(default_factory=list)
+    linker_version: int | None = None
 
     def agent(self, name):
         return self.agents[name](client=self.client, tracer=self.tracer)
@@ -157,6 +158,7 @@ def run_pipeline(session: Session, *, mode: str | None = None, rule_mode: str | 
         result = derive(session, run.graph, sources, mode, rule_mode, run_id=run_id, run=run)
         state = {"run_id": run_id, "mode": mode, "rule_mode": rule_mode, "started": started, "finished": now(),
                  "graph_version": run.graph.version if run.graph else None,
+                 "linker_graph_version": run.linker_version,
                  "r2_findings": run.r2_findings, "issues": [i.to_dict() for i in run.issues], "log": run.log,
                  "trace_totals": run.tracer.totals()}
         atomic_write_json(session.path("runs", f"{run_id}.json"), state)
@@ -264,6 +266,7 @@ def stage_b(run: Run) -> None:
         rec.task_id = task.id
         add_task(graph, task, run.previous)
     run.graph = save_graph(run.session, graph)
+    run.linker_version = run.graph.version
     run.tracer.graph_version = run.graph.version
 
 

@@ -1,0 +1,6 @@
+DENTIST: Any medications?
+PATIENT: I used to take warfarin, but I stopped last year.
+DENTIST: Anything else?
+PATIENT: No.
+DENTIST: What brings you in?
+PATIENT: A cleaning check, and my lower left tooth is a bit sensitive.

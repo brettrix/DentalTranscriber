@@ -1,0 +1,1088 @@
+{
+ "case": "case2",
+ "pipeline": "team",
+ "repeat": 0,
+ "session": "f049f31e-2762-497b-8d37-8dd65f94992e",
+ "error": null,
+ "wall_s": 58.0,
+ "candidate": true,
+ "ready_for_review": true,
+ "failed_stages": [],
+ "production_failure_stage": null,
+ "calls": 44,
+ "usd_pipeline": 0.6281,
+ "usd_shared": 0.0069,
+ "per_agent": {
+  "Br": {
+   "calls": 1,
+   "in": 7062,
+   "out": 366,
+   "seconds": 2.9,
+   "usd": 0.0178
+  },
+  "B1": {
+   "calls": 2,
+   "in": 15188,
+   "out": 869,
+   "seconds": 6.2,
+   "usd": 0.0391
+  },
+  "B2": {
+   "calls": 2,
+   "in": 14904,
+   "out": 1190,
+   "seconds": 11.1,
+   "usd": 0.0417
+  },
+  "B3": {
+   "calls": 2,
+   "in": 16801,
+   "out": 2314,
+   "seconds": 14.8,
+   "usd": 0.0567
+  },
+  "B4": {
+   "calls": 2,
+   "in": 18597,
+   "out": 3871,
+   "seconds": 23.9,
+   "usd": 0.0759
+  },
+  "Cs": {
+   "calls": 18,
+   "in": 102798,
+   "out": 11382,
+   "seconds": 67.7,
+   "usd": 0.3194
+  },
+  "Ce": {
+   "calls": 14,
+   "in": 21132,
+   "out": 1648,
+   "seconds": 20.2,
+   "usd": 0.0587
+  },
+  "Co": {
+   "calls": 2,
+   "in": 8474,
+   "out": 181,
+   "seconds": 2.8,
+   "usd": 0.0188
+  },
+  "R2": {
+   "calls": 1,
+   "in": 3169,
+   "out": 53,
+   "seconds": 1.4,
+   "usd": 0.0069
+  }
+ },
+ "timings": [
+  2.9,
+  4.0,
+  8.6,
+  9.2,
+  10.5,
+  2.9,
+  3.2,
+  5.1,
+  5.8,
+  3.7,
+  2.7,
+  5.2,
+  4.3,
+  3.2,
+  3.2,
+  1.1,
+  1.9,
+  2.3,
+  1.2,
+  2.3,
+  1.3,
+  1.1,
+  1.1,
+  1.4,
+  1.2,
+  1.4,
+  2.1,
+  2.4,
+  5.5,
+  13.4,
+  2.6,
+  3.4,
+  3.9,
+  4.3,
+  2.1,
+  3.5,
+  2.6,
+  6.0,
+  1.1,
+  1.1,
+  1.1,
+  1.6,
+  1.5,
+  1.6
+ ],
+ "scored": true,
+ "grader_error": null,
+ "final": {
+  "gold": 20,
+  "matched": 19,
+  "produced": 24,
+  "precision": [
+   19,
+   24
+  ],
+  "recall": [
+   19,
+   20
+  ],
+  "by_type": {
+   "problem": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "symptom": {
+    "gold": 5,
+    "matched": 5,
+    "produced": 5
+   },
+   "medication": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "vital_reading": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "finding": {
+    "gold": 4,
+    "matched": 4,
+    "produced": 5
+   },
+   "radiograph": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "diagnosis": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "option_discussed": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 2
+   },
+   "consent_element": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 2
+   },
+   "decision": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "instruction": {
+    "gold": 3,
+    "matched": 2,
+    "produced": 3
+   },
+   "history_change": {
+    "gold": 0,
+    "matched": 0,
+    "produced": 1
+   }
+  },
+  "dims": {
+   "tooth": [
+    8,
+    10
+   ],
+   "role": [
+    1,
+    1
+   ],
+   "attr:complaint_text": [
+    1,
+    1
+   ],
+   "attr:complaint_location": [
+    1,
+    1
+   ],
+   "attr:aspect": [
+    4,
+    5
+   ],
+   "attr:value": [
+    4,
+    4
+   ],
+   "assertion": [
+    18,
+    18
+   ],
+   "time_context": [
+    18,
+    18
+   ],
+   "assertion_source": [
+    18,
+    18
+   ],
+   "attr:score": [
+    1,
+    1
+   ],
+   "attr:drug": [
+    1,
+    1
+   ],
+   "status": [
+    1,
+    1
+   ],
+   "attr:systolic": [
+    1,
+    1
+   ],
+   "attr:diastolic": [
+    1,
+    1
+   ],
+   "target_relation": [
+    7,
+    7
+   ],
+   "attr:observation": [
+    1,
+    1
+   ],
+   "attr:test": [
+    3,
+    3
+   ],
+   "attr:response": [
+    3,
+    3
+   ],
+   "attr:result_description": [
+    1,
+    2
+   ],
+   "attr:lingering": [
+    1,
+    1
+   ],
+   "attr:type": [
+    1,
+    1
+   ],
+   "attr:finding": [
+    1,
+    1
+   ],
+   "action": [
+    1,
+    1
+   ],
+   "attr:diagnosis": [
+    1,
+    1
+   ],
+   "attr:certainty": [
+    1,
+    1
+   ],
+   "attr:option": [
+    2,
+    2
+   ],
+   "attr:recommended_by_clinician": [
+    1,
+    1
+   ],
+   "attr:element": [
+    1,
+    1
+   ],
+   "attr:content": [
+    1,
+    1
+   ],
+   "attr:decision": [
+    1,
+    1
+   ],
+   "attr:reason": [
+    1,
+    1
+   ],
+   "attr:text": [
+    1,
+    2
+   ]
+  },
+  "critical": {
+   "tooth": [
+    8,
+    10
+   ],
+   "drug": [
+    1,
+    1
+   ],
+   "medication_status": [
+    1,
+    1
+   ],
+   "certainty": [
+    1,
+    1
+   ],
+   "decision": [
+    1,
+    1
+   ]
+  },
+  "errors": [
+   "s3:attr:aspect",
+   "f2:attr:result_description",
+   "c1:tooth",
+   "dc1:tooth",
+   "i2:attr:text"
+  ],
+  "omissions": [
+   "i3"
+  ],
+  "extras": [
+   "option_discussed:it_002",
+   "instruction:it_019",
+   "consent_element:it_022",
+   "finding:it_012",
+   "history_change:it_003"
+  ],
+  "problem_map": {
+   "P1": "pb_1"
+  },
+  "merged": [],
+  "split": [],
+  "target_accuracy": [
+   1,
+   1
+  ],
+  "flags": {
+   "caught": [],
+   "missed": [],
+   "duplicates": [],
+   "false_alarms": [
+    "unsupported_content (technical)",
+    "unsupported_content (technical)",
+    "unsupported_content (technical)",
+    "open_review_task (technical)",
+    "open_review_task (technical)",
+    "open_review_task (technical)",
+    "open_review_task (technical)",
+    "open_review_task (technical)",
+    "open_review_task (technical)",
+    "open_review_task (technical)",
+    "refusal_discussion"
+   ],
+   "tolerated": [],
+   "questions": []
+  },
+  "forbidden_hits": [],
+  "expectations": []
+ },
+ "raw": {
+  "gold": 20,
+  "matched": 18,
+  "produced": 23,
+  "precision": [
+   18,
+   23
+  ],
+  "recall": [
+   18,
+   20
+  ],
+  "by_type": {
+   "problem": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "symptom": {
+    "gold": 5,
+    "matched": 5,
+    "produced": 5
+   },
+   "medication": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "vital_reading": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "finding": {
+    "gold": 4,
+    "matched": 3,
+    "produced": 4
+   },
+   "radiograph": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "diagnosis": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "option_discussed": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 2
+   },
+   "consent_element": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 2
+   },
+   "decision": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "instruction": {
+    "gold": 3,
+    "matched": 2,
+    "produced": 3
+   },
+   "history_change": {
+    "gold": 0,
+    "matched": 0,
+    "produced": 1
+   }
+  },
+  "dims": {
+   "tooth": [
+    7,
+    9
+   ],
+   "role": [
+    1,
+    1
+   ],
+   "attr:complaint_text": [
+    1,
+    1
+   ],
+   "attr:complaint_location": [
+    1,
+    1
+   ],
+   "attr:aspect": [
+    4,
+    5
+   ],
+   "attr:value": [
+    4,
+    4
+   ],
+   "assertion": [
+    17,
+    17
+   ],
+   "time_context": [
+    17,
+    17
+   ],
+   "assertion_source": [
+    17,
+    17
+   ],
+   "attr:score": [
+    1,
+    1
+   ],
+   "attr:drug": [
+    1,
+    1
+   ],
+   "status": [
+    1,
+    1
+   ],
+   "attr:systolic": [
+    1,
+    1
+   ],
+   "attr:diastolic": [
+    1,
+    1
+   ],
+   "target_relation": [
+    0,
+    6
+   ],
+   "attr:test": [
+    3,
+    3
+   ],
+   "attr:response": [
+    3,
+    3
+   ],
+   "attr:result_description": [
+    1,
+    2
+   ],
+   "attr:lingering": [
+    1,
+    1
+   ],
+   "attr:type": [
+    1,
+    1
+   ],
+   "attr:finding": [
+    1,
+    1
+   ],
+   "action": [
+    1,
+    1
+   ],
+   "attr:diagnosis": [
+    1,
+    1
+   ],
+   "attr:certainty": [
+    1,
+    1
+   ],
+   "attr:option": [
+    2,
+    2
+   ],
+   "attr:recommended_by_clinician": [
+    1,
+    1
+   ],
+   "attr:element": [
+    1,
+    1
+   ],
+   "attr:content": [
+    1,
+    1
+   ],
+   "attr:decision": [
+    1,
+    1
+   ],
+   "attr:reason": [
+    1,
+    1
+   ],
+   "attr:text": [
+    1,
+    2
+   ]
+  },
+  "critical": {
+   "tooth": [
+    7,
+    9
+   ],
+   "drug": [
+    1,
+    1
+   ],
+   "medication_status": [
+    1,
+    1
+   ],
+   "certainty": [
+    1,
+    1
+   ],
+   "decision": [
+    1,
+    1
+   ]
+  },
+  "errors": [
+   "s3:attr:aspect",
+   "f2:target_relation",
+   "f2:attr:result_description",
+   "f3:target_relation",
+   "f4:target_relation",
+   "x1:target_relation",
+   "d1:target_relation",
+   "o1:target_relation",
+   "c1:tooth",
+   "dc1:tooth",
+   "i2:attr:text"
+  ],
+  "omissions": [
+   "f1",
+   "i3"
+  ],
+  "extras": [
+   "option_discussed:it_002",
+   "history_change:it_003",
+   "finding:it_012",
+   "instruction:it_019",
+   "consent_element:it_022"
+  ],
+  "problem_map": {
+   "P1": "pb_1"
+  },
+  "merged": [],
+  "split": [],
+  "target_accuracy": [
+   1,
+   1
+  ],
+  "flags": {
+   "caught": [],
+   "missed": [],
+   "duplicates": [],
+   "false_alarms": [],
+   "tolerated": [],
+   "questions": []
+  },
+  "forbidden_hits": [],
+  "expectations": []
+ },
+ "claims": {
+  "supported_by_transcript": 62,
+  "supported_by_quick_notes": 2,
+  "changed_meaning": 1
+ },
+ "claims_detail": [
+  {
+   "claim_id": "it_004|drug",
+   "label": "supported_by_transcript",
+   "quote": "I started a blood pressure medication a couple months ago. Lisinopril.",
+   "confidence": 0.97
+  },
+  {
+   "claim_id": "it_004|medication_status",
+   "label": "supported_by_transcript",
+   "quote": "I started a blood pressure medication a couple months ago. Lisinopril.",
+   "confidence": 0.8
+  },
+  {
+   "claim_id": "it_005|systolic",
+   "label": "supported_by_quick_notes",
+   "quote": "BP 138/86",
+   "confidence": 0.97
+  },
+  {
+   "claim_id": "it_005|diastolic",
+   "label": "supported_by_quick_notes",
+   "quote": "BP 138/86",
+   "confidence": 0.97
+  },
+  {
+   "claim_id": "it_003|description",
+   "label": "supported_by_transcript",
+   "quote": "I started a blood pressure medication a couple months ago. Lisinopril.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_003|time_context",
+   "label": "supported_by_transcript",
+   "quote": "I started a blood pressure medication a couple months ago. Lisinopril.",
+   "confidence": 0.55
+  },
+  {
+   "claim_id": "pb_1|role",
+   "label": "supported_by_transcript",
+   "quote": "When I chew on my lower right side, I get this sharp pain. Mostly with harder foods, like nuts.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "pb_1|complaint_text",
+   "label": "supported_by_transcript",
+   "quote": "When I chew on my lower right side, I get this sharp pain. Mostly with harder foods, like nuts.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "pb_1|complaint_location",
+   "label": "supported_by_transcript",
+   "quote": "When I chew on my lower right side, I get this sharp pain. Mostly with harder foods, like nuts.",
+   "confidence": 0.97
+  },
+  {
+   "claim_id": "pb_1|clinical_target",
+   "label": "supported_by_transcript",
+   "quote": "Okay, thanks, we'll update that. Let's look. This is number thirty. It has a big old filling. I'm going to have you bite on this little tool, one cusp at a time. Tell me if anything hurts.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_007|aspect",
+   "label": "supported_by_transcript",
+   "quote": "When did that start?",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_007|value",
+   "label": "supported_by_transcript",
+   "quote": "About a month ago. I bit down on a popcorn kernel and it's been weird since.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_008|aspect",
+   "label": "supported_by_transcript",
+   "quote": "Is it a quick sharp pain when you bite, or more of a constant ache?",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_008|value",
+   "label": "supported_by_transcript",
+   "quote": "Quick and sharp. Sometimes when I let go of the bite, too.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_009|aspect",
+   "label": "supported_by_transcript",
+   "quote": "Any sensitivity to cold or hot?",
+   "confidence": 0.75
+  },
+  {
+   "claim_id": "it_009|value",
+   "label": "supported_by_transcript",
+   "quote": "A little to cold, but it goes away.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_010|aspect",
+   "label": "supported_by_transcript",
+   "quote": "How bad, zero to ten?",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_010|value",
+   "label": "supported_by_transcript",
+   "quote": "When it happens, a seven. Otherwise it's fine.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_010|score",
+   "label": "supported_by_transcript",
+   "quote": "When it happens, a seven. Otherwise it's fine.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_006|aspect",
+   "label": "supported_by_transcript",
+   "quote": "When I chew on my lower right side, I get this sharp pain. Mostly with harder foods, like nuts.",
+   "confidence": 0.85
+  },
+  {
+   "claim_id": "it_006|value",
+   "label": "supported_by_transcript",
+   "quote": "When I chew on my lower right side, I get this sharp pain. Mostly with harder foods, like nuts.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_011|tooth",
+   "label": "supported_by_transcript",
+   "quote": "That's the distal lingual cusp of thirty. And when you release?",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_011|test",
+   "label": "supported_by_transcript",
+   "quote": "Okay, thanks, we'll update that. Let's look. This is number thirty. It has a big old filling. I'm going to have you bite on this little tool, one cusp at a time. Tell me if anything hurts.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_011|response",
+   "label": "supported_by_transcript",
+   "quote": "Okay. Nothing. Nothing. Ow, that one.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_011|result_description",
+   "label": "supported_by_transcript",
+   "quote": "That's the distal lingual cusp of thirty. And when you release?",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_012|tooth",
+   "label": "supported_by_transcript",
+   "quote": "That's the distal lingual cusp of thirty. And when you release?",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_012|test",
+   "label": "supported_by_transcript",
+   "quote": "That's the distal lingual cusp of thirty. And when you release?",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_012|response",
+   "label": "supported_by_transcript",
+   "quote": "Yeah, that hurts too.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_012|result_description",
+   "label": "supported_by_transcript",
+   "quote": "Yeah, that hurts too.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_013|tooth",
+   "label": "supported_by_transcript",
+   "quote": "Okay. Cold test on thirty.",
+   "confidence": 0.97
+  },
+  {
+   "claim_id": "it_013|test",
+   "label": "supported_by_transcript",
+   "quote": "Okay. Cold test on thirty.",
+   "confidence": 0.97
+  },
+  {
+   "claim_id": "it_013|response",
+   "label": "supported_by_transcript",
+   "quote": "Feel it, it's going away.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_013|result_description",
+   "label": "supported_by_transcript",
+   "quote": "Normal response. Tapping? Nothing?",
+   "confidence": 0.85
+  },
+  {
+   "claim_id": "it_013|lingering",
+   "label": "supported_by_transcript",
+   "quote": "Feel it, it's going away.",
+   "confidence": 0.8
+  },
+  {
+   "claim_id": "it_014|tooth",
+   "label": "supported_by_transcript",
+   "quote": "Normal response. Tapping? Nothing?",
+   "confidence": 0.8
+  },
+  {
+   "claim_id": "it_014|test",
+   "label": "supported_by_transcript",
+   "quote": "Normal response. Tapping? Nothing?",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_014|response",
+   "label": "supported_by_transcript",
+   "quote": "Nothing.",
+   "confidence": 0.92
+  },
+  {
+   "claim_id": "it_014|result_description",
+   "label": "supported_by_transcript",
+   "quote": "Nothing.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_023|tooth",
+   "label": "supported_by_transcript",
+   "quote": "Okay, thanks, we'll update that. Let's look. This is number thirty. It has a big old filling. I'm going to have you bite on this little tool, one cusp at a time. Tell me if anything hurts.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_023|observation",
+   "label": "supported_by_transcript",
+   "quote": "Okay, thanks, we'll update that. Let's look. This is number thirty. It has a big old filling. I'm going to have you bite on this little tool, one cusp at a time. Tell me if anything hurts.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_015|type",
+   "label": "supported_by_transcript",
+   "quote": "Let's grab a PA of thirty.",
+   "confidence": 0.97
+  },
+  {
+   "claim_id": "it_015|tooth",
+   "label": "supported_by_transcript",
+   "quote": "Let's grab a PA of thirty.",
+   "confidence": 0.97
+  },
+  {
+   "claim_id": "it_015|target",
+   "label": "supported_by_transcript",
+   "quote": "Let's grab a PA of thirty.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_015|action",
+   "label": "supported_by_transcript",
+   "quote": "The x-ray looks normal: no decay under the filling and the root tips are healthy. With pain on biting and releasing on that one cusp, this looks like a cracked tooth. Cracks usually don't show up on x-rays.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_015|finding",
+   "label": "supported_by_transcript",
+   "quote": "The x-ray looks normal: no decay under the filling and the root tips are healthy. With pain on biting and releasing on that one cusp, this looks like a cracked tooth. Cracks usually don't show up on x-rays.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_016|diagnosis",
+   "label": "supported_by_transcript",
+   "quote": "The x-ray looks normal: no decay under the filling and the root tips are healthy. With pain on biting and releasing on that one cusp, this looks like a cracked tooth. Cracks usually don't show up on x-rays.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_016|tooth",
+   "label": "supported_by_transcript",
+   "quote": "Let's grab a PA of thirty.",
+   "confidence": 0.85
+  },
+  {
+   "claim_id": "it_016|certainty",
+   "label": "changed_meaning",
+   "quote": "The x-ray looks normal: no decay under the filling and the root tips are healthy. With pain on biting and releasing on that one cusp, this looks like a cracked tooth. Cracks usually don't show up on x-rays.",
+   "confidence": 0.85
+  },
+  {
+   "claim_id": "it_001|option",
+   "label": "supported_by_transcript",
+   "quote": "It's common, especially with big old fillings. The best treatment is a crown. It holds the tooth together so the crack doesn't spread.",
+   "confidence": 0.97
+  },
+  {
+   "claim_id": "it_001|tooth",
+   "label": "supported_by_transcript",
+   "quote": "Let's grab a PA of thirty.",
+   "confidence": 0.85
+  },
+  {
+   "claim_id": "it_001|benefits",
+   "label": "supported_by_transcript",
+   "quote": "It's common, especially with big old fillings. The best treatment is a crown. It holds the tooth together so the crack doesn't spread.",
+   "confidence": 0.97
+  },
+  {
+   "claim_id": "it_001|recommended_by_clinician",
+   "label": "supported_by_transcript",
+   "quote": "It's common, especially with big old fillings. The best treatment is a crown. It holds the tooth together so the crack doesn't spread.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_002|option",
+   "label": "supported_by_transcript",
+   "quote": "The front desk can give you an estimate. I do want you to know that if we wait, the crack can grow into the nerve. Then you might need a root canal, and if it splits down the root, we'd have to take the tooth out.",
+   "confidence": 0.85
+  },
+  {
+   "claim_id": "it_002|tooth",
+   "label": "supported_by_transcript",
+   "quote": "Let's grab a PA of thirty.",
+   "confidence": 0.8
+  },
+  {
+   "claim_id": "it_002|risks",
+   "label": "supported_by_transcript",
+   "quote": "The front desk can give you an estimate. I do want you to know that if we wait, the crack can grow into the nerve. Then you might need a root canal, and if it splits down the root, we'd have to take the tooth out.",
+   "confidence": 0.93
+  },
+  {
+   "claim_id": "it_020|decision",
+   "label": "supported_by_transcript",
+   "quote": "Okay, I understand. I want to check my insurance first and maybe do it in January.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_020|option",
+   "label": "supported_by_transcript",
+   "quote": "Okay, I understand. I want to check my insurance first and maybe do it in January.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_020|reason",
+   "label": "supported_by_transcript",
+   "quote": "Okay, I understand. I want to check my insurance first and maybe do it in January.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_021|element",
+   "label": "supported_by_transcript",
+   "quote": "The front desk can give you an estimate. I do want you to know that if we wait, the crack can grow into the nerve. Then you might need a root canal, and if it splits down the root, we'd have to take the tooth out.",
+   "confidence": 0.85
+  },
+  {
+   "claim_id": "it_021|content",
+   "label": "supported_by_transcript",
+   "quote": "The front desk can give you an estimate. I do want you to know that if we wait, the crack can grow into the nerve. Then you might need a root canal, and if it splits down the root, we'd have to take the tooth out.",
+   "confidence": 0.93
+  },
+  {
+   "claim_id": "it_022|element",
+   "label": "supported_by_transcript",
+   "quote": "It's common, especially with big old fillings. The best treatment is a crown. It holds the tooth together so the crack doesn't spread.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_022|content",
+   "label": "supported_by_transcript",
+   "quote": "It's common, especially with big old fillings. The best treatment is a crown. It holds the tooth together so the crack doesn't spread.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_017|text",
+   "label": "supported_by_transcript",
+   "quote": "That's your call. Until then, try to chew on the other side and avoid hard foods like nuts and ice. If it starts hurting on its own or wakes you up, call us right away.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_018|text",
+   "label": "supported_by_transcript",
+   "quote": "That's your call. Until then, try to chew on the other side and avoid hard foods like nuts and ice. If it starts hurting on its own or wakes you up, call us right away.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_019|text",
+   "label": "supported_by_transcript",
+   "quote": "The front desk can give you an estimate. I do want you to know that if we wait, the crack can grow into the nerve. Then you might need a root canal, and if it splits down the root, we'd have to take the tooth out.",
+   "confidence": 0.97
+  }
+ ],
+ "dentist_blockers": 22,
+ "blocker_kinds": {
+  "it_002": 1,
+  "it_021": 1,
+  "it_014": 1,
+  "staged": 12,
+  "task": 7
+ },
+ "check_counts": {
+  "span_valid": {
+   "pass": 24
+  },
+  "normalization_valid": {
+   "pass": 17,
+   "not_applicable": 7
+  },
+  "semantic_support": {
+   "pass": 21,
+   "fail": 3
+  }
+ },
+ "relationships": []
+}

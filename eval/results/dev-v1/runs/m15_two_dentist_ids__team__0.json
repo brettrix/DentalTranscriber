@@ -1,0 +1,505 @@
+{
+ "case": "m15_two_dentist_ids",
+ "pipeline": "team",
+ "repeat": 0,
+ "session": "6b213e43-af23-4116-9eb1-288bde542a9b",
+ "error": null,
+ "wall_s": 14.1,
+ "candidate": true,
+ "ready_for_review": true,
+ "failed_stages": [],
+ "production_failure_stage": null,
+ "calls": 15,
+ "usd_pipeline": 0.1515,
+ "usd_shared": 0.0097,
+ "per_agent": {
+  "Br": {
+   "calls": 1,
+   "in": 6031,
+   "out": 304,
+   "seconds": 2.7,
+   "usd": 0.0151
+  },
+  "B2": {
+   "calls": 1,
+   "in": 6064,
+   "out": 239,
+   "seconds": 1.7,
+   "usd": 0.0145
+  },
+  "B3": {
+   "calls": 1,
+   "in": 6160,
+   "out": 295,
+   "seconds": 2.0,
+   "usd": 0.0153
+  },
+  "B4": {
+   "calls": 1,
+   "in": 6399,
+   "out": 245,
+   "seconds": 2.3,
+   "usd": 0.0152
+  },
+  "B1": {
+   "calls": 1,
+   "in": 6187,
+   "out": 260,
+   "seconds": 2.5,
+   "usd": 0.015
+  },
+  "Cs": {
+   "calls": 5,
+   "in": 25167,
+   "out": 1395,
+   "seconds": 10.2,
+   "usd": 0.0643
+  },
+  "Ce": {
+   "calls": 2,
+   "in": 2888,
+   "out": 161,
+   "seconds": 2.5,
+   "usd": 0.0074
+  },
+  "Co": {
+   "calls": 1,
+   "in": 2077,
+   "out": 53,
+   "seconds": 0.9,
+   "usd": 0.0047
+  },
+  "R2": {
+   "calls": 1,
+   "in": 2138,
+   "out": 53,
+   "seconds": 1.4,
+   "usd": 0.0048
+  },
+  "E3": {
+   "calls": 1,
+   "in": 1520,
+   "out": 182,
+   "seconds": 2.2,
+   "usd": 0.0049
+  }
+ },
+ "timings": [
+  2.7,
+  1.7,
+  2.0,
+  2.3,
+  2.5,
+  1.3,
+  2.5,
+  2.5,
+  1.2,
+  2.7,
+  0.9,
+  1.6,
+  0.9,
+  1.4,
+  2.2
+ ],
+ "scored": true,
+ "grader_error": null,
+ "final": {
+  "gold": 5,
+  "matched": 5,
+  "produced": 5,
+  "precision": [
+   5,
+   5
+  ],
+  "recall": [
+   5,
+   5
+  ],
+  "by_type": {
+   "problem": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "vital_reading": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "symptom": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "finding": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "diagnosis": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   }
+  },
+  "dims": {
+   "tooth": [
+    3,
+    3
+   ],
+   "role": [
+    1,
+    1
+   ],
+   "attr:complaint_text": [
+    1,
+    1
+   ],
+   "attr:complaint_location": [
+    1,
+    1
+   ],
+   "attr:systolic": [
+    1,
+    1
+   ],
+   "attr:diastolic": [
+    1,
+    1
+   ],
+   "assertion": [
+    4,
+    4
+   ],
+   "time_context": [
+    4,
+    4
+   ],
+   "assertion_source": [
+    4,
+    4
+   ],
+   "attr:aspect": [
+    1,
+    1
+   ],
+   "attr:value": [
+    1,
+    1
+   ],
+   "target_relation": [
+    2,
+    2
+   ],
+   "attr:test": [
+    1,
+    1
+   ],
+   "attr:response": [
+    1,
+    1
+   ],
+   "attr:diagnosis": [
+    1,
+    1
+   ],
+   "attr:certainty": [
+    1,
+    1
+   ]
+  },
+  "critical": {
+   "tooth": [
+    3,
+    3
+   ],
+   "certainty": [
+    1,
+    1
+   ]
+  },
+  "errors": [],
+  "omissions": [],
+  "extras": [],
+  "problem_map": {
+   "P1": "pb_1"
+  },
+  "merged": [],
+  "split": [],
+  "target_accuracy": [
+   1,
+   1
+  ],
+  "flags": {
+   "caught": [],
+   "missed": [],
+   "duplicates": [],
+   "false_alarms": [],
+   "tolerated": [],
+   "questions": [
+    "endo_findings_review"
+   ]
+  },
+  "forbidden_hits": [],
+  "expectations": [
+   {
+    "check": "role",
+    "speaker": "S0",
+    "role": "Dentist",
+    "pass": true
+   },
+   {
+    "check": "role",
+    "speaker": "S2",
+    "role": "Dentist",
+    "pass": true
+   }
+  ]
+ },
+ "raw": {
+  "gold": 5,
+  "matched": 5,
+  "produced": 5,
+  "precision": [
+   5,
+   5
+  ],
+  "recall": [
+   5,
+   5
+  ],
+  "by_type": {
+   "problem": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "vital_reading": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "symptom": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "finding": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "diagnosis": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   }
+  },
+  "dims": {
+   "tooth": [
+    3,
+    3
+   ],
+   "role": [
+    1,
+    1
+   ],
+   "attr:complaint_text": [
+    1,
+    1
+   ],
+   "attr:complaint_location": [
+    1,
+    1
+   ],
+   "attr:systolic": [
+    1,
+    1
+   ],
+   "attr:diastolic": [
+    1,
+    1
+   ],
+   "assertion": [
+    4,
+    4
+   ],
+   "time_context": [
+    4,
+    4
+   ],
+   "assertion_source": [
+    4,
+    4
+   ],
+   "attr:aspect": [
+    1,
+    1
+   ],
+   "attr:value": [
+    1,
+    1
+   ],
+   "target_relation": [
+    0,
+    2
+   ],
+   "attr:test": [
+    1,
+    1
+   ],
+   "attr:response": [
+    1,
+    1
+   ],
+   "attr:diagnosis": [
+    1,
+    1
+   ],
+   "attr:certainty": [
+    1,
+    1
+   ]
+  },
+  "critical": {
+   "tooth": [
+    3,
+    3
+   ],
+   "certainty": [
+    1,
+    1
+   ]
+  },
+  "errors": [
+   "f1:target_relation",
+   "d1:target_relation"
+  ],
+  "omissions": [],
+  "extras": [],
+  "problem_map": {
+   "P1": "pb_1"
+  },
+  "merged": [],
+  "split": [],
+  "target_accuracy": [
+   1,
+   1
+  ],
+  "flags": {
+   "caught": [],
+   "missed": [],
+   "duplicates": [],
+   "false_alarms": [],
+   "tolerated": [],
+   "questions": []
+  },
+  "forbidden_hits": [],
+  "expectations": []
+ },
+ "claims": {
+  "supported_by_quick_notes": 2,
+  "supported_by_transcript": 10,
+  "changed_meaning": 2
+ },
+ "claims_detail": [
+  {
+   "claim_id": "it_001|systolic",
+   "label": "supported_by_quick_notes",
+   "quote": "BP 120/78",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_001|diastolic",
+   "label": "supported_by_quick_notes",
+   "quote": "BP 120/78",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "pb_1|role",
+   "label": "supported_by_transcript",
+   "quote": "My upper right tooth hurts with cold.",
+   "confidence": 0.85
+  },
+  {
+   "claim_id": "pb_1|complaint_text",
+   "label": "supported_by_transcript",
+   "quote": "My upper right tooth hurts with cold.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "pb_1|complaint_location",
+   "label": "supported_by_transcript",
+   "quote": "My upper right tooth hurts with cold.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "pb_1|clinical_target",
+   "label": "supported_by_transcript",
+   "quote": "Cold on number three.",
+   "confidence": 0.85
+  },
+  {
+   "claim_id": "it_002|aspect",
+   "label": "supported_by_transcript",
+   "quote": "My upper right tooth hurts with cold.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_002|value",
+   "label": "supported_by_transcript",
+   "quote": "My upper right tooth hurts with cold.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_003|tooth",
+   "label": "supported_by_transcript",
+   "quote": "Cold on number three.",
+   "confidence": 0.7
+  },
+  {
+   "claim_id": "it_003|test",
+   "label": "changed_meaning",
+   "quote": "Cold on number three.",
+   "confidence": 0.5
+  },
+  {
+   "claim_id": "it_003|response",
+   "label": "changed_meaning",
+   "quote": "Yes.",
+   "confidence": 0.5
+  },
+  {
+   "claim_id": "it_004|diagnosis",
+   "label": "supported_by_transcript",
+   "quote": "That's reversible pulpitis on three.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_004|tooth",
+   "label": "supported_by_transcript",
+   "quote": "That's reversible pulpitis on three.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_004|certainty",
+   "label": "supported_by_transcript",
+   "quote": "That's reversible pulpitis on three.",
+   "confidence": 0.85
+  }
+ ],
+ "dentist_blockers": 0,
+ "blocker_kinds": {},
+ "check_counts": {
+  "span_valid": {
+   "pass": 5
+  },
+  "normalization_valid": {
+   "pass": 5
+  },
+  "semantic_support": {
+   "pass": 5
+  }
+ },
+ "relationships": []
+}

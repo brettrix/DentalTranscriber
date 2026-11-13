@@ -1,0 +1,151 @@
+{
+ "case_id": "m16_no_bp",
+ "annotated_by": "claude",
+ "checked_by": null,
+ "entities": [
+  {
+   "type": null,
+   "scope": null,
+   "target_relation": null,
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": null,
+   "action": null,
+   "status_fields": {},
+   "key_attributes": {
+    "role": "chief",
+    "complaint_text": "lower right tooth sensitive to cold",
+    "complaint_location": "lower right"
+   },
+   "gid": "p_P1",
+   "kind": "problem",
+   "problem_key": "P1",
+   "target": 30,
+   "evidence": [
+    {
+     "utterance_id": "u1"
+    },
+    {
+     "utterance_id": "u2"
+    }
+   ]
+  },
+  {
+   "type": "symptom",
+   "scope": "problem",
+   "target_relation": null,
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "patient_report",
+   "action": null,
+   "status_fields": {},
+   "key_attributes": {
+    "aspect": "trigger",
+    "value": "cold"
+   },
+   "gid": "s1",
+   "kind": "item",
+   "problem_key": "P1",
+   "target": null,
+   "evidence": [
+    {
+     "utterance_id": "u1"
+    }
+   ]
+  },
+  {
+   "type": "finding",
+   "scope": "problem",
+   "target_relation": "matches_target",
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "test_response",
+   "action": null,
+   "status_fields": {},
+   "key_attributes": {
+    "test": "cold",
+    "response": "present",
+    "lingering": false
+   },
+   "gid": "f1",
+   "kind": "item",
+   "problem_key": "P1",
+   "target": 30,
+   "evidence": [
+    {
+     "utterance_id": "u2"
+    },
+    {
+     "utterance_id": "u3"
+    }
+   ]
+  },
+  {
+   "type": "diagnosis",
+   "scope": "problem",
+   "target_relation": "matches_target",
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "clinician_assessment",
+   "action": null,
+   "status_fields": {},
+   "key_attributes": {
+    "diagnosis": "reversible pulpitis",
+    "certainty": "definite"
+   },
+   "gid": "d1",
+   "kind": "item",
+   "problem_key": "P1",
+   "target": 30,
+   "evidence": [
+    {
+     "utterance_id": "u4"
+    }
+   ]
+  },
+  {
+   "type": "decision",
+   "scope": "problem",
+   "target_relation": null,
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "clinician_assessment",
+   "action": null,
+   "status_fields": {},
+   "key_attributes": {
+    "decision": "monitor"
+   },
+   "gid": "dc1",
+   "kind": "item",
+   "problem_key": "P1",
+   "target": null,
+   "evidence": [
+    {
+     "utterance_id": "u4"
+    }
+   ]
+  }
+ ],
+ "expected_flags": [
+  {
+   "rule_id": "bp_reading",
+   "problem_key": null,
+   "target": null,
+   "meaning": "no blood pressure reading",
+   "evidence": []
+  },
+  {
+   "rule_id": "unknown_option_link",
+   "problem_key": "P1",
+   "target": null,
+   "meaning": "monitor decision with no option",
+   "evidence": [
+    {
+     "utterance_id": "u4"
+    }
+   ]
+  }
+ ],
+ "forbidden_facts": [],
+ "notes": "Draft matrix gold; needs a person to check."
+}

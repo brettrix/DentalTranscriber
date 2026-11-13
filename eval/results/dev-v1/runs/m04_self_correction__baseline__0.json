@@ -1,0 +1,440 @@
+{
+ "case": "m04_self_correction",
+ "pipeline": "baseline",
+ "repeat": 0,
+ "session": "3aa1d7f3-783a-4e73-9671-71f274d7f679",
+ "error": null,
+ "wall_s": 8.4,
+ "candidate": true,
+ "ready_for_review": true,
+ "failed_stages": [],
+ "production_failure_stage": null,
+ "calls": 2,
+ "usd_pipeline": 0.0272,
+ "usd_shared": 0.006,
+ "per_agent": {
+  "B0": {
+   "calls": 1,
+   "in": 8180,
+   "out": 1086,
+   "seconds": 6.4,
+   "usd": 0.0272
+  },
+  "R2": {
+   "calls": 1,
+   "in": 2163,
+   "out": 168,
+   "seconds": 1.9,
+   "usd": 0.006
+  }
+ },
+ "timings": [
+  6.4,
+  1.9
+ ],
+ "scored": true,
+ "grader_error": null,
+ "final": {
+  "gold": 5,
+  "matched": 5,
+  "produced": 5,
+  "precision": [
+   5,
+   5
+  ],
+  "recall": [
+   5,
+   5
+  ],
+  "by_type": {
+   "problem": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "vital_reading": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "symptom": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "finding": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "decision": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   }
+  },
+  "dims": {
+   "tooth": [
+    2,
+    3
+   ],
+   "role": [
+    1,
+    1
+   ],
+   "attr:complaint_text": [
+    1,
+    1
+   ],
+   "attr:complaint_location": [
+    1,
+    1
+   ],
+   "attr:systolic": [
+    1,
+    1
+   ],
+   "attr:diastolic": [
+    1,
+    1
+   ],
+   "assertion": [
+    4,
+    4
+   ],
+   "time_context": [
+    4,
+    4
+   ],
+   "assertion_source": [
+    4,
+    4
+   ],
+   "attr:aspect": [
+    0,
+    1
+   ],
+   "attr:value": [
+    1,
+    1
+   ],
+   "target_relation": [
+    1,
+    1
+   ],
+   "attr:test": [
+    1,
+    1
+   ],
+   "attr:response": [
+    1,
+    1
+   ],
+   "attr:lingering": [
+    1,
+    1
+   ],
+   "attr:decision": [
+    1,
+    1
+   ]
+  },
+  "critical": {
+   "tooth": [
+    2,
+    3
+   ],
+   "decision": [
+    1,
+    1
+   ]
+  },
+  "errors": [
+   "s1:attr:aspect",
+   "dc1:tooth"
+  ],
+  "omissions": [],
+  "extras": [],
+  "problem_map": {
+   "P1": "pb_1"
+  },
+  "merged": [],
+  "split": [],
+  "target_accuracy": [
+   1,
+   1
+  ],
+  "flags": {
+   "caught": [],
+   "missed": [],
+   "duplicates": [],
+   "false_alarms": [
+    "target_not_assessable (technical)"
+   ],
+   "tolerated": [
+    "open_conflict",
+    "unknown_option_link"
+   ],
+   "questions": []
+  },
+  "forbidden_hits": [],
+  "expectations": [
+   {
+    "check": "conflict",
+    "kind": "self_correction",
+    "later_contains": "nine",
+    "pass": true
+   }
+  ]
+ },
+ "raw": {
+  "gold": 5,
+  "matched": 5,
+  "produced": 5,
+  "precision": [
+   5,
+   5
+  ],
+  "recall": [
+   5,
+   5
+  ],
+  "by_type": {
+   "problem": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "vital_reading": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "symptom": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "finding": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "decision": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   }
+  },
+  "dims": {
+   "tooth": [
+    2,
+    3
+   ],
+   "role": [
+    1,
+    1
+   ],
+   "attr:complaint_text": [
+    1,
+    1
+   ],
+   "attr:complaint_location": [
+    1,
+    1
+   ],
+   "attr:systolic": [
+    1,
+    1
+   ],
+   "attr:diastolic": [
+    1,
+    1
+   ],
+   "assertion": [
+    4,
+    4
+   ],
+   "time_context": [
+    4,
+    4
+   ],
+   "assertion_source": [
+    4,
+    4
+   ],
+   "attr:aspect": [
+    0,
+    1
+   ],
+   "attr:value": [
+    1,
+    1
+   ],
+   "target_relation": [
+    0,
+    1
+   ],
+   "attr:test": [
+    1,
+    1
+   ],
+   "attr:response": [
+    1,
+    1
+   ],
+   "attr:lingering": [
+    1,
+    1
+   ],
+   "attr:decision": [
+    1,
+    1
+   ]
+  },
+  "critical": {
+   "tooth": [
+    2,
+    3
+   ],
+   "decision": [
+    1,
+    1
+   ]
+  },
+  "errors": [
+   "s1:attr:aspect",
+   "f1:target_relation",
+   "dc1:tooth"
+  ],
+  "omissions": [],
+  "extras": [],
+  "problem_map": {
+   "P1": "pb_1"
+  },
+  "merged": [],
+  "split": [],
+  "target_accuracy": [
+   1,
+   1
+  ],
+  "flags": {
+   "caught": [],
+   "missed": [],
+   "duplicates": [],
+   "false_alarms": [],
+   "tolerated": [],
+   "questions": []
+  },
+  "forbidden_hits": [],
+  "expectations": []
+ },
+ "claims": {
+  "supported_by_quick_notes": 2,
+  "supported_by_transcript": 12
+ },
+ "claims_detail": [
+  {
+   "claim_id": "it_003|systolic",
+   "label": "supported_by_quick_notes",
+   "quote": "BP 120/78",
+   "confidence": 0.97
+  },
+  {
+   "claim_id": "it_003|diastolic",
+   "label": "supported_by_quick_notes",
+   "quote": "BP 120/78",
+   "confidence": 0.97
+  },
+  {
+   "claim_id": "pb_1|role",
+   "label": "supported_by_transcript",
+   "quote": "My front tooth is sensitive.",
+   "confidence": 0.85
+  },
+  {
+   "claim_id": "pb_1|complaint_text",
+   "label": "supported_by_transcript",
+   "quote": "My front tooth is sensitive.",
+   "confidence": 0.97
+  },
+  {
+   "claim_id": "pb_1|complaint_location",
+   "label": "supported_by_transcript",
+   "quote": "My front tooth is sensitive.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "pb_1|clinical_target",
+   "label": "supported_by_transcript",
+   "quote": "Nine is sensitive but it settles quickly. Let's watch it.",
+   "confidence": 0.8
+  },
+  {
+   "claim_id": "it_001|aspect",
+   "label": "supported_by_transcript",
+   "quote": "My front tooth is sensitive.",
+   "confidence": 0.75
+  },
+  {
+   "claim_id": "it_001|value",
+   "label": "supported_by_transcript",
+   "quote": "My front tooth is sensitive.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_002|tooth",
+   "label": "supported_by_transcript",
+   "quote": "Cold on number eight. Sorry, I mean number nine.",
+   "confidence": 0.92
+  },
+  {
+   "claim_id": "it_002|test",
+   "label": "supported_by_transcript",
+   "quote": "Cold on number eight. Sorry, I mean number nine.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_002|response",
+   "label": "supported_by_transcript",
+   "quote": "Yes, that's sharp.",
+   "confidence": 0.92
+  },
+  {
+   "claim_id": "it_002|result_description",
+   "label": "supported_by_transcript",
+   "quote": "Yes, that's sharp.",
+   "confidence": 0.93
+  },
+  {
+   "claim_id": "it_002|lingering",
+   "label": "supported_by_transcript",
+   "quote": "Nine is sensitive but it settles quickly. Let's watch it.",
+   "confidence": 0.85
+  },
+  {
+   "claim_id": "it_004|decision",
+   "label": "supported_by_transcript",
+   "quote": "Nine is sensitive but it settles quickly. Let's watch it.",
+   "confidence": 0.92
+  }
+ ],
+ "dentist_blockers": 2,
+ "blocker_kinds": {
+  "conflict": 1,
+  "task": 1
+ },
+ "check_counts": {
+  "span_valid": {
+   "pass": 5
+  },
+  "normalization_valid": {
+   "pass": 4,
+   "not_applicable": 1
+  },
+  "semantic_support": {
+   "not_applicable": 5
+  }
+ },
+ "relationships": []
+}

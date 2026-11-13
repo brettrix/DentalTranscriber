@@ -1,0 +1,638 @@
+{
+ "case": "m18_two_problems",
+ "pipeline": "team",
+ "repeat": 0,
+ "session": "9487c54e-5d63-4e43-8b03-f0c6ca54b0e3",
+ "error": null,
+ "wall_s": 30.8,
+ "candidate": true,
+ "ready_for_review": true,
+ "failed_stages": [],
+ "production_failure_stage": null,
+ "calls": 23,
+ "usd_pipeline": 0.2985,
+ "usd_shared": 0.0049,
+ "per_agent": {
+  "Br": {
+   "calls": 1,
+   "in": 6095,
+   "out": 490,
+   "seconds": 3.2,
+   "usd": 0.0171
+  },
+  "B1": {
+   "calls": 1,
+   "in": 6323,
+   "out": 237,
+   "seconds": 2.1,
+   "usd": 0.015
+  },
+  "B2": {
+   "calls": 2,
+   "in": 13070,
+   "out": 583,
+   "seconds": 4.5,
+   "usd": 0.032
+  },
+  "B3": {
+   "calls": 1,
+   "in": 6296,
+   "out": 621,
+   "seconds": 4.3,
+   "usd": 0.0188
+  },
+  "B4": {
+   "calls": 2,
+   "in": 14390,
+   "out": 1314,
+   "seconds": 7.9,
+   "usd": 0.0419
+  },
+  "Cs": {
+   "calls": 8,
+   "in": 43373,
+   "out": 5610,
+   "seconds": 30.8,
+   "usd": 0.1428
+  },
+  "Ce": {
+   "calls": 5,
+   "in": 7225,
+   "out": 427,
+   "seconds": 6.5,
+   "usd": 0.0187
+  },
+  "Co": {
+   "calls": 2,
+   "in": 4862,
+   "out": 240,
+   "seconds": 3.6,
+   "usd": 0.0121
+  },
+  "R2": {
+   "calls": 1,
+   "in": 2202,
+   "out": 53,
+   "seconds": 1.3,
+   "usd": 0.0049
+  }
+ },
+ "timings": [
+  3.2,
+  2.1,
+  2.8,
+  4.3,
+  4.4,
+  1.3,
+  3.9,
+  4.1,
+  4.7,
+  6.4,
+  3.9,
+  1.0,
+  1.5,
+  1.5,
+  1.6,
+  1.5,
+  1.3,
+  1.7,
+  3.5,
+  2.2,
+  4.3,
+  1.0,
+  2.1
+ ],
+ "scored": true,
+ "grader_error": null,
+ "final": {
+  "gold": 10,
+  "matched": 10,
+  "produced": 12,
+  "precision": [
+   10,
+   12
+  ],
+  "recall": [
+   10,
+   10
+  ],
+  "by_type": {
+   "problem": {
+    "gold": 2,
+    "matched": 2,
+    "produced": 2
+   },
+   "vital_reading": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "symptom": {
+    "gold": 2,
+    "matched": 2,
+    "produced": 2
+   },
+   "finding": {
+    "gold": 3,
+    "matched": 3,
+    "produced": 3
+   },
+   "option_discussed": {
+    "gold": 2,
+    "matched": 2,
+    "produced": 2
+   },
+   "diagnosis": {
+    "gold": 0,
+    "matched": 0,
+    "produced": 2
+   }
+  },
+  "dims": {
+   "tooth": [
+    7,
+    7
+   ],
+   "role": [
+    2,
+    2
+   ],
+   "attr:complaint_text": [
+    0,
+    2
+   ],
+   "attr:complaint_location": [
+    2,
+    2
+   ],
+   "attr:systolic": [
+    1,
+    1
+   ],
+   "attr:diastolic": [
+    1,
+    1
+   ],
+   "assertion": [
+    8,
+    8
+   ],
+   "time_context": [
+    8,
+    8
+   ],
+   "assertion_source": [
+    6,
+    8
+   ],
+   "attr:aspect": [
+    2,
+    2
+   ],
+   "attr:value": [
+    2,
+    2
+   ],
+   "target_relation": [
+    5,
+    5
+   ],
+   "attr:test": [
+    1,
+    1
+   ],
+   "attr:response": [
+    1,
+    1
+   ],
+   "attr:observation": [
+    2,
+    2
+   ],
+   "attr:option": [
+    2,
+    2
+   ]
+  },
+  "critical": {
+   "tooth": [
+    7,
+    7
+   ]
+  },
+  "errors": [
+   "p_P1:attr:complaint_text",
+   "p_P2:attr:complaint_text",
+   "o1:assertion_source",
+   "o2:assertion_source"
+  ],
+  "omissions": [],
+  "extras": [
+   "diagnosis:it_009",
+   "diagnosis:it_010"
+  ],
+  "problem_map": {
+   "P1": "pb_1",
+   "P2": "pb_2"
+  },
+  "merged": [],
+  "split": [],
+  "target_accuracy": [
+   2,
+   2
+  ],
+  "flags": {
+   "caught": [
+    "diagnosis_or_plan_missing"
+   ],
+   "missed": [],
+   "duplicates": [],
+   "false_alarms": [
+    "unsupported_content (technical)",
+    "unsupported_content (technical)",
+    "open_review_task (technical)",
+    "open_review_task (technical)",
+    "open_review_task (technical)"
+   ],
+   "tolerated": [],
+   "questions": []
+  },
+  "forbidden_hits": [],
+  "expectations": [
+   {
+    "check": "count_kind",
+    "kind": "problem",
+    "n": 2,
+    "pass": true
+   }
+  ]
+ },
+ "raw": {
+  "gold": 10,
+  "matched": 10,
+  "produced": 12,
+  "precision": [
+   10,
+   12
+  ],
+  "recall": [
+   10,
+   10
+  ],
+  "by_type": {
+   "problem": {
+    "gold": 2,
+    "matched": 2,
+    "produced": 2
+   },
+   "vital_reading": {
+    "gold": 1,
+    "matched": 1,
+    "produced": 1
+   },
+   "symptom": {
+    "gold": 2,
+    "matched": 2,
+    "produced": 2
+   },
+   "finding": {
+    "gold": 3,
+    "matched": 3,
+    "produced": 3
+   },
+   "option_discussed": {
+    "gold": 2,
+    "matched": 2,
+    "produced": 2
+   },
+   "diagnosis": {
+    "gold": 0,
+    "matched": 0,
+    "produced": 2
+   }
+  },
+  "dims": {
+   "tooth": [
+    7,
+    7
+   ],
+   "role": [
+    2,
+    2
+   ],
+   "attr:complaint_text": [
+    0,
+    2
+   ],
+   "attr:complaint_location": [
+    2,
+    2
+   ],
+   "attr:systolic": [
+    1,
+    1
+   ],
+   "attr:diastolic": [
+    1,
+    1
+   ],
+   "assertion": [
+    8,
+    8
+   ],
+   "time_context": [
+    8,
+    8
+   ],
+   "assertion_source": [
+    8,
+    8
+   ],
+   "attr:aspect": [
+    1,
+    2
+   ],
+   "attr:value": [
+    2,
+    2
+   ],
+   "target_relation": [
+    0,
+    5
+   ],
+   "attr:test": [
+    1,
+    1
+   ],
+   "attr:response": [
+    1,
+    1
+   ],
+   "attr:observation": [
+    2,
+    2
+   ],
+   "attr:option": [
+    2,
+    2
+   ]
+  },
+  "critical": {
+   "tooth": [
+    7,
+    7
+   ]
+  },
+  "errors": [
+   "p_P1:attr:complaint_text",
+   "p_P2:attr:complaint_text",
+   "s2:attr:aspect",
+   "f1:target_relation",
+   "f2:target_relation",
+   "f3:target_relation",
+   "o1:target_relation",
+   "o2:target_relation"
+  ],
+  "omissions": [],
+  "extras": [
+   "diagnosis:it_009",
+   "diagnosis:it_010"
+  ],
+  "problem_map": {
+   "P1": "pb_1",
+   "P2": "pb_2"
+  },
+  "merged": [],
+  "split": [],
+  "target_accuracy": [
+   2,
+   2
+  ],
+  "flags": {
+   "caught": [],
+   "missed": [
+    "diagnosis_or_plan_missing"
+   ],
+   "duplicates": [],
+   "false_alarms": [],
+   "tolerated": [],
+   "questions": []
+  },
+  "forbidden_hits": [],
+  "expectations": []
+ },
+ "claims": {
+  "supported_by_quick_notes": 2,
+  "supported_by_transcript": 29
+ },
+ "claims_detail": [
+  {
+   "claim_id": "it_003|systolic",
+   "label": "supported_by_quick_notes",
+   "quote": "BP 120/78",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_003|diastolic",
+   "label": "supported_by_quick_notes",
+   "quote": "BP 120/78",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "pb_1|role",
+   "label": "supported_by_transcript",
+   "quote": "Two things. My lower right molar hurts when I chew, and food gets stuck on my lower left.",
+   "confidence": 0.7
+  },
+  {
+   "claim_id": "pb_1|complaint_text",
+   "label": "supported_by_transcript",
+   "quote": "Two things. My lower right molar hurts when I chew, and food gets stuck on my lower left.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "pb_1|complaint_location",
+   "label": "supported_by_transcript",
+   "quote": "Two things. My lower right molar hurts when I chew, and food gets stuck on my lower left.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "pb_1|clinical_target",
+   "label": "supported_by_transcript",
+   "quote": "Biting on thirty.",
+   "confidence": 0.85
+  },
+  {
+   "claim_id": "pb_2|role",
+   "label": "supported_by_transcript",
+   "quote": "Two things. My lower right molar hurts when I chew, and food gets stuck on my lower left.",
+   "confidence": 0.7
+  },
+  {
+   "claim_id": "pb_2|complaint_text",
+   "label": "supported_by_transcript",
+   "quote": "Two things. My lower right molar hurts when I chew, and food gets stuck on my lower left.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "pb_2|complaint_location",
+   "label": "supported_by_transcript",
+   "quote": "Two things. My lower right molar hurts when I chew, and food gets stuck on my lower left.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "pb_2|clinical_target",
+   "label": "supported_by_transcript",
+   "quote": "Thirty has a cracked cusp. Over on nineteen there's an open contact where food packs in.",
+   "confidence": 0.85
+  },
+  {
+   "claim_id": "it_004|aspect",
+   "label": "supported_by_transcript",
+   "quote": "Two things. My lower right molar hurts when I chew, and food gets stuck on my lower left.",
+   "confidence": 0.8
+  },
+  {
+   "claim_id": "it_004|value",
+   "label": "supported_by_transcript",
+   "quote": "Two things. My lower right molar hurts when I chew, and food gets stuck on my lower left.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_005|aspect",
+   "label": "supported_by_transcript",
+   "quote": "Two things. My lower right molar hurts when I chew, and food gets stuck on my lower left.",
+   "confidence": 0.8
+  },
+  {
+   "claim_id": "it_005|value",
+   "label": "supported_by_transcript",
+   "quote": "Two things. My lower right molar hurts when I chew, and food gets stuck on my lower left.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_008|tooth",
+   "label": "supported_by_transcript",
+   "quote": "Thirty has a cracked cusp. Over on nineteen there's an open contact where food packs in.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_008|observation",
+   "label": "supported_by_transcript",
+   "quote": "Thirty has a cracked cusp. Over on nineteen there's an open contact where food packs in.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_006|tooth",
+   "label": "supported_by_transcript",
+   "quote": "Biting on thirty.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_006|test",
+   "label": "supported_by_transcript",
+   "quote": "Biting on thirty.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_006|response",
+   "label": "supported_by_transcript",
+   "quote": "Ow, yes.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_007|tooth",
+   "label": "supported_by_transcript",
+   "quote": "Thirty has a cracked cusp. Over on nineteen there's an open contact where food packs in.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_007|observation",
+   "label": "supported_by_transcript",
+   "quote": "Thirty has a cracked cusp. Over on nineteen there's an open contact where food packs in.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_009|diagnosis",
+   "label": "supported_by_transcript",
+   "quote": "Thirty has a cracked cusp. Over on nineteen there's an open contact where food packs in.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_009|tooth",
+   "label": "supported_by_transcript",
+   "quote": "Thirty has a cracked cusp. Over on nineteen there's an open contact where food packs in.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_009|certainty",
+   "label": "supported_by_transcript",
+   "quote": "Thirty has a cracked cusp. Over on nineteen there's an open contact where food packs in.",
+   "confidence": 0.85
+  },
+  {
+   "claim_id": "it_010|diagnosis",
+   "label": "supported_by_transcript",
+   "quote": "Thirty has a cracked cusp. Over on nineteen there's an open contact where food packs in.",
+   "confidence": 0.9
+  },
+  {
+   "claim_id": "it_010|tooth",
+   "label": "supported_by_transcript",
+   "quote": "Thirty has a cracked cusp. Over on nineteen there's an open contact where food packs in.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_010|certainty",
+   "label": "supported_by_transcript",
+   "quote": "Thirty has a cracked cusp. Over on nineteen there's an open contact where food packs in.",
+   "confidence": 0.85
+  },
+  {
+   "claim_id": "it_001|option",
+   "label": "supported_by_transcript",
+   "quote": "We'll do a crown on thirty, and we can fix the contact on nineteen with a filling.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_001|tooth",
+   "label": "supported_by_transcript",
+   "quote": "We'll do a crown on thirty, and we can fix the contact on nineteen with a filling.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_002|option",
+   "label": "supported_by_transcript",
+   "quote": "We'll do a crown on thirty, and we can fix the contact on nineteen with a filling.",
+   "confidence": 0.95
+  },
+  {
+   "claim_id": "it_002|tooth",
+   "label": "supported_by_transcript",
+   "quote": "We'll do a crown on thirty, and we can fix the contact on nineteen with a filling.",
+   "confidence": 0.95
+  }
+ ],
+ "dentist_blockers": 8,
+ "blocker_kinds": {
+  "it_001": 1,
+  "it_002": 1,
+  "staged": 3,
+  "task": 3
+ },
+ "check_counts": {
+  "span_valid": {
+   "pass": 12
+  },
+  "normalization_valid": {
+   "pass": 11,
+   "not_applicable": 1
+  },
+  "semantic_support": {
+   "unconfirmed": 6,
+   "pass": 4,
+   "fail": 2
+  }
+ },
+ "relationships": []
+}

@@ -76,6 +76,8 @@ def _clean(v) -> str:
 
 
 NEGATED = {"absent", "denied"}
+# Both describe exam results; patient-vs-clinician attribution stays strict (DECISIONS.md).
+SOURCE_GROUPS = [{"clinician_observation", "test_response"}]
 
 
 def compare_entity(entity, values: dict, n_problems: int):
@@ -104,6 +106,8 @@ def compare_entity(entity, values: dict, n_problems: int):
             continue  # the checker reading an extra non-critical detail doesn't contradict the producer
         if method == "exact":
             if path == "assertion" and p in NEGATED and c in NEGATED:
+                same = True
+            elif path == "assertion_source" and any(p in grp and c in grp for grp in SOURCE_GROUPS):
                 same = True
             else:
                 same = normalize.values_equal(p, c) or (p is None and c in (None, "", []))

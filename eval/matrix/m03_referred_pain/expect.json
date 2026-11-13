@@ -1,0 +1,32 @@
+{
+ "expect": [
+  {
+   "check": "entity",
+   "kind": "relationship",
+   "relation_kind": "referred_from"
+  },
+  {
+   "check": "flag_absent",
+   "rule_id": "complaint_location_differs",
+   "modes": [
+    "team"
+   ]
+  },
+  {
+   "check": "flag_present",
+   "rule_id": "complaint_location_differs",
+   "modes": [
+    "baseline"
+   ]
+  },
+  {
+   "check": "note_contains",
+   "text": "upper right"
+  }
+ ],
+ "tolerated_flags": [
+  "complaint_location_differs:baseline",
+  "unexplained_other_tooth",
+  "diagnosis_or_plan_missing"
+ ]
+}

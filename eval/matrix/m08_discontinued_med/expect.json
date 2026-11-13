@@ -1,0 +1,18 @@
+{
+ "expect": [
+  {
+   "check": "entity",
+   "type": "medication",
+   "medication_status": "discontinued",
+   "time_context": "historical"
+  },
+  {
+   "check": "no_entity",
+   "type": "medication",
+   "medication_status": "current"
+  }
+ ],
+ "tolerated_flags": [
+  "target_not_assessable"
+ ]
+}

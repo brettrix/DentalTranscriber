@@ -1,0 +1,16 @@
+{
+ "expect": [
+  {
+   "check": "conflict",
+   "kind": "quick_note_vs_transcript"
+  },
+  {
+   "check": "count",
+   "type": "vital_reading",
+   "n": 2
+  }
+ ],
+ "tolerated_flags": [
+  "diagnosis_or_plan_missing"
+ ]
+}

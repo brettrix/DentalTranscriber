@@ -1,0 +1,41 @@
+{
+ "expect": [
+  {
+   "check": "entity",
+   "type": "finding",
+   "tooth": 14,
+   "assertion_in": [
+    "absent",
+    "denied"
+   ]
+  },
+  {
+   "check": "entity",
+   "type": "finding",
+   "tooth": 15,
+   "assertion_in": [
+    "present"
+   ]
+  },
+  {
+   "check": "no_entity",
+   "type": "finding",
+   "tooth": 15,
+   "assertion_in": [
+    "absent",
+    "denied"
+   ]
+  },
+  {
+   "check": "no_entity",
+   "type": "finding",
+   "tooth": 14,
+   "assertion_in": [
+    "present"
+   ]
+  }
+ ],
+ "tolerated_flags": [
+  "unexplained_other_tooth"
+ ]
+}

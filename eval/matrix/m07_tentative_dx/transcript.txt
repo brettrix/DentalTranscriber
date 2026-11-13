@@ -1,0 +1,5 @@
+DENTIST: What's wrong?
+PATIENT: My lower right molar hurts when I bite.
+DENTIST: Biting on number thirty.
+PATIENT: Ow, yes.
+DENTIST: It could be a crack in thirty. Let's do a bite test next visit.

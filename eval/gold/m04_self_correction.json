@@ -1,0 +1,135 @@
+{
+ "case_id": "m04_self_correction",
+ "annotated_by": "claude",
+ "checked_by": null,
+ "entities": [
+  {
+   "type": null,
+   "scope": null,
+   "target_relation": null,
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": null,
+   "action": null,
+   "status_fields": {},
+   "key_attributes": {
+    "role": "chief",
+    "complaint_text": "front tooth sensitive",
+    "complaint_location": "front tooth"
+   },
+   "gid": "p_P1",
+   "kind": "problem",
+   "problem_key": "P1",
+   "target": 9,
+   "evidence": [
+    {
+     "utterance_id": "u2"
+    },
+    {
+     "utterance_id": "u3"
+    }
+   ]
+  },
+  {
+   "type": "vital_reading",
+   "scope": "encounter",
+   "target_relation": null,
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "assistant_record",
+   "action": null,
+   "status_fields": {},
+   "key_attributes": {
+    "systolic": 120,
+    "diastolic": 78
+   },
+   "gid": "v1",
+   "kind": "item",
+   "problem_key": null,
+   "target": null,
+   "evidence": [
+    {
+     "quick_note_id": "q1"
+    }
+   ]
+  },
+  {
+   "type": "symptom",
+   "scope": "problem",
+   "target_relation": null,
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "patient_report",
+   "action": null,
+   "status_fields": {},
+   "key_attributes": {
+    "aspect": "quality",
+    "value": "sensitive"
+   },
+   "gid": "s1",
+   "kind": "item",
+   "problem_key": "P1",
+   "target": null,
+   "evidence": [
+    {
+     "utterance_id": "u2"
+    }
+   ]
+  },
+  {
+   "type": "finding",
+   "scope": "problem",
+   "target_relation": "matches_target",
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "test_response",
+   "action": null,
+   "status_fields": {},
+   "key_attributes": {
+    "test": "cold",
+    "response": "present",
+    "lingering": false
+   },
+   "gid": "f1",
+   "kind": "item",
+   "problem_key": "P1",
+   "target": 9,
+   "evidence": [
+    {
+     "utterance_id": "u3"
+    },
+    {
+     "utterance_id": "u4"
+    },
+    {
+     "utterance_id": "u5"
+    }
+   ]
+  },
+  {
+   "type": "decision",
+   "scope": "problem",
+   "target_relation": null,
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "clinician_assessment",
+   "action": null,
+   "status_fields": {},
+   "key_attributes": {
+    "decision": "monitor"
+   },
+   "gid": "dc1",
+   "kind": "item",
+   "problem_key": "P1",
+   "target": null,
+   "evidence": [
+    {
+     "utterance_id": "u5"
+    }
+   ]
+  }
+ ],
+ "expected_flags": [],
+ "forbidden_facts": [],
+ "notes": "Draft matrix gold; needs a person to check."
+}
