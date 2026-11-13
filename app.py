@@ -62,6 +62,19 @@ def session_label(sid: str) -> str:
     return f"{m.get('case') or 'Visit'} · {when} · {m.get('pipeline_mode', '?')}"
 
 
+def session_name(sid: str) -> str:
+    return "(new visit)" if sid == NEW else (Session(sid).meta().get("case") or "Visit")
+
+
+def session_when(sid: str) -> str:
+    if sid == NEW:
+        return "start a new one"
+    m = Session(sid).meta()
+    created = m.get("created")
+    when = datetime.fromisoformat(created).astimezone().strftime("%b %d %H:%M") if created else "?"
+    return f"{when} \u00b7 {m.get('pipeline_mode', '?')}"
+
+
 def session_caption(s) -> str:
     m = s.meta()
     vm = read_json(s.path("sources", "visit_meta.json"), {}) or {}
@@ -78,11 +91,15 @@ sessions = list_sessions()  # newest first
 ids = [NEW] + [s.id for s in sessions]
 if st.session_state.get("sid") not in ids:
     st.session_state["sid"] = ids[1] if len(ids) > 1 else NEW
-sid = st.sidebar.selectbox("Visit", ids, key="sid", format_func=session_label)
+st.sidebar.markdown("<style>section[data-testid='stSidebar'] { min-width: 330px; }</style>",
+                    unsafe_allow_html=True)
+_selected = Session(st.session_state["sid"]) if st.session_state["sid"] != NEW else None
+with st.sidebar.container(height=420):
+    # A list, not a dropdown: options wrap instead of truncating (name on line 1, time · mode on line 2).
+    sid = st.radio("Visit", ids, key="sid", format_func=session_name, captions=[session_when(i) for i in ids],
+                   help=session_caption(_selected) if _selected else "Start a new visit")
 session = Session(sid) if sid != NEW else None
 meta = session.meta() if session else {}
-if session is not None:
-    st.sidebar.caption(session_caption(session))
 st.error(f"{BANNER}  ·  Mode: {meta.get('pipeline_mode', '—')}  ·  Rules: {meta.get('rule_mode', '—')}")
 page = st.radio("Page", PAGES, key="page", horizontal=True, label_visibility="collapsed")
 
@@ -116,7 +133,7 @@ def start_page():
     st.subheader("New visit")
     c1, c2, c3 = st.columns(3)
     date = c1.text_input("Visit date", datetime.now().strftime("%Y-%m-%d"))
-    provider = c2.text_input("Dentist", "Dr. Hale")
+    provider = c2.text_input("Dentist", "")
     assistant = c3.text_input("Assistant", "")
     mode = st.radio("Pipeline mode", ["baseline", "team"], horizontal=True,
                     help="baseline: one extractor, quote-checked. team: split extractors plus meaning checks.")

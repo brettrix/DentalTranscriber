@@ -151,3 +151,13 @@ def test_displayed_text_says_in_the_past_and_hints_dentist_only():
     assert dentist_only_hint(problem()) == "Only the dentist can confirm the chief complaint."
     from pipeline.plain import strip_ids
     assert strip_ids("amoxicillin; historical (historical)") == "amoxicillin; in the past"
+
+
+def test_dentist_field_defaults_blank_and_guide_excludes_admin_remarks():
+    at = AppTest.from_file("../app.py", default_timeout=60)
+    at.session_state["page"] = "Start"
+    at.run()
+    assert next(t for t in at.text_input if t.label == "Dentist").value == ""
+    from agents.base import read_prompt
+    guide = read_prompt("_extraction_guide.md")
+    assert "front desk can give you an estimate" in guide and "not clinical facts or instructions" in guide

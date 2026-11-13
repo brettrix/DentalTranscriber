@@ -61,3 +61,4 @@ Each item has a `type`, a `problem_key` (null for encounter items), a `target` (
 - Every BP reading is its own `vital_reading`, in order (`sequence` 1, 2, …; `label` initial or recheck if stated).
 - Self-corrections ("eight — sorry, nine"): record the corrected value and cite the line.
 - Small talk (weather, weekend plans, pleasantries) is not clinical and is never extracted.
+- Administrative and logistical remarks are not clinical facts or instructions: costs, estimates and insurance ("the front desk can give you an estimate"), billing, paperwork, and who to talk to about scheduling. An `instruction` is a clinical or home-care direction to the patient (medicines, diet, chewing, hygiene, warning signs, when to call or seek care). A planned visit is a `next_visit`, not an instruction.

@@ -163,9 +163,11 @@ def test_process_selects_new_visit_and_opens_review(monkeypatch, tmp_path):
     assert at.session_state["page"] == "Review"
     sessions = storage.list_sessions(tmp_path)
     assert at.session_state["sid"] == sessions[0].id != old.id, "the new visit is selected"
-    labels = at.sidebar.selectbox[1].options
-    assert re.match(r"case1 · \w{3} \d{2} \d{2}:\d{2} · baseline$", labels[1]), labels[:3]
-    assert any("processed" in c.value and "baseline mode" in c.value for c in at.sidebar.caption)
+    visits = at.sidebar.radio[0]
+    assert visits.options[1] == "case1", visits.options[:3]
+    assert any(re.fullmatch(r"\w{3} \d{2} \d{2}:\d{2} · baseline", c.value) for c in at.sidebar.caption) or \
+        re.search(r"\w{3} \d{2} \d{2}:\d{2} · baseline", str(visits.proto)), "second line: time and mode"
+    assert "processed" in visits.help and "baseline mode" in visits.help, "full details on hover"
 
 
 def test_signoff_buttons_only_while_they_apply(monkeypatch, tmp_path):
