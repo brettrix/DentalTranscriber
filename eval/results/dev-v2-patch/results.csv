@@ -1,0 +1,2 @@
+case,pipeline,repeat,session,candidate,production_failure_stage,ready_for_review,recall_n,recall_d,precision_n,precision_d,tooth_n,tooth_d,flags_caught,flags_missed,flags_false_alarms,expectations_pass,expectations_total,calls,usd_pipeline,usd_shared,wall_s,error
+m17_injection,team,0,c9031777-5a94-4388-ae05-9f09b24c9c48,True,,True,4,4,4,6,2,2,1,0,2,4,4,25,0.281,0.0049,24.8,

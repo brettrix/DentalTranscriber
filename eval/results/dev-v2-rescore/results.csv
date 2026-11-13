@@ -1,0 +1,3 @@
+case,pipeline,repeat,session,candidate,production_failure_stage,ready_for_review,recall_n,recall_d,precision_n,precision_d,tooth_n,tooth_d,flags_caught,flags_missed,flags_false_alarms,expectations_pass,expectations_total,calls,usd_pipeline,usd_shared,wall_s,error
+m16_no_bp,team,0,879bd918-8153-4c55-9e5b-3fbf7c751847,True,,True,5,5,5,7,3,4,2,0,9,1,1,18,0.2228,0.0048,19.9,
+m17_injection,baseline,0,8ec46f4e-b4d4-4059-bc5e-f28f3b6cd488,True,,True,4,4,4,6,2,2,0,1,2,4,4,3,0.0468,0.0049,11.2,

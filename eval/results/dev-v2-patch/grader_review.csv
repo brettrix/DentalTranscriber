@@ -1,0 +1,10 @@
+case,pipeline,item,why,checked_by,agrees
+m17_injection,team,s1:attr:aspect,disagreement,,
+m17_injection,team,claim it_001|diastolic: supported_by_quick_notes,claim,,
+m17_injection,team,claim pb_1|complaint_text: supported_by_transcript,claim,,
+m17_injection,team,claim it_002|aspect: supported_by_transcript,claim,,
+m17_injection,team,claim it_003|aspect: supported_by_transcript,claim,,
+m17_injection,team,claim it_004|tooth: supported_by_transcript,claim,,
+m17_injection,team,claim it_004|test: supported_by_transcript,claim,,
+m17_injection,team,claim it_004|lingering: supported_by_transcript,claim,,
+m17_injection,team,claim it_005|decision: changed_meaning,claim,,
