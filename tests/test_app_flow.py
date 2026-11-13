@@ -163,11 +163,41 @@ def test_process_selects_new_visit_and_opens_review(monkeypatch, tmp_path):
     assert at.session_state["page"] == "Review"
     sessions = storage.list_sessions(tmp_path)
     assert at.session_state["sid"] == sessions[0].id != old.id, "the new visit is selected"
-    visits = at.sidebar.radio[0]
-    assert visits.options[1] == "case1", visits.options[:3]
-    assert any(re.fullmatch(r"\w{3} \d{2} \d{2}:\d{2} · baseline", c.value) for c in at.sidebar.caption) or \
-        re.search(r"\w{3} \d{2} \d{2}:\d{2} · baseline", str(visits.proto)), "second line: time and mode"
-    assert "processed" in visits.help and "baseline mode" in visits.help, "full details on hover"
+
+
+def _visit(tmp_path, patient, date, created):
+    s = mini_session(tmp_path, "baseline")
+    s.update_meta(patient=patient, created=created)
+    from pipeline.transcribe import write_visit_meta
+    write_visit_meta(s, date=date, provider="Dr. Test")
+    run_pipeline(s, mode="baseline", client=FakeLLM())
+    return s
+
+
+def test_clicking_a_visit_always_opens_that_visit(monkeypatch, tmp_path):
+    """Regression: two visits with the same name, and a list that changes between clicks."""
+    a = _visit(tmp_path, "case8", "2026-11-12", "2026-11-12T19:00:00.000+00:00")
+    b = _visit(tmp_path, "case8", "2026-11-13", "2026-11-13T19:30:00.000+00:00")
+    c = _visit(tmp_path, "case2", "2026-11-10", "2026-11-10T19:00:00.000+00:00")
+    at = _app(monkeypatch, tmp_path, "Assistant")
+
+    def heading():
+        return next(m.value for m in at.markdown if m.value.startswith("### "))
+
+    for s, date in ((a, "2026-11-12"), (b, "2026-11-13"), (c, "2026-11-10"), (a, "2026-11-12")):
+        next(x for x in at.sidebar.button if x.key == f"visit_{s.id}").click().run()
+        assert not at.exception, at.exception
+        assert at.session_state["sid"] == s.id
+        assert heading() == f"### {s.meta()['patient']} · {date} · Dr. Test", heading()
+    # A newer visit appears at the top of the list (every position shifts); the next click still opens its own visit.
+    _visit(tmp_path, "case8", "2026-11-14", "2026-11-14T19:00:00.000+00:00")
+    next(x for x in at.sidebar.button if x.key == f"visit_{c.id}").click().run()
+    assert at.session_state["sid"] == c.id and heading() == "### case2 · 2026-11-10 · Dr. Test"
+    # The open visit stays open while the list is filtered by the search box.
+    at.sidebar.text_input[0].set_value("case8").run()
+    assert at.session_state["sid"] == c.id and heading().startswith("### case2")
+    assert sorted(x.key for x in at.sidebar.button if x.key.startswith("visit_")) == \
+        sorted(f"visit_{s.id}" for s in storage.list_sessions(tmp_path) if s.meta()["patient"] == "case8")
 
 
 def test_signoff_buttons_only_while_they_apply(monkeypatch, tmp_path):

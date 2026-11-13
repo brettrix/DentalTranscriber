@@ -23,11 +23,12 @@ from pipeline.trace import read_traces
 from pipeline.transcribe import transcribe_audio, transcribe_text, write_quick_notes, write_visit_meta
 from pipeline.validate import StructuralError
 from pipeline.verify import session_check_log
+from pipeline.visits import filter_visits, visit_heading, visit_name, visit_when
 from schemas.entities import ATTRIBUTE_MODELS, ITEM_SCOPES, Item, is_critical
 from schemas.flags import Flag
 
 BANNER = "Prototype — test data only. Do not use with real patient information."
-NEW = "__new__"
+MAX_LISTED = 60
 PAGES = ["Start", "Review", "Speaker roles", "Technical log"]
 STATE_LABEL = {"draft": "Draft — not reviewed yet",
                "assistant_review_complete": "Assistant review done — waiting for the dentist",
@@ -52,53 +53,33 @@ def go(page: str, sid: str | None = None):
     st.rerun()
 
 
-def session_label(sid: str) -> str:
-    if sid == NEW:
-        return "(new visit)"
-    s = Session(sid)
-    m = s.meta()
-    created = m.get("created")
-    when = datetime.fromisoformat(created).astimezone().strftime("%b %d %H:%M") if created else "?"
-    return f"{m.get('case') or 'Visit'} · {when} · {m.get('pipeline_mode', '?')}"
-
-
-def session_name(sid: str) -> str:
-    return "(new visit)" if sid == NEW else (Session(sid).meta().get("case") or "Visit")
-
-
-def session_when(sid: str) -> str:
-    if sid == NEW:
-        return "start a new one"
-    m = Session(sid).meta()
-    created = m.get("created")
-    when = datetime.fromisoformat(created).astimezone().strftime("%b %d %H:%M") if created else "?"
-    return f"{when} \u00b7 {m.get('pipeline_mode', '?')}"
-
-
-def session_caption(s) -> str:
-    m = s.meta()
-    vm = read_json(s.path("sources", "visit_meta.json"), {}) or {}
-    created = m.get("created")
-    when = datetime.fromisoformat(created).astimezone().strftime("%Y-%m-%d %H:%M") if created else "?"
-    return (f"{m.get('case') or 'Visit'} · processed {when} · {m.get('pipeline_mode', '?')} mode · "
-            f"visit date {vm.get('date') or '—'} · {vm.get('provider') or ''}")
-
-
-# ---------------------------------------------------------------- sidebar: role and session
+# ---------------------------------------------------------------- sidebar: role and visit
 
 role = st.sidebar.selectbox("Your role (Prototype: no real login)", ["Assistant", "Dentist"])
 sessions = list_sessions()  # newest first
-ids = [NEW] + [s.id for s in sessions]
-if st.session_state.get("sid") not in ids:
-    st.session_state["sid"] = ids[1] if len(ids) > 1 else NEW
-st.sidebar.markdown("<style>section[data-testid='stSidebar'] { min-width: 330px; }</style>",
-                    unsafe_allow_html=True)
-_selected = Session(st.session_state["sid"]) if st.session_state["sid"] != NEW else None
-with st.sidebar.container(height=420):
-    # A list, not a dropdown: options wrap instead of truncating (name on line 1, time · mode on line 2).
-    sid = st.radio("Visit", ids, key="sid", format_func=session_name, captions=[session_when(i) for i in ids],
-                   help=session_caption(_selected) if _selected else "Start a new visit")
-session = Session(sid) if sid != NEW else None
+by_id = {s.id: s for s in sessions}
+st.sidebar.markdown("""<style>
+section[data-testid='stSidebar'] { min-width: 330px; }
+section[data-testid='stSidebar'] [class*='st-key-visit_'] button { justify-content: flex-start; text-align: left; }
+</style>""", unsafe_allow_html=True)
+search = st.sidebar.text_input("Search visits", key="visit_search", placeholder="Patient name, chart # or date")
+listed = filter_visits(sessions, search, st.session_state.get("show_tests", False))
+if st.session_state.get("sid") not in by_id:
+    st.session_state["sid"] = listed[0].id if listed else None
+sid = st.session_state["sid"]
+with st.sidebar.container(height=460):
+    # One button per visit, keyed by the visit's own id: a click can only ever open that visit, whatever the
+    # list order is and however many visits share a name.
+    if not listed:
+        st.caption("No visits match." if search else "No visits yet.")
+    for s in listed[:MAX_LISTED]:
+        m = s.meta()
+        if st.button(f"{visit_name(m)} · {visit_when(m)}", key=f"visit_{s.id}", width="stretch",
+                     type="primary" if s.id == sid else "secondary", help=visit_heading(s)):
+            go("Review", s.id)
+    if len(listed) > MAX_LISTED:
+        st.caption(f"Showing the newest {MAX_LISTED} of {len(listed)}. Search to find older visits.")
+session = by_id.get(sid)
 meta = session.meta() if session else {}
 st.error(f"{BANNER}  ·  Mode: {meta.get('pipeline_mode', '—')}  ·  Rules: {meta.get('rule_mode', '—')}")
 page = st.radio("Page", PAGES, key="page", horizontal=True, label_visibility="collapsed")
@@ -297,7 +278,7 @@ def review_page():
     state = approval.load_state(session)
     log = session_check_log(session)
     vm = src.visit_meta
-    st.markdown(f"### {esc(meta.get('case') or 'Visit')} · {esc(vm.date or '')} · {esc(vm.provider or '')}")
+    st.markdown(f"### {esc(visit_heading(session))}")
     st.markdown(f"**Status:** {STATE_LABEL[state.state]}")
     if state.revoked:
         st.warning("An earlier approval was undone because something changed after it was given.")
