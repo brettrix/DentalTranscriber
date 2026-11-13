@@ -8,6 +8,13 @@ from agents.io import ItemsOutput, RepairOutput, attribute_table
 from pipeline.template import types_of_agent
 
 
+# Extraction guidance added after the evaluation configuration was frozen. It lives here, not in prompts/, so the
+# frozen prompt files and their hashes stay exactly as the held-out run used them. It is sent after the guide.
+EXTRACTION_ADDENDUM = """## Additions to the guide (these take precedence where they differ)
+- Allergy `reaction` holds only a reaction that was actually stated (hives, rash, swelling, trouble breathing, upset stomach). If no reaction was stated, `reaction` is null. Never put a hedge or filler ("I think", "maybe", "not sure") in `reaction`: uncertainty belongs in `allergy_status` (uncertain, reported_resolved) and stays in the quote.
+- Finding results: when a test or check has a described result beyond positive or negative, such as what was seen, felt or marked ("heavy mark on the new filling" for a bite-paper check, "catches on the distal margin"), put those words in `result_description`. Keep it; don't drop it and don't fold it into `test`."""
+
+
 def sources_text(sources) -> str:
     vm = sources.visit_meta
     meta = f"date: {vm.date or 'unknown'}; provider: {vm.provider or 'unknown'}; assistant: {vm.assistant or 'unknown'}; " \
@@ -36,7 +43,7 @@ class ExtractorAgent(Agent):
     tool_description = "Submit every entity you extracted."
 
     def system_prompt(self) -> str:
-        return (super().system_prompt() + "\n\n" + read_prompt("_extraction_guide.md") +
+        return (super().system_prompt() + "\n\n" + read_prompt("_extraction_guide.md") + "\n\n" + EXTRACTION_ADDENDUM +
                 "\n\n## Attribute table for your item types\n" + attribute_table(self.types()))
 
     def types(self) -> list[str]:
