@@ -1,0 +1,613 @@
+{
+ "case_id": "case1",
+ "annotated_by": "claude",
+ "checked_by": null,
+ "entities": [
+  {
+   "gid": "p1",
+   "kind": "problem",
+   "type": null,
+   "problem_key": "P1",
+   "scope": null,
+   "target": 14,
+   "target_relation": null,
+   "key_attributes": {
+    "role": "chief",
+    "complaint_text": "sensitivity to cold, upper left",
+    "complaint_location": "upper left"
+   },
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": null,
+   "action": null,
+   "status_fields": {},
+   "evidence": [
+    {
+     "utterance_id": "u2"
+    },
+    {
+     "utterance_id": "u15"
+    }
+   ]
+  },
+  {
+   "gid": "s1",
+   "kind": "item",
+   "type": "symptom",
+   "problem_key": "P1",
+   "scope": "problem",
+   "target": null,
+   "target_relation": null,
+   "key_attributes": {
+    "aspect": "trigger",
+    "value": "cold (ice water)"
+   },
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "patient_report",
+   "action": null,
+   "status_fields": {},
+   "evidence": [
+    {
+     "utterance_id": "u2"
+    }
+   ],
+   "note": null
+  },
+  {
+   "gid": "s2",
+   "kind": "item",
+   "type": "symptom",
+   "problem_key": "P1",
+   "scope": "problem",
+   "target": null,
+   "target_relation": null,
+   "key_attributes": {
+    "aspect": "onset",
+    "value": "about 3 weeks, getting a little worse"
+   },
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "patient_report",
+   "action": null,
+   "status_fields": {},
+   "evidence": [
+    {
+     "utterance_id": "u3"
+    },
+    {
+     "utterance_id": "u4"
+    }
+   ],
+   "note": null
+  },
+  {
+   "gid": "s3",
+   "kind": "item",
+   "type": "symptom",
+   "problem_key": "P1",
+   "scope": "problem",
+   "target": null,
+   "target_relation": null,
+   "key_attributes": {
+    "aspect": "lingering",
+    "value": "goes away fast, about 5 seconds"
+   },
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "patient_report",
+   "action": null,
+   "status_fields": {},
+   "evidence": [
+    {
+     "utterance_id": "u5"
+    },
+    {
+     "utterance_id": "u6"
+    }
+   ],
+   "note": null
+  },
+  {
+   "gid": "s4",
+   "kind": "item",
+   "type": "symptom",
+   "problem_key": "P1",
+   "scope": "problem",
+   "target": null,
+   "target_relation": null,
+   "key_attributes": {
+    "aspect": "night_pain"
+   },
+   "assertion": "denied",
+   "time_context": "current",
+   "assertion_source": "patient_report",
+   "action": null,
+   "status_fields": {},
+   "evidence": [
+    {
+     "utterance_id": "u7"
+    },
+    {
+     "utterance_id": "u8"
+    }
+   ],
+   "note": null
+  },
+  {
+   "gid": "s5",
+   "kind": "item",
+   "type": "symptom",
+   "problem_key": "P1",
+   "scope": "problem",
+   "target": null,
+   "target_relation": null,
+   "key_attributes": {
+    "aspect": "spontaneous_pain"
+   },
+   "assertion": "denied",
+   "time_context": "current",
+   "assertion_source": "patient_report",
+   "action": null,
+   "status_fields": {},
+   "evidence": [
+    {
+     "utterance_id": "u7"
+    },
+    {
+     "utterance_id": "u8"
+    }
+   ],
+   "note": null
+  },
+  {
+   "gid": "s6",
+   "kind": "item",
+   "type": "symptom",
+   "problem_key": "P1",
+   "scope": "problem",
+   "target": null,
+   "target_relation": null,
+   "key_attributes": {
+    "aspect": "biting_pain"
+   },
+   "assertion": "denied",
+   "time_context": "current",
+   "assertion_source": "patient_report",
+   "action": null,
+   "status_fields": {},
+   "evidence": [
+    {
+     "utterance_id": "u9"
+    },
+    {
+     "utterance_id": "u10"
+    }
+   ],
+   "note": null
+  },
+  {
+   "gid": "s7",
+   "kind": "item",
+   "type": "symptom",
+   "problem_key": "P1",
+   "scope": "problem",
+   "target": null,
+   "target_relation": null,
+   "key_attributes": {
+    "aspect": "severity",
+    "score": 4
+   },
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "patient_report",
+   "action": null,
+   "status_fields": {},
+   "evidence": [
+    {
+     "utterance_id": "u11"
+    },
+    {
+     "utterance_id": "u12"
+    }
+   ],
+   "note": null
+  },
+  {
+   "gid": "h1",
+   "kind": "item",
+   "type": "history_change",
+   "problem_key": null,
+   "scope": "encounter",
+   "target": null,
+   "target_relation": null,
+   "key_attributes": {
+    "description": "no changes to health or medications"
+   },
+   "assertion": "absent",
+   "time_context": "current",
+   "assertion_source": "patient_report",
+   "action": null,
+   "status_fields": {},
+   "evidence": [
+    {
+     "utterance_id": "u13"
+    },
+    {
+     "utterance_id": "u14"
+    },
+    {
+     "quick_note_id": "q4"
+    }
+   ],
+   "note": null
+  },
+  {
+   "gid": "a1",
+   "kind": "item",
+   "type": "allergy",
+   "problem_key": null,
+   "scope": "encounter",
+   "target": null,
+   "target_relation": null,
+   "key_attributes": {
+    "substance": null
+   },
+   "assertion": "denied",
+   "time_context": "current",
+   "assertion_source": null,
+   "action": null,
+   "status_fields": {
+    "allergy_status": "denied"
+   },
+   "evidence": [
+    {
+     "quick_note_id": "q4"
+    }
+   ],
+   "note": null
+  },
+  {
+   "gid": "v1",
+   "kind": "item",
+   "type": "vital_reading",
+   "problem_key": null,
+   "scope": "encounter",
+   "target": null,
+   "target_relation": null,
+   "key_attributes": {
+    "systolic": 124,
+    "diastolic": 80
+   },
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "assistant_record",
+   "action": null,
+   "status_fields": {},
+   "evidence": [
+    {
+     "quick_note_id": "q1"
+    }
+   ],
+   "note": null
+  },
+  {
+   "gid": "f1",
+   "kind": "item",
+   "type": "finding",
+   "problem_key": "P1",
+   "scope": "problem",
+   "target": 14,
+   "target_relation": "matches_target",
+   "key_attributes": {
+    "observation": "existing MO amalgam (silver filling) with dark staining at the margin",
+    "surface": "MO"
+   },
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "clinician_observation",
+   "action": null,
+   "status_fields": {},
+   "evidence": [
+    {
+     "utterance_id": "u15"
+    }
+   ],
+   "note": null
+  },
+  {
+   "gid": "f2",
+   "kind": "item",
+   "type": "finding",
+   "problem_key": "P1",
+   "scope": "problem",
+   "target": 14,
+   "target_relation": "matches_target",
+   "key_attributes": {
+    "test": "percussion",
+    "response": "absent"
+   },
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "test_response",
+   "action": null,
+   "status_fields": {},
+   "evidence": [
+    {
+     "utterance_id": "u15"
+    },
+    {
+     "utterance_id": "u16"
+    }
+   ],
+   "note": null
+  },
+  {
+   "gid": "f3",
+   "kind": "item",
+   "type": "finding",
+   "problem_key": "P1",
+   "scope": "problem",
+   "target": 14,
+   "target_relation": "matches_target",
+   "key_attributes": {
+    "test": "cold",
+    "response": "present",
+    "lingering": false
+   },
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "test_response",
+   "action": null,
+   "status_fields": {},
+   "evidence": [
+    {
+     "utterance_id": "u17"
+    },
+    {
+     "utterance_id": "u18"
+    },
+    {
+     "utterance_id": "u19"
+    },
+    {
+     "utterance_id": "u20"
+    },
+    {
+     "utterance_id": "u21"
+    }
+   ],
+   "note": null
+  },
+  {
+   "gid": "x1",
+   "kind": "item",
+   "type": "radiograph",
+   "problem_key": "P1",
+   "scope": "problem",
+   "target": 14,
+   "target_relation": "matches_target",
+   "key_attributes": {
+    "type": "PA",
+    "finding": "recurrent decay under the filling on the mesial, not near the pulp; no periapical pathology"
+   },
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "clinician_observation",
+   "action": "performed",
+   "status_fields": {},
+   "evidence": [
+    {
+     "utterance_id": "u21"
+    },
+    {
+     "utterance_id": "u22"
+    },
+    {
+     "utterance_id": "u23"
+    }
+   ],
+   "note": null
+  },
+  {
+   "gid": "d1",
+   "kind": "item",
+   "type": "diagnosis",
+   "problem_key": "P1",
+   "scope": "problem",
+   "target": 14,
+   "target_relation": "matches_target",
+   "key_attributes": {
+    "diagnosis": "reversible pulpitis",
+    "certainty": "definite"
+   },
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "clinician_assessment",
+   "action": null,
+   "status_fields": {},
+   "evidence": [
+    {
+     "utterance_id": "u25"
+    }
+   ],
+   "note": null
+  },
+  {
+   "gid": "o1",
+   "kind": "item",
+   "type": "option_discussed",
+   "problem_key": "P1",
+   "scope": "problem",
+   "target": 14,
+   "target_relation": "matches_target",
+   "key_attributes": {
+    "option": "replace the old filling with a composite (tooth-colored) filling"
+   },
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "clinician_assessment",
+   "action": null,
+   "status_fields": {},
+   "evidence": [
+    {
+     "utterance_id": "u25"
+    }
+   ],
+   "note": null
+  },
+  {
+   "gid": "o2",
+   "kind": "item",
+   "type": "option_discussed",
+   "problem_key": "P1",
+   "scope": "problem",
+   "target": 14,
+   "target_relation": "matches_target",
+   "key_attributes": {
+    "option": "crown",
+    "recommended_by_clinician": false
+   },
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "clinician_assessment",
+   "action": null,
+   "status_fields": {},
+   "evidence": [
+    {
+     "utterance_id": "u26"
+    },
+    {
+     "utterance_id": "u27"
+    }
+   ],
+   "note": "crown not needed now"
+  },
+  {
+   "gid": "c1",
+   "kind": "item",
+   "type": "consent_element",
+   "problem_key": "P1",
+   "scope": "problem",
+   "target": null,
+   "target_relation": null,
+   "key_attributes": {
+    "element": "consequences_of_refusal_discussed",
+    "content": "decay will keep growing and could reach the nerve, needing a root canal"
+   },
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "clinician_assessment",
+   "action": null,
+   "status_fields": {},
+   "evidence": [
+    {
+     "utterance_id": "u27"
+    }
+   ],
+   "note": null
+  },
+  {
+   "gid": "dc1",
+   "kind": "item",
+   "type": "decision",
+   "problem_key": "P1",
+   "scope": "problem",
+   "target": null,
+   "target_relation": null,
+   "key_attributes": {
+    "decision": "accepted",
+    "option": "composite filling"
+   },
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "patient_report",
+   "action": null,
+   "status_fields": {},
+   "evidence": [
+    {
+     "utterance_id": "u28"
+    }
+   ],
+   "note": null
+  },
+  {
+   "gid": "n1",
+   "kind": "item",
+   "type": "next_visit",
+   "problem_key": "P1",
+   "scope": "problem",
+   "target": 14,
+   "target_relation": "matches_target",
+   "key_attributes": {
+    "procedure": "replace MO filling with composite",
+    "timing": "next week"
+   },
+   "assertion": "present",
+   "time_context": "planned",
+   "assertion_source": "clinician_instruction",
+   "action": null,
+   "status_fields": {},
+   "evidence": [
+    {
+     "utterance_id": "u29"
+    }
+   ],
+   "note": null
+  },
+  {
+   "gid": "i1",
+   "kind": "item",
+   "type": "instruction",
+   "problem_key": "P1",
+   "scope": "problem",
+   "target": null,
+   "target_relation": null,
+   "key_attributes": {
+    "text": "use a sensitivity toothpaste"
+   },
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "clinician_instruction",
+   "action": null,
+   "status_fields": {},
+   "evidence": [
+    {
+     "utterance_id": "u29"
+    }
+   ],
+   "note": null
+  },
+  {
+   "gid": "i2",
+   "kind": "item",
+   "type": "instruction",
+   "problem_key": "P1",
+   "scope": "problem",
+   "target": null,
+   "target_relation": null,
+   "key_attributes": {
+    "text": "avoid really cold drinks on that side"
+   },
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "clinician_instruction",
+   "action": null,
+   "status_fields": {},
+   "evidence": [
+    {
+     "utterance_id": "u29"
+    }
+   ],
+   "note": null
+  }
+ ],
+ "expected_flags": [],
+ "forbidden_facts": [
+  "skiing",
+  "snow",
+  "weekend"
+ ],
+ "expected_decision": "accepted",
+ "notes": "Draft gold from the role-play script and answer key. Needs a person to check before scoring counts (section 14.2)."
+}

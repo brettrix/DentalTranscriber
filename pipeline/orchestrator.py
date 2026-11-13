@@ -459,18 +459,22 @@ def reconcile_graph(g: Graph, sources, mode: str, r2_findings: list[dict], previ
 # ---------------------------------------------------------------- Stages E and F
 
 def derive(session: Session, graph: Graph | None, sources, mode: str, rule_mode: str, *, run_id: str | None = None,
-           run: Run | None = None, client=None, agents=None) -> dict:
+           run: Run | None = None, client=None, agents=None, retry_e3: bool = False) -> dict:
     """E0-E3 and F from one frozen graph version. Also run after every human edit."""
     stage_log = run.stage_log if run else session_stage_log(session)
     run_id = run_id or session.meta().get("last_run")
+    failures: list[dict] = []
 
-    def record(stage, agent, status, **kw):
+    def record(stage, agent, status, error=None, blocked_by=None, extra=None):
+        inputs = {"graph": snapshot_hash(graph)} if graph is not None else {}
+        rec = stage_log.record(stage, agent, status, error=error, blocked_by=blocked_by, run_id=run_id,
+                               inputs_hash=hash_obj(inputs)[:16], extra=extra)
         if run is not None:
-            return run.record(stage, agent, status, **kw)
-        return stage_log.record(stage, agent, status, run_id=run_id,
-                                inputs_hash=hash_obj({"graph": snapshot_hash(graph)} if graph else {})[:16], **kw)
+            run.note(f"{stage}/{agent}: {status}" + (f" ({error})" if error else ""))
+        if status == "failed":
+            failures.append(rec)
+        return rec
 
-    runs = stage_log.for_run(run_id) if run_id else []
     out = {"graph_version": graph.version if graph else None, "note": None, "flags": [], "notices": [],
            "highlights": [], "status": None, "candidate": graph is not None}
     if graph is None:
@@ -480,15 +484,22 @@ def derive(session: Session, graph: Graph | None, sources, mode: str, rule_mode:
         record("F", "status", "succeeded")
         atomic_write_json(session.path("outputs", "latest.json"), {**out, "flags": []})
         return out
+    flags, notices = [], []
+    from pipeline import clinical_review
+    e3_flags, e3_notices = clinical_review.run_e3(session, graph, sources, mode, rule_mode,
+                                                  client=client or (run.client if run else None),
+                                                  agents=agents or (run.agents if run else None),
+                                                  tracer=run.tracer if run else session_tracer(session, graph.version),
+                                                  record=record, run_id=run_id, retry=retry_e3)
+    graph = _add_failure_tasks(session, graph, failures)
     try:
         note = render_note(graph, sources, mode)
         record("E", "E0", "succeeded")
-    except (RenderError, Exception) as exc:  # noqa: BLE001
+    except Exception as exc:  # noqa: BLE001 - RenderError or a bug: either way no valid candidate
         note = None
         record("E", "E0", "failed", error=_err(exc))
     out["note"] = note
     staging = session_staging(session)
-    flags, notices = [], []
     try:
         ctx = rules_mod.RuleContext(graph=graph, mode=mode, rule_mode=rule_mode, sources=sources,
                                     stage_runs=stage_log.for_run(run_id), staging_open=staging.open_records())
@@ -497,35 +508,40 @@ def derive(session: Session, graph: Graph | None, sources, mode: str, rule_mode:
     except Exception as exc:  # noqa: BLE001
         record("E", "E2", "failed", error=_err(exc))
         traceback.print_exc()
-    try:
-        from pipeline import clinical_review
-        e3_flags, e3_notices = clinical_review.run_e3(session, graph, sources, mode, rule_mode,
-                                                      client=client or (run.client if run else None),
-                                                      agents=agents or (run.agents if run else None),
-                                                      tracer=run.tracer if run else None,
-                                                      record=record, run_id=run_id)
-        flags += e3_flags
-        notices += e3_notices
-    except ImportError:
-        record("E", "E3", "not_applicable")
-    flags = merge_flags(flags)
+    flags = merge_flags(flags + e3_flags)
+    notices += e3_notices
     session_flag_actions(session).apply(flags)
-    out["flags"] = flags
-    out["notices"] = notices
-    out["highlights"] = highlights(graph, flags)
+    out.update(graph_version=graph.version, flags=flags, notices=notices, highlights=highlights(graph, flags))
     record("E", "E1", "succeeded")
-    expected = _expected_stages(mode)
-    out["status"] = compute_status(graph, stage_log.for_run(run_id), flags, mode, rule_mode, expected)
+    out["status"] = compute_status(graph, stage_log.for_run(run_id), flags, mode, rule_mode, _expected_stages(mode))
+    out["status"]["candidate"] = note is not None
     record("F", "status", "succeeded")
     payload = {**out, "flags": [f.model_dump(mode="json") for f in flags],
-               "snapshot_hash": snapshot_hash(graph), "markdown": note_markdown(note) if note else None}
+               "snapshot_hash": snapshot_hash(graph), "markdown": note_markdown(note) if note else None,
+               "staged_open": len(staging.open_records())}
     atomic_write_json(session.path("outputs", f"derived_v{graph.version}.json"), payload)
     atomic_write_json(session.path("outputs", "latest.json"), payload)
     return out
 
 
+def _add_failure_tasks(session: Session, graph: Graph, failures: list[dict]) -> Graph:
+    """Every failed stage creates a task (invariant 9). Adding it is a graph change: a new version."""
+    if not failures:
+        return graph
+    g = graph.model_copy(deep=True)
+    for rec in failures:
+        add_task(g, make_task("stage_failure", f"{rec['stage']} {rec['agent']} failed: {rec.get('error')}",
+                              created_by_stage=rec["stage"], severity="medium", stage_run_id=rec["id"],
+                              key=rec["id"]),
+                 graph)
+    if validate_graph(g):
+        return graph
+    return save_graph(session, g)
+
+
 def _expected_stages(mode: str) -> list[str]:
-    base = ["A/T0", "L/Linker", "C/Cv", "C/R2", "C/repair", "D/reconcile", "D/freeze", "E/E0", "E/E2"]
+    base = ["A/T0", "L/Linker", "C/Cv", "C/R2", "C/repair", "D/reconcile", "D/freeze", "E/E3", "E/E0", "E/E2",
+            "E/E1"]
     if mode == "baseline":
         return base + ["B/B0"]
     return base + ["B/Br", "B/B1", "B/B2", "B/B3", "B/B4", "C/Cs", "C/Ce", "C/Co"]

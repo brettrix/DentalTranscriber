@@ -42,7 +42,7 @@ Some attributes are normalized values. For each one, add a derivation `{attribut
 - An `absent` or `denied` entity needs a `negation` derivation: `from` is the negation word or phrase ("no", "not really", "nope"), `concept` is the words naming what is negated, and `concept_evidence_index` points to the quote containing the concept. The concept must be in the same quote as the cue, or in the clinician's question line directly before the patient's answer (cite both).
 
 ## Problems and relationships
-- A problem is a complaint the visit addresses. Exactly one `chief` problem (the main reason for the visit); others are `secondary`.
+- A problem is a complaint the visit addresses. Its `assertion_source` is `patient_report` when the patient raised the complaint (the usual case) and `clinician_assessment` when the clinician raised it. Exactly one `chief` problem (the main reason for the visit); others are `secondary`.
 - `complaint_location`: where the patient says it hurts (their words in `free_text`; a tooth only if the patient names one).
 - `clinical_target`: the tooth the clinician identifies as the problem tooth. Leave it null if the clinician never identifies one.
 - A relationship links a problem to another tooth, only when the source states or clearly shows it: `control` (a tooth tested for comparison), `referred_from` (the complaint is felt in one place but comes from the problem tooth; `tooth` is where it is felt), `adjacent_examined` (a neighbouring tooth examined), `secondary_problem` (another tooth with its own problem).

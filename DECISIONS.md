@@ -28,3 +28,26 @@ Choices made where BUILD_PROMPT v4.3 was unclear. Each keeps the invariants in s
 - Producers and checkers use `claude-sonnet-5-5` (spec). Forced `tool_choice` is rejected on Sonnet 5.5, so calls use `tool_choice: auto` with a prompt instruction, and a missing or invalid tool call gets the one schema re-ask (10). Thinking is adaptive (default on Sonnet 5.5); per-agent effort is set in `config/agents.yaml`.
 - Server-side refusal fallback (`fallbacks: "default"`) is enabled on every call; the trace records the model that actually answered.
 - The eval-only Grader uses `claude-opus-5-5` with a 180 s timeout, so grading isn't done by the same model as the producers.
+
+## Pipeline mechanics (stages 2–3)
+- **Graph versions per run.** A run commits a version after the Linker, after Stage C, and at freeze (Stage D). Human actions each add one version. A stage-E failure task is a graph change, so it adds a version too.
+- **Staging before graph.** When nothing can commit (no chief problem), stage-failure tasks are kept in `staging.json` until a graph exists.
+- **Registry text for B1–B4** comes from Br's output, keyed `P1`, `P2`, …; the Linker resolves those keys and the agents' own local keys within one batch, in any order.
+- **Repair** gets the entity in agent form (quotes instead of offsets) and returns revised items with the same `id`; a revision that changes nothing is ignored. Registry (problem/relationship) issues are never sent to repair: they become high-severity `registry_issue` tasks. This also applies to B0's problems.
+- **R2 omission routing.** R2 suggests the item type its subject belongs to, so an uncovered contradiction goes to the right team extractor's repair call.
+- **Unknown option links** create a low-severity task (6.8) as well as the `unknown_option_link` flag.
+
+## Cs comparison calibration (stage 3, from case 1)
+- **Inputs.** Cs is told the entity type it is checking and sees the producer's evidence quotes as "focus quotes" inside a ±2-utterance window. It never sees the producer's values. Without the type and focus it can't tell which assertion in a window to extract.
+- **`absent` vs `denied`** count as the same negated assertion. The guide says when to use each, but which one is right depends on who speaks, and that is already compared through `assertion_source`.
+- **Non-critical free text** (e.g. a finding's `observation`, `result_description`, `intensity`, the item's `target.free_text`) is compared as one combined description through Ce. Critical free text (diagnosis, option, procedure, referral destination) is compared attribute by attribute. On case 1, field-by-field comparison failed entities only because the same words were filed under a neighbouring field.
+- **The checker adding a non-critical detail** the producer left null is not a mismatch. Any difference on a critical attribute is.
+- **Ce** is asked whether the checker's reading supports the recorded value: wording and hedges ("about" vs "maybe") are equivalent; a changed or dropped clinical qualifier is not.
+- **Cs extra assertions** count as omissions only if no entity cites that utterance at all. Co does the fine-grained, entity-aware omission check.
+- Case 1 team run, before → after calibration: semantic pass 12/23 → 22/23 (same transcript); the remaining failure was a real ambiguity (a negative percussion test recorded as `absent`), now addressed in the extraction guide.
+
+## E2 / E3
+- **Quadrants for coarse locations.** Complaint locations such as "upper left" are compared with a tooth by Universal quadrant (glossary `QUADRANT_PHRASES`); a location with neither a tooth nor a recognizable quadrant gives `target_not_assessable` (low).
+- **Allergen classes** (e.g. penicillin → amoxicillin, ampicillin) live in `rules/drug_allergy.json`, together with the glossary's brand/generic and combination-ingredient tables.
+- **E3 questions are flags** with `origin: E3`, `question: true`, low severity, scored separately from E2 flags in the evaluation. Python finds the runnable rule instances (mode plus preconditions); the agent only words the question and cites entity ids from the instance's list.
+- **E3 results are cached** by an inputs hash over the cited entities' hashes and the rule file, so human edits that don't touch those entities don't re-call the model. A failed E3 is not re-run while its inputs are unchanged unless the dentist presses Retry. An E3 failure task does not block approval (10.1: the dentist *may* accept it).

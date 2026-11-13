@@ -92,6 +92,11 @@ class KeyMap:
         for candidate in (ref, f"{owner}:{ref}", f"{registry_owner}:{ref}"):
             if candidate in self.map:
                 return self.map[candidate]
+        # Keys from an earlier batch (e.g. a repair call naming its own problem key 'P1').
+        for candidate in (f"{owner}:{ref}", f"{registry_owner}:{ref}", ref):
+            hit = next((e.id for e in self.graph.entities if e.status == "active" and e.local_key == candidate), None)
+            if hit:
+                return hit
         return None
 
 

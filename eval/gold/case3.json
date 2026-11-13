@@ -1,0 +1,672 @@
+{
+ "case_id": "case3",
+ "annotated_by": "claude",
+ "checked_by": null,
+ "entities": [
+  {
+   "gid": "p1",
+   "kind": "problem",
+   "type": null,
+   "problem_key": "P1",
+   "scope": null,
+   "target": 19,
+   "target_relation": null,
+   "key_attributes": {
+    "role": "chief",
+    "complaint_text": "lower left jaw swelling since yesterday with a throbbing tooth that kept them up at night",
+    "complaint_location": "lower left jaw"
+   },
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": null,
+   "action": null,
+   "status_fields": {},
+   "evidence": [
+    {
+     "utterance_id": "u2"
+    },
+    {
+     "utterance_id": "u13"
+    }
+   ]
+  },
+  {
+   "gid": "s1",
+   "kind": "item",
+   "type": "symptom",
+   "problem_key": "P1",
+   "scope": "problem",
+   "target": null,
+   "target_relation": null,
+   "key_attributes": {
+    "aspect": "swelling",
+    "value": "lower left jaw swelling since yesterday"
+   },
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "patient_report",
+   "action": null,
+   "status_fields": {},
+   "evidence": [
+    {
+     "utterance_id": "u2"
+    }
+   ],
+   "note": null
+  },
+  {
+   "gid": "s2",
+   "kind": "item",
+   "type": "symptom",
+   "problem_key": "P1",
+   "scope": "problem",
+   "target": null,
+   "target_relation": null,
+   "key_attributes": {
+    "aspect": "quality",
+    "value": "throbbing"
+   },
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "patient_report",
+   "action": null,
+   "status_fields": {},
+   "evidence": [
+    {
+     "utterance_id": "u2"
+    }
+   ],
+   "note": null
+  },
+  {
+   "gid": "s3",
+   "kind": "item",
+   "type": "symptom",
+   "problem_key": "P1",
+   "scope": "problem",
+   "target": null,
+   "target_relation": null,
+   "key_attributes": {
+    "aspect": "night_pain",
+    "value": "kept them up last night"
+   },
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "patient_report",
+   "action": null,
+   "status_fields": {},
+   "evidence": [
+    {
+     "utterance_id": "u2"
+    }
+   ],
+   "note": null
+  },
+  {
+   "gid": "s4",
+   "kind": "item",
+   "type": "symptom",
+   "problem_key": "P1",
+   "scope": "problem",
+   "target": null,
+   "target_relation": null,
+   "key_attributes": {
+    "aspect": "prior_treatment",
+    "value": "hurt on and off a few months ago, then stopped"
+   },
+   "assertion": "present",
+   "time_context": "historical",
+   "assertion_source": "patient_report",
+   "action": null,
+   "status_fields": {},
+   "evidence": [
+    {
+     "utterance_id": "u3"
+    },
+    {
+     "utterance_id": "u4"
+    }
+   ],
+   "note": "aspect could also be 'onset'; the time context is the key attribute"
+  },
+  {
+   "gid": "s5",
+   "kind": "item",
+   "type": "symptom",
+   "problem_key": "P1",
+   "scope": "problem",
+   "target": null,
+   "target_relation": null,
+   "key_attributes": {
+    "aspect": "severity",
+    "score": 8
+   },
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "patient_report",
+   "action": null,
+   "status_fields": {},
+   "evidence": [
+    {
+     "utterance_id": "u5"
+    },
+    {
+     "utterance_id": "u6"
+    }
+   ],
+   "note": null
+  },
+  {
+   "gid": "s6",
+   "kind": "item",
+   "type": "symptom",
+   "problem_key": "P1",
+   "scope": "problem",
+   "target": null,
+   "target_relation": null,
+   "key_attributes": {
+    "aspect": "other",
+    "value": "fever"
+   },
+   "assertion": "denied",
+   "time_context": "current",
+   "assertion_source": "patient_report",
+   "action": null,
+   "status_fields": {},
+   "evidence": [
+    {
+     "utterance_id": "u7"
+    },
+    {
+     "utterance_id": "u8"
+    }
+   ],
+   "note": "'I don't think so' \u2014 no known fever"
+  },
+  {
+   "gid": "a1",
+   "kind": "item",
+   "type": "allergy",
+   "problem_key": null,
+   "scope": "encounter",
+   "target": null,
+   "target_relation": null,
+   "key_attributes": {
+    "substance": "penicillin",
+    "reaction": "hives"
+   },
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "patient_report",
+   "action": null,
+   "status_fields": {
+    "allergy_status": "reported_active"
+   },
+   "evidence": [
+    {
+     "utterance_id": "u9"
+    },
+    {
+     "utterance_id": "u10"
+    },
+    {
+     "quick_note_id": "q4"
+    }
+   ],
+   "note": null
+  },
+  {
+   "gid": "h1",
+   "kind": "item",
+   "type": "history_change",
+   "problem_key": null,
+   "scope": "encounter",
+   "target": null,
+   "target_relation": null,
+   "key_attributes": {
+    "description": "no other changes to health"
+   },
+   "assertion": "absent",
+   "time_context": "current",
+   "assertion_source": "patient_report",
+   "action": null,
+   "status_fields": {},
+   "evidence": [
+    {
+     "utterance_id": "u11"
+    },
+    {
+     "utterance_id": "u12"
+    }
+   ],
+   "note": null
+  },
+  {
+   "gid": "v1",
+   "kind": "item",
+   "type": "vital_reading",
+   "problem_key": null,
+   "scope": "encounter",
+   "target": null,
+   "target_relation": null,
+   "key_attributes": {
+    "systolic": 130,
+    "diastolic": 84
+   },
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "assistant_record",
+   "action": null,
+   "status_fields": {},
+   "evidence": [
+    {
+     "quick_note_id": "q1"
+    }
+   ],
+   "note": null
+  },
+  {
+   "gid": "f1",
+   "kind": "item",
+   "type": "finding",
+   "problem_key": "P1",
+   "scope": "problem",
+   "target": 19,
+   "target_relation": "matches_target",
+   "key_attributes": {
+    "observation": "large filling"
+   },
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "clinician_observation",
+   "action": null,
+   "status_fields": {},
+   "evidence": [
+    {
+     "utterance_id": "u13"
+    }
+   ],
+   "note": null
+  },
+  {
+   "gid": "f2",
+   "kind": "item",
+   "type": "finding",
+   "problem_key": "P1",
+   "scope": "problem",
+   "target": 19,
+   "target_relation": "matches_target",
+   "key_attributes": {
+    "observation": "buccal gingival swelling next to the tooth"
+   },
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "clinician_observation",
+   "action": null,
+   "status_fields": {},
+   "evidence": [
+    {
+     "utterance_id": "u13"
+    }
+   ],
+   "note": null
+  },
+  {
+   "gid": "f3",
+   "kind": "item",
+   "type": "finding",
+   "problem_key": "P1",
+   "scope": "problem",
+   "target": 19,
+   "target_relation": "matches_target",
+   "key_attributes": {
+    "test": "palpation",
+    "response": "present",
+    "result_description": "tender"
+   },
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "test_response",
+   "action": null,
+   "status_fields": {},
+   "evidence": [
+    {
+     "utterance_id": "u13"
+    },
+    {
+     "utterance_id": "u14"
+    }
+   ],
+   "note": null
+  },
+  {
+   "gid": "f4",
+   "kind": "item",
+   "type": "finding",
+   "problem_key": "P1",
+   "scope": "problem",
+   "target": 19,
+   "target_relation": "matches_target",
+   "key_attributes": {
+    "test": "percussion",
+    "response": "present"
+   },
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "test_response",
+   "action": null,
+   "status_fields": {},
+   "evidence": [
+    {
+     "utterance_id": "u15"
+    },
+    {
+     "utterance_id": "u16"
+    }
+   ],
+   "note": null
+  },
+  {
+   "gid": "f5",
+   "kind": "item",
+   "type": "finding",
+   "problem_key": "P1",
+   "scope": "problem",
+   "target": 19,
+   "target_relation": "matches_target",
+   "key_attributes": {
+    "test": "cold",
+    "response": "absent"
+   },
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "test_response",
+   "action": null,
+   "status_fields": {},
+   "evidence": [
+    {
+     "utterance_id": "u17"
+    },
+    {
+     "utterance_id": "u18"
+    },
+    {
+     "utterance_id": "u19"
+    }
+   ],
+   "note": null
+  },
+  {
+   "gid": "x1",
+   "kind": "item",
+   "type": "radiograph",
+   "problem_key": "P1",
+   "scope": "problem",
+   "target": 19,
+   "target_relation": "matches_target",
+   "key_attributes": {
+    "type": "PA",
+    "finding": "periapical radiolucency (dark area) around the root tips"
+   },
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "clinician_observation",
+   "action": "performed",
+   "status_fields": {},
+   "evidence": [
+    {
+     "utterance_id": "u19"
+    },
+    {
+     "utterance_id": "u20"
+    },
+    {
+     "utterance_id": "u21"
+    }
+   ],
+   "note": null
+  },
+  {
+   "gid": "d1",
+   "kind": "item",
+   "type": "diagnosis",
+   "problem_key": "P1",
+   "scope": "problem",
+   "target": 19,
+   "target_relation": "matches_target",
+   "key_attributes": {
+    "diagnosis": "pulp necrosis with acute apical abscess",
+    "certainty": "definite"
+   },
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "clinician_assessment",
+   "action": null,
+   "status_fields": {},
+   "evidence": [
+    {
+     "utterance_id": "u21"
+    }
+   ],
+   "note": null
+  },
+  {
+   "gid": "o1",
+   "kind": "item",
+   "type": "option_discussed",
+   "problem_key": "P1",
+   "scope": "problem",
+   "target": 19,
+   "target_relation": "matches_target",
+   "key_attributes": {
+    "option": "root canal then a crown"
+   },
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "clinician_assessment",
+   "action": null,
+   "status_fields": {},
+   "evidence": [
+    {
+     "utterance_id": "u23"
+    }
+   ],
+   "note": null
+  },
+  {
+   "gid": "o2",
+   "kind": "item",
+   "type": "option_discussed",
+   "problem_key": "P1",
+   "scope": "problem",
+   "target": 19,
+   "target_relation": "matches_target",
+   "key_attributes": {
+    "option": "extraction (implant or bridge later)"
+   },
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "clinician_assessment",
+   "action": null,
+   "status_fields": {},
+   "evidence": [
+    {
+     "utterance_id": "u23"
+    }
+   ],
+   "note": null
+  },
+  {
+   "gid": "c1",
+   "kind": "item",
+   "type": "consent_element",
+   "problem_key": "P1",
+   "scope": "problem",
+   "target": null,
+   "target_relation": null,
+   "key_attributes": {
+    "element": "alternatives_discussed",
+    "content": "root canal + crown vs extraction"
+   },
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "clinician_assessment",
+   "action": null,
+   "status_fields": {},
+   "evidence": [
+    {
+     "utterance_id": "u23"
+    }
+   ],
+   "note": "the two options with their trade-offs; benefits/risks elements may also be recorded"
+  },
+  {
+   "gid": "dc1",
+   "kind": "item",
+   "type": "decision",
+   "problem_key": "P1",
+   "scope": "problem",
+   "target": null,
+   "target_relation": null,
+   "key_attributes": {
+    "decision": "accepted",
+    "option": "root canal"
+   },
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "patient_report",
+   "action": null,
+   "status_fields": {},
+   "evidence": [
+    {
+     "utterance_id": "u24"
+    },
+    {
+     "utterance_id": "u25"
+    }
+   ],
+   "note": null
+  },
+  {
+   "gid": "rx1",
+   "kind": "item",
+   "type": "prescription",
+   "problem_key": "P1",
+   "scope": "problem",
+   "target": null,
+   "target_relation": null,
+   "key_attributes": {
+    "drug": "amoxicillin",
+    "strength": "500 mg",
+    "frequency_code": "TID",
+    "duration_days": 7
+   },
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "clinician_instruction",
+   "action": null,
+   "status_fields": {
+    "prescription_status": "prescribed_today"
+   },
+   "evidence": [
+    {
+     "utterance_id": "u25"
+    }
+   ],
+   "note": null
+  },
+  {
+   "gid": "rx2",
+   "kind": "item",
+   "type": "prescription",
+   "problem_key": "P1",
+   "scope": "problem",
+   "target": null,
+   "target_relation": null,
+   "key_attributes": {
+    "drug": "ibuprofen",
+    "strength": "600 mg",
+    "frequency_code": "q6h PRN"
+   },
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "clinician_instruction",
+   "action": null,
+   "status_fields": {
+    "prescription_status": "prescribed_today"
+   },
+   "evidence": [
+    {
+     "utterance_id": "u25"
+    }
+   ],
+   "note": "scope may be encounter"
+  },
+  {
+   "gid": "n1",
+   "kind": "item",
+   "type": "next_visit",
+   "problem_key": "P1",
+   "scope": "problem",
+   "target": 19,
+   "target_relation": "matches_target",
+   "key_attributes": {
+    "procedure": "root canal",
+    "timing": "within the next few days"
+   },
+   "assertion": "present",
+   "time_context": "planned",
+   "assertion_source": "clinician_instruction",
+   "action": null,
+   "status_fields": {},
+   "evidence": [
+    {
+     "utterance_id": "u25"
+    }
+   ],
+   "note": null
+  },
+  {
+   "gid": "i1",
+   "kind": "item",
+   "type": "instruction",
+   "problem_key": "P1",
+   "scope": "problem",
+   "target": null,
+   "target_relation": null,
+   "key_attributes": {
+    "text": "go to the ER if swelling spreads toward the eye or neck, or trouble swallowing or breathing"
+   },
+   "assertion": "present",
+   "time_context": "current",
+   "assertion_source": "clinician_instruction",
+   "action": null,
+   "status_fields": {},
+   "evidence": [
+    {
+     "utterance_id": "u27"
+    }
+   ],
+   "note": null
+  }
+ ],
+ "expected_flags": [
+  {
+   "rule_id": "allergy_rx",
+   "problem_key": "P1",
+   "target": null,
+   "meaning": "penicillin allergy (hives, active) and amoxicillin prescribed today: high, safety-critical",
+   "evidence": [
+    {
+     "utterance_id": "u10"
+    },
+    {
+     "utterance_id": "u25"
+    }
+   ]
+  }
+ ],
+ "forbidden_facts": [],
+ "expected_decision": "accepted",
+ "notes": "Draft gold from the role-play script and answer key. Needs a person to check before scoring counts (section 14.2)."
+}
