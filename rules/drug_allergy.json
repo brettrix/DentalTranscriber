@@ -1,0 +1,14 @@
+{
+  "version": "1",
+  "note": "Allergen classes used by allergy_rx together with the brand/generic and combination-ingredient tables in glossary.py. A limited list, not a safety clearance.",
+  "allergen_groups": {
+    "penicillin": ["penicillin", "amoxicillin", "ampicillin", "dicloxacillin"],
+    "cephalosporin": ["cephalexin"],
+    "nsaid": ["ibuprofen", "naproxen", "aspirin"],
+    "sulfa": ["sulfamethoxazole"],
+    "codeine": ["codeine"],
+    "macrolide": ["azithromycin"]
+  },
+  "allergen_aliases": {"penicillins": "penicillin", "pcn": "penicillin", "nsaids": "nsaid", "sulfa drugs": "sulfa",
+                       "cephalosporins": "cephalosporin", "anti-inflammatories": "nsaid"}
+}

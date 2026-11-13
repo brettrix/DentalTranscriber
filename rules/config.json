@@ -1,0 +1,30 @@
+{
+  "version": "1",
+  "rules": {
+    "treatment_target_mismatch":     {"version": "1", "class": "technical", "severity": "high", "safety_critical": true},
+    "treatment_target_disagreement": {"version": "1", "class": "technical", "severity": "high", "safety_critical": true},
+    "unexplained_other_tooth":       {"version": "1", "class": "technical", "severity": "low", "question": true},
+    "complaint_location_differs":    {"version": "1", "class": "technical", "severity": "low"},
+    "quick_note_target_conflict":    {"version": "1", "class": "technical", "severity": "high", "safety_critical": true},
+    "quick_note_complaint_mismatch": {"version": "1", "class": "technical", "severity": "low"},
+    "quick_note_tooth_unclear":      {"version": "1", "class": "technical", "severity": "medium", "question": true},
+    "allergy_rx":                    {"version": "1", "class": "clinical", "status": "pending", "severity": "see logic", "safety_critical": true,
+                                      "inactive_message": "Allergy check not active: lookup pending approval"},
+    "bp_reading":                    {"version": "1", "class": "clinical", "status": "pending", "severity": "see logic",
+                                      "level_a": {"systolic": 160, "diastolic": 100}, "level_b": {"systolic": 180, "diastolic": 110},
+                                      "inactive_message": "Blood pressure check not active: thresholds pending approval"},
+    "refusal_discussion":            {"version": "1", "class": "clinical", "status": "pending", "severity": "low", "question": true,
+                                      "inactive_message": "Refusal-discussion check not active: pending approval"},
+    "chief_problem_minimum":         {"version": "1", "class": "technical", "severity": "medium"},
+    "diagnosis_or_plan_missing":     {"version": "1", "class": "technical", "severity": "low"},
+    "radiograph_finding_missing":    {"version": "1", "class": "technical", "severity": "medium"},
+    "unsupported_content":           {"version": "1", "class": "technical", "severity": "see logic"},
+    "incomplete_section":            {"version": "1", "class": "technical", "severity": "high"},
+    "stage_failure":                 {"version": "1", "class": "technical", "severity": "see logic"},
+    "open_conflict":                 {"version": "1", "class": "technical", "severity": "see logic"},
+    "open_review_task":              {"version": "1", "class": "technical", "severity": "medium"},
+    "unknown_option_link":           {"version": "1", "class": "technical", "severity": "low"},
+    "pending_critical_correction":   {"version": "1", "class": "technical", "severity": "high", "safety_critical": true},
+    "target_not_assessable":         {"version": "1", "class": "technical", "severity": "low"}
+  }
+}

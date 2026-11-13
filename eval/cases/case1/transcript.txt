@@ -1,0 +1,31 @@
+DENTIST: Hi, I'm Dr. Hale. What brings you in today?
+PATIENT: Hey. So my upper left side has been really sensitive to cold. Like when I drink ice water it zings.
+DENTIST: How long has that been going on?
+PATIENT: Maybe three weeks? It's been getting a little worse.
+DENTIST: When the cold hits it, does the pain go away right away, or does it hang around?
+PATIENT: It goes away pretty fast. Maybe five seconds.
+DENTIST: Okay. Does it ever wake you up at night, or hurt on its own without anything triggering it?
+PATIENT: No, only with cold.
+DENTIST: Any pain when you bite down?
+PATIENT: Not really.
+DENTIST: On a scale of zero to ten, how bad is it when it happens?
+PATIENT: Like a four.
+DENTIST: Okay, let's take a look. Any changes to your health or medications since we last saw you?
+PATIENT: Nope, same as before.
+DENTIST: Great. So I'm looking at number fourteen. There's an older silver filling here, MO. I can see some dark staining along the edge of it. I'm going to tap on it. Anything?
+PATIENT: No.
+DENTIST: Now some cold on number fourteen.
+PATIENT: Yeah, that's the one.
+DENTIST: And it's going away?
+PATIENT: Yeah, it's gone.
+DENTIST: Good, it went away quickly. Let's get a PA of fourteen.
+ASSISTANT: Taking a PA now.
+DENTIST: Okay, on the x-ray I can see decay underneath the old filling on the mesial side. It's not close to the nerve, and the root tips look healthy, no infection.
+PATIENT: So what does that mean?
+DENTIST: It means the nerve is irritated but healthy. We call that reversible pulpitis. If we take out the old filling and the decay underneath it and put in a new tooth-colored filling, it should calm right down.
+PATIENT: Okay. Do I need a crown?
+DENTIST: Not right now. The tooth has enough structure left for a filling. If we wait, the decay will keep growing and could reach the nerve, which would mean a root canal.
+PATIENT: Okay, let's do the filling.
+DENTIST: Great. We'll schedule you for next week to replace the MO filling on fourteen with a composite. Until then, try a sensitivity toothpaste and avoid really cold drinks on that side.
+PATIENT: Sounds good. Oh, and is it supposed to snow this weekend? I'm trying to go skiing.
+DENTIST: I heard maybe up the canyon. Have fun.

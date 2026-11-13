@@ -1,0 +1,30 @@
+DENTIST: Hi, what's going on today?
+PATIENT: When I chew on my lower right side, I get this sharp pain. Mostly with harder foods, like nuts.
+DENTIST: When did that start?
+PATIENT: About a month ago. I bit down on a popcorn kernel and it's been weird since.
+DENTIST: Is it a quick sharp pain when you bite, or more of a constant ache?
+PATIENT: Quick and sharp. Sometimes when I let go of the bite, too.
+DENTIST: Any sensitivity to cold or hot?
+PATIENT: A little to cold, but it goes away.
+DENTIST: How bad, zero to ten?
+PATIENT: When it happens, a seven. Otherwise it's fine.
+DENTIST: Any changes to your health or meds?
+PATIENT: I started a blood pressure medication a couple months ago. Lisinopril.
+DENTIST: Okay, thanks, we'll update that. Let's look. This is number thirty. It has a big old filling. I'm going to have you bite on this little tool, one cusp at a time. Tell me if anything hurts.
+PATIENT: Okay. Nothing. Nothing. Ow, that one.
+DENTIST: That's the distal lingual cusp of thirty. And when you release?
+PATIENT: Yeah, that hurts too.
+DENTIST: Okay. Cold test on thirty.
+PATIENT: Feel it, it's going away.
+DENTIST: Normal response. Tapping? Nothing?
+PATIENT: Nothing.
+DENTIST: Let's grab a PA of thirty.
+ASSISTANT: Got it.
+DENTIST: The x-ray looks normal: no decay under the filling and the root tips are healthy. With pain on biting and releasing on that one cusp, this looks like a cracked tooth. Cracks usually don't show up on x-rays.
+PATIENT: Is that bad?
+DENTIST: It's common, especially with big old fillings. The best treatment is a crown. It holds the tooth together so the crack doesn't spread.
+PATIENT: How much is a crown? I'm not sure my insurance covers much this year.
+DENTIST: The front desk can give you an estimate. I do want you to know that if we wait, the crack can grow into the nerve. Then you might need a root canal, and if it splits down the root, we'd have to take the tooth out.
+PATIENT: Okay, I understand. I want to check my insurance first and maybe do it in January.
+DENTIST: That's your call. Until then, try to chew on the other side and avoid hard foods like nuts and ice. If it starts hurting on its own or wakes you up, call us right away.
+PATIENT: Okay, will do.

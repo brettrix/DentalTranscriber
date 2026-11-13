@@ -93,18 +93,6 @@ def ingredients(generic: str) -> list[str]:
     return [part.strip() for part in generic.split("/") if part.strip()]
 
 
-# Allergen class -> member generics, used by the allergy/prescription rule together with ingredients().
-ALLERGEN_GROUPS = {
-    "penicillin": ["penicillin", "amoxicillin", "ampicillin", "dicloxacillin"],
-    "cephalosporin": ["cephalexin"],
-    "nsaid": ["ibuprofen", "naproxen", "aspirin"],
-    "sulfa": ["sulfamethoxazole"],
-    "codeine": ["codeine"],
-    "macrolide": ["azithromycin"],
-}
-ALLERGEN_ALIASES = {"penicillins": "penicillin", "pcn": "penicillin", "nsaids": "nsaid", "sulfa drugs": "sulfa",
-                    "cephalosporins": "cephalosporin"}
-
 # Quick-note labels: what kind of tooth reference each label gives.
 QUICK_NOTE_LABELS = {
     "CC:": "complaint_location",

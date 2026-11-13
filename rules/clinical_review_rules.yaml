@@ -1,0 +1,25 @@
+version: "1"
+rules:
+  - id: perio_rationale
+    version: "1"
+    status: pending
+    severity: low
+    description: >
+      Fires only when scaling and root planing is recommended (by a clinician_assessment) and no supporting
+      periodontal finding of any kind is documented: probing depths, bleeding, attachment loss or recession,
+      radiographic bone loss, or calculus. Not an all-elements checklist.
+    question_template: "SRP is recommended but no periodontal finding is documented. Is a supporting finding missing from the record?"
+  - id: endo_findings_review
+    version: "1"
+    status: pending
+    severity: low
+    description: >
+      When a clinician pulpal diagnosis is recorded, list the documented history, tests and radiographs, and ask the
+      dentist to confirm whether any appears to point another way. A review prompt, not an error.
+    question_template: "Pulpal diagnosis recorded. Please confirm the documented history, tests and radiographs are consistent with it."
+  - id: diagnosis_without_findings
+    version: "1"
+    status: pending
+    severity: low
+    description: A clinician diagnosis or recommendation with no linked finding or radiograph on the same problem.
+    question_template: "A diagnosis or recommendation has no documented finding or radiograph. Is supporting information missing?"

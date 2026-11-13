@@ -222,3 +222,25 @@ def run_cv(entities, sources, log: CheckLog, attempt: int = 1, run_id: str | Non
         log.record(e, "normalization_valid", nres, ndet, CV_CONFIG_HASH, attempt, run_id)
         out[e.ref] = {"span_valid": (sres, sdet), "normalization_valid": (nres, ndet)}
     return out
+
+
+def summarize(entity, log: CheckLog, mode: str, semantic_config: str | None = None) -> None:
+    """Set entity.checks from the latest executions bound to its current hashes (section 7.4)."""
+    if entity.is_human:
+        entity.checks.span_valid = entity.checks.normalization_valid = "not_applicable"
+        entity.checks.semantic_support = "not_applicable"
+        return
+    for check in ("span_valid", "normalization_valid"):
+        rec = log.latest(entity, check, CV_CONFIG_HASH)
+        setattr(entity.checks, check, rec["result"] if rec else "not_run")
+    if mode == "baseline":
+        entity.checks.semantic_support = "not_applicable"
+    else:
+        rec = log.latest(entity, "semantic_support", semantic_config)
+        entity.checks.semantic_support = rec["result"] if rec else "not_run"
+
+
+def summarize_all(graph, log: CheckLog, mode: str, semantic_config: str | None = None) -> None:
+    for e in graph.entities:
+        if e.status == "active":
+            summarize(e, log, mode, semantic_config)
