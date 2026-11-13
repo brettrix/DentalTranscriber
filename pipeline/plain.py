@@ -312,3 +312,260 @@ def bp_title(f, graph) -> str:
         return clean_message(f.message)
     verb = "are" if len(parts) > 1 else "is"
     return f"{' and '.join(parts)} {verb} {'very high' if worst == 2 else 'elevated'}"
+
+
+# ---------------------------------------------------------------- review cards
+
+CRITICAL_PATHS = ("tooth", "drug", "dose", "strength", "frequency", "duration", "systolic", "diastolic", "score",
+                  "probing", "recession", "attachment", "assertion", "decision", "diagnosis", "certainty",
+                  "allergy_status", "medication_status", "prescription_status", "response", "lingering")
+TAGS = [("tooth", "Tooth"), ("drug", "Medicine"), ("dose", "Medicine"), ("strength", "Medicine"),
+        ("frequency", "Medicine"), ("duration", "Medicine"), ("systolic", "Blood pressure"),
+        ("diastolic", "Blood pressure"), ("assertion", "Yes / no"), ("negation", "Yes / no"),
+        ("decision", "Decision"), ("diagnosis", "Diagnosis"), ("certainty", "Diagnosis"),
+        ("allergy_status", "Allergy"), ("substance", "Allergy"), ("medication_status", "Medicine"),
+        ("time_context", "Timing"), ("assertion_source", "Who said it"), ("problem", "Complaint"),
+        ("response", "Test result"), ("lingering", "Test result"), ("score", "Number")]
+
+
+def _failed_paths(e, check_log) -> tuple[list[str], set[str]]:
+    """(attribute paths named in failed checks, failing check names)."""
+    paths, failing = [], set()
+    for check in ("span_valid", "normalization_valid", "semantic_support"):
+        rec = check_log.latest(e, check)
+        if rec is None or rec["result"] in ("pass", "not_applicable"):
+            continue
+        failing.add(f"{check}:{rec['result']}")
+        for d in rec.get("details") or []:
+            for m in _DIFF.finditer(d):
+                paths.append(m.group(1).strip())
+            for _m in _NONE.finditer(d):
+                paths.append("free-text details")
+            for m in _MISMATCH.finditer(d):
+                paths.append(m.group(1))
+            for m in re.finditer(r"([\w.]+) = .+? has no valid", d):
+                paths.append(m.group(1))
+            if "negation" in d:
+                paths.append("negation")
+    return paths, failing
+
+
+def wording_only(e, check_log) -> bool:
+    """True when the only disagreement is wording: the second read failed, the quote and value checks passed,
+    and nothing changed to a tooth, drug, dose, number, negation, decision, diagnosis or allergy status."""
+    paths, failing = _failed_paths(e, check_log)
+    if failing != {"semantic_support:fail"} or not paths:
+        return False
+    for p in paths:
+        if p == "free-text details":
+            continue
+        if any(k in p for k in CRITICAL_PATHS) or p in ("problem", "time_context", "assertion_source"):
+            return False
+    return True
+
+
+def check_tag(e, check_log) -> str:
+    paths, failing = _failed_paths(e, check_log)
+    if any(f.startswith("span_valid:fail") for f in failing):
+        return "Quote"
+    for p in paths:
+        for key, tag in TAGS:
+            if key in p:
+                return tag
+    if any(f.endswith("unconfirmed") for f in failing):
+        return "Not confirmed"
+    if any(f.endswith("not_assessed_due_to_failure") for f in failing):
+        return "Not checked"
+    return "Wording"
+
+
+def short_title(e, graph) -> str:
+    if e is None:
+        return "Removed item"
+    if e.kind == "problem":
+        return "Chief complaint"
+    if e.kind == "relationship":
+        return f"Related tooth #{e.tooth}"
+    a = e.attributes
+    main = next((str(a[k]) for k in ("drug", "substance", "diagnosis", "test", "observation", "option", "procedure",
+                                     "aspect", "description", "text", "decision", "element", "to") if a.get(k)), "")
+    if e.type == "vital_reading":
+        main = f"{a.get('systolic')}/{a.get('diastolic')}"
+    tooth = f" · #{e.target.tooth}" if e.target.tooth else ""
+    label = TYPE_LABEL.get(e.type, e.type).capitalize()
+    main = main.replace("_", " ")
+    return f"{label}{tooth}" + (f" · {main[:40]}" if main else "")
+
+
+def quotes(entities, sources) -> str:
+    """The exact words the entities cite, with who said them."""
+    out, seen = [], set()
+    for e in entities:
+        for s in e.evidence:
+            key = (s.source_type, s.source_id, s.text)
+            if key in seen:
+                continue
+            seen.add(key)
+            if s.source_type == "transcript":
+                u = sources.utterance(s.source_id)
+                who = sources.role_of(u.speaker) if u else None
+                out.append(f"“{s.text}” — {who or 'speaker'}")
+            elif s.source_type == "quick_note":
+                out.append(f"Quick note: “{s.text}”")
+            elif s.source_type == "human_entry":
+                out.append(s.text)
+    return "\n".join(out) or "(no words cited)"
+
+
+def _raw_quotes(raw: dict, sources) -> str:
+    out = []
+    for q in raw.get("evidence") or []:
+        if q.get("source_type") == "transcript":
+            u = sources.utterance(q.get("source_id"))
+            who = sources.role_of(u.speaker) if u else None
+            out.append(f"“{q.get('quote')}” — {who or 'speaker'}")
+        elif q.get("source_type") == "quick_note":
+            out.append(f"Quick note: “{q.get('quote')}”")
+    return "\n".join(out) or "(no words cited)"
+
+
+def group_blockers(items: list[dict], graph) -> list[list[dict]]:
+    """A failed check and the review tasks about the same entity are one card."""
+    from pipeline.human import ENTITY_TASKS
+    groups: dict = {}
+    for i, b in enumerate(items):
+        key = b.get("entity_id")
+        if not key and b["kind"] == "task":
+            t = graph.task(b["task_id"])
+            if t.kind in ENTITY_TASKS and t.participants:
+                key = t.participants[0].entity_id
+        groups.setdefault(key or f"_{i}", []).append(b)
+    return list(groups.values())
+
+
+def build_cards(items, graph, check_log, staging, sources, role: str, flag_by_id: dict) -> list[dict]:
+    """Cards for the review page: title, tag, two info boxes, and the choices with the actions each one takes."""
+    cards = []
+    ask = role == "Assistant"
+    for group in group_blockers(items, graph):
+        b = next((x for x in group if x["kind"] == "check"), group[0])
+        flag_ids = [x["flag_id"] for x in group if x.get("flag_id")]
+        task_ids = [x["task_id"] for x in group if x.get("task_id")]
+        ask_op = [{"op": "flag", "flag_id": f, "action": "for_dentist"} for f in flag_ids]
+        key = "|".join(sorted(str(x.get("entity_id") or x.get("conflict_id") or x.get("task_id") or x.get("section")
+                                  or x.get("pending_id") or x.get("staged_id") or x.get("flag_id") or x["kind"])
+                              for x in group))
+        card = {"key": key, "kind": b["kind"], "hidden": False, "default": None, "options": [], "details": []}
+        k = b["kind"]
+        if k == "check" or (k == "task" and graph.task(b["task_id"]).kind in ("check_failure", "registry_issue",
+                                                                            "human_override_check")):
+            eid = b.get("entity_id") or graph.task(b["task_id"]).participants[0].entity_id
+            e = graph.get(eid)
+            critical = b.get("critical", True)
+            card.update(title=short_title(e, graph), tag=check_tag(e, check_log),
+                        left=("Note says", describe(e, graph)), right=("Said in the visit", quotes([e], sources)))
+            confirm = [{"op": "confirm", "entity_id": eid, "kind": "dentist_confirmed" if role == "Dentist"
+                        else "human_reviewed"}]
+            if role == "Dentist" or not critical:
+                card["options"].append(("ok", "Looks right", confirm))
+            card["options"].append(("remove", "Remove from note", [{"op": "remove", "entity_id": eid}]))
+            if ask and ask_op:
+                card["options"].append(("ask", "Ask dentist", ask_op))
+            if e is not None and wording_only(e, check_log):
+                card["hidden"] = True
+                card["default"] = "ok" if (role == "Dentist" or not critical) else ("ask" if ask_op else None)
+            card["details"] = [f"{x['text']}" for x in group] + [
+                f"{c}: {', '.join((check_log.latest(e, c) or {}).get('details') or [])}" for c in
+                ("span_valid", "normalization_valid", "semantic_support") if e is not None and check_log.latest(e, c)]
+        elif k == "conflict":
+            c = graph.conflict(b["conflict_id"])
+            parts = [p for p in (graph.get(x.entity_id, x.version) for x in c.participants) if p is not None]
+            written = [p for p in parts if p.evidence and all(s.source_type == "quick_note" for s in p.evidence)]
+            said = [p for p in parts if p not in written]
+            if c.kind == "quick_note_vs_transcript" and written and said:
+                left = ("Quick note says", "\n".join(describe(p, graph) for p in written))
+                right = ("Said in the visit", quotes(said, sources))
+            else:
+                ev = c.evidence
+                later = c.later_statement or (ev[1] if len(ev) > 1 else None)
+                first = next((s for s in ev if later is None or s.source_id != later.source_id), ev[0] if ev else None)
+                left = ("First said", f"“{first.text}”" if first else "")
+                right = ("Then said", f"“{later.text}”" if later else "")
+            title = conflict_title(c, graph).split(" (")[0]
+            card.update(title=title, tag="Disagreement", left=left, right=right)
+            for j, p in enumerate([p for p in parts if p.status == "active"][:2]):
+                label = f"Keep {p.attributes.get('systolic')}/{p.attributes.get('diastolic')}" \
+                    if p.kind == "item" and p.type == "vital_reading" else f"Keep {short_title(p, graph)[:28]}"
+                card["options"].append((f"keep{j}", label, [{"op": "resolve", "conflict_id": c.id, "action": "select",
+                                                             "active_entity_id": p.id}]))
+            card["options"].append(("both", "Both are right", [{"op": "resolve", "conflict_id": c.id,
+                                                                "action": "keep_both"}]))
+            if ask and ask_op:
+                card["options"].append(("ask", "Ask dentist", ask_op))
+            card["details"] = [b["text"], conflict_title(c, graph)]
+        elif k == "section":
+            card.update(title=f"{section_title(b['section'])}: not filled in", tag="Section",
+                        left=("Note says", "This section is empty because it couldn't be filled in automatically."),
+                        right=("In the visit", "Check the conversation for anything that belongs here."))
+            card["options"] = [("nd", "Not discussed", [{"op": "section", "section": b["section"],
+                                                        "outcome": "not_discussed"}]),
+                               ("rv", "I reviewed it", [{"op": "section", "section": b["section"],
+                                                        "outcome": "completed"}])]
+            card["details"] = [b["text"]]
+        elif k == "pending":
+            p = next(x for x in graph.pending_changes if x.id == b["pending_id"])
+            target = graph.get(p.target_versions[0].entity_id, p.target_versions[0].version) if p.target_versions else None
+            verb = {"add": "add", "edit": "change", "remove": "remove", "replace": "replace",
+                    "resolve_conflict": "settle a disagreement"}[p.operation]
+            card.update(title=f"Assistant asks to {verb}", tag="Needs dentist",
+                        left=("Note says", describe(target, graph) if target else "(not in the note)"),
+                        right=("Assistant proposes", f"{_pending_add_label(p) if p.operation == 'add' else verb.capitalize()}"
+                                                     f" — {p.reason}"))
+            card["options"] = [("accept", "Accept", [{"op": "pending", "pending_id": p.id, "accept": True}]),
+                               ("reject", "Reject", [{"op": "pending", "pending_id": p.id, "accept": False}])]
+            card["details"] = [b["text"]]
+        elif k == "staged":
+            rec = staging.get(b["staged_id"]) if staging is not None else None
+            card.update(title=f"Not added: {staged_label(rec)[:55]}", tag="Not in note",
+                        left=("Note says", "(not in the note)"),
+                        right=("Said in the visit", _raw_quotes(rec.raw if rec else {}, sources)))
+            if rec is not None and rec.entity:
+                data = {k2: v for k2, v in rec.entity.items() if k2 not in ("id",)}
+                card["options"].append(("add", "Add to note", [{"op": "add_staged", "staged_id": rec.id, "data": data}]))
+            card["options"].append(("discard", "Leave it out", [{"op": "discard", "staged_id": b["staged_id"]}]))
+            if ask and ask_op:
+                card["options"].append(("ask", "Ask dentist", ask_op))
+            card["details"] = [b["text"]] + ([f"errors: {'; '.join(rec.errors)}"] if rec else [])
+        elif k == "task":
+            t = graph.task(b["task_id"])
+            dentist_only = t.kind == "stage_failure" and t.created_by_stage == "C" and \
+                any(f" {a} " in f" {t.reason} " for a in ("Co", "R2"))
+            missed = t.kind in ("omission", "unmatched_contradiction")
+            card.update(title=task_title(t, graph).split(":")[0], tag="Possibly missed" if missed else "Check",
+                        left=("Note says", "(not in the note)" if missed else task_title(t, graph)),
+                        right=("Said in the visit", "\n".join(f"“{s.text}”" for s in t.evidence)
+                               or "(nothing quoted)"))
+            if role == "Dentist" or not dentist_only:
+                card["options"].append(("done", "Not needed" if missed else "Checked", [
+                    {"op": "task", "task_id": tid} for tid in task_ids or [t.id]]))
+            if ask and ask_op:
+                card["options"].append(("ask", "Ask dentist", ask_op))
+            card["details"] = [b["text"], t.reason]
+        elif k == "flag":
+            f = flag_by_id.get(b["flag_id"])
+            ents = [e for e in (graph.get(i) for i in (f.entity_ids if f else [])) if e is not None]
+            title = flag_title(f, graph) if f else "Alert"
+            card.update(title=title.split(": ")[0] if title.startswith(("Allergy alert", "Tooth check")) else title[:60],
+                        tag="Safety" if b.get("safety") else "Alert",
+                        left=("Note says", describe(ents[0], graph) if ents else title),
+                        right=("Said in the visit", quotes(ents, sources) if ents else ""))
+            if f is not None and (role == "Dentist" or not f.safety_critical):
+                card["options"].append(("dismiss", "Reviewed, OK", [{"op": "flag", "flag_id": f.id, "action": "dismiss"}]))
+            if ask and f is not None:
+                card["options"].append(("ask", "Ask dentist", [{"op": "flag", "flag_id": f.id, "action": "for_dentist"}]))
+            card["details"] = [b["text"], f.message if f else ""]
+        else:
+            continue
+        if card["options"]:
+            cards.append(card)
+    return cards

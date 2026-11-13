@@ -35,8 +35,17 @@ def _button(at, label):
     return next(b for b in at.button if b.label == label)
 
 
-def _checklist(at):
-    return [m.value for m in at.markdown if m.value.startswith("☐")]
+def _cards(at):
+    """Card titles (bold markdown lines with a tag badge)."""
+    return [m.value for m in at.markdown if m.value.startswith("**") and "-badge[" in m.value]
+
+
+def _answered(at):
+    return next(m.value for m in at.markdown if "answered**" in m.value)
+
+
+def _visible_text(at):
+    return " ".join([m.value for m in at.markdown] + [c.value for c in at.caption])
 
 
 def test_ui_edit_review_approve_export(monkeypatch, tmp_path):
@@ -63,47 +72,84 @@ def test_ui_edit_review_approve_export(monkeypatch, tmp_path):
     assert not at.exception and approval.load_state(s).state == "exported"
 
 
-def test_checklist_is_plain_and_one_click(monkeypatch, tmp_path):
-    items = {**copy.deepcopy(ITEMS), "V2": V2}
+def _bad_session(tmp_path, with_bp=True):
+    items = {**copy.deepcopy(ITEMS), **({"V2": V2} if with_bp else {})}
     items["F1"]["evidence"][0]["quote"] = "Cold on tooth fourteen."   # fails the quote check -> needs confirming
     s = mini_session(tmp_path, "baseline")
     run_pipeline(s, mode="baseline", client=FakeLLM(items=items))
+    return s
+
+
+def test_cards_are_plain_with_side_by_side_quotes(monkeypatch, tmp_path):
+    _bad_session(tmp_path)
     at = _app(monkeypatch, tmp_path, "Dentist")
-    lines = _checklist(at)
-    assert lines, "the dentist has items to clear"
-    text = " ".join(lines) + " " + " ".join(m.value for m in at.markdown if m.value.startswith(("🛑", "❓", "•")))
-    assert not ID.search(text), f"internal ids shown: {ID.findall(text)}"
-    assert not JARGON.search(text), f"jargon shown: {JARGON.findall(text)}"
-    assert any("Blood pressure doesn't match the quick note (150/95 said vs 124/80 written)" in l for l in lines)
-    assert any(l.startswith("☐ Confirm: Exam finding") for l in lines)
-    alert_lines = [m.value[2:] for m in at.markdown if m.value.startswith(("🛑 ", "❓ ", "• "))]
-    for a in alert_lines:
-        assert not any(l[2:] == a or l[2:].startswith(a + " \u2014") for l in lines), f"shown twice: {a}"
-    assert not any("Blood pressure doesn't match" in a for a in alert_lines)
-    assert len(alert_lines) == len(set(alert_lines)), "each alert once"
-    before = len(lines)
-    next(b for b in at.button if b.label.startswith("Keep: BP 150/95")).click().run()
+    cards = _cards(at)
+    assert len(cards) == 2, cards
+    text = _visible_text(at)
+    assert "a second read" not in text.lower()
+    head = " ".join(cards)
+    assert not ID.search(head) and not JARGON.search(head), head
+    assert any(c.startswith("**Blood pressure doesn't match the quick note**") for c in cards)
+    assert any("Quick note says" == c.value for c in at.caption) and any("Said in the visit" == c.value for c in at.caption)
+    assert any("\u201cBlood pressure is 150 over 95.\u201d \u2014 Dentist" in m.value for m in at.markdown), \
+        "the exact quote and who said it"
+    assert 'white-space: nowrap' in " ".join(m.value for m in at.markdown), "button labels stay on one line"
+
+
+def test_choices_are_held_then_saved_together(monkeypatch, tmp_path):
+    s = _bad_session(tmp_path)
+    v0 = load_graph(s).version
+    at = _app(monkeypatch, tmp_path, "Dentist")
+    groups = at.button_group
+    assert _answered(at) == "**0 of 2 answered**"
+    assert next(b for b in at.button if b.key == "save_review").disabled
+    assert any(c.value == "Answer every item first" for c in at.caption)
+    bp = next(g for g in groups if "Keep 150/95" in g.options)
+    assert bp.options == ["Keep 124/80", "Keep 150/95", "Both are right"], "no selection yet"
+    bp.set_value("keep0").run()
+    bp = next(g for g in at.button_group if g.key == bp.key)
+    assert bp.value == "keep0" and bp.options[0] == "\u2713 Keep 124/80", "selected shows a check"
+    bp.set_value("both").run()
+    bp = next(g for g in at.button_group if g.key == bp.key)
+    assert bp.value == "both" and bp.options == ["Keep 124/80", "Keep 150/95", "\u2713 Both are right"], \
+        "selection moved"
+    assert load_graph(s).version == v0, "nothing saved per click"
+    other = next(g for g in at.button_group if g.key != bp.key)
+    other.set_value("ok").run()
+    assert _answered(at) == "**2 of 2 answered**"
+    next(b for b in at.button if b.key == "save_review").click().run()
     assert not at.exception, at.exception
+    g = load_graph(s)
+    assert g.version == v0 + 1, "one rebuild for the whole review"
+    assert all(c.status == "resolved" for c in g.conflicts)
     at = _app(monkeypatch, tmp_path, "Dentist")
-    assert not any("Blood pressure doesn't match" in l for l in _checklist(at))
-    confirm = next(b for b in at.button if b.label == "Confirm")
-    confirm.click().run()
-    at = _app(monkeypatch, tmp_path, "Dentist")
-    assert len(_checklist(at)) <= before - 2
+    assert _cards(at) == []
 
 
-def test_assistant_sends_critical_item_to_dentist(monkeypatch, tmp_path):
-    items = copy.deepcopy(ITEMS)
-    items["F1"]["evidence"][0]["quote"] = "Cold on tooth fourteen."
-    s = mini_session(tmp_path, "baseline")
-    run_pipeline(s, mode="baseline", client=FakeLLM(items=items))
+def test_ask_dentist_is_part_of_the_choice(monkeypatch, tmp_path):
+    _bad_session(tmp_path, with_bp=False)
     at = _app(monkeypatch, tmp_path, "Assistant")
-    assert any(l.startswith("☐ Confirm: Exam finding") for l in _checklist(at))
-    next(b for b in at.button if b.label == "Send to dentist").click().run()
+    grp = at.button_group[0]
+    assert "Ask dentist" in grp.options and "Looks right" not in grp.options, \
+        "a critical item can't be passed by the assistant"
+    grp.set_value("ask").run()
+    next(b for b in at.button if b.key == "save_review").click().run()
     at = _app(monkeypatch, tmp_path, "Assistant")
-    assert not any(l.startswith("☐ Confirm: Exam finding") for l in _checklist(at)), "cleared for the assistant"
+    assert _cards(at) == [], "cleared for the assistant"
     at = _app(monkeypatch, tmp_path, "Dentist")
-    assert any(l.startswith("☐ Confirm: Exam finding") for l in _checklist(at)), "still on the dentist's list"
+    assert len(_cards(at)) == 1, "now the dentist's to answer"
+
+
+def test_wording_only_disagreements_are_folded(monkeypatch, tmp_path):
+    from tests.fake_llm import ITEMS
+    s = mini_session(tmp_path, "team")
+    run_pipeline(s, mode="team", client=FakeLLM(cs_override={ITEMS["S1"]["evidence"][0]["quote"]:
+                                                             {"attributes.value": "cold drinks hurt a lot"}},
+                                                ce_verdict="different"))
+    at = _app(monkeypatch, tmp_path, "Dentist")
+    folded = [e for e in at.expander if e.label.endswith("more items look right \u00b7 show")]
+    assert folded and folded[0].label.startswith("1 more"), [e.label for e in at.expander]
+    assert _answered(at).startswith("**1 of 1"), "folded items arrive pre-answered as 'Looks right'"
 
 
 def test_process_selects_new_visit_and_opens_review(monkeypatch, tmp_path):

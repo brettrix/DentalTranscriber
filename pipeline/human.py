@@ -33,12 +33,30 @@ def load_assertions(session) -> list[dict]:
     return read_json(_assertions_path(session), [])
 
 
+# A batch (apply_review) runs several actions on one working graph and commits once. While it is open,
+# assertions and staging updates are buffered and only written after the commit succeeds.
+_BATCH: dict[str, dict] = {}
+
+
 def _save_assertion(session, assertion: dict) -> dict:
-    data = load_assertions(session)
     assertion = {"id": f"ha_{uuid.uuid4().hex[:10]}", "timestamp": now(), **assertion}
+    batch = _BATCH.get(session.id)
+    if batch is not None:
+        batch["assertions"].append(assertion)
+        return assertion
+    data = load_assertions(session)
     data.append(assertion)
     atomic_write_json(_assertions_path(session), data)
     return assertion
+
+
+def _after_commit(session, fn) -> None:
+    """Run now, or after the batch commits."""
+    batch = _BATCH.get(session.id)
+    if batch is not None:
+        batch["after"].append(fn)
+    else:
+        fn()
 
 
 # ---------------------------------------------------------------- helpers
@@ -94,6 +112,11 @@ def _next_item_id(graph, kind: str) -> str:
 def commit_human_change(session, graph, *, reason: str, client=None, agents=None, rerun_cs_for_problem=False):
     """Validate, save a new version, re-run D, E, F (and Cs on problem-scoped entities after a team-mode
     problem/relationship edit). Raises StructuralError and commits nothing if validation fails."""
+    batch = _BATCH.get(session.id)
+    if batch is not None:  # inside apply_review: keep working on the same graph, commit once at the end
+        batch["reasons"].append(reason)
+        batch["rerun_cs"] = batch["rerun_cs"] or rerun_cs_for_problem
+        return graph, None
     from pipeline.approval import revoke_if_changed
     from pipeline.orchestrator import derive, reconcile_graph
     from pipeline.overlays import load_sources
@@ -163,6 +186,9 @@ class _MiniRun:
 
 
 def _working_graph(session):
+    batch = _BATCH.get(session.id)
+    if batch is not None:
+        return batch["graph"]
     g = load_graph(session)
     if g is None:
         raise HumanActionError("no graph yet")
@@ -507,8 +533,13 @@ def discard_staged(session, staged_id: str, role: str, reason: str):
     rec = st.get(staged_id)
     if rec is None or rec.status != "staged":
         raise HumanActionError("no open staged record")
-    rec.status, rec.discard_reason = "discarded", f"{role}: {reason}"
-    st.save()
+
+    def write():
+        st2 = session_staging(session)
+        r = st2.get(staged_id)
+        r.status, r.discard_reason = "discarded", f"{role}: {reason}"
+        st2.save()
+    _after_commit(session, write)
     _complete_staged_task(session, rec, role, reason, "not_applicable")
 
 
@@ -520,20 +551,23 @@ def convert_staged(session, staged_id: str, data: dict, role: str, reason: str, 
     if rec is None or rec.status != "staged":
         raise HumanActionError("no open staged record")
     result = add_entity(session, data, role, reason, client=client, agents=agents)
-    st = session_staging(session)
-    rec = st.get(staged_id)
-    rec.status = "converted"
-    st.save()
+
+    def write():
+        st2 = session_staging(session)
+        st2.get(staged_id).status = "converted"
+        st2.save()
+    _after_commit(session, write)
     _complete_staged_task(session, rec, role, reason, "corrected")
     return result
 
 
 def _complete_staged_task(session, rec, role, reason, completion):
-    g = load_graph(session)
+    batch = _BATCH.get(session.id)
+    g = batch["graph"] if batch is not None else load_graph(session)
     if g is None or not rec.task_id or g.task(rec.task_id) is None or g.task(rec.task_id).status != "open":
-        from pipeline.orchestrator import derive
-        from pipeline.overlays import load_sources
-        if g is not None:
+        if batch is None and g is not None:
+            from pipeline.orchestrator import derive
+            from pipeline.overlays import load_sources
             derive(session, g, load_sources(session), g.pipeline_mode, session.meta().get("rule_mode"))
         return
     complete_task(session, rec.task_id, completion, role, f"staged record {rec.id}: {reason}")
@@ -705,3 +739,74 @@ def _commit_registry(session, entity, role, reason, client, agents):
     _save_assertion(session, {"operation": "add", "entity_id": entity.id, "by_role": role, "reason": reason,
                               "entity": entity.model_dump(mode="json", by_alias=True), "registry": True})
     return run_pipeline(session, client=client, agents=agents)
+
+
+# ---------------------------------------------------------------- the review page's "Save my review"
+
+def apply_review(session, choices: list[dict], role: str, reason: str, *, client=None, agents=None) -> dict:
+    """Apply every choice from the review page together: one new graph version and one rebuild.
+
+    Each choice is {"op": ..., ...}: confirm, remove, resolve, section, task, pending, discard, add_staged, flag.
+    "Ask dentist" (flag) marks are applied first, against the flags as they are now. Graph changes run through the
+    same functions as single actions, on one shared working graph, then structural validation and one commit.
+    If the commit is rejected, nothing from the batch is written."""
+    _check_role(role)
+    errors: list[str] = []
+    flags = [c for c in choices if c["op"] == "flag"]
+    for c in flags:
+        try:
+            flag_action(session, c["flag_id"], c["action"], role, reason)
+        except HumanActionError as exc:
+            errors.append(str(exc))
+    graph_ops = [c for c in choices if c["op"] != "flag"]
+    if not graph_ops:
+        return {"graph": None, "applied": len(flags), "errors": errors}
+    g = _working_graph(session)
+    _BATCH[session.id] = {"graph": g, "assertions": [], "after": [], "reasons": [], "rerun_cs": False}
+    applied = 0
+    try:
+        for c in graph_ops:
+            try:
+                _apply_choice(session, c, role, reason, client, agents)
+                applied += 1
+            except HumanActionError as exc:
+                errors.append(str(exc))
+        batch = _BATCH.pop(session.id)
+    except BaseException:
+        _BATCH.pop(session.id, None)
+        raise
+    if not batch["reasons"]:
+        return {"graph": None, "applied": applied + len(flags), "errors": errors}
+    graph, result = commit_human_change(session, g, reason=f"review saved: {len(batch['reasons'])} change(s)",
+                                        client=client, agents=agents, rerun_cs_for_problem=batch["rerun_cs"])
+    if batch["assertions"]:
+        data = load_assertions(session)
+        data.extend(batch["assertions"])
+        atomic_write_json(_assertions_path(session), data)
+    for fn in batch["after"]:  # staging-file updates; the derived outputs don't depend on them
+        fn()
+    return {"graph": graph, "applied": applied + len(flags), "errors": errors, "result": result}
+
+
+def _apply_choice(session, c, role, reason, client, agents):
+    op = c["op"]
+    kw = {"client": client, "agents": agents}
+    if op == "confirm":
+        confirm_entity(session, c["entity_id"], c["kind"], role, reason, **kw)
+    elif op == "remove":
+        remove_entity(session, c["entity_id"], role, reason, **kw)
+    elif op == "resolve":
+        resolve_conflict(session, c["conflict_id"], c["action"], role, reason,
+                         active_entity_id=c.get("active_entity_id"), explanation=c.get("explanation") or reason, **kw)
+    elif op == "section":
+        review_section(session, c["section"], c["outcome"], role, reason, **kw)
+    elif op == "task":
+        complete_task(session, c["task_id"], c.get("completion", "accepted"), role, reason, **kw)
+    elif op == "pending":
+        decide_pending(session, c["pending_id"], c["accept"], role, reason, **kw)
+    elif op == "discard":
+        discard_staged(session, c["staged_id"], role, reason)
+    elif op == "add_staged":
+        convert_staged(session, c["staged_id"], c["data"], role, reason, **kw)
+    else:
+        raise HumanActionError(f"unknown choice {op}")

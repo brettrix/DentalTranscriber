@@ -101,8 +101,9 @@ class FakeLLM:
     `cs_override` maps a focus quote to {path: value} the checker reads differently."""
 
     def __init__(self, *, items=None, problem=None, fail=None, cs_override=None, co_omissions=None, r2=None,
-                 repair=None):
+                 repair=None, ce_verdict="equivalent"):
         self.repair = repair
+        self.ce_verdict = ce_verdict
         self.items = copy.deepcopy(items or ITEMS)
         self.problem = copy.deepcopy(problem or PROBLEM)
         self.fail = dict(fail or {})
@@ -191,7 +192,8 @@ class FakeLLM:
         return None
 
     def _submit_verdicts(self, agent, user):
-        return {"verdicts": [{"pair_id": pid, "verdict": "equivalent"} for pid in re.findall(r"pair_id (\S+) \|", user)]}
+        return {"verdicts": [{"pair_id": pid, "verdict": self.ce_verdict}
+                             for pid in re.findall(r"pair_id (\S+) \|", user)]}
 
     def _submit_omissions(self, agent, user):
         return {"omissions": self.co_omissions}

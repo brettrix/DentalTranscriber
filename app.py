@@ -348,48 +348,97 @@ def no_graph():
             st.rerun()
 
 
-def _entity_of(b, graph):
-    if b.get("entity_id"):
-        return b["entity_id"]
-    if b["kind"] == "task":
-        t = graph.task(b["task_id"])
-        if t.kind in human.ENTITY_TASKS and t.participants:
-            return t.participants[0].entity_id
-    return None
+CARD_CSS = """<style>
+[data-testid="stButtonGroup"] button { white-space: nowrap; }
+[data-testid="stButtonGroup"] button p { white-space: nowrap; }
+[data-testid="stButtonGroup"] button[data-selected] { background: #1f8a3b !important; border-color: #1f8a3b !important;
+  color: #fff !important; }
+[data-testid="stButtonGroup"] button[data-selected] p { color: #fff !important; }
+</style>"""
+TAG_COLOR = {"Safety": "red", "Tooth": "orange", "Medicine": "orange", "Allergy": "red", "Blood pressure": "orange",
+             "Disagreement": "violet", "Diagnosis": "orange", "Decision": "orange", "Needs dentist": "blue",
+             "Wording": "gray", "Possibly missed": "blue", "Not in note": "blue", "Section": "blue"}
+
+
+def _card_key(card) -> str:
+    import hashlib
+    # Per role: the assistant's and the dentist's choices on a card differ.
+    return "card_" + hashlib.sha1(f"{role}|{card['key']}".encode()).hexdigest()[:10]
+
+
+def _render_card(card):
+    key = _card_key(card)
+    labels = {v: lbl for v, lbl, _ in card["options"]}
+    with st.container(border=True):
+        color = TAG_COLOR.get(card["tag"], "gray")
+        st.markdown(f"**{esc(card['title'])}** &nbsp; :{color}-badge[{esc(card['tag'])}]")
+        c1, c2 = st.columns(2)
+        with c1.container(border=True):
+            st.caption(card["left"][0])
+            st.markdown(esc(card["left"][1]).replace("\n", "  \n"))
+        with c2.container(border=True):
+            st.caption(card["right"][0])
+            st.markdown(esc(card["right"][1]).replace("\n", "  \n"))
+        kw = {} if key in st.session_state else {"default": card["default"]}
+        st.segmented_control("Your choice", list(labels), key=key, label_visibility="collapsed", width="content",
+                             format_func=lambda v, k=key: ("\u2713 " if st.session_state.get(k) == v else "") + labels[v],
+                             **kw)
+        with st.expander("Details"):
+            for d in card["details"]:
+                st.caption(esc(d))
 
 
 def checklist(graph, flag_by_id, log, reason):
-    """One line per thing to do: a failed check and the review tasks about the same entity are one item."""
+    """Review cards: choose on each card, then save everything at once."""
+    st.markdown(CARD_CSS, unsafe_allow_html=True)
     target = "assistant" if role == "Assistant" else "dentist"
-    groups: dict = {}
-    for i, b in enumerate(approval.blocker_items(session, target)):
-        if b["kind"] == "flag" and b.get("flag_id") in flag_by_id:
-            b["_flag_title"] = plain.flag_title(flag_by_id[b["flag_id"]], graph)
-        groups.setdefault(_entity_of(b, graph) or f"_{i}", []).append(b)
-    title = "Before you mark your review complete" if target == "assistant" else "Before you approve the note"
-    st.subheader(f"{title} ({len(groups)} to do)" if groups else f"{title}: nothing left to do ✓")
+    items = approval.blocker_items(session, target)
     staging = session_staging(session)
+    src = load_sources(session)
+    cards = plain.build_cards(items, graph, log, staging, src, role, flag_by_id)
+    shown = [c for c in cards if not c["hidden"]]
+    hidden = [c for c in cards if c["hidden"]]
+    title = "Before you mark your review complete" if target == "assistant" else "Before you approve the note"
+    st.subheader(f"{title}" if cards else f"{title}: nothing left to do \u2713")
+    for card in shown:
+        _render_card(card)
+    if hidden:
+        with st.expander(f"{len(hidden)} more items look right \u00b7 show"):
+            for card in hidden:
+                _render_card(card)
+    if cards:
+        answered = sum(1 for c in cards if st.session_state.get(_card_key(c)) is not None)
+        c1, c2, c3 = st.columns([2, 2, 4])
+        c1.markdown(f"**{answered} of {len(cards)} answered**")
+        save = c2.button("Save my review", type="primary", disabled=answered < len(cards), key="save_review")
+        if answered < len(cards):
+            c3.caption("Answer every item first")
+        if save:
+            choices = []
+            for c in cards:
+                v = st.session_state.get(_card_key(c))
+                choices += next(ops for val, _, ops in c["options"] if val == v)
+            out = guarded(human.apply_review, session, choices, role, reason)
+            if out and isinstance(out, dict) and out.get("errors"):
+                st.session_state["flash_error"] = "Some choices couldn't be applied: " + "; ".join(
+                    plain.strip_ids(e) for e in out["errors"])
+            for c in cards:
+                st.session_state.pop(_card_key(c), None)
+            st.rerun()
     covered = {"flags": set(), "entities": set(), "tasks": set(), "conflicts": set(), "titles": []}
-    for i, group in enumerate(groups.values()):
-        primary = next((b for b in group if b["kind"] == "check"), group[0])
-        primary = {**primary, "_flag_ids": [b["flag_id"] for b in group if b.get("flag_id")],
-                   "_task_ids": [b["task_id"] for b in group if b.get("task_id")]}
-        text = plain.blocker_text(primary, graph, log, staging)
-        covered["flags"].update(primary["_flag_ids"])
-        covered["tasks"].update(primary["_task_ids"])
-        covered["conflicts"].update(b["conflict_id"] for b in group if b.get("conflict_id"))
-        ent = _entity_of(primary, graph)
-        if ent:
-            covered["entities"].add(ent)
-        if primary["kind"] == "staged":
-            rec = staging.get(primary["staged_id"])
+    for b in items:
+        for k, field in (("flags", "flag_id"), ("entities", "entity_id"), ("tasks", "task_id"),
+                         ("conflicts", "conflict_id")):
+            if b.get(field):
+                covered[k].add(b[field])
+        if b["kind"] == "task":
+            t = graph.task(b["task_id"])
+            covered["entities"].update(p.entity_id for p in t.participants)
+        if b["kind"] == "staged":
+            rec = staging.get(b["staged_id"])
             if rec is not None and rec.task_id:
                 covered["tasks"].add(rec.task_id)
-        covered["titles"].append(text)
-        c1, c2 = st.columns([5, 4])
-        c1.markdown(f"☐ {esc(text)}")
-        with c2:
-            item_actions(primary, graph, flag_by_id, reason, f"b{i}")
+        covered["titles"].append(plain.blocker_text(b, graph, log, staging))
     return covered
 
 
@@ -405,82 +454,6 @@ def _covered(f, title, covered) -> bool:
                                    or set(f.conflict_ids) & covered["conflicts"]):
         return True
     return any(t == title or t.startswith(title + " \u2014") for t in covered["titles"])
-
-
-def _send_all(flag_ids, reason):
-    for fid in flag_ids:
-        human.flag_action(session, fid, "for_dentist", role, reason)
-
-
-def _complete_all(task_ids, reason):
-    for tid in task_ids:
-        human.complete_task(session, tid, "accepted", role, reason)
-
-
-def item_actions(b, graph, flag_by_id, reason, key):
-    k = b["kind"]
-    cols = st.columns(3)
-    flag_ids = b.get("_flag_ids") or ([b["flag_id"]] if b.get("flag_id") else [])
-    send = role == "Assistant" and flag_ids
-    if k == "section":
-        with cols[0]:
-            _act("Not discussed", f"{key}_nd", human.review_section, session, b["section"], "not_discussed", role, reason)
-        with cols[1]:
-            _act("I reviewed it", f"{key}_rv", human.review_section, session, b["section"], "completed", role, reason)
-    elif k == "check":
-        eid = b["entity_id"]
-        with cols[0]:
-            if role == "Dentist":
-                _act("Confirm", f"{key}_ok", human.confirm_entity, session, eid, "dentist_confirmed", role, reason)
-            elif not b["critical"]:
-                _act("Looks right", f"{key}_ok", human.confirm_entity, session, eid, "human_reviewed", role, reason)
-            elif send:
-                _act("Send to dentist", f"{key}_fd", _send_all, flag_ids, reason)
-        with cols[1]:
-            if st.button("Edit", key=f"{key}_ed"):
-                st.session_state["editing"] = eid
-                st.rerun()
-    elif k == "pending" and role == "Dentist":
-        with cols[0]:
-            _act("Accept", f"{key}_pa", human.decide_pending, session, b["pending_id"], True, role, reason)
-        with cols[1]:
-            _act("Reject", f"{key}_pr", human.decide_pending, session, b["pending_id"], False, role, reason)
-    elif k == "conflict":
-        c = graph.conflict(b["conflict_id"])
-        parts = [graph.get(p.entity_id, p.version) for p in c.participants]
-        for j, p in enumerate([p for p in parts if p is not None and p.status == "active"][:2]):
-            with cols[j]:
-                _act(f"Keep: {plain.describe(p, graph)[:45]}", f"{key}_k{j}", human.resolve_conflict, session, c.id,
-                     "select", role, reason, active_entity_id=p.id)
-        with cols[2]:
-            _act("Both are right", f"{key}_kb", human.resolve_conflict, session, c.id, "keep_both", role, reason,
-                 explanation=reason)
-            if send:
-                _act("Send to dentist", f"{key}_fd", _send_all, flag_ids, reason)
-    elif k == "staged":
-        with cols[0]:
-            _act("Discard", f"{key}_dc", human.discard_staged, session, b["staged_id"], role, reason)
-        if send:
-            with cols[1]:
-                _act("Send to dentist", f"{key}_fd", _send_all, flag_ids, reason)
-    elif k == "task":
-        t = graph.task(b["task_id"])
-        dentist_only = t.kind == "stage_failure" and t.created_by_stage == "C" and \
-            any(f" {a} " in f" {t.reason} " for a in ("Co", "R2"))
-        with cols[0]:
-            if role == "Dentist" or not dentist_only:
-                _act("Done — I checked", f"{key}_tk", _complete_all, b.get("_task_ids") or [t.id], reason)
-        if send:
-            with cols[1]:
-                _act("Send to dentist", f"{key}_fd", _send_all, flag_ids, reason)
-    elif k == "flag":
-        f = flag_by_id[b["flag_id"]]
-        with cols[0]:
-            if role == "Dentist" or not f.safety_critical:
-                _act("Reviewed — dismiss", f"{key}_dm", human.flag_action, session, f.id, "dismiss", role, reason)
-        if role == "Assistant":
-            with cols[1]:
-                _act("Send to dentist", f"{key}_fd", human.flag_action, session, f.id, "for_dentist", role, reason)
 
 
 def alerts(graph, flags, reason, covered):
@@ -532,9 +505,7 @@ def _flag_all(flag_ids, action, reason):
 
 def entity_editor(e, graph, log, reason):
     with st.container(border=True):
-        needs = not accepted(graph, e, graph.pipeline_mode) and e.owner != "human"
-        st.caption("Highlighted in the conversation on the right." +
-                   (f" Needs review: {plain.why(e, log)}." if needs else ""))
+        st.caption("Highlighted in the conversation on the right.")
         changes = field_form(e, e.id)
         c1, c2, c3 = st.columns(3)
         with c1:
