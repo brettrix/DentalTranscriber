@@ -66,6 +66,20 @@ def _new_human_entity(data: dict, role: str, reason: str, assertion_source: str 
     return e
 
 
+ENTITY_TASKS = ("check_failure", "registry_issue", "human_override_check")
+
+
+def _complete_entity_tasks(g, entity_id: str, completion: str, role: str, reason: str, cites=()) -> None:
+    """A person settling an entity (confirming, correcting or removing it) also completes the open review tasks
+    raised about that entity. Each gets its own task_completed disposition bound to the task's inputs_hash."""
+    for t in g.tasks:
+        if t.status == "open" and t.kind in ENTITY_TASKS and any(p.entity_id == entity_id for p in t.participants):
+            d = make_disposition("task", t.id, {"inputs_hash": t.inputs_hash}, "task_completed", role,
+                                 f"settled with the entity: {reason}", completion=completion, cites=list(cites))
+            g.dispositions.append(d)
+            t.status, t.disposition_id = "completed", d.id
+
+
 def _critical_content(*entities) -> bool:
     return any(e is not None and is_critical(e) for e in entities)
 
@@ -205,6 +219,7 @@ def _apply_edit(g, old, new, role, reason, roles):
     old.supersede_reason = f"edited by {role}: {reason}"
     g.entities.append(new)
     rehash_all(g, roles)
+    _complete_entity_tasks(g, old.id, "corrected", role, reason)
     add_entity_disposition(g, new, "dentist_confirmed" if role == "Dentist" and is_critical(new) else
                            "human_entered", role, reason)
     if role == "Dentist" and is_critical(new):
@@ -263,6 +278,7 @@ def _apply_remove(g, old, role, reason):
     old.status = "superseded"
     old.superseded_by = f"human:{role}"
     old.supersede_reason = f"removed by {role}: {reason}"
+    _complete_entity_tasks(g, old.id, "corrected", role, reason)
 
 
 def _deep_update(data: dict, changes: dict):
@@ -336,7 +352,8 @@ def confirm_entity(session, entity_id: str, kind: str, role: str, reason: str = 
     e = g.get(entity_id)
     if e is None or e.status != "active":
         raise HumanActionError(f"{entity_id} is not active")
-    add_entity_disposition(g, e, kind, role, reason)
+    d = add_entity_disposition(g, e, kind, role, reason)
+    _complete_entity_tasks(g, e.id, "accepted", role, reason, cites=[d.id])
     return commit_human_change(session, g, reason=f"{kind} {entity_id}", client=client, agents=agents)
 
 

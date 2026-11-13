@@ -154,7 +154,7 @@ def entity_text(e, graph) -> tuple[str, dict]:
         opt = graph.get(a["option_id"]) if a.get("option_id") else None
         show(decision=a["decision"], option=opt.attributes.get("option") if opt else None, reason=a["reason"])
         text = _join(f"{(a['decision'] or 'undecided').capitalize()}" +
-                     (f": {opt.attributes.get('option')} ({opt.id})" if opt else " (no linked option)"),
+                     (f": {opt.attributes.get('option')}" if opt else " (no linked option)"),
                      a["reason"] and f"reason: {a['reason']}")
     elif t == "consent_element":
         show(element=a["element"], content=a["content"])

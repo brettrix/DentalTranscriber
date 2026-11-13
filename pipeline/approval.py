@@ -76,19 +76,25 @@ def _context(session):
     return graph, flags, session_staging(session), latest
 
 
-def blockers(session, target: str) -> list[str]:
-    """What still blocks `assistant_review_complete` (target='assistant') or `dentist_approved` ('dentist')."""
+def blocker_items(session, target: str) -> list[dict]:
+    """What still blocks `assistant_review_complete` (target='assistant') or `dentist_approved` ('dentist'),
+    as structured items: {kind, text (technical), and the ids an action needs}."""
     graph, flags, staging, latest = _context(session)
-    out: list[str] = []
+    out: list[dict] = []
+
+    def add(kind, text, **refs):
+        out.append({"kind": kind, "text": text, **refs})
+
     if graph is None:
-        return ["no candidate graph (a valid registry with a chief problem is required)"]
+        add("no_graph", "no candidate graph (a valid registry with a chief problem is required)")
+        return out
     if latest.get("graph_version") != graph.version or not latest.get("note"):
-        out.append("derived outputs are not current for this graph version")
-    mode = graph.pipeline_mode
+        add("stale_outputs", "derived outputs are not current for this graph version")
     # Incomplete sections: both levels need a section_reviewed disposition.
     for s in graph.section_records:
         if s.status in ("failed", "not_run") and section_reviewed(graph, s.section) is None:
-            out.append(f"section {s.section} is {s.status.replace('_', ' ')}: record a section review")
+            add("section", f"section {s.section} is {s.status.replace('_', ' ')}: record a section review",
+                section=s.section)
     # Failed or unassessed checks.
     flag_by_entity = {}
     for f in flags:
@@ -101,40 +107,50 @@ def blockers(session, target: str) -> list[str]:
         if not bad or satisfying_disposition(graph, e) is not None:
             continue
         critical = is_critical(e)
+        f = flag_by_entity.get(("unsupported_content", e.id))
+        refs = {"entity_id": e.id, "critical": critical, "flag_id": f.id if f else None}
         if target == "assistant":
-            f = flag_by_entity.get(("unsupported_content", e.id))
             marked = f is not None and flag_state(f) == "for_dentist"
             if not critical:
                 from pipeline.dispositions import bound_dispositions
                 if not bound_dispositions(graph, e, {"human_reviewed", "dentist_confirmed"}):
-                    out.append(f"{e.id}: failed/unassessed check needs a human review or correction")
+                    add("check", f"{e.id}: failed/unassessed check needs a human review or correction", **refs)
             elif not marked:
-                out.append(f"{e.id}: failed/unassessed critical check — confirm, correct, or mark for dentist")
+                add("check", f"{e.id}: failed/unassessed critical check — confirm, correct, or mark for dentist",
+                    **refs)
         else:
-            out.append(f"{e.id}: failed/unassessed check needs "
-                       f"{'dentist confirmation' if critical else 'a human review or dentist confirmation'} "
-                       f"or correction")
+            add("check", f"{e.id}: failed/unassessed check needs "
+                         f"{'dentist confirmation' if critical else 'a human review or dentist confirmation'} "
+                         f"or correction", **refs)
     # Pending critical changes.
-    pend = [p for p in graph.pending_changes if p.status == "pending"]
     if target == "dentist":
-        out += [f"pending change {p.id} ({p.operation}) needs the dentist to accept or reject it" for p in pend]
+        for p in graph.pending_changes:
+            if p.status == "pending":
+                add("pending", f"pending change {p.id} ({p.operation}) needs the dentist to accept or reject it",
+                    pending_id=p.id)
     # Conflicts.
     for c in graph.conflicts:
         open_ = c.status == "open" or (c.resolution is not None and c.resolution.pending_change_id and
                                        any(p.id == c.resolution.pending_change_id and p.status == "pending"
                                            for p in graph.pending_changes))
-        if open_:
-            if target == "dentist":
-                out.append(f"conflict {c.id} must be resolved")
-            elif not _marked(flags, conflict_id=c.id):
-                out.append(f"conflict {c.id}: resolve or mark for dentist")
+        if not open_:
+            continue
+        cf = next((f for f in flags if c.id in f.conflict_ids), None)
+        if target == "dentist":
+            add("conflict", f"conflict {c.id} must be resolved", conflict_id=c.id, flag_id=cf.id if cf else None)
+        elif not _marked(flags, conflict_id=c.id):
+            add("conflict", f"conflict {c.id}: resolve or mark for dentist", conflict_id=c.id,
+                flag_id=cf.id if cf else None)
     # Staged records.
     last_run = session.meta().get("last_run")
     for r in [r for r in staging.open_records() if r.run_id == last_run]:
+        tf = next((f for f in flags if r.task_id and r.task_id in f.task_ids), None)
         if target == "dentist":
-            out.append(f"staged record {r.id} must be converted to a human entry or discarded with a reason")
+            add("staged", f"staged record {r.id} must be converted to a human entry or discarded with a reason",
+                staged_id=r.id, flag_id=tf.id if tf else None)
         elif not _marked(flags, task_id=r.task_id):
-            out.append(f"staged record {r.id}: convert, discard, or mark for dentist")
+            add("staged", f"staged record {r.id}: convert, discard, or mark for dentist", staged_id=r.id,
+                flag_id=tf.id if tf else None)
     # Tasks.
     for t in graph.tasks:
         if t.status != "open":
@@ -143,10 +159,12 @@ def blockers(session, target: str) -> list[str]:
             continue
         if t.kind == "staged_record":
             continue  # covered by the staged-record row
+        tf = next((f for f in flags if t.id in f.task_ids), None)
         if target == "dentist":
-            out.append(f"task {t.id} ({t.kind}) must be completed")
+            add("task", f"task {t.id} ({t.kind}) must be completed", task_id=t.id, flag_id=tf.id if tf else None)
         elif not _marked(flags, task_id=t.id):
-            out.append(f"task {t.id} ({t.kind}): complete or mark for dentist")
+            add("task", f"task {t.id} ({t.kind}): complete or mark for dentist", task_id=t.id,
+                flag_id=tf.id if tf else None)
     # Flags.
     for f in flags:
         st = flag_state(f)
@@ -155,17 +173,22 @@ def blockers(session, target: str) -> list[str]:
             continue  # those rows are checked above from the graph itself
         if f.safety_critical:
             if target == "assistant" and st not in ("for_dentist", "resolved", "dismissed_by_dentist"):
-                out.append(f"safety-critical flag {f.rule_id}: correct or mark for dentist")
+                add("flag", f"safety-critical flag {f.rule_id}: correct or mark for dentist", flag_id=f.id,
+                    safety=True)
             if target == "dentist" and st not in ("dismissed_by_dentist", "resolved"):
-                out.append(f"safety-critical flag {f.rule_id}: correct the entities or dismiss with a reason "
-                           f"(Dentist)")
+                add("flag", f"safety-critical flag {f.rule_id}: correct the entities or dismiss with a reason "
+                            f"(Dentist)", flag_id=f.id, safety=True)
         else:
             ok = ("for_dentist", "resolved", "dismissed_by_dentist", "dismissed_by_assistant")
             if target == "dentist":
                 ok = ("resolved", "dismissed_by_dentist", "dismissed_by_assistant")
             if st not in ok:
-                out.append(f"high flag {f.rule_id}: resolve or dismiss with a reason")
+                add("flag", f"high flag {f.rule_id}: resolve or dismiss with a reason", flag_id=f.id, safety=False)
     return out
+
+
+def blockers(session, target: str) -> list[str]:
+    return [b["text"] for b in blocker_items(session, target)]
 
 
 def _marked(flags, *, conflict_id=None, task_id=None) -> bool:

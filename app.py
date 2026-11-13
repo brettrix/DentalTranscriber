@@ -1,81 +1,115 @@
-"""Streamlit UI (section 13): start, role confirmation, review with item editor and approvals, trace."""
+"""Streamlit UI (section 13), written for a dental assistant: plain language first, technical details collapsed."""
 from __future__ import annotations
 
 import html
 import json
 import tempfile
+import typing
+from datetime import datetime
 from pathlib import Path
 
 import streamlit as st
 
-from pipeline import approval, human
+from pipeline import approval, human, plain
+from pipeline.dispositions import accepted
+from pipeline.flags import flag_state, session_flag_actions
 from pipeline.graph import load_graph
 from pipeline.linker import session_staging
 from pipeline.orchestrator import RolesNotConfirmed, derive, load_latest, run_pipeline
 from pipeline.overlays import confirm_roles, load_sources
 from pipeline.stage_runs import session_stage_log
-from pipeline.storage import ROOT, Session, SessionBusy, list_sessions
+from pipeline.storage import ROOT, Session, SessionBusy, list_sessions, read_json
 from pipeline.trace import read_traces
 from pipeline.transcribe import transcribe_audio, transcribe_text, write_quick_notes, write_visit_meta
 from pipeline.validate import StructuralError
-from schemas.entities import ATTRIBUTE_MODELS
+from pipeline.verify import session_check_log
+from schemas.entities import ATTRIBUTE_MODELS, ITEM_SCOPES, Item, is_critical
+from schemas.flags import Flag
 
 BANNER = "Prototype — test data only. Do not use with real patient information."
-ICON = {"succeeded": "✓", "failed": "✗", "blocked": "⏸", "not_applicable": "–"}
+NEW = "__new__"
+PAGES = ["Start", "Review", "Speaker roles", "Technical log"]
+STATE_LABEL = {"draft": "Draft — not reviewed yet",
+               "assistant_review_complete": "Assistant review done — waiting for the dentist",
+               "dentist_approved": "Approved by the dentist", "exported": "Approved and exported"}
 
 st.set_page_config(page_title="Dental Scribe (prototype)", layout="wide")
 
+# Navigation requested by an action in the previous run (a widget's value can't change after it is drawn).
+for _key in ("page", "sid"):
+    if f"next_{_key}" in st.session_state:
+        st.session_state[_key] = st.session_state.pop(f"next_{_key}")
+
 
 def esc(text) -> str:
-    return html.escape(str(text if text is not None else ""))
+    return html.escape(str(text if text is not None else ""), quote=False)
+
+
+def go(page: str, sid: str | None = None):
+    st.session_state["next_page"] = page
+    if sid:
+        st.session_state["next_sid"] = sid
+    st.rerun()
+
+
+def session_label(sid: str) -> str:
+    if sid == NEW:
+        return "(new visit)"
+    s = Session(sid)
+    m = s.meta()
+    visit = (read_json(s.path("sources", "visit_meta.json"), {}) or {}).get("date") or "no date"
+    created = m.get("created")
+    when = datetime.fromisoformat(created).astimezone().strftime("%b %d, %H:%M") if created else "?"
+    return f"{m.get('case') or 'Visit'} · visit {visit} · processed {when} · {m.get('pipeline_mode', '?')}"
 
 
 # ---------------------------------------------------------------- sidebar: role and session
 
-role = st.sidebar.selectbox("Role (Prototype: no real login)", ["Assistant", "Dentist"])
-sessions = list_sessions()
-labels = ["(new session)"] + [f"{s.meta().get('case') or 'session'} · {s.meta().get('pipeline_mode')} · {s.id[:8]}"
-                              for s in sessions]
-pick = st.sidebar.selectbox("Session", labels, index=1 if sessions and "sid" in st.session_state else 0)
-session = None
-if pick != "(new session)":
-    session = sessions[labels.index(pick) - 1]
-    st.session_state["sid"] = session.id
-
+role = st.sidebar.selectbox("Your role (Prototype: no real login)", ["Assistant", "Dentist"])
+sessions = list_sessions()  # newest first
+ids = [NEW] + [s.id for s in sessions]
+if st.session_state.get("sid") not in ids:
+    st.session_state["sid"] = ids[1] if len(ids) > 1 else NEW
+sid = st.sidebar.selectbox("Visit", ids, key="sid", format_func=session_label)
+session = Session(sid) if sid != NEW else None
 meta = session.meta() if session else {}
-st.error(f"{BANNER}  ·  Pipeline: {meta.get('pipeline_mode', '—')}  ·  Rule mode: {meta.get('rule_mode', '—')}")
-
-
-def rerun_ui():
-    st.rerun()
+st.error(f"{BANNER}  ·  Mode: {meta.get('pipeline_mode', '—')}  ·  Rules: {meta.get('rule_mode', '—')}")
+page = st.radio("Page", PAGES, key="page", horizontal=True, label_visibility="collapsed")
 
 
 def guarded(fn, *args, **kw):
     try:
         out = fn(*args, **kw)
-        st.success("Saved.")
-        return out
+        st.session_state["flash"] = "Saved."
+        return out if out is not None else True
     except (human.HumanActionError, StructuralError, approval.ApprovalBlocked, approval.ExportRefused,
             SessionBusy, RolesNotConfirmed, ValueError) as exc:
-        st.error(f"Rejected: {exc}")
-        if isinstance(exc, approval.ApprovalBlocked):
-            for r in exc.reasons:
-                st.write(f"- {esc(r)}")
+        st.session_state["flash_error"] = f"Couldn't do that: {plain.strip_ids(str(exc))}"
         return None
 
 
-tab_start, tab_roles, tab_review, tab_trace = st.tabs(["Start", "Role confirmation", "Review", "Trace"])
+if st.session_state.get("flash"):
+    st.success(st.session_state.pop("flash"))
+if st.session_state.get("flash_error"):
+    st.error(st.session_state.pop("flash_error"))
+
+
+def _act(label, key, fn, *args, **kw):
+    if st.button(label, key=key):
+        guarded(fn, *args, **kw)
+        st.rerun()
+
 
 # ---------------------------------------------------------------- Start
 
-with tab_start:
+def start_page():
     st.subheader("New visit")
     c1, c2, c3 = st.columns(3)
-    date = c1.text_input("Date", "2026-11-12")
-    provider = c2.text_input("Provider", "Dr. Hale")
+    date = c1.text_input("Visit date", datetime.now().strftime("%Y-%m-%d"))
+    provider = c2.text_input("Dentist", "Dr. Hale")
     assistant = c3.text_input("Assistant", "")
     mode = st.radio("Pipeline mode", ["baseline", "team"], horizontal=True,
-                    help="baseline: one extractor, span-checked. team: split extractors plus meaning checks.")
+                    help="baseline: one extractor, quote-checked. team: split extractors plus meaning checks.")
     rule_mode = st.radio("Rule mode", ["synthetic_demo", "office"], horizontal=True)
     source = st.radio("Input", ["Paste transcript", "Upload audio", "Test case"], horizontal=True)
     quick = st.text_area("Quick notes (one per line)", height=100)
@@ -83,15 +117,14 @@ with tab_start:
     if source == "Paste transcript":
         transcript = st.text_area("Transcript (lines like 'DENTIST: …', 'PATIENT: …')", height=200)
     elif source == "Upload audio":
-        audio = st.file_uploader("Audio (wav, mp3, m4a, flac; ≤ 50 MB; ≤ 30 min)", type=["wav", "mp3", "m4a", "flac"])
+        audio = st.file_uploader("Audio (wav, mp3, m4a, flac; up to 50 MB and 30 minutes)",
+                                 type=["wav", "mp3", "m4a", "flac"])
     else:
         cases = sorted(p for p in (ROOT / "eval" / "cases").iterdir() if p.is_dir())
-        names = [p.name for p in cases]
-        chosen = st.selectbox("Test case", names)
-        case_dir = cases[names.index(chosen)] if chosen else None
+        chosen = st.selectbox("Test case", [p.name for p in cases])
+        case_dir = next((p for p in cases if p.name == chosen), None)
     if st.button("Process", type="primary"):
         s = Session.create(case=case_dir.name if case_dir else None, pipeline_mode=mode, rule_mode=rule_mode)
-        st.session_state["sid"] = s.id
         write_visit_meta(s, date=date, provider=provider, assistant=assistant or None)
         try:
             if case_dir is not None:
@@ -105,286 +138,446 @@ with tab_start:
                 transcribe_text(s, transcript or "")
             write_quick_notes(s, quick)
         except Exception as exc:  # noqa: BLE001
-            st.error(f"Transcription failed: {exc}")
-            st.stop()
-        if load_sources(s).roles.confirmed:
-            with st.status("Processing…", expanded=True) as status:
-                result = guarded(run_pipeline, s, mode=mode, rule_mode=rule_mode)
-                for r in session_stage_log(s).runs:
-                    st.write(f"{ICON.get(r['status'], '?')} {r['stage']}/{r['agent']} {r['status']}"
-                             + (f" — {esc(r['error'])}" if r.get("error") else ""))
-                status.update(label="Done", state="complete")
-        else:
-            st.info("Audio session created. Confirm speaker roles on the Role confirmation tab, then process.")
-
-# ---------------------------------------------------------------- Role confirmation (audio)
-
-with tab_roles:
-    if session is None:
-        st.info("Pick a session.")
-    else:
-        src = load_sources(session)
-        speakers = sorted({u.speaker for u in src.utterances.utterances})
-        st.write(f"Roles overlay v{src.roles.version} ({'confirmed' if src.roles.confirmed else 'not confirmed'}). "
-                 "Several speaker ids may share a role.")
-        mapping = {}
-        for spk in speakers:
-            sample = [u.text for u in src.utterances.utterances if u.speaker == spk][:3]
-            st.markdown(f"**{spk}**: " + " / ".join(f"“{esc(t)}”" for t in sample))
-            current = src.roles.entries.get(spk).role if spk in src.roles.entries else "Other"
-            mapping[spk] = st.selectbox(f"Role for {spk}", ["Dentist", "Assistant", "Patient", "Other"],
-                                        index=["Dentist", "Assistant", "Patient", "Other"].index(current), key=f"r{spk}")
-        if st.button("Confirm roles and process"):
-            confirm_roles(session, mapping, by=role)
-            guarded(run_pipeline, session)
-            rerun_ui()
-
-# ---------------------------------------------------------------- Review
-
-def entity_editor(e, key: str):
-    data = e.model_dump(mode="json", by_alias=True)
-    editable = {k: data[k] for k in ("target", "attributes", "assertion", "time_context", "assertion_source",
-                                     "problem_id", "complaint_text", "complaint_location", "clinical_target",
-                                     "tooth", "relation_kind") if k in data}
-    text = st.text_area("Fields (JSON)", json.dumps(editable, indent=1), key=f"ed{key}", height=220)
-    reason = st.text_input("Reason", key=f"rs{key}")
-    c1, c2 = st.columns(2)
-    if c1.button("Save edit", key=f"sv{key}"):
-        try:
-            changes = json.loads(text)
-        except json.JSONDecodeError as exc:
-            st.error(f"Invalid JSON: {exc}")
+            st.error(f"Couldn't read the recording or transcript: {exc}")
             return
-        if guarded(human.edit_entity, session, e.id, changes, role, reason):
-            rerun_ui()
-    if c2.button("Remove", key=f"rm{key}"):
-        if guarded(human.remove_entity, session, e.id, role, reason):
-            rerun_ui()
+        if not load_sources(s).roles.confirmed:
+            st.session_state["flash"] = "Recording loaded. Confirm who is speaking, then process."
+            go("Speaker roles", s.id)
+        with st.spinner("Processing the visit…"):
+            guarded(run_pipeline, s, mode=mode, rule_mode=rule_mode)
+        go("Review", s.id)
 
 
-def render_transcript(src, highlight: set[tuple[str, int | None, int | None]]):
+# ---------------------------------------------------------------- Speaker roles (audio)
+
+def roles_page():
+    if session is None:
+        st.info("Pick a visit in the sidebar.")
+        return
+    src = load_sources(session)
+    st.write("Who is speaking? Several voices can share a role (for example, two dentists).")
+    mapping = {}
+    opts = ["Dentist", "Assistant", "Patient", "Other"]
+    for spk in sorted({u.speaker for u in src.utterances.utterances}):
+        sample = [u.text for u in src.utterances.utterances if u.speaker == spk][:3]
+        st.markdown(f"**Voice {esc(spk[1:])}**: " + " / ".join(f"“{esc(t)}”" for t in sample))
+        current = src.roles.entries.get(spk).role if spk in src.roles.entries else "Other"
+        mapping[spk] = st.selectbox(f"Role for voice {spk[1:]}", opts, index=opts.index(current), key=f"r{spk}")
+    if st.button("Confirm speakers and process", type="primary"):
+        confirm_roles(session, mapping, by=role)
+        with st.spinner("Processing the visit…"):
+            guarded(run_pipeline, session)
+        go("Review", session.id)
+
+
+# ---------------------------------------------------------------- field form
+
+def _type_options(annotation):
+    args = [a for a in typing.get_args(annotation) if a is not type(None)]
+    lit = annotation if typing.get_origin(annotation) is typing.Literal else \
+        next((a for a in args if typing.get_origin(a) is typing.Literal), None)
+    if lit is not None:
+        return "choice", list(typing.get_args(lit))
+    if bool in args:
+        return "bool", None
+    if int in args or float in args:
+        return "number", None
+    return "text", None
+
+
+def field_form(e, key: str) -> dict:
+    """Plain inputs for an entity's clinical fields; returns only the fields the user changed."""
+    changes: dict = {}
+    if e.kind == "item":
+        tooth = st.text_input("Tooth number (1–32, blank if none)",
+                              "" if e.target.tooth is None else str(e.target.tooth), key=f"f_{key}_tooth")
+        new_tooth = int(tooth) if tooth.strip().isdigit() else None
+        if new_tooth != e.target.tooth:
+            changes["target"] = {"tooth": new_tooth}
+        attrs = {}
+        for name, info in ATTRIBUTE_MODELS[e.type].model_fields.items():
+            if name in ("option_id", "decision_id", "link", "option_link", "sequence", "unit"):
+                continue
+            cur = e.attributes.get(name)
+            kind, opts = _type_options(info.annotation)
+            label = name.replace("_", " ")
+            if kind == "choice":
+                choices = ["(not stated)"] + opts
+                v = st.selectbox(label, choices, index=choices.index(cur) if cur in choices else 0,
+                                 key=f"f_{key}_{name}")
+                new = None if v == "(not stated)" else v
+            elif kind == "bool":
+                choices = ["(not stated)", "yes", "no"]
+                v = st.selectbox(label, choices, index={None: 0, True: 1, False: 2}[cur], key=f"f_{key}_{name}")
+                new = {"(not stated)": None, "yes": True, "no": False}[v]
+            else:
+                v = st.text_input(label, "" if cur is None else (f"{cur:g}" if isinstance(cur, float) else str(cur)),
+                                  key=f"f_{key}_{name}")
+                new = v.strip() or None
+                if kind == "number" and new is not None:
+                    try:
+                        new = float(new) if "." in new else int(new)
+                    except ValueError:
+                        new = cur
+            if new != cur:
+                attrs[name] = new
+        if attrs:
+            changes["attributes"] = attrs
+        opts = ["present", "absent", "denied", "possible", "unintelligible"]
+        a = st.selectbox("Stated as", opts, index=opts.index(e.assertion), key=f"f_{key}_assertion",
+                         help="present = yes; absent = not there; denied = patient said no; possible = hedged")
+        if a != e.assertion:
+            changes["assertion"] = a
+    elif e.kind == "problem":
+        ct = st.text_input("Complaint", e.complaint_text or "", key=f"f_{key}_ct")
+        loc = st.text_input("Where the patient says it hurts", e.complaint_location.free_text or "", key=f"f_{key}_loc")
+        tooth = st.text_input("Problem tooth (1–32)",
+                              "" if e.clinical_target.tooth is None else str(e.clinical_target.tooth), key=f"f_{key}_tooth")
+        if ct != (e.complaint_text or ""):
+            changes["complaint_text"] = ct
+        if loc != (e.complaint_location.free_text or ""):
+            changes["complaint_location"] = {"free_text": loc}
+        nt = int(tooth) if tooth.strip().isdigit() else None
+        if nt != e.clinical_target.tooth:
+            changes["clinical_target"] = {"tooth": nt}
+    return changes
+
+
+def render_transcript(src, highlight):
     rows = []
     for u in src.utterances.utterances:
         text = u.text
-        spans = sorted((s, e) for sid, s, e in highlight if sid == u.id and s is not None)
-        if spans:
-            out, pos = "", 0
-            for s, e in spans:
-                if s < pos:
-                    continue
+        spans = sorted((s, e) for uid, s, e in highlight if uid == u.id and s is not None)
+        out, pos = "", 0
+        for s, e in spans:
+            if s >= pos:
                 out += esc(text[pos:s]) + f"<mark>{esc(text[s:e])}</mark>"
                 pos = e
-            out += esc(text[pos:])
-        else:
-            out = esc(text)
-        rows.append(f"<b>{esc(u.id)}</b> <i>{esc(u.speaker)} {esc(src.role_of(u.speaker) or '?')}</i>: {out}")
+        out += esc(text[pos:])
+        rows.append(f"<b>{esc(src.role_of(u.speaker) or 'Speaker')}:</b> {out}")
     st.markdown("<br>".join(rows), unsafe_allow_html=True)
 
 
-with tab_review:
+# ---------------------------------------------------------------- Review
+
+def review_page():
     if session is None:
-        st.info("Pick or create a session.")
-        st.stop()
+        st.info("Pick a visit in the sidebar, or start a new one.")
+        return
     graph = load_graph(session)
     latest = load_latest(session) or {}
     src = load_sources(session)
     state = approval.load_state(session)
-    status = latest.get("status") or {}
-    st.markdown(f"**State:** {state.state} · **Graph:** v{graph.version if graph else '—'} · "
-                f"**Verification:** {status.get('verification_level', '—')} · **High flags:** {status.get('high_flags', 0)}"
-                f" · **Safety-critical:** {status.get('safety_critical_flags', 0)} · **Open conflicts:** "
-                f"{status.get('open_conflicts', 0)} · **Open tasks:** {status.get('open_tasks', 0)} · "
-                f"**Incomplete sections:** {', '.join(status.get('incomplete_sections') or []) or 'none'}")
+    log = session_check_log(session)
+    vm = src.visit_meta
+    st.markdown(f"### {esc(meta.get('case') or 'Visit')} · {esc(vm.date or '')} · {esc(vm.provider or '')}")
+    st.markdown(f"**Status:** {STATE_LABEL[state.state]}")
     if state.revoked:
-        st.warning(f"Approval revoked earlier: {state.revoked[-1]['reason']} (changed: "
-                   f"{', '.join(state.revoked[-1]['changed'])})")
-    for n in latest.get("notices", []):
-        st.caption(esc(n))
+        st.warning("An earlier approval was undone because something changed after it was given.")
     if graph is None:
-        st.error("No candidate graph. Enter the chief problem (registry) below to continue.")
-
-    # Flags
-    st.subheader("Flags")
-    from schemas.flags import Flag
-    from pipeline.flags import flag_state
+        no_graph()
+        return
     flags = [Flag.model_validate(f) for f in latest.get("flags", [])]
-    from pipeline.flags import session_flag_actions
     session_flag_actions(session).apply(flags)
-    for f in flags:
-        stt = flag_state(f)
-        label = f"[{f.severity}{' · SAFETY' if f.safety_critical else ''}{' · question' if f.question else ''}] " \
-                f"{f.rule_id} — {f.message} ({stt})"
-        with st.expander(label):
-            st.write(f"Entities: {', '.join(f.entity_ids) or '—'} · tasks: {', '.join(f.task_ids) or '—'} · "
-                     f"conflicts: {', '.join(f.conflict_ids) or '—'} · origin {f.origin} · group {f.group_id}")
-            for h in f.history:
-                st.caption(f"{h.timestamp} {h.by_role} {h.action}: {esc(h.reason)}")
-            reason = st.text_input("Reason", key=f"fr{f.id}")
-            cols = st.columns(3)
-            allowed_dismiss = not (f.safety_critical and role != "Dentist")
-            if role == "Assistant" and cols[0].button("Mark for dentist", key=f"fd{f.id}"):
-                guarded(human.flag_action, session, f.id, "for_dentist", role, reason)
-                rerun_ui()
-            if allowed_dismiss and cols[1].button("Dismiss", key=f"fx{f.id}"):
-                guarded(human.flag_action, session, f.id, "dismiss", role, reason)
-                rerun_ui()
-            if cols[2].button("Comment", key=f"fc{f.id}"):
-                guarded(human.flag_action, session, f.id, "comment", role, reason)
-                rerun_ui()
+    flag_by_id = {f.id: f for f in flags}
+    note_reason = st.text_input("Note for your actions (optional)", key="reason",
+                                placeholder="e.g. checked against the recording")
+    reason = note_reason.strip() or f"Reviewed by the {role.lower()} against the transcript"
+
+    checklist(graph, flag_by_id, log, reason)
+    alerts(graph, flags, reason)
 
     left, right = st.columns([3, 2])
     highlight: set = set()
     with left:
         st.subheader("Note")
-        note = latest.get("note")
-        if note:
-            for sec in note["sections"]:
-                st.markdown(f"**{esc(sec['title'])}**")
-                if sec.get("status_line"):
-                    st.caption(esc(sec["status_line"]))
-                for line in sec["lines"]:
-                    eid = line.get("entity_id")
-                    if not eid:
-                        st.write(f"- {line['text']}")
-                        continue
-                    c1, c2 = st.columns([6, 1])
-                    c1.markdown(f"- {esc(line['text'])}  `{esc(eid)}` · <small>{esc(line['marker'])}</small>",
-                                unsafe_allow_html=True)
-                    if c2.toggle("Edit", key=f"tg{eid}"):
-                        e = graph.get(eid)
-                        for s in e.evidence:
-                            highlight.add((s.source_id, s.start, s.end))
-                        with st.container(border=True):
-                            st.caption("Evidence: " + " | ".join(f"{esc(s.source_id)}: “{esc(s.text)}”" for s in e.evidence))
-                            st.caption(f"Checks: {e.checks.model_dump()} · dispositions: {len(e.dispositions)}")
-                            entity_editor(e, eid)
-                            kind = "dentist_confirmed" if role == "Dentist" else "human_reviewed"
-                            if st.button(f"Mark {kind.replace('_', ' ')}", key=f"cf{eid}"):
-                                guarded(human.confirm_entity, session, eid, kind, role, "reviewed against sources")
-                                rerun_ui()
-                # Section review (failed sections, or confirming "not discussed")
-                rec = next((s for s in graph.section_records if s.section == sec["id"]), None) if graph else None
-                if rec is not None and (rec.status != "completed" or not sec["lines"]):
-                    with st.popover(f"Review section {sec['id']}"):
-                        outcome = st.radio("Outcome", ["not_discussed", "completed"], key=f"so{sec['id']}")
-                        why = st.text_input("Reason", key=f"sr{sec['id']}")
-                        if st.button("Record section review", key=f"sb{sec['id']}"):
-                            guarded(human.review_section, session, sec["id"], outcome, role, why)
-                            rerun_ui()
-        with st.expander("Add item (human entry)"):
-            itype = st.selectbox("Type", ["problem"] + list(ATTRIBUTE_MODELS))
-            template = ({"kind": "problem", "key": "human", "role": "chief", "complaint_text": "",
-                         "complaint_location": {"free_text": None, "tooth": None},
-                         "clinical_target": {"tooth": None, "free_text": None},
-                         "assertion_source": "clinician_assessment"} if itype == "problem" else
-                        {"kind": "item", "type": itype, "scope": "problem" if graph and graph.chief() else "encounter",
-                         "problem_id": graph.chief().id if graph and graph.chief() else None,
-                         "target": {"tooth": None}, "attributes": {}, "assertion": "present",
-                         "time_context": "current", "assertion_source": "clinician_assessment"})
-            text = st.text_area("Entity (JSON)", json.dumps(template, indent=1), key=f"add{itype}", height=220)
-            why = st.text_input("Reason", key="addwhy")
-            if st.button("Add"):
-                try:
-                    data = json.loads(text)
-                    if graph is None:
-                        st.error("Registry entry without a graph: use the pipeline rerun after entering it.")
-                    elif guarded(human.add_entity, session, data, role, why):
-                        rerun_ui()
-                except json.JSONDecodeError as exc:
-                    st.error(f"Invalid JSON: {exc}")
+        for sec in (latest.get("note") or {}).get("sections", []):
+            st.markdown(f"**{esc(sec['title'])}**")
+            if sec.get("status_line"):
+                st.caption(esc(sec["status_line"]))
+            for line in sec["lines"]:
+                eid = line.get("entity_id")
+                if not eid:
+                    st.write(f"- {plain.strip_ids(line['text'])}")
+                    continue
+                e = graph.get(eid)
+                chip = "✎ entered by staff" if e.owner == "human" else (
+                    "✓ checked" if accepted(graph, e, graph.pipeline_mode) else "⚠ needs review")
+                c1, c2 = st.columns([6, 1])
+                c1.markdown(f"- {esc(plain.strip_ids(line['text']))} <small>· {chip}</small>", unsafe_allow_html=True)
+                if c2.toggle("Edit", key=f"edit_{eid}", value=st.session_state.get("editing") == eid):
+                    for s in e.evidence:
+                        highlight.add((s.source_id, s.start, s.end))
+                    entity_editor(e, graph, log, reason)
+        add_item(graph, reason)
     with right:
-        st.subheader("Transcript")
+        st.subheader("Conversation")
         render_transcript(src, highlight)
         st.subheader("Quick notes")
         for q in src.quick_notes.notes:
-            st.write(f"{q.id}: {q.text}")
+            st.write(f"- {q.text}")
 
-    if graph is not None:
-        st.subheader("Conflicts")
-        for c in graph.conflicts:
-            with st.expander(f"{c.id} · {c.kind} · {c.subject} · {c.status}"):
-                st.write("Participants: " + ", ".join(f"{p.entity_id}@{p.version}" for p in c.participants))
-                st.write("Evidence: " + " | ".join(f"{esc(s.source_id)}: “{esc(s.text)}”" for s in c.evidence))
-                if c.later_statement:
-                    st.write(f"Later statement: {esc(c.later_statement.source_id)} “{esc(c.later_statement.text)}”")
-                if c.resolution:
-                    st.write(f"Resolution: {c.resolution.action} by {c.resolution.resolver_role}: {esc(c.resolution.reason)}"
-                             + (" (pending dentist)" if c.resolution.pending_change_id else ""))
-                if c.status == "open":
-                    action = st.selectbox("Action", ["select", "supersede", "keep_both"], key=f"ca{c.id}")
-                    target = st.selectbox("Entity", [p.entity_id for p in c.participants], key=f"ce{c.id}")
-                    expl = st.text_input("Explanation (keep_both)", key=f"cx{c.id}")
-                    why = st.text_input("Reason", key=f"cr{c.id}")
-                    if st.button("Resolve", key=f"cb{c.id}"):
-                        guarded(human.resolve_conflict, session, c.id, action, role, why,
-                                active_entity_id=target if action == "select" else None,
-                                superseded_entity_id=target if action == "supersede" else None, explanation=expl)
-                        rerun_ui()
-        st.subheader("Review tasks")
-        for t in graph.tasks:
-            with st.expander(f"{t.id} · {t.kind} · {t.status} · {t.severity}"):
-                st.write(esc(t.reason))
-                if t.status == "open":
-                    comp = st.selectbox("Completion", ["corrected", "accepted", "not_applicable"], key=f"tc{t.id}")
-                    why = st.text_input("Reason", key=f"tr{t.id}")
-                    if st.button("Complete task", key=f"tb{t.id}"):
-                        guarded(human.complete_task, session, t.id, comp, role, why)
-                        rerun_ui()
-        st.subheader("Staged records (not part of the clinical draft)")
-        for r in session_staging(session).open_records():
-            with st.expander(f"Staged — not part of the clinical draft · {r.id} · {r.owner} {r.kind}"):
-                st.code(json.dumps(r.raw, indent=1))
-                st.write("Errors: " + esc("; ".join(r.errors)))
-                why = st.text_input("Reason", key=f"dr{r.id}")
-                if st.button("Discard", key=f"dd{r.id}"):
-                    guarded(human.discard_staged, session, r.id, role, why)
-                    rerun_ui()
-        st.subheader("Pending dentist review")
-        for pc in [p for p in graph.pending_changes if p.status == "pending"]:
-            with st.expander(f"{pc.id} · {pc.operation} by {pc.by_role}: {pc.reason}"):
-                st.code(json.dumps(pc.model_dump(mode="json"), indent=1))
-                if role == "Dentist":
-                    c1, c2 = st.columns(2)
-                    if c1.button("Accept", key=f"pa{pc.id}"):
-                        guarded(human.decide_pending, session, pc.id, True, role)
-                        rerun_ui()
-                    if c2.button("Reject", key=f"pr{pc.id}"):
-                        guarded(human.decide_pending, session, pc.id, False, role)
-                        rerun_ui()
-        st.subheader("Human entries")
-        for e in [x for x in graph.active() if x.owner == "human"]:
-            st.write(f"{e.id}@{e.version}: {e.kind} {getattr(e, 'type', '')} — {esc(e.evidence[0].text)}")
+    approval_buttons(graph)
+    technical_details(graph, latest)
 
-    st.subheader("Approval")
+
+def no_graph():
+    st.error("A note couldn't be built yet because the chief complaint wasn't found.")
+    if session.path("pending_registry.json").exists() and role == "Dentist":
+        _act("Accept the assistant's chief complaint and rebuild the note", "accept_registry",
+             human.accept_pending_registry, session, role)
+    with st.form("registry"):
+        ct = st.text_input("What is the patient's main complaint?")
+        loc = st.text_input("Where do they say it hurts?")
+        tooth = st.text_input("Which tooth did the dentist identify? (1–32, blank if none)")
+        if st.form_submit_button("Save and rebuild the note"):
+            guarded(human.enter_registry, session,
+                    {"complaint_text": ct, "complaint_location": {"free_text": loc or None, "tooth": None},
+                     "clinical_target": {"tooth": int(tooth) if tooth.strip().isdigit() else None, "free_text": None}},
+                    role, "entered on the review page")
+            st.rerun()
+
+
+def _entity_of(b, graph):
+    if b.get("entity_id"):
+        return b["entity_id"]
+    if b["kind"] == "task":
+        t = graph.task(b["task_id"])
+        if t.kind in human.ENTITY_TASKS and t.participants:
+            return t.participants[0].entity_id
+    return None
+
+
+def checklist(graph, flag_by_id, log, reason):
+    """One line per thing to do: a failed check and the review tasks about the same entity are one item."""
     target = "assistant" if role == "Assistant" else "dentist"
-    reasons = approval.blockers(session, target)
-    if reasons:
-        st.write(f"Blocking {'assistant review complete' if role == 'Assistant' else 'dentist approval'}:")
-        for r in reasons:
-            st.write(f"- {esc(r)}")
+    groups: dict = {}
+    for i, b in enumerate(approval.blocker_items(session, target)):
+        if b["kind"] == "flag" and b.get("flag_id") in flag_by_id:
+            b["_flag_title"] = plain.flag_title(flag_by_id[b["flag_id"]], graph)
+        groups.setdefault(_entity_of(b, graph) or f"_{i}", []).append(b)
+    title = "Before you mark your review complete" if target == "assistant" else "Before you approve the note"
+    st.subheader(f"{title} ({len(groups)} to do)" if groups else f"{title}: nothing left to do ✓")
+    staging = session_staging(session)
+    for i, group in enumerate(groups.values()):
+        primary = next((b for b in group if b["kind"] == "check"), group[0])
+        primary = {**primary, "_flag_ids": [b["flag_id"] for b in group if b.get("flag_id")],
+                   "_task_ids": [b["task_id"] for b in group if b.get("task_id")]}
+        c1, c2 = st.columns([5, 4])
+        c1.markdown(f"☐ {esc(plain.blocker_text(primary, graph, log, staging))}")
+        with c2:
+            item_actions(primary, graph, flag_by_id, reason, f"b{i}")
+
+
+def _send_all(flag_ids, reason):
+    for fid in flag_ids:
+        human.flag_action(session, fid, "for_dentist", role, reason)
+
+
+def _complete_all(task_ids, reason):
+    for tid in task_ids:
+        human.complete_task(session, tid, "accepted", role, reason)
+
+
+def item_actions(b, graph, flag_by_id, reason, key):
+    k = b["kind"]
+    cols = st.columns(3)
+    flag_ids = b.get("_flag_ids") or ([b["flag_id"]] if b.get("flag_id") else [])
+    send = role == "Assistant" and flag_ids
+    if k == "section":
+        with cols[0]:
+            _act("Not discussed", f"{key}_nd", human.review_section, session, b["section"], "not_discussed", role, reason)
+        with cols[1]:
+            _act("I reviewed it", f"{key}_rv", human.review_section, session, b["section"], "completed", role, reason)
+    elif k == "check":
+        eid = b["entity_id"]
+        with cols[0]:
+            if role == "Dentist":
+                _act("Confirm", f"{key}_ok", human.confirm_entity, session, eid, "dentist_confirmed", role, reason)
+            elif not b["critical"]:
+                _act("Looks right", f"{key}_ok", human.confirm_entity, session, eid, "human_reviewed", role, reason)
+            elif send:
+                _act("Send to dentist", f"{key}_fd", _send_all, flag_ids, reason)
+        with cols[1]:
+            if st.button("Edit", key=f"{key}_ed"):
+                st.session_state["editing"] = eid
+                st.rerun()
+    elif k == "pending" and role == "Dentist":
+        with cols[0]:
+            _act("Accept", f"{key}_pa", human.decide_pending, session, b["pending_id"], True, role, reason)
+        with cols[1]:
+            _act("Reject", f"{key}_pr", human.decide_pending, session, b["pending_id"], False, role, reason)
+    elif k == "conflict":
+        c = graph.conflict(b["conflict_id"])
+        parts = [graph.get(p.entity_id, p.version) for p in c.participants]
+        for j, p in enumerate([p for p in parts if p is not None and p.status == "active"][:2]):
+            with cols[j]:
+                _act(f"Keep: {plain.describe(p, graph)[:45]}", f"{key}_k{j}", human.resolve_conflict, session, c.id,
+                     "select", role, reason, active_entity_id=p.id)
+        with cols[2]:
+            _act("Both are right", f"{key}_kb", human.resolve_conflict, session, c.id, "keep_both", role, reason,
+                 explanation=reason)
+            if send:
+                _act("Send to dentist", f"{key}_fd", _send_all, flag_ids, reason)
+    elif k == "staged":
+        with cols[0]:
+            _act("Discard", f"{key}_dc", human.discard_staged, session, b["staged_id"], role, reason)
+        if send:
+            with cols[1]:
+                _act("Send to dentist", f"{key}_fd", _send_all, flag_ids, reason)
+    elif k == "task":
+        t = graph.task(b["task_id"])
+        dentist_only = t.kind == "stage_failure" and t.created_by_stage == "C" and \
+            any(f" {a} " in f" {t.reason} " for a in ("Co", "R2"))
+        with cols[0]:
+            if role == "Dentist" or not dentist_only:
+                _act("Done — I checked", f"{key}_tk", _complete_all, b.get("_task_ids") or [t.id], reason)
+        if send:
+            with cols[1]:
+                _act("Send to dentist", f"{key}_fd", _send_all, flag_ids, reason)
+    elif k == "flag":
+        f = flag_by_id[b["flag_id"]]
+        with cols[0]:
+            if role == "Dentist" or not f.safety_critical:
+                _act("Reviewed — dismiss", f"{key}_dm", human.flag_action, session, f.id, "dismiss", role, reason)
+        if role == "Assistant":
+            with cols[1]:
+                _act("Send to dentist", f"{key}_fd", human.flag_action, session, f.id, "for_dentist", role, reason)
+
+
+def alerts(graph, flags, reason):
+    st.subheader("Alerts")
+    if not flags:
+        st.write("No alerts.")
+    for title, fs in (("Needs attention", [f for f in flags if f.severity == "high"]),
+                      ("Please check", [f for f in flags if f.severity == "medium"]),
+                      ("For your information", [f for f in flags if f.severity == "low"])):
+        if not fs:
+            continue
+        st.markdown(f"**{title}**")
+        for f in fs:
+            stt = flag_state(f)
+            done = {"for_dentist": " — sent to the dentist", "dismissed_by_assistant": " — dismissed",
+                    "dismissed_by_dentist": " — dismissed by the dentist", "resolved": " — resolved"}.get(stt, "")
+            icon = "🛑" if f.safety_critical else ("❓" if f.question else "•")
+            st.markdown(f"{icon} {esc(plain.flag_title(f, graph))}{esc(done)}")
+            with st.expander("Details"):
+                st.caption(f"rule {f.rule_id} v{f.rule_version} ({f.rule_status}) · severity {f.severity} · "
+                           f"origin {f.origin} · items {', '.join(f.entity_ids) or '—'} · tasks "
+                           f"{', '.join(f.task_ids) or '—'} · conflicts {', '.join(f.conflict_ids) or '—'}")
+                st.caption(esc(f.message))
+                for h in f.history:
+                    st.caption(f"{h.timestamp[:16]} {h.by_role} {h.action}: {esc(h.reason)}")
+                c1, c2 = st.columns(2)
+                if role == "Assistant" and stt == "open":
+                    with c1:
+                        _act("Send to dentist", f"al_fd_{f.id}", human.flag_action, session, f.id, "for_dentist",
+                             role, reason)
+                if stt in ("open", "for_dentist") and (role == "Dentist" or not f.safety_critical):
+                    with c2:
+                        _act("Dismiss", f"al_dm_{f.id}", human.flag_action, session, f.id, "dismiss", role, reason)
+
+
+def entity_editor(e, graph, log, reason):
+    with st.container(border=True):
+        needs = not accepted(graph, e, graph.pipeline_mode) and e.owner != "human"
+        st.caption("Highlighted in the conversation on the right." +
+                   (f" Needs review: {plain.why(e, log)}." if needs else ""))
+        changes = field_form(e, e.id)
+        c1, c2, c3 = st.columns(3)
+        with c1:
+            if st.button("Save changes", key=f"save_{e.id}", disabled=not changes):
+                if guarded(human.edit_entity, session, e.id, changes, role, reason):
+                    st.session_state.pop("editing", None)
+                st.rerun()
+        with c2:
+            if role == "Dentist" or not is_critical(e):
+                kind = "dentist_confirmed" if role == "Dentist" else "human_reviewed"
+                _act("Looks right", f"conf_{e.id}", human.confirm_entity, session, e.id, kind, role, reason)
+        with c3:
+            _act("Remove", f"rm_{e.id}", human.remove_entity, session, e.id, role, reason)
+        if role == "Assistant" and is_critical(e):
+            st.caption("Changes to teeth, allergies, medicines, prescriptions, blood pressure, diagnoses and "
+                       "decisions go to the dentist to accept.")
+        with st.expander("Details"):
+            st.caption(f"id {e.ref} · checks {e.checks.model_dump()} · source {e.owner}")
+            st.caption("Quotes: " + " | ".join(f"{s.source_id}: “{esc(s.text)}”" for s in e.evidence))
+            st.code(json.dumps(e.model_dump(mode="json", by_alias=True, exclude={"evidence"}), indent=1))
+
+
+def add_item(graph, reason):
+    with st.expander("Add something the note is missing"):
+        labels = {plain.TYPE_LABEL[t].capitalize(): t for t in ATTRIBUTE_MODELS}
+        itype = labels[st.selectbox("What kind of item?", list(labels), key="add_type")]
+        scope = "problem" if "problem" in ITEM_SCOPES[itype] and graph.chief() else "encounter"
+        draft = Item(id="new", type=itype, scope=scope, problem_id=graph.chief().id if scope == "problem" else None,
+                     owner="human", assertion_source="clinician_assessment")
+        changes = field_form(draft, f"add_{itype}")
+        src = st.selectbox("Who said it?", ["clinician_assessment", "clinician_observation", "patient_report",
+                                            "clinician_instruction", "assistant_record"], key="add_src",
+                           format_func=lambda s: s.replace("_", " "))
+        if st.button("Add to the note", key="add_btn"):
+            guarded(human.add_entity, session,
+                    {"kind": "item", "type": itype, "scope": scope, "problem_id": draft.problem_id,
+                     "target": changes.get("target", {"tooth": None}), "attributes": changes.get("attributes", {}),
+                     "assertion": changes.get("assertion", "present"), "time_context": "current",
+                     "assertion_source": src}, role, reason)
+            st.rerun()
+
+
+def approval_buttons(graph):
+    st.subheader("Sign-off")
     c1, c2, c3 = st.columns(3)
-    if role == "Assistant" and c1.button("Assistant review complete"):
-        guarded(approval.approve_assistant, session)
-        rerun_ui()
-    if role == "Dentist" and c2.button("Dentist approve"):
-        guarded(approval.approve_dentist, session)
-        rerun_ui()
-    if role == "Dentist" and c3.button("Export"):
-        path = guarded(approval.export, session)
-        if path:
-            st.download_button("Download export", Path(path).read_bytes(), file_name=Path(path).name)
-    if role == "Dentist" and st.button("Retry clinical review (E3)"):
-        if graph is not None:
-            derive(session, graph, src, graph.pipeline_mode, session.meta().get("rule_mode"), retry_e3=True)
-            rerun_ui()
+    if role == "Assistant":
+        with c1:
+            _act("Mark my review complete", "appr_asst", approval.approve_assistant, session)
+        return
+    with c1:
+        _act("Approve the note", "appr_dent", approval.approve_dentist, session)
+    with c2:
+        if st.button("Export", key="export"):
+            path = guarded(approval.export, session)
+            if path and path is not True:
+                st.download_button("Download the exported note", Path(path).read_bytes(), file_name=Path(path).name)
+    with c3:
+        _act("Refresh clinical review questions", "retry_e3", derive, session, graph, load_sources(session),
+             graph.pipeline_mode, session.meta().get("rule_mode"), retry_e3=True)
 
-# ---------------------------------------------------------------- Trace
 
-with tab_trace:
-    if session is not None:
-        rows = [r for r in read_traces(session) if r.get("kind") == "model_call"]
-        st.dataframe([{k: r.get(k) for k in ("timestamp", "agent", "label", "attempt", "schema_retry", "result",
-                                              "seconds", "input_tokens", "output_tokens", "model", "prompt_hash",
-                                              "graph_version", "error")} for r in rows], width="stretch")
-        st.subheader("Stage runs")
-        st.dataframe(session_stage_log(session).runs, width="stretch")
+def technical_details(graph, latest):
+    with st.expander("Details (technical)"):
+        status = latest.get("status") or {}
+        st.caption(f"graph v{graph.version} · verification {status.get('verification_level')} · "
+                   f"rule mode {status.get('rule_mode')} · notices: {'; '.join(latest.get('notices', []))}")
+        st.markdown("**Blocking items (raw)**")
+        for b in approval.blockers(session, "assistant" if role == "Assistant" else "dentist"):
+            st.caption(b)
+        st.markdown("**Conflicts**")
+        for c in graph.conflicts:
+            st.caption(f"{c.id} {c.kind} {c.status} · " + ", ".join(f"{p.entity_id}@{p.version}" for p in c.participants))
+        st.markdown("**Review tasks**")
+        for t in graph.tasks:
+            st.caption(f"{t.id} {t.kind} {t.status}: {t.reason}")
+        st.markdown("**Staged records (not part of the clinical draft)**")
+        for r in session_staging(session).open_records():
+            st.caption(f"{r.id} {r.owner} {r.kind}: {'; '.join(r.errors)}")
+            st.code(json.dumps(r.raw, indent=1))
+        st.markdown("**Pending dentist review**")
+        for p in graph.pending_changes:
+            st.caption(f"{p.id} {p.operation} {p.status} by {p.by_role}: {p.reason}")
+
+
+# ---------------------------------------------------------------- Technical log
+
+def log_page():
+    if session is None:
+        return
+    rows = [r for r in read_traces(session) if r.get("kind") == "model_call"]
+    st.dataframe([{k: r.get(k) for k in ("timestamp", "agent", "label", "attempt", "schema_retry", "result",
+                                          "seconds", "input_tokens", "output_tokens", "model", "prompt_hash",
+                                          "graph_version", "error")} for r in rows], width="stretch")
+    st.subheader("Stage runs")
+    st.dataframe(session_stage_log(session).runs, width="stretch")
+
+
+{"Start": start_page, "Review": review_page, "Speaker roles": roles_page, "Technical log": log_page}[page]()
