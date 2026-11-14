@@ -73,7 +73,7 @@ def test_ui_edit_review_approve_download(monkeypatch, tmp_path):
     assert "Waiting for your review" in _status(at)
     _button(at, "Send to the dentist").click().run()
     assert approval.load_state(s).state == "assistant_review_complete"
-    assert "Waiting for the dentist" in _status(at) and "Sent at" in _status(at)
+    assert "Waiting for the dentist" in _status(at) and "Sent just now" in _status(at)
     at = _app(monkeypatch, tmp_path, "Dentist")
     assert "Waiting for your approval" in _status(at)
     _button(at, "Approve the note").click().run()
@@ -152,14 +152,14 @@ def test_choices_are_held_then_saved_together(monkeypatch, tmp_path):
     assert load_graph(s).version == v0
     assert "you can already answer the 2 items below" in _status(at)
     groups = at.button_group
-    bp = next(g for g in groups if "Keep 150/95" in g.options)
-    assert bp.options == ["Keep 124/80", "Keep 150/95", "Both are right"], "no selection yet"
+    bp = next(g for g in groups if "Use 150/95" in g.options)
+    assert bp.options == ["Use 124/80", "Use 150/95", "Both are right"], "buttons name the actual readings"
     bp.set_value("keep0").run()
     bp = next(g for g in at.button_group if g.key == bp.key)
-    assert bp.value == "keep0" and bp.options[0] == "\u2713 Keep 124/80", "selected shows a check"
+    assert bp.value == "keep0" and bp.options[0] == "\u2713 Use 124/80", "selected shows a check"
     bp.set_value("both").run()
     bp = next(g for g in at.button_group if g.key == bp.key)
-    assert bp.value == "both" and bp.options == ["Keep 124/80", "Keep 150/95", "\u2713 Both are right"], \
+    assert bp.value == "both" and bp.options == ["Use 124/80", "Use 150/95", "\u2713 Both are right"], \
         "selection moved"
     assert load_graph(s).version == v0, "nothing saved per click"
     other = next(g for g in at.button_group if g.key != bp.key)

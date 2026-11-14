@@ -228,10 +228,16 @@ def approve_assistant(session, role: str = "Assistant") -> ApprovalState:
     return state
 
 
-def approve_dentist(session) -> ApprovalState:
+def approve_dentist(session, after_own_changes: bool = False) -> ApprovalState:
+    """`after_own_changes`: the dentist is approving right after saving their own answers to a note the assistant
+    had already sent. Those answers changed the note, which returned it to draft; the dentist's approval of the
+    changed note stands on its own (the dentist's checks include everything the assistant's do), so it does not
+    go back to the assistant first."""
     revoke_if_changed(session, "re-check before dentist approval")
     state = load_state(session)
-    if state.state not in ("assistant_review_complete",):
+    own = after_own_changes and state.state == "draft" and bool(state.revoked) and \
+        state.revoked[-1].get("from_state") == "assistant_review_complete"
+    if state.state not in ("assistant_review_complete",) and not own:
         raise ApprovalBlocked(["assistant review must be complete first"])
     reasons = blockers(session, "dentist")
     if reasons:

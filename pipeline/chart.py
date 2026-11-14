@@ -27,6 +27,15 @@ RELATION = {"control": "comparison tooth", "referred_from": "where the pain is r
 ABBREVIATIONS = [("BWX", "bitewing X-rays (BWX)"), ("PA", "periapical X-ray (PA)")]
 
 
+_NO_SUBSTANCE = re.compile(r"\b(none|no known|nkda|nka|no allerg\w*|denies|n/?a)\b", re.I)
+
+
+def no_substance(wording) -> bool:
+    """True when an allergy's verbatim wording names nothing ("Allergy: none", "NKDA"), so it is no substance."""
+    text = re.sub(r"^\s*allerg(?:y|ies)\s*[:\-]?\s*", "", wording or "", flags=re.I).strip()
+    return not text or bool(_NO_SUBSTANCE.search(text))
+
+
 def _cap(text: str) -> str:
     text = (text or "").strip()
     return text[:1].upper() + text[1:] if text else text
@@ -133,7 +142,7 @@ def chart_line(e, graph) -> str:
                      _dose_unless_strength(a), a.get("route"), a.get("frequency"))
         text = ("No " + text[:1].lower() + text[1:] if _negated(e) else possible + text) + (f" ({status})" if status else "")
     elif t == "allergy":
-        substance = a.get("substance") or a.get("original_wording")
+        substance = a.get("substance") or (None if no_substance(a.get("original_wording")) else a["original_wording"])
         if a.get("allergy_status") == "denied" or (_negated(e) and not substance):
             text = f"No allergy to {substance}" if substance else "No known allergies"
         else:

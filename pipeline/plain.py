@@ -65,7 +65,7 @@ def describe(e, graph) -> str:
     if e.kind == "relationship":
         return f"Related tooth {text}"
     label = TYPE_LABEL.get(e.type, e.type).capitalize()
-    where = " (from the quick note)" if e.evidence and all(s.source_type == "quick_note" for s in e.evidence) else ""
+    where = " (quick note)" if _from_quick_note(e) else ""
     if text.lower().startswith((label.lower(), "allergy", "no known allerg", "no allergy", "bp ", "possible allergy")):
         return f"{text}{where}"
     return f"{label}: {text}{where}"
@@ -247,8 +247,8 @@ def staged_label(rec) -> str:
     if rec.kind == "problem":
         vals = [raw.get("complaint_text") or ""]
     quote = next((q.get("quote") for q in raw.get("evidence") or [] if q.get("quote")), None)
-    main = ", ".join(v for v in vals if v)[:70]
-    return f"{kind}: {main}" + (f" (\u201c{quote[:60]}\u201d)" if quote and not main else "")
+    main = ", ".join(v for v in vals if v)
+    return f"{kind}: {main}" + (f" (\u201c{quote}\u201d)" if quote and not main else "")
 
 
 def blocker_text(b: dict, graph, check_log, staging=None) -> str:
@@ -279,6 +279,11 @@ def blocker_text(b: dict, graph, check_log, staging=None) -> str:
     if k == "flag":
         return b.get("_flag_title") or "A high-priority alert needs review"
     return strip_ids(b["text"])
+
+
+def _is_bp_conflict(c, graph) -> bool:
+    parts = [graph.get(p.entity_id, p.version) for p in c.participants]
+    return bool(parts) and all(p is not None and p.kind == "item" and p.type == "vital_reading" for p in parts)
 
 
 def _pending_add_label(p) -> str:
@@ -414,7 +419,7 @@ def short_title(e, graph) -> str:
     tooth = f" · #{e.target.tooth}" if e.target.tooth else ""
     label = TYPE_LABEL.get(e.type, e.type).capitalize()
     main = main.replace("_", " ")
-    return f"{label}{tooth}" + (f" · {main[:40]}" if main else "")
+    return f"{label}{tooth}" + (f" · {main}" if main else "")
 
 
 def quotes(entities, sources) -> str:
@@ -449,9 +454,200 @@ def _raw_quotes(raw: dict, sources) -> str:
     return "\n".join(out) or "(no words cited)"
 
 
+TOOTH_RULES = ("treatment_target_mismatch", "treatment_target_disagreement", "quick_note_target_conflict")
+_TOOTH_WORDS = re.compile(r"(#\s?\d{1,2}\b|\btooth\s+\d{1,2}\b|\b(?:number|tooth)\s+[a-z]+(?:[- ][a-z]+)?)", re.I)
+_ABOUT_TEETH = re.compile(r"\b(tooth|teeth)\b|#\s?\d", re.I)
+
+
+def plain_title(text: str) -> str:
+    """A card title as plain words: no Markdown markers, never cut short."""
+    text = re.sub(r"(\*\*|__|`)", "", strip_ids(text or ""))
+    return re.sub(r"\s{2,}", " ", text).strip()
+
+
+def _tooth_of(e, graph):
+    if e is None:
+        return None
+    if e.kind == "problem":
+        return e.clinical_target.tooth
+    if e.kind == "relationship":
+        return e.tooth
+    if e.type == "decision" and e.attributes.get("option_id"):
+        opt = graph.get(e.attributes["option_id"])
+        return opt.target.tooth if opt is not None else None
+    return e.target.tooth
+
+
+def _teeth_in(text: str) -> list[int]:
+    """Tooth numbers named in a quote ('#3', 'tooth 3', 'number three')."""
+    from pipeline.normalize import NormalizationError, spoken_tooth_number
+    out = []
+    for m in _TOOTH_WORDS.finditer(text or ""):
+        try:
+            n = spoken_tooth_number(m.group(0))
+        except (NormalizationError, ValueError):
+            continue
+        if n and 1 <= n <= 32 and n not in out:
+            out.append(n)
+    return out
+
+
+def allergy_label(e) -> str:
+    a = e.attributes
+    substance = a.get("substance") or _real_substance(a.get("original_wording"))
+    if a.get("allergy_status") == "denied" or e.assertion in ("denied", "absent") or not substance:
+        return "No allergies" if not substance else f"No {substance} allergy"
+    return f"{substance.capitalize()} allergy" + (f" ({a['reaction']})" if a.get("reaction") else "")
+
+
+def _real_substance(wording):
+    from pipeline.chart import no_substance
+    return None if no_substance(wording) else wording
+
+
+def choice_labels(parts, graph) -> list[str]:
+    """Button labels that name the value each side stands for ('Use 132/84', 'Tooth #2', 'No allergies')."""
+    from pipeline.chart import chart_line
+    teeth = [_tooth_of(p, graph) for p in parts]
+    labels = []
+    for p, tooth in zip(parts, teeth):
+        if p.kind == "item" and p.type == "vital_reading":
+            labels.append(f"Use {p.attributes.get('systolic')}/{p.attributes.get('diastolic')}")
+        elif p.kind == "item" and p.type == "allergy":
+            labels.append(allergy_label(p))
+        elif all(t is not None for t in teeth) and len(set(teeth)) == len(teeth):
+            labels.append(f"Tooth #{tooth}")
+        else:
+            labels.append(strip_ids(chart_line(p, graph)))
+    if len(set(labels)) < len(labels):  # the same words on both sides: say where each came from
+        labels = [f"{lbl} ({'quick note' if _from_quick_note(p) else 'said in the visit'})"
+                  for lbl, p in zip(labels, parts)]
+    return labels
+
+
+def _from_quick_note(e) -> bool:
+    return bool(e.evidence) and all(s.source_type == "quick_note" for s in e.evidence)
+
+
+def _tooth_dispute(items, graph, flag_by_id):
+    """Every blocker about one which-tooth disagreement: tooth alerts, conflicts and unmatched statements about
+    teeth. Returns (blockers, problem, {tooth: [where it is named]}) or None when fewer than two teeth are named."""
+    from pipeline.chart import chart_line
+    picked, sides, seen = [], {}, set()
+
+    def say(tooth, line):
+        if tooth is not None and (tooth, line) not in seen:
+            seen.add((tooth, line))
+            sides.setdefault(tooth, []).append(line)
+
+    problem = None
+    for b in items:
+        f = flag_by_id.get(b.get("flag_id")) if b["kind"] == "flag" else None
+        if f is not None and f.rule_id in TOOTH_RULES:
+            picked.append(b)
+            problem = problem or (graph.get(f.problem_id) if f.problem_id else None)
+            for e in (graph.get(i) for i in f.entity_ids):
+                if e is not None and e.kind != "problem":
+                    say(_tooth_of(e, graph), describe(e, graph))
+            if f.rule_id == "quick_note_target_conflict":
+                for sp in f.evidence:
+                    if sp.source_type == "quick_note":
+                        say(f.target, f"Quick note: \u201c{sp.text}\u201d")
+        elif b["kind"] == "conflict":
+            c = graph.conflict(b["conflict_id"])
+            parts = [p for p in (graph.get(x.entity_id, x.version) for x in c.participants) if p is not None]
+            teeth = {_tooth_of(p, graph) for p in parts} - {None}
+            quoted = {t for sp in c.evidence for t in _teeth_in(sp.text)}
+            if len(teeth) > 1 or (len(quoted) > 1 and _ABOUT_TEETH.search(c.subject or "")):
+                picked.append(b)
+                for p in parts:
+                    if p.kind != "problem":
+                        say(_tooth_of(p, graph), describe(p, graph))
+                for sp in c.evidence:
+                    for t in _teeth_in(sp.text)[:1]:
+                        say(t, f"\u201c{sp.text}\u201d")
+        elif b["kind"] == "task":
+            t = graph.task(b["task_id"])
+            quoted = [n for sp in t.evidence for n in _teeth_in(sp.text)]
+            if t.kind == "unmatched_contradiction" and len(set(quoted)) > 1:
+                picked.append(b)
+                for sp in t.evidence:
+                    for n in _teeth_in(sp.text)[:1]:
+                        say(n, f"\u201c{sp.text}\u201d")
+    problem = problem or graph.chief()
+    if problem is not None and problem.clinical_target.tooth is not None and picked:
+        sides.setdefault(problem.clinical_target.tooth, []).insert(
+            0, f"Problem tooth in the note ({strip_ids(chart_line(problem, graph)).split(' \u2014 ')[0]})")
+    if not picked or len(sides) < 2 or problem is None:
+        return None
+    return picked, problem, dict(sorted(sides.items()))
+
+
+def _tooth_card(found, graph, role, flag_by_id) -> dict:
+    picked, problem, sides = found
+    teeth = list(sides)
+    flags = [flag_by_id.get(b["flag_id"]) for b in picked if b.get("flag_id")]
+    flag_ids = [f.id for f in flags if f is not None]
+    entity_ids = sorted({i for f in flags if f is not None for i in f.entity_ids})
+    conflict_ids = [b["conflict_id"] for b in picked if b["kind"] == "conflict"]
+    names = " or ".join(f"#{t}" for t in teeth) if len(teeth) == 2 else ", ".join(f"#{t}" for t in teeth)
+    card = {"key": f"tooth|{problem.id}", "kind": "tooth", "hidden": False, "default": None, "options": [],
+            "title": f"Which tooth is it: {names}?", "tag": "Tooth", "comments": comments(flags), "asked": asked(flags),
+            "left": (f"Tooth #{teeth[0]}", "\n".join(sides[teeth[0]])),
+            "right": (f"Tooth #{teeth[1]}", "\n".join(sides[teeth[1]])) if len(teeth) == 2 else
+            ("Other teeth named", "\n".join(f"#{t}: {line}" for t in teeth[1:] for line in sides[t])),
+            "details": [b["text"] for b in picked]}
+    if role == "Dentist":
+        for t in teeth:
+            card["options"].append((f"t{t}", f"Use tooth #{t}", [{
+                "op": "use_tooth", "problem_id": problem.id, "tooth": t, "teeth": teeth, "entity_ids": entity_ids,
+                "conflict_ids": conflict_ids,
+                "settle": {"rules": list(TOOTH_RULES), "problem_id": problem.id, "teeth": teeth,
+                           "tasks": "unmatched_contradiction", "why": f"The dentist chose tooth #{t}."}}]))
+    else:
+        card["hint"] = "Only the dentist can choose the tooth."
+        if flag_ids:
+            card["options"].append(("ask", "Ask dentist", [{"op": "flag", "flag_id": f, "action": "for_dentist"}
+                                                         for f in flag_ids]))
+    return card
+
+
+def _allergy_rx_card(b, f, graph, sources, role) -> dict | None:
+    """Allergy against a prescription: the dentist fixes it (remove or change) or prescribes anyway with a reason."""
+    ents = [graph.get(i) for i in f.entity_ids]
+    rx = next((e for e in ents if e is not None and e.kind == "item" and e.type == "prescription"), None)
+    allergy = next((e for e in ents if e is not None and e.kind == "item" and e.type == "allergy"), None)
+    if rx is None or allergy is None:
+        return None
+    drug = (rx.attributes.get("drug") or rx.attributes.get("original_wording") or "prescription").capitalize()
+    card = {"key": f"allergy_rx|{f.id}", "kind": "allergy_rx", "hidden": False, "default": None, "options": [],
+            "title": f"{drug} prescribed, but the note has: {allergy_label(allergy).lower()}", "tag": "Safety",
+            "comments": comments([f]), "asked": asked([f]),
+            "left": ("Allergy", describe(allergy, graph) + "\n" + quotes([allergy], sources)),
+            "right": ("Prescription", describe(rx, graph) + "\n" + quotes([rx], sources)),
+            "details": [b["text"], f.message]}
+    if role == "Dentist":
+        card["options"] = [
+            ("remove", "Remove prescription", [{"op": "remove", "entity_id": rx.id}]),
+            ("edit", "Change prescription", []),
+            ("anyway", "Prescribe anyway", [{"op": "flag", "flag_id": f.id, "action": "dismiss"}])]
+        card["editor"] = {"edit": rx.id}
+        card["needs_reason"] = ("anyway",)
+    else:
+        card["hint"] = "Only the dentist can decide about a prescription."
+        card["options"] = [("ask", "Ask dentist", [{"op": "flag", "flag_id": f.id, "action": "for_dentist"}])]
+    return card
+
+
 def group_blockers(items: list[dict], graph) -> list[list[dict]]:
-    """A failed check and the review tasks about the same entity are one card."""
+    """Blockers about the same thing are one card: a failed check and the review tasks about the same entity, and
+    a disagreement together with the checks on the items that disagree."""
     from pipeline.human import ENTITY_TASKS
+    in_conflict: dict = {}
+    for b in items:
+        if b["kind"] == "conflict":
+            for p in graph.conflict(b["conflict_id"]).participants:
+                in_conflict.setdefault(p.entity_id, b["conflict_id"])
     groups: dict = {}
     for i, b in enumerate(items):
         key = b.get("entity_id")
@@ -459,6 +655,7 @@ def group_blockers(items: list[dict], graph) -> list[list[dict]]:
             t = graph.task(b["task_id"])
             if t.kind in ENTITY_TASKS and t.participants:
                 key = t.participants[0].entity_id
+        key = in_conflict.get(key, key) if key else (b.get("conflict_id") if b["kind"] == "conflict" else None)
         groups.setdefault(key or f"_{i}", []).append(b)
     return list(groups.values())
 
@@ -467,8 +664,32 @@ def build_cards(items, graph, check_log, staging, sources, role: str, flag_by_id
     """Cards for the review page: title, tag, two info boxes, and the choices with the actions each one takes."""
     cards = []
     ask = role == "Assistant"
+    items = list(items)
+    found = _tooth_dispute(items, graph, flag_by_id)
+    if found:  # one card for the whole which-tooth disagreement
+        card = _tooth_card(found, graph, role, flag_by_id)
+        if card["options"]:
+            cards.append(card)
+            items = [b for b in items if b not in found[0]]
+    bp_flags = [b for b in items if b["kind"] == "flag" and getattr(flag_by_id.get(b["flag_id"]), "rule_id", "")
+                == "bp_reading"]
+    bp_conflict = any(b["kind"] == "conflict" and _is_bp_conflict(graph.conflict(b["conflict_id"]), graph)
+                      for b in items)
+    if bp_conflict:  # the high-reading alert rides on the blood-pressure card instead of being a second card
+        items = [b for b in items if b not in bp_flags]
+    for b in [b for b in items if b["kind"] == "flag"]:
+        f = flag_by_id.get(b["flag_id"])
+        if f is not None and f.rule_id == "allergy_rx" and f.safety_critical:
+            card = _allergy_rx_card(b, f, graph, sources, role)
+            if card is not None:
+                cards.append(card)
+                items.remove(b)
     for group in group_blockers(items, graph):
-        b = next((x for x in group if x["kind"] == "check"), group[0])
+        b = next((x for x in group if x["kind"] == "conflict"), None) or \
+            next((x for x in group if x["kind"] == "check"), group[0])
+        # Items in this group whose own check also needs settling (answered together with the disagreement).
+        unchecked = {x.get("entity_id") or graph.task(x["task_id"]).participants[0].entity_id: x.get("critical", True)
+                     for x in group if x["kind"] == "check" or (x["kind"] == "task" and x is not b)}
         flag_ids = [x["flag_id"] for x in group if x.get("flag_id")]
         task_ids = [x["task_id"] for x in group if x.get("task_id")]
         ask_op = [{"op": "flag", "flag_id": f, "action": "for_dentist"} for f in flag_ids]
@@ -517,13 +738,27 @@ def build_cards(items, graph, check_log, staging, sources, role: str, flag_by_id
                 right = ("Then said", f"“{later.text}”" if later else "")
             title = conflict_title(c, graph).split(" (")[0]
             card.update(title=title, tag="Disagreement", left=left, right=right)
-            for j, p in enumerate([p for p in parts if p.status == "active"][:2]):
-                label = f"Keep {p.attributes.get('systolic')}/{p.attributes.get('diastolic')}" \
-                    if p.kind == "item" and p.type == "vital_reading" else f"Keep {short_title(p, graph)[:28]}"
-                card["options"].append((f"keep{j}", label, [{"op": "resolve", "conflict_id": c.id, "action": "select",
-                                                             "active_entity_id": p.id}]))
-            card["options"].append(("both", "Both are right", [{"op": "resolve", "conflict_id": c.id,
-                                                                "action": "keep_both"}]))
+            active = [p for p in parts if p.status == "active"][:2]
+            settle, bp = {}, _is_bp_conflict(c, graph)
+            if bp and bp_flags:
+                f = flag_by_id.get(bp_flags[0]["flag_id"])
+                card["hint"] = bp_title(f, graph) + "."
+                card["comments"] = comments([f] + [flag_by_id.get(x) for x in flag_ids])
+                card["asked"] = card["asked"] or asked([f])
+                ask_op = ask_op + [{"op": "flag", "flag_id": x["flag_id"], "action": "for_dentist"} for x in bp_flags]
+                if role == "Dentist":
+                    settle = {"settle": {"rules": ["bp_reading"], "why": "The dentist settled the blood pressure "
+                                                                         "readings on the review card."}}
+            def confirms(kept):
+                kind = "dentist_confirmed" if role == "Dentist" else "human_reviewed"
+                return [{"op": "confirm", "entity_id": p.id, "kind": kind} for p in kept
+                        if p.id in unchecked and (role == "Dentist" or not unchecked[p.id])]
+
+            for j, (p, label) in enumerate(zip(active, choice_labels(active, graph))):
+                card["options"].append((f"keep{j}", label, confirms([p]) + [
+                    {"op": "resolve", "conflict_id": c.id, "action": "select", "active_entity_id": p.id, **settle}]))
+            card["options"].append(("both", "Both are right", confirms(active) + [
+                {"op": "resolve", "conflict_id": c.id, "action": "keep_both", **settle}]))
             if ask and ask_op:
                 card["options"].append(("ask", "Ask dentist", ask_op))
             card["details"] = [b["text"], conflict_title(c, graph)]
@@ -550,7 +785,7 @@ def build_cards(items, graph, check_log, staging, sources, role: str, flag_by_id
             card["details"] = [b["text"]]
         elif k == "staged":
             rec = staging.get(b["staged_id"]) if staging is not None else None
-            card.update(title=f"Not added: {staged_label(rec)[:55]}", tag="Not in note",
+            card.update(title=f"Not added: {staged_label(rec)}", tag="Not in note",
                         left=("Note says", "(not in the note)"),
                         right=("Said in the visit", _raw_quotes(rec.raw if rec else {}, sources)))
             if rec is not None and rec.entity:
@@ -579,7 +814,7 @@ def build_cards(items, graph, check_log, staging, sources, role: str, flag_by_id
             f = flag_by_id.get(b["flag_id"])
             ents = [e for e in (graph.get(i) for i in (f.entity_ids if f else [])) if e is not None]
             title = flag_title(f, graph) if f else "Alert"
-            card.update(title=title.split(": ")[0] if title.startswith(("Allergy alert", "Tooth check")) else title[:60],
+            card.update(title=title,
                         tag="Safety" if b.get("safety") else "Alert",
                         left=("Note says", describe(ents[0], graph) if ents else title),
                         right=("Said in the visit", quotes(ents, sources) if ents else ""))
@@ -592,6 +827,8 @@ def build_cards(items, graph, check_log, staging, sources, role: str, flag_by_id
             continue
         if card["options"]:
             cards.append(card)
+    for card in cards:
+        card["title"] = plain_title(card["title"])
     if role == "Dentist":  # what the assistant asked about comes first
         cards.sort(key=lambda c: not c["asked"])
     return cards

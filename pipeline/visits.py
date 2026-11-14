@@ -68,6 +68,21 @@ def waiting_text(since_iso: str | None, now: datetime | None = None) -> str:
     return f"{minutes // (24 * 60)} days"
 
 
+def ago_text(since_iso: str | None, now: datetime | None = None) -> str:
+    """'just now', '5 minutes ago', '2 hours ago', '3 days ago'."""
+    since = _local(since_iso)
+    if since is None:
+        return "earlier"
+    minutes = int(((now or datetime.now(timezone.utc)) - since).total_seconds() // 60)
+    if minutes < 1:
+        return "just now"
+    for size, unit in ((24 * 60, "day"), (60, "hour"), (1, "minute")):
+        if minutes >= size:
+            n = minutes // size
+            return f"{n} {unit}{'' if n == 1 else 's'} ago"
+    return "just now"
+
+
 def clock(iso: str | None) -> str:
     """'12:38' today, otherwise 'Nov 12 12:38'."""
     when = _local(iso)

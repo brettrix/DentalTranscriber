@@ -94,3 +94,13 @@ def test_waiting_time_in_plain_words():
     assert waiting_text("2026-11-13T19:35:00+00:00", now) == "25 min"
     assert waiting_text("2026-11-13T16:50:00+00:00", now) == "3 h 10 min"
     assert waiting_text("2026-11-10T20:00:00+00:00", now) == "3 days"
+
+
+def test_sent_time_reads_naturally():
+    from pipeline.visits import ago_text
+    now = datetime(2026, 11, 13, 20, 0, tzinfo=timezone.utc)
+    assert ago_text("2026-11-13T19:59:40+00:00", now) == "just now"
+    assert ago_text("2026-11-13T19:59:00+00:00", now) == "1 minute ago"
+    assert ago_text("2026-11-13T19:55:00+00:00", now) == "5 minutes ago"
+    assert ago_text("2026-11-13T17:50:00+00:00", now) == "2 hours ago"
+    assert ago_text("2026-11-10T20:00:00+00:00", now) == "3 days ago"

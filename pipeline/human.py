@@ -499,6 +499,9 @@ def _apply_resolution(g, c, res: Resolution, session=None, replacement: dict | N
             if session is not None:
                 _save_assertion(session, {"operation": "add", "entity_id": new.id, "by_role": res.resolver_role,
                                           "reason": res.reason, "entity": new.model_dump(mode="json", by_alias=True)})
+    for e in parts:  # an item the resolution took out of the note has nothing left to confirm
+        if e is not None and e.status == "superseded" and e.superseded_by == f"conflict:{c.id}":
+            _complete_entity_tasks(g, e.id, "corrected", res.resolver_role, res.reason)
     c.status = "resolved"
     c.resolution = res
     g.dispositions.append(make_disposition("conflict_resolution", c.id,
@@ -746,7 +749,8 @@ def _commit_registry(session, entity, role, reason, client, agents):
 def apply_review(session, choices: list[dict], role: str, reason: str, *, client=None, agents=None) -> dict:
     """Apply every choice from the review page together: one new graph version and one rebuild.
 
-    Each choice is {"op": ..., ...}: confirm, remove, resolve, section, task, pending, discard, add_staged, flag.
+    Each choice is {"op": ..., ...}: confirm, remove, edit, resolve, use_tooth, section, task, pending, discard,
+    add_staged, flag.
     "Ask dentist" (flag) marks are applied first, against the flags as they are now. Graph changes run through the
     same functions as single actions, on one shared working graph, then structural validation and one commit.
     If the commit is rejected, nothing from the batch is written."""
@@ -776,6 +780,7 @@ def apply_review(session, choices: list[dict], role: str, reason: str, *, client
         _BATCH.pop(session.id, None)
         raise
     if not batch["reasons"]:
+        _settle(session, [c["settle"] for c in graph_ops if c.get("settle")], role, client, agents)
         return {"graph": None, "applied": applied + len(flags), "errors": errors}
     graph, result = commit_human_change(session, g, reason=f"review saved: {len(batch['reasons'])} change(s)",
                                         client=client, agents=agents, rerun_cs_for_problem=batch["rerun_cs"])
@@ -785,7 +790,79 @@ def apply_review(session, choices: list[dict], role: str, reason: str, *, client
         atomic_write_json(_assertions_path(session), data)
     for fn in batch["after"]:  # staging-file updates; the derived outputs don't depend on them
         fn()
+    graph = _settle(session, [c["settle"] for c in graph_ops if c.get("settle")], role, client, agents) or graph
     return {"graph": graph, "applied": applied + len(flags), "errors": errors, "result": result}
+
+
+def _settle(session, specs: list[dict], role: str, client, agents):
+    """After a dentist's choice on a merged card is committed: the alerts that choice answers are recorded as
+    dismissed by the dentist (with the choice as the reason), and statements about the same disagreement that
+    no item covers any more are completed. Without this the same question would come back as a new card."""
+    if role != "Dentist" or not specs:
+        return None
+    from pipeline.flags import flag_state, session_flag_actions
+    from pipeline.orchestrator import load_latest
+    from schemas.flags import Flag
+    flags = [Flag.model_validate(f) for f in (load_latest(session) or {}).get("flags", [])]
+    session_flag_actions(session).apply(flags)
+    graph = None
+    for spec in specs:
+        teeth = set(spec.get("teeth") or [])
+        for f in flags:
+            if f.rule_id not in spec.get("rules", ()) or flag_state(f) not in ("open", "for_dentist"):
+                continue
+            if spec.get("problem_id") and not (f.problem_id == spec["problem_id"] or f.target in teeth):
+                continue
+            flag_action(session, f.id, "dismiss", role, spec["why"])
+        if spec.get("tasks"):
+            g = load_graph(session)
+            for t in [t for t in g.tasks if t.status == "open" and t.kind == spec["tasks"]]:
+                graph, _ = complete_task(session, t.id, "accepted", role, spec["why"], client=client, agents=agents)
+    return graph
+
+
+def _use_tooth(session, c: dict, role: str, reason: str, kw: dict) -> None:
+    """The dentist's answer to a which-tooth disagreement: the problem tooth and every linked item naming one of
+    the other teeth are set to the chosen tooth; conflicts between the statements are closed."""
+    from schemas.entities import TREATMENT_BEARING
+    if role != "Dentist":
+        raise HumanActionError("only the Dentist chooses the tooth")
+    g = _working_graph(session)
+    tooth = int(c["tooth"])
+    others = {int(t) for t in c["teeth"]} - {tooth}
+    why = reason if not reason.startswith("Reviewed by the ") else f"The dentist chose tooth #{tooth}."
+
+    def tooth_of(e):
+        if e.kind == "problem":
+            return e.clinical_target.tooth
+        return e.tooth if e.kind == "relationship" else e.target.tooth
+
+    linked = set(c.get("entity_ids") or [])
+    for cid in c.get("conflict_ids") or []:
+        conflict = g.conflict(cid)
+        if conflict is None or conflict.status == "resolved":
+            continue
+        parts = [e for e in (g.get(p.entity_id, p.version) for p in conflict.participants)
+                 if e is not None and e.status == "active"]
+        linked.update(e.id for e in parts)
+        right = [e for e in parts if tooth_of(e) == tooth]
+        rest = [e for e in parts if e not in right]
+        same_kind = len({(e.kind, getattr(e, "type", None)) for e in parts}) == 1
+        if len(right) == 1 and rest and same_kind and parts[0].kind == "item" and \
+                all(tooth_of(e) in others for e in rest):
+            # Two versions of the same thing: keep the one on the chosen tooth.
+            resolve_conflict(session, cid, "select", role, why, active_entity_id=right[0].id, **kw)
+        else:
+            resolve_conflict(session, cid, "keep_both", role, why, explanation=why, **kw)
+    problem = g.get(c["problem_id"])
+    if problem is not None and problem.status == "active" and problem.clinical_target.tooth != tooth:
+        edit_entity(session, problem.id, {"clinical_target": {"tooth": tooth}}, role, why, **kw)
+    for e in list(g.active("item")):
+        if e.target.tooth not in others:
+            continue
+        if e.id in linked or (e.problem_id == c["problem_id"] and (e.type in TREATMENT_BEARING
+                                                                    or e.type == "prescription")):
+            edit_entity(session, e.id, {"target": {"tooth": tooth}}, role, why, **kw)
 
 
 def _apply_choice(session, c, role, reason, client, agents):
@@ -808,5 +885,9 @@ def _apply_choice(session, c, role, reason, client, agents):
         discard_staged(session, c["staged_id"], role, reason)
     elif op == "add_staged":
         convert_staged(session, c["staged_id"], c["data"], role, reason, **kw)
+    elif op == "edit":
+        edit_entity(session, c["entity_id"], c["changes"], role, reason, **kw)
+    elif op == "use_tooth":
+        _use_tooth(session, c, role, reason, kw)
     else:
         raise HumanActionError(f"unknown choice {op}")
