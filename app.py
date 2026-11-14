@@ -24,7 +24,8 @@ from pipeline.overlays import confirm_roles, load_sources
 from pipeline.stage_runs import session_stage_log
 from pipeline.storage import ROOT, Session, SessionBusy, list_sessions, read_json
 from pipeline.trace import read_traces
-from pipeline.transcribe import transcribe_audio, transcribe_text, write_quick_notes, write_visit_meta
+from pipeline.transcribe import (split_speakers, transcribe_audio, transcribe_text, write_quick_notes,
+                                 write_visit_meta)
 from pipeline.validate import StructuralError
 from pipeline.verify import session_check_log
 from pipeline.visits import (ago_text, clock, filter_visits, is_test_visit, visit_heading, visit_meta, visit_name,
@@ -112,14 +113,24 @@ with st.sidebar.container(height=460):
         st.caption("No visits match." if search else "No visits yet.")
     for s in listed[:MAX_LISTED]:
         m = s.meta()
+        # No hover tooltip: after a click it stayed over the visit above and blocked clicks. No visit is
+        # highlighted while a new visit is being entered.
+        current = s.id == sid and st.session_state.get("page") != "New visit"
         if st.button(f"{visit_name(m)} · {visit_when(m)}", key=f"visit_{s.id}", width="stretch",
-                     type="primary" if s.id == sid else "secondary", help=visit_heading(s)):
+                     type="primary" if current else "secondary"):
             go("Review", s.id)
     if len(listed) > MAX_LISTED:
         st.caption(f"Showing the newest {MAX_LISTED} of {len(listed)}. Search to find older visits.")
 session = by_id.get(sid)
 meta = session.meta() if session else {}
 st.error(BANNER)
+# Button labels are never cut short: they wrap onto a second line when there is no room.
+st.markdown("""<style>
+.stButton button, .stDownloadButton button { height: auto; min-height: 2.5rem; }
+.stButton button p, .stDownloadButton button p, .stButton button div, .stDownloadButton button div {
+  white-space: normal !important; overflow: visible !important; text-overflow: clip !important; }
+[data-testid="stButtonGroup"] { flex-wrap: wrap !important; overflow: visible !important; row-gap: .35rem; }
+</style>""", unsafe_allow_html=True)
 
 
 # ---------------------------------------------------------------- New visit
@@ -190,7 +201,7 @@ def new_visit_page():
             with st.spinner("Transcribing the recording…"):
                 transcribe_audio(s, tmp)
         else:
-            transcribe_text(s, transcript or "")
+            transcribe_text(s, split_speakers(transcript or ""))
         write_quick_notes(s, quick)
     except Exception as exc:  # noqa: BLE001
         st.session_state["last_error"] = f"{datetime.now():%H:%M:%S} {type(exc).__name__}: {exc}"
@@ -275,6 +286,13 @@ VALUE_NAME = {"present": "positive", "absent": "negative", "reported_active": "a
               "PA": "periapical (PA)", "BWX": "bitewing (BWX)", "FMX": "full mouth", "pano": "panoramic"}
 
 
+# Items that are about the patient or the visit, not a tooth: their editor starts with the item's own fields.
+NO_TOOTH = {"prescription", "medication", "allergy", "vital_reading", "history_change", "instruction", "referral",
+            "consent_element", "decision"}
+FIELD_NAME.update(drug="Drug", strength="Strength (for example 600 mg)", dose="Dose (if different from strength)",
+                  route="How it is taken", substance="Allergic to", reaction="Reaction")
+
+
 def _type_options(annotation):
     args = [a for a in typing.get_args(annotation) if a is not type(None)]
     lit = annotation if typing.get_origin(annotation) is typing.Literal else \
@@ -296,11 +314,12 @@ def field_form(e, key: str) -> dict:
     """Plain inputs for an entity's clinical fields; returns only the fields the user changed."""
     changes: dict = {}
     if e.kind == "item":
-        tooth = st.text_input("Tooth number (1–32, blank if none)",
-                              "" if e.target.tooth is None else str(e.target.tooth), key=f"f_{key}_tooth")
-        new_tooth = int(tooth) if tooth.strip().isdigit() else None
-        if new_tooth != e.target.tooth:
-            changes["target"] = {"tooth": new_tooth}
+        if e.type not in NO_TOOTH:
+            tooth = st.text_input("Tooth number (1–32, blank if none)",
+                                  "" if e.target.tooth is None else str(e.target.tooth), key=f"f_{key}_tooth")
+            new_tooth = int(tooth) if tooth.strip().isdigit() else None
+            if new_tooth != e.target.tooth:
+                changes["target"] = {"tooth": new_tooth}
         attrs = {}
         for name, info in ATTRIBUTE_MODELS[e.type].model_fields.items():
             if name in ("option_id", "decision_id", "link", "option_link", "sequence", "unit"):
@@ -530,32 +549,29 @@ def downloads():
         st.warning("This note changed after it was approved, so the dentist needs to approve it again.")
         return
     stem = exports.file_stem(session)
-    c1, c2, c3, c4, _ = st.columns([2, 2, 2, 3, 2])
-    c1.download_button("Download PDF", lambda: exports.note_pdf(session), file_name=f"{stem} note.pdf",
-                       mime=exports.PDF_MIME, type="primary", key="dl_pdf", on_click="ignore", width="stretch")
-    c2.download_button("Word (.docx)", lambda: exports.note_docx(session), file_name=f"{stem} note.docx",
-                       mime=exports.DOCX_MIME, key="dl_docx", on_click="ignore", width="stretch")
-    with c3:
+    with st.container(horizontal=True, gap="small"):  # wraps onto more lines on a narrow window
+        st.download_button("Download PDF", lambda: exports.note_pdf(session), file_name=f"{stem} note.pdf",
+                           mime=exports.PDF_MIME, type="primary", key="dl_pdf", on_click="ignore")
+        st.download_button("Word (.docx)", lambda: exports.note_docx(session), file_name=f"{stem} note.docx",
+                           mime=exports.DOCX_MIME, key="dl_docx", on_click="ignore")
         copy_button(exports.note_text(session), key="copy_note")
-    c4.download_button("Download everything (.zip)", lambda: exports.bundle_zip(session), file_name=f"{stem}.zip",
-                       mime="application/zip", key="dl_zip", on_click="ignore", width="stretch",
-                       help="One folder with the note (PDF and Word), the transcript (PDF and text) and the recording")
+        st.download_button("Download everything (.zip)", lambda: exports.bundle_zip(session), file_name=f"{stem}.zip",
+                           mime="application/zip", key="dl_zip", on_click="ignore")
 
 
 def source_downloads(s, key: str):
     """The transcript and the recording, available at any stage of the visit."""
     stem = exports.file_stem(s)
     audio = exports.recording_path(s)
-    cols = st.columns(3 if audio else 2)
-    cols[0].download_button("Transcript (PDF)", lambda: exports.transcript_pdf(s), file_name=f"{stem} transcript.pdf",
-                            mime=exports.PDF_MIME, key=f"tpdf_{key}", on_click="ignore", width="stretch")
-    cols[1].download_button("Transcript (text)", lambda: exports.transcript_text(s),
-                            file_name=f"{stem} transcript.txt", mime="text/plain", key=f"ttxt_{key}",
-                            on_click="ignore", width="stretch")
-    if audio:
-        cols[2].download_button("Recording", audio.read_bytes, file_name=f"{stem} recording{audio.suffix.lower()}",
-                                mime=exports.AUDIO_MIME[audio.suffix.lower()], key=f"rec_{key}", on_click="ignore",
-                                width="stretch")
+    with st.container(horizontal=True, gap="small"):
+        st.download_button("Transcript (PDF)", lambda: exports.transcript_pdf(s), file_name=f"{stem} transcript.pdf",
+                           mime=exports.PDF_MIME, key=f"tpdf_{key}", on_click="ignore")
+        st.download_button("Transcript (text)", lambda: exports.transcript_text(s),
+                           file_name=f"{stem} transcript.txt", mime="text/plain", key=f"ttxt_{key}",
+                           on_click="ignore")
+        if audio:
+            st.download_button("Recording", audio.read_bytes, file_name=f"{stem} recording{audio.suffix.lower()}",
+                               mime=exports.AUDIO_MIME[audio.suffix.lower()], key=f"rec_{key}", on_click="ignore")
 
 
 def no_graph():
@@ -618,14 +634,13 @@ def _render_card(card, times=(), graph=None):
             st.caption(card["right"][0])
             st.markdown(_with_seek(card["right"][1], times), unsafe_allow_html=True)
         kw = {} if key in st.session_state else {"default": card["default"]}
-        c1, c2 = st.columns([3, 2])
-        with c1:
-            st.segmented_control("Your choice", list(labels), key=key, label_visibility="collapsed", width="content",
-                                 format_func=lambda v, k=key: ("✓ " if st.session_state.get(k) == v else "")
-                                 + labels[v], **kw)
+        st.segmented_control("Your choice", list(labels), key=key, label_visibility="collapsed", width="stretch",
+                             wrap=True,
+                             format_func=lambda v, k=key: ("\u2713 " if st.session_state.get(k) == v else "")
+                             + labels[v], **kw)
         chosen = st.session_state.get(key)
         needs = chosen in card.get("needs_reason", ())
-        c2.text_input("Comment (optional)", key=f"{key}_note", label_visibility="collapsed",
+        st.text_input("Comment (optional)", key=f"{key}_note", label_visibility="collapsed",
                       placeholder="Reason (required)" if needs else
                       "Comment (optional)" + (", for the dentist" if role == "Assistant" else ""))
         target = graph.get(card.get("editor", {}).get(chosen)) if graph is not None and chosen else None
@@ -946,11 +961,6 @@ def technical_details(graph, latest):
 
 # ---------------------------------------------------------------- worklists
 
-def _worklist_header(*titles, widths):
-    for col, title in zip(st.columns(widths), titles):
-        col.caption(title)
-
-
 def waiting_page():
     rows = worklists(sessions, st.session_state.get("show_tests", False))["waiting"]
     st.subheader("Waiting for dentist")
@@ -958,17 +968,16 @@ def waiting_page():
         st.info("Nothing is waiting for the dentist. Notes appear here after you send them.")
         return
     st.caption(f"{_items(len(rows)).replace('item', 'note')} reviewed and sent, not approved yet. Longest wait first.")
-    widths = [4, 2, 3, 2, 2]
-    _worklist_header("Patient", "Visit date", "Dentist", "Waiting", "", widths=widths)
     for r in rows:
-        c = st.columns(widths, vertical_alignment="center")
-        c[0].markdown(f"**{esc(r['patient'])}**")
-        c[1].write(r["date"])
-        c[2].write(r["dentist"])
-        c[3].write(waiting_text(r["since"]))
-        if c[4].button("Open" if role == "Assistant" else "Review and approve", key=f"open_w_{r['session'].id}",
-                       width="stretch", type="secondary" if role == "Assistant" else "primary"):
-            go("Review", r["session"].id)
+        with st.container(border=True):
+            with st.container(horizontal=True, vertical_alignment="center", gap="medium"):
+                st.markdown(f"**{esc(r['patient'])}**", width="content")
+                st.markdown(f"Visit {esc(r['date'])} · {esc(r['dentist'])} · waiting {waiting_text(r['since'])}",
+                            width="stretch")
+                if st.button("Open" if role == "Assistant" else "Review and approve",
+                             key=f"open_w_{r['session'].id}",
+                             type="secondary" if role == "Assistant" else "primary"):
+                    go("Review", r["session"].id)
 
 
 def cleared_page():
@@ -978,27 +987,23 @@ def cleared_page():
         st.info("No approved notes yet. Notes appear here once the dentist approves them.")
         return
     st.caption("Approved notes, newest first.")
-    widths = [4, 2, 3, 2, 2, 2, 2, 2]
-    _worklist_header("Patient", "Visit date", "Dentist", "Approved", "Download", "", "", "", widths=widths)
     for r in rows[:MAX_LISTED]:
         s = r["session"]
         stem = exports.file_stem(s)
-        c = st.columns(widths, vertical_alignment="center")
-        c[0].markdown(f"**{esc(r['patient'])}**")
-        c[1].write(r["date"])
-        c[2].write(r["dentist"])
-        c[3].write(clock(r["since"]))
-        c[4].download_button("PDF", lambda s=s: exports.note_pdf(s), file_name=f"{stem} note.pdf",
-                             mime=exports.PDF_MIME, type="primary", key=f"pdf_{s.id}", on_click="ignore",
-                             width="stretch", help="Download the note as a PDF")
-        c[5].download_button("Word", lambda s=s: exports.note_docx(s), file_name=f"{stem} note.docx",
-                             mime=exports.DOCX_MIME, key=f"docx_{s.id}", on_click="ignore", width="stretch",
-                             help="Download the note as a Word document")
-        c[6].download_button("Everything", lambda s=s: exports.bundle_zip(s), file_name=f"{stem}.zip",
-                             mime="application/zip", key=f"zip_{s.id}", on_click="ignore", width="stretch",
-                             help="A zip with the note, the transcript and the recording")
-        if c[7].button("Open", key=f"open_c_{s.id}", width="stretch"):
-            go("Review", s.id)
+        with st.container(border=True):
+            with st.container(horizontal=True, vertical_alignment="center", gap="medium"):
+                st.markdown(f"**{esc(r['patient'])}**", width="content")
+                st.markdown(f"Visit {esc(r['date'])} · {esc(r['dentist'])} · approved {clock(r['since'])}",
+                            width="stretch")
+            with st.container(horizontal=True, gap="small"):  # full labels; the row wraps when it must
+                st.download_button("Download PDF", lambda s=s: exports.note_pdf(s), file_name=f"{stem} note.pdf",
+                                   mime=exports.PDF_MIME, type="primary", key=f"pdf_{s.id}", on_click="ignore")
+                st.download_button("Word (.docx)", lambda s=s: exports.note_docx(s), file_name=f"{stem} note.docx",
+                                   mime=exports.DOCX_MIME, key=f"docx_{s.id}", on_click="ignore")
+                st.download_button("Everything (.zip)", lambda s=s: exports.bundle_zip(s), file_name=f"{stem}.zip",
+                                   mime="application/zip", key=f"zip_{s.id}", on_click="ignore")
+                if st.button("Open", key=f"open_c_{s.id}"):
+                    go("Review", s.id)
     if len(rows) > MAX_LISTED:
         st.caption(f"Showing the newest {MAX_LISTED} of {len(rows)}. Use the search on the left for older visits.")
 

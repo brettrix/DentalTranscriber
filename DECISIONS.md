@@ -158,3 +158,9 @@ The Dale and Ruth transcripts are not in the repository. `tests/dale.py` rebuild
 - **Brand names** are shown as spoken with the generic in parentheses ("Eliquis (apixaban)", "Tylenol (acetaminophen)") in the note, on cards and on card buttons, when the brand appears in the item's wording or cited words.
 - **Intolerance.** An allergy item whose cited words say it is not an allergy (or status `disputed` with a reaction) reads "Intolerance (not an allergy): codeine (makes me throw up)". The stored item is still an allergy, so the allergy/prescription alert still compares it.
 - The extraction addendum now states all of the above, plus when `alternatives_discussed`, `benefits_discussed` and `risks_discussed` apply. Not verified with a real run.
+
+## UI fixes after the Dale and Ruth visits
+- **Sidebar.** Visit buttons have no hover tooltip (after a click it stayed over the row above and took the next click). No visit is highlighted while "New visit" is open.
+- **Labels never truncate.** Button labels wrap instead of ending in "…". Download rows and the worklist rows are horizontal containers that wrap, with full labels ("Download PDF", "Word (.docx)", "Everything (.zip)", "Open"), instead of fixed table columns. A card's answer buttons wrap or stack instead of scrolling sideways, and the comment box sits on its own line under them.
+- **Editors.** Prescriptions, medications, allergies, blood pressure, history, instructions, referrals, discussion points and decisions have no tooth field; their editor starts with their own fields (Drug first for a prescription).
+- **Pasted paragraphs.** `transcribe.split_speakers` puts each speaker turn of a one-paragraph transcript on its own line before parsing. It is applied only to transcripts pasted into the app; a test confirms it leaves every case transcript in `eval/` unchanged. A speaker label is a role word followed directly by a colon, so "the other doctor said: …" inside a sentence is not split.

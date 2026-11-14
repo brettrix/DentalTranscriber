@@ -76,6 +76,17 @@ def parse_text_transcript(text: str) -> tuple[list[Utterance], dict[str, RoleEnt
     return utterances, roles
 
 
+_SPEAKER_INLINE = re.compile(r"(?<=\S)[ \t]+(?=(?:DENTIST|DOCTOR|DR|PATIENT|ASSISTANT|OTHER)[ \t]*(?:\[S\d+\])?[ \t]*:)",
+                             re.I)
+
+
+def split_speakers(text: str) -> str:
+    """A transcript pasted as one paragraph ("Dentist: ... PATIENT: ...") becomes one line per speaker turn.
+    Text that already has one speaker per line comes back unchanged. Only applied to transcripts pasted into the
+    app; files read from disk are parsed as they are."""
+    return "\n".join(_SPEAKER_INLINE.sub("\n", line) for line in text.splitlines())
+
+
 def transcribe_text(session: Session, text: str) -> UtterancesSource:
     raw = text.encode("utf-8")
     atomic_write_bytes(session.path("sources", "provider_response.txt"), raw)
