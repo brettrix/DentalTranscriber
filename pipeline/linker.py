@@ -186,6 +186,12 @@ def convert_outputs(outputs: list[tuple[str, object]], sources, graph: Graph, pr
             msg = exc.errors()[:4] if isinstance(exc, ValidationError) else str(exc)
             stage(owner, kind, out, errors=[f"conversion: {msg}"])
             continue
+        if kind == "item" and label_only_quick_note(entity, sources):
+            # "Tx: #3" only says which tooth; it is not a record that something was done or planned. The tooth
+            # still reaches the tooth checks, which read the quick notes themselves. Kept in staging, not open.
+            rec = stage(owner, kind, out, errors=["quick-note label only identifies a tooth; no item is created"])
+            rec.status = "label_only"
+            continue
         fill_speakers(entity, sources)
         if out.id and any(e.id == out.id for e in graph.entities):
             entity.id = out.id
@@ -218,6 +224,22 @@ _NOT_A_REACTION = re.compile(
     r"|unsure|(?:i\s+)?(?:don'?t|do\s+not|can'?t|cannot)\s+(?:know|remember|recall)|unknown|unspecified"
     r"|not\s+(?:stated|specified|given|mentioned|reported|known)|none(?:\s+(?:stated|reported|given))?|n/?a"
     r"|no\s+(?:reaction|problems?)(?:\s+(?:stated|reported|since))?|\?+)[\s.,!?]*$", re.I)
+
+
+_TOOTH_ONLY = r"\s*(?:#\s?\d{1,2}|tooth\s+#?\s?\d{1,2})\s*\.?\s*$"
+
+
+def label_only_quick_note(entity, sources) -> bool:
+    """True for a treatment-type item whose only evidence is quick-note lines of the form "<label>: <tooth>"
+    (Tx:, Tooth:, Dx:). Such a line names the tooth and nothing else."""
+    import glossary
+    from schemas.entities import TREATMENT_BEARING
+    if entity.type not in TREATMENT_BEARING or not entity.evidence:
+        return False
+    labels = [re.escape(k) for k, v in glossary.QUICK_NOTE_LABELS.items() if v == "clinical_target"]
+    pattern = re.compile(rf"^\s*(?:{'|'.join(labels)}){_TOOTH_ONLY}", re.I)
+    notes = {q.id: q.text for q in sources.quick_notes.notes}
+    return all(s.source_type == "quick_note" and pattern.match(notes.get(s.source_id, "")) for s in entity.evidence)
 
 
 def clean_attributes(item_type: str, attributes: dict) -> dict:

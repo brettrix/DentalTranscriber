@@ -827,6 +827,8 @@ def note_line(line, graph, log, highlight, editable=True):
     e = graph.get(eid)
     chip = " <small>· added by staff</small>" if e.owner == "human" else (
         "" if accepted(graph, e, graph.pipeline_mode) else " <small>· ⚠ needs review</small>")
+    if e.evidence and all(sp.source_type == "quick_note" for sp in e.evidence):
+        chip = " (quick note)" + chip
     if not editable:
         st.markdown(f"- {esc(line['text'])}", unsafe_allow_html=True)
         return

@@ -12,7 +12,9 @@ from pipeline.template import types_of_agent
 # frozen prompt files and their hashes stay exactly as the held-out run used them. It is sent after the guide.
 EXTRACTION_ADDENDUM = """## Additions to the guide (these take precedence where they differ)
 - Allergy `reaction` holds only a reaction that was actually stated (hives, rash, swelling, trouble breathing, upset stomach). If no reaction was stated, `reaction` is null. Never put a hedge or filler ("I think", "maybe", "not sure") in `reaction`: uncertainty belongs in `allergy_status` (uncertain, reported_resolved) and stays in the quote.
-- Finding results: when a test or check has a described result beyond positive or negative, such as what was seen, felt or marked ("heavy mark on the new filling" for a bite-paper check, "catches on the distal margin"), put those words in `result_description`. Keep it; don't drop it and don't fold it into `test`."""
+- Finding results: when a test or check has a described result beyond positive or negative, such as what was seen, felt or marked ("heavy mark on the new filling" for a bite-paper check, "catches on the distal margin"), put those words in `result_description`. Keep it; don't drop it and don't fold it into `test`.
+- Quick-note labels such as "Tx: #3", "Tooth: #3" or "Dx: #3" only identify a tooth. A line that is just a label and a tooth is not evidence that a treatment was done today, planned, or diagnosed: never create a `treatment_today`, `next_visit`, `diagnosis`, `option_discussed` or `decision` item from it. A quick note that names an actual procedure ("Tx: temp filling #3") can be extracted.
+- A quick note "Allergy: none" (or "NKDA") is one allergy item with `substance` null, `allergy_status` denied and assertion denied. Do not copy the note's text into `substance` or `original_wording`."""
 
 
 def sources_text(sources) -> str:

@@ -261,3 +261,41 @@ def test_change_prescription_opens_the_editor_inside_the_card(monkeypatch, tmp_p
     assert new.attributes["drug"] == "clindamycin" and new.attributes["strength"] == "300 mg"
     assert approval.load_state(s).state == "dentist_approved"
     assert not [f for f in _flags(s) if f.rule_id == "allergy_rx"], "the alert is gone because the cause is fixed"
+
+
+def test_quick_note_tooth_label_does_not_become_treatment_today(tmp_path):
+    """"Tx: #2" in the quick notes names a tooth; it is not a treatment that was done."""
+    from agents.extract_common import EXTRACTION_ADDENDUM
+    from pipeline.chart import chart_sections
+    s = bear_session(tmp_path)
+    g = load_graph(s)
+    assert not [e for e in g.active("item") if e.type == "treatment_today"]
+    chart = chart_sections(load_latest(s)["note"], g)
+    assert "Treatment today" in chart["not_discussed"]
+    staged = [r for r in session_staging(s).records if r.raw.get("type") == "treatment_today"]
+    assert [r.status for r in staged] == ["label_only"], "kept on record in staging, not silently dropped"
+    assert not [r for r in session_staging(s).open_records() if r.raw.get("type") == "treatment_today"]
+    assert not any(b["kind"] == "staged" for b in approval.blocker_items(s, "dentist")), "and it asks nothing of anyone"
+    tooth = _card(_cards(s, "Dentist"), "which tooth")
+    assert "Quick note: \u201cTx: #2\u201d" in tooth["left"][1], "the quick note still counts in the tooth question"
+    assert "Treatment today" not in tooth["left"][1]
+    assert '"Tx: #3"' in EXTRACTION_ADDENDUM and "only identify a tooth" in EXTRACTION_ADDENDUM
+
+
+def test_label_only_rule_is_narrow():
+    from pipeline.linker import label_only_quick_note
+    from tests.helpers import item, sources
+    from schemas.entities import Span
+
+    def made(itype, note, **attrs):
+        e = item(itype, tooth=3, **attrs)
+        e.evidence = [Span(source_type="quick_note", source_id="q1", start=0, end=len(note), text=note)]
+        return label_only_quick_note(e, sources([note]))
+
+    assert made("treatment_today", "Tx: #3", procedure="treatment")
+    assert made("treatment_today", "tx: # 3", procedure="treatment") and made("next_visit", "Tooth: #3", procedure="x")
+    assert made("diagnosis", "Dx: tooth 3", diagnosis="caries")
+    assert not made("treatment_today", "Tx: temp filling #3", procedure="temp filling"), "a named procedure stays"
+    assert not made("finding", "Tx: #3", observation="x"), "only treatment-type items"
+    spoken = item("treatment_today", tooth=3, procedure="filling")
+    assert not label_only_quick_note(spoken, sources(["Tx: #3"])), "said in the visit: untouched"
