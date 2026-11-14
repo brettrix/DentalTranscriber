@@ -181,6 +181,9 @@ def convert_outputs(outputs: list[tuple[str, object]], sources, graph: Graph, pr
             rec.status = "superseded_by_human"
             continue
         try:
+            if kind == "item":
+                from pipeline.tidy import tidy_item
+                tidy_item(out, sources)
             entity = _build(kind, owner, out, sources, keymap, registry_owner)
         except (ValidationError, ValueError) as exc:
             msg = exc.errors()[:4] if isinstance(exc, ValidationError) else str(exc)

@@ -7,7 +7,9 @@ from __future__ import annotations
 
 import re
 
-from pipeline.render import CONSENT_ELEMENTS, INCOMPLETE, _dose_unless_strength, entity_text
+import glossary
+from pipeline.render import INCOMPLETE, _dose_unless_strength, entity_text
+from pipeline.tidy import is_hedged_denial, names_of
 
 SYMPTOM = {"onset": "Onset", "duration": "Duration", "quality": "Quality", "trigger": "Triggered by",
            "lingering": "Lingering", "severity": "Severity", "swelling": "Swelling", "night_pain": "Night pain",
@@ -34,6 +36,30 @@ def no_substance(wording) -> bool:
     """True when an allergy's verbatim wording names nothing ("Allergy: none", "NKDA"), so it is no substance."""
     text = re.sub(r"^\s*allerg(?:y|ies)\s*[:\-]?\s*", "", wording or "", flags=re.I).strip()
     return not text or bool(_NO_SUBSTANCE.search(text))
+
+
+_NOT_ALLERGY = re.compile(r"not\s+(?:really\s+|actually\s+|exactly\s+)?an?\s+allerg|intoleran|side[\s-]effect", re.I)
+
+
+def drug_display(e) -> str | None:
+    """The drug as it was said, with the generic in parentheses when a brand name was used: 'Eliquis (apixaban)'."""
+    a = e.attributes
+    generic = a.get("drug") or a.get("substance")
+    if not generic:
+        return a.get("original_wording")
+    said = " ".join([a.get("original_wording") or ""] + [s.text for s in e.evidence])
+    for name in names_of(generic):
+        if name != generic and glossary.DRUG_NAMES.get(name) == generic and \
+                re.search(rf"\b{re.escape(name)}\b", said, re.I):
+            return f"{name.title() if name.islower() else name} ({generic})"
+    return generic
+
+
+def is_intolerance(e) -> bool:
+    """An adverse reaction the patient says is not an allergy (or a disputed allergy with a reaction)."""
+    said = " ".join(s.text for s in e.evidence)
+    return e.type == "allergy" and bool(_NOT_ALLERGY.search(said) or
+                                        (e.attributes.get("allergy_status") == "disputed" and e.attributes.get("reaction")))
 
 
 def _cap(text: str) -> str:
@@ -76,6 +102,8 @@ def _symptom(e) -> str:
         value = _list(f"{score:g}/10", value)
     elif score is not None and f"{score:g}" not in value:
         value = _list(value, f"{score:g}")
+    if is_hedged_denial(e):  # "I don't think so": a denial the patient was not sure of, never a positive
+        return f"Denies {value or label.lower() or 'it'} (unsure)"
     if _negated(e):
         if value.lower().startswith(("no ", "denies", "none", "not ")):
             return _cap(value)
@@ -107,6 +135,8 @@ def _finding(e) -> str:
         body = f"{body} — {a['result_description']}" if body else a["result_description"]
     if _negated(e) and not body.lower().startswith(("no ", "not ", "none")) and not result:
         body = f"No {body}"
+    if is_hedged_denial(e):
+        body = f"denies {body} (unsure)"
     where = _tooth(e) + _relation(e)
     return f"{where}: {body}" if where else _cap(body)
 
@@ -133,22 +163,34 @@ def chart_line(e, graph) -> str:
         text = _finding(e)
     elif t == "history_change":
         text = _cap(a.get("description") or "No changes reported")
-        if _negated(e) and not text.lower().startswith(("no ", "none", "denies", "not ")):
+        if is_hedged_denial(e):
+            text = f"Denies {text[:1].lower() + text[1:]} (unsure)"
+        elif _negated(e) and not text.lower().startswith(("no ", "none", "denies", "not ")):
             text = f"No {text[:1].lower() + text[1:]}"
     elif t == "medication":
         status = {"discontinued": "stopped", "historical": "in the past", "unknown": "status not stated"}.get(
             a.get("medication_status"))
-        text = _list(f"{_cap(a.get('drug') or a.get('original_wording') or 'Medication')} {a.get('strength') or ''}".strip(),
+        text = _list(f"{_cap(drug_display(e) or 'Medication')} {a.get('strength') or ''}".strip(),
                      _dose_unless_strength(a), a.get("route"), a.get("frequency"))
-        text = ("No " + text[:1].lower() + text[1:] if _negated(e) else possible + text) + (f" ({status})" if status else "")
+        if is_hedged_denial(e):
+            text = f"Denies taking {text} (unsure)"
+        else:
+            text = "No " + (text if "(" in text.split(",")[0] else text[:1].lower() + text[1:]) if _negated(e) \
+                else possible + text
+        text += f" ({status})" if status else ""
     elif t == "allergy":
         substance = a.get("substance") or (None if no_substance(a.get("original_wording")) else a["original_wording"])
-        if a.get("allergy_status") == "denied" or (_negated(e) and not substance):
-            text = f"No allergy to {substance}" if substance else "No known allergies"
+        shown = (drug_display(e) if a.get("substance") else substance) or "not specified"
+        if is_hedged_denial(e):
+            text = f"Denies {'allergy to ' + shown if substance else 'allergies'} (unsure)"
+        elif a.get("allergy_status") == "denied" or (_negated(e) and not substance):
+            text = f"No allergy to {shown}" if substance else "No known allergies"
+        elif is_intolerance(e):
+            text = f"Intolerance (not an allergy): {shown}" + (f" ({a['reaction']})" if a.get("reaction") else "")
         else:
             status = {"uncertain": "patient not sure", "disputed": "disputed",
                       "reported_resolved": "patient reports it has resolved"}.get(a.get("allergy_status"))
-            text = f"{possible}Allergy: {substance or 'not specified'}" + \
+            text = f"{possible}Allergy: {shown}" + \
                    (f" ({a['reaction']})" if a.get("reaction") else "") + (f" — {status}" if status else "")
     elif t == "vital_reading":
         text = f"BP {a.get('systolic')}/{a.get('diastolic')} mmHg" + (f" ({a['label']})" if a.get("label") else "")
@@ -188,7 +230,7 @@ def chart_line(e, graph) -> str:
         status = {"discussed_not_prescribed": "discussed, not prescribed", "continuing": "continuing"}.get(
             a.get("prescription_status"))
         days = a.get("duration_days")
-        text = _list(f"{_cap(a.get('drug') or a.get('original_wording') or 'Medication')} {a.get('strength') or ''}".strip(),
+        text = _list(f"{_cap(drug_display(e) or 'Medication')} {a.get('strength') or ''}".strip(),
                      _dose_unless_strength(a), a.get("route"), a.get("frequency_code"),
                      days is not None and f"for {days} day{'' if days == 1 else 's'}") + (f" ({status})" if status else "")
     elif t == "referral":
@@ -202,6 +244,32 @@ def chart_line(e, graph) -> str:
     if e.time_context == "historical" and "in the past" not in text and t != "next_visit":
         text += " (in the past)"
     return text
+
+
+def _discussed_from_options(graph, have: set) -> list[dict]:
+    """Discussion elements that the options themselves show, when no separate element was extracted: a second
+    option is an alternative; an option's stated benefits and risks were discussed."""
+    options = [o for o in graph.active_items("option_discussed") if o.assertion not in ("absent", "denied")]
+    name = lambda o: _with_tooth(o.attributes.get("option") or "option", o)  # noqa: E731
+    out = []
+
+    def add(text):
+        out.append({"entity_id": None, "text": text, "owner": None})
+
+    by_problem: dict = {}
+    for o in options:
+        by_problem.setdefault(o.problem_id, []).append(o)
+    if "alternatives_discussed" not in have:
+        for group in by_problem.values():
+            if len(group) > 1:
+                add("Alternatives discussed: " + "; ".join(name(o) for o in group))
+    for element, attr, label in (("benefits_discussed", "benefits", "Benefits"), ("risks_discussed", "risks", "Risks")):
+        if element in have:
+            continue
+        said = [f"{name(o)}: {o.attributes[attr]}" for o in options if o.attributes.get(attr)]
+        if said:
+            add(f"{label} discussed: " + "; ".join(said))
+    return out
 
 
 def expand_abbreviations(lines: list[dict]) -> None:
@@ -229,11 +297,14 @@ def chart_sections(note: dict, graph) -> dict:
                 continue  # 'not documented' filler lines are summarized below
             lines.append({"entity_id": e.id, "text": chart_line(e, graph), "owner": e.owner})
         incomplete = sec.get("status_line") == INCOMPLETE
-        if sec["id"] == "discussion_elements" and lines:
-            present = {graph.get(l["entity_id"]).attributes.get("element") for l in lines}
-            missing = [ELEMENT[el].lower() for el in CONSENT_ELEMENTS if el not in present]
-            if missing:
-                lines.append({"entity_id": None, "text": "Not documented: " + ", ".join(missing), "owner": None})
+        # The canonical note lists which discussion elements were "not documented". That depends on the
+        # extractor recognizing each one, which it does not do reliably, so the chart note never claims an
+        # element was missing: it shows only what was documented.
+        if sec["id"] == "discussion_elements":
+            lines += _discussed_from_options(graph, {graph.get(l["entity_id"]).attributes.get("element")
+                                                     for l in lines})
+            if not lines:
+                continue  # and an empty section is not reported as "not discussed" either
         if not lines and not incomplete:
             not_discussed.append(sec["title"])
             continue

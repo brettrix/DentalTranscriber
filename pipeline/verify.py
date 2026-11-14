@@ -21,7 +21,8 @@ NEGATION_CUES = re.compile(r"\b(no|not|never|none|nothing|nope|denies|denied|wit
                            r"isn't|wasn't|haven't|hasn't|can't|n't|neither|nor)\b", re.I)
 
 # Attributes that may also be derived by a second rule (BP parts read one number at a time).
-ALT_RULES = {"bp_reading": {"spoken_number"}, "spoken_tooth_number": set(), "dose": set()}
+# A strength said without its unit right after the drug's name ("ibuprofen six hundred") is read as milligrams.
+ALT_RULES = {"bp_reading": {"spoken_number"}, "spoken_tooth_number": set(), "dose": {"spoken_strength"}}
 
 
 # ---------------------------------------------------------------- the check log
@@ -159,11 +160,15 @@ def check_normalization(entity, sources) -> tuple[str, list[str]]:
             continue
         if d.rule == "semantic":
             continue
-        if d.rule not in normalize.DETERMINISTIC_RULES:
+        if d.rule not in normalize.DETERMINISTIC_RULES and d.rule != "spoken_strength":
             problems.append(f"derivation[{k}] {d.attribute}: unknown rule {d.rule!r}")
             continue
         try:
-            recomputed = _expected_component(d.rule, d.attribute, normalize.apply(d.rule, d.from_))
+            if d.rule == "spoken_strength":
+                from pipeline.tidy import spoken_strength_value
+                recomputed = spoken_strength_value(d.from_)
+            else:
+                recomputed = _expected_component(d.rule, d.attribute, normalize.apply(d.rule, d.from_))
         except normalize.NormalizationError as exc:
             problems.append(f"derivation[{k}] {d.attribute}: rule {d.rule} cannot read {d.from_!r} ({exc})")
             continue

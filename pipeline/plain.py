@@ -493,11 +493,18 @@ def _teeth_in(text: str) -> list[int]:
 
 
 def allergy_label(e) -> str:
+    from pipeline.chart import drug_display, is_intolerance
     a = e.attributes
-    substance = a.get("substance") or _real_substance(a.get("original_wording"))
+    substance = (drug_display(e) if a.get("substance") else None) or _real_substance(a.get("original_wording"))
     if a.get("allergy_status") == "denied" or e.assertion in ("denied", "absent") or not substance:
         return "No allergies" if not substance else f"No {substance} allergy"
-    return f"{substance.capitalize()} allergy" + (f" ({a['reaction']})" if a.get("reaction") else "")
+    kind = "intolerance" if is_intolerance(e) else "allergy"
+    return f"{substance[:1].upper() + substance[1:]} {kind}" + (f" ({a['reaction']})" if a.get("reaction") else "")
+
+
+def _mid_sentence(label: str) -> str:
+    """Lower-case the first letter unless the label starts with a brand name ('Amoxil (amoxicillin) allergy')."""
+    return label if "(" in label.split(" allergy")[0].split(" intolerance")[0] else label[:1].lower() + label[1:]
 
 
 def _real_substance(wording):
@@ -619,9 +626,11 @@ def _allergy_rx_card(b, f, graph, sources, role) -> dict | None:
     allergy = next((e for e in ents if e is not None and e.kind == "item" and e.type == "allergy"), None)
     if rx is None or allergy is None:
         return None
-    drug = (rx.attributes.get("drug") or rx.attributes.get("original_wording") or "prescription").capitalize()
+    from pipeline.chart import drug_display
+    drug = drug_display(rx) or "prescription"
+    drug = drug[:1].upper() + drug[1:]
     card = {"key": f"allergy_rx|{f.id}", "kind": "allergy_rx", "hidden": False, "default": None, "options": [],
-            "title": f"{drug} prescribed, but the note has: {allergy_label(allergy).lower()}", "tag": "Safety",
+            "title": f"{drug} prescribed, but the note has: {_mid_sentence(allergy_label(allergy))}", "tag": "Safety",
             "comments": comments([f]), "asked": asked([f]),
             "left": ("Allergy", describe(allergy, graph) + "\n" + quotes([allergy], sources)),
             "right": ("Prescription", describe(rx, graph) + "\n" + quotes([rx], sources)),
